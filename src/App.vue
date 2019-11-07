@@ -2,6 +2,7 @@
   <v-app>
     <v-navigation-drawer
       app
+      permanent
     >
       <v-list dense>
         <v-list-item link>
@@ -28,24 +29,21 @@
       color="indigo"
       dark
     >
-      <v-toolbar-title>DRL</v-toolbar-title>
+      <v-toolbar-title>BRL</v-toolbar-title>
     </v-app-bar>
 
     <v-content>
-      <v-container
-        class="fill-height"
-        fluid
-      >
-        <v-row
-          align="center"
-          justify="center"
-        >
-        </v-row>
-      </v-container>
+      <app-map />
     </v-content>
   </v-app>
 </template>
 
 <script>
-export default {};
+import AppMap from './components/app-map'
+
+export default {
+  components: {
+    AppMap
+  }
+};
 </script>
