@@ -13,6 +13,9 @@
 
       <!-- map layers -->
       <map-layer v-for="feature in features" :key="feature.id" :options="feature" />
+
+      <!-- map layers -->
+      <map-layer v-for="wmsLayer in wmsLayers" :key="wmsLayer.id" :options="wmsLayer" />
     </v-mapbox>
   </div>
 </template>
@@ -29,7 +32,8 @@ export default {
   },
   computed: {
     ...mapState({
-      features: state => state.features.features
+      features: state => state.mapbox.features,
+      wmsLayers: state => state.mapbox.wmsLayers
     })
   },
   mounted() {
@@ -40,8 +44,8 @@ export default {
       addSelection: 'add',
       updateSelection: 'update'
     }),
-    ...mapActions('features', {
-      getFeature: 'get'
+    ...mapActions('mapbox', {
+      getFeature: 'getFeature'
     }),
     setMapLocation() {
       this.$refs.map.map.on('load', () => {

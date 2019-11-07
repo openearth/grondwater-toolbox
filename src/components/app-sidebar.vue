@@ -12,7 +12,7 @@
           <v-card-title>Configuration</v-card-title>
 
           <v-card-actions>
-            <v-btn color="primary">Calculate</v-btn>
+            <v-btn @click="calculate" color="primary">Calculate</v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -22,13 +22,17 @@
 
 <script>
 import SelectionsList from './selections-list';
+import { mapActions } from 'vuex';
 
 export default {
   components: {
     SelectionsList
+  },
+  methods: {
+    ...mapActions('mapbox', ['calculateResult']),
+    calculate() {
+      this.calculateResult();
+    }
   }
 };
 </script>
-
-<style>
-</style>
