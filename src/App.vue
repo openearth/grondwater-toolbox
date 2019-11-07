@@ -2,7 +2,7 @@
   <v-app>
     <app-sidebar />
 
-    <v-app-bar app color="indigo" dark>
+    <v-app-bar class="app-header" app color="indigo" dark>
       <v-toolbar-title>BRL</v-toolbar-title>
     </v-app-bar>
 
@@ -23,3 +23,9 @@ export default {
   }
 };
 </script>
+
+<style>
+.app-header {
+  left: 0 !important;
+}
+</style>

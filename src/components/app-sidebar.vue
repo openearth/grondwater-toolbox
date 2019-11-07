@@ -1,23 +1,31 @@
 <template>
-  <v-navigation-drawer app permanent>
-    <h2 class="title">Selections:</h2>
-    <v-list>
-      <v-list-item v-for="selection in selections" :key="selection.id">
-        <v-list-item-content>
-          <v-list-item-title>{{ selection.name }}</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-    </v-list>
+  <v-navigation-drawer clipped app permanent class="pa-2" width="350">
+    <v-row dense>
+      <v-col :cols="12">
+        <v-card outlined>
+          <v-card-title>Selections</v-card-title>
+          <selections-list />
+        </v-card>
+      </v-col>
+      <v-col :cols="12">
+        <v-card outlined>
+          <v-card-title>Configuration</v-card-title>
+
+          <v-card-actions>
+            <v-btn color="primary">Calculate</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+    </v-row>
   </v-navigation-drawer>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import SelectionsList from './selections-list';
+
 export default {
-  computed: {
-    ...mapState({
-      selections: state => state.selections.selections
-    })
+  components: {
+    SelectionsList
   }
 };
 </script>
