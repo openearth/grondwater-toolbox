@@ -9,13 +9,19 @@
       id="map"
       ref="map"
     >
+      <draw-control position="top-left" />
+      <v-mapbox-navigation-control position="bottom-right"/>
     </v-mapbox>
   </div>
 </template>
 
 <script>
+import DrawControl from './draw-control'
+
 export default {
-  
+  components: {
+    DrawControl
+  }
 }
 </script>
 
