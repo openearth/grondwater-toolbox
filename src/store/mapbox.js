@@ -45,7 +45,7 @@ const features = {
     async calculateResult({ commit, state }) {
       const wmsLayers = await Promise.all(state.features.map(async (feature) => {
         // TODO: this is a call to the wrong function, replace this with the BRL function
-        const mock = {
+        const data = {
           "functionId": "ri2de_calc_slope",
           "requestData": {
             "classes": [ 0, 5, 10, 90],
@@ -61,7 +61,7 @@ const features = {
           "roadsIdentifier": feature.roadsIdentifier
         }
 
-        const { baseUrl, layerName, style } = await wps(mock);
+        const { baseUrl, layerName, style } = await wps(data);
 
         const layerObject = {
           url: baseUrl,
