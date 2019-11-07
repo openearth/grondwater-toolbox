@@ -9,20 +9,33 @@
       id="map"
       ref="map"
     >
-      <draw-control position="top-left" />
-      <v-mapbox-navigation-control position="bottom-right"/>
+      <draw-control position="top-left" @create="onSelection" @update="onUpdateSelection" />
+      <v-mapbox-navigation-control position="bottom-right" />
     </v-mapbox>
   </div>
 </template>
 
 <script>
-import DrawControl from './draw-control'
+import { mapMutations } from 'vuex';
+import DrawControl from './draw-control';
 
 export default {
   components: {
     DrawControl
+  },
+  methods: {
+    ...mapMutations('selections', {
+      addSelection: 'add',
+      updateSelection: 'update'
+    }),
+    onSelection(event) {
+      this.addSelection(event.features[0]);
+    },
+    onUpdateSelection(event) {
+      this.updateSelection(event.features[0]);
+    }
   }
-}
+};
 </script>
 
 <style>

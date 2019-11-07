@@ -1,11 +1,11 @@
 <script>
-import MapboxDraw from '@mapbox/mapbox-gl-draw'
-import StaticMode from '../lib/StaticMode'
-import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
+import MapboxDraw from '@mapbox/mapbox-gl-draw';
+import StaticMode from '../lib/StaticMode';
+import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 
 export default {
-  render (createElement) {
-    return createElement('span')
+  render(createElement) {
+    return createElement('span');
   },
   props: {
     position: {
@@ -18,20 +18,28 @@ export default {
       var Draw = new MapboxDraw({
         displayControlsDefault: false,
         controls: {
-            polygon: true,
+          polygon: true
         },
         modes: { ...MapboxDraw.modes, static: StaticMode },
-        defaultMode: 'simple_select',
+        defaultMode: 'simple_select'
       });
 
       if (this.position) {
-        map.addControl(Draw, this.position)
+        map.addControl(Draw, this.position);
       } else {
-        map.addControl(Draw)
+        map.addControl(Draw);
       }
 
-      map.on('load', function() {
+      map.on('load', () => {
         Draw.changeMode('static');
+      });
+
+      map.on('draw.create', event => {
+        this.$emit('create', event);
+      });
+
+      map.on('draw.update', event => {
+        this.$emit('update', event);
       });
     }
   }
@@ -40,8 +48,8 @@ export default {
 
 <style>
 .mapbox-gl-draw_ctrl-draw-btn.mapbox-gl-draw_polygon.active {
-  border: solid 3px #008FC5;
-  transition: background .1s ease;
+  border: solid 3px #008fc5;
+  transition: background 0.1s ease;
 }
 
 .mapbox-gl-draw_ctrl-draw-btn.mapbox-gl-draw_polygon:disabled {
@@ -56,7 +64,7 @@ export default {
   top: 0;
   left: 0;
   background: #fff;
-  opacity: .6;
+  opacity: 0.6;
   width: 30px;
   height: 30px;
 }
