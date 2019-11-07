@@ -4,8 +4,8 @@ import StaticMode from '../lib/StaticMode';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 
 export default {
-  render(createElement) {
-    return createElement('span');
+  render() {
+    return null;
   },
   props: {
     position: {

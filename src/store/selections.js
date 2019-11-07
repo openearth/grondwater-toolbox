@@ -8,7 +8,13 @@ const selections = {
       state.selections.push(selection)
     },
     update(state, selection) {
-      console.log(selection)
+      state.selections = state.selections.map(s => {
+        if (s.id === selection.id) {
+          return selection
+        }
+
+        return s
+      })
     }
   },
 }
