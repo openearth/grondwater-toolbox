@@ -12,6 +12,12 @@ const features = {
     addFeature(state, feature) {
       state.features.push(feature)
     },
+    updateFeature(state, feature) {
+      console.log('update', feature.id)
+      state.features = state.features.map(f => {
+        return f.id === feature.id ? feature : f
+      })
+    },
     addWmsLayer(state, wmsLayer) {
       state.wmsLayers.push(wmsLayer)
     },
@@ -30,6 +36,31 @@ const features = {
       })
 
       commit('addFeature', {
+        ...layers.geojson.line({
+          id: feature.id,
+          data: roadsCollection,
+          paint: {
+            'line-width': 5,
+            'line-color': '#000',
+            'line-opacity': 0.8
+          }
+        }),
+        roadsIdentifier
+      })
+    },
+    async updateFeature({ commit }, feature) {
+      const { roadsCollection, roadsIdentifier } = await wps({
+        "functionId": "ri2de_calc_roads",
+        "polygon": {
+          "id": feature.id,
+          "type": "Feature",
+          "properties": {},
+          "geometry": feature.geometry
+        },
+        "bufferDist": "100"
+      })
+
+      commit('updateFeature', {
         ...layers.geojson.line({
           id: feature.id,
           data: roadsCollection,

@@ -17,30 +17,39 @@ export default {
       type: [Object, String]
     }
   },
-  destroyed() {
-    const layer = this.map.getLayer(this.options.id);
-    if (layer) {
-      this.map.removeLayer(this.options.id);
-      try {
-        this.map.removeSource(layer.source);
-      } catch {
-        console.warn('could not remove source', layer.source);
+  watch: {
+    options: {
+      deep: true,
+      handler() {
+        this.removeLayer();
+        this.addLayer();
       }
     }
   },
+  destroyed() {
+    this.removeLayer();
+  },
   mounted() {
     this.map = this.$parent.map;
-    const oldLayer = this.map.getLayer(this.options.id);
-    if (oldLayer) {
-      this.map.removeLayer(this.options.id);
-      try {
-        this.map.removeSource(oldLayer.source);
-      } catch {
-        console.warn('could not remove source', oldLayer.source);
-      }
-    }
+    this.removeLayer();
+    this.addLayer();
+  },
+  methods: {
+    removeLayer() {
+      const layer = this.map.getLayer(this.options.id);
 
-    this.map.addLayer(this.options);
+      if (layer) {
+        this.map.removeLayer(this.options.id);
+        try {
+          this.map.removeSource(layer.source);
+        } catch {
+          console.warn('could not remove source', layer.source);
+        }
+      }
+    },
+    addLayer() {
+      this.map.addLayer(this.options);
+    }
   }
 };
 </script>

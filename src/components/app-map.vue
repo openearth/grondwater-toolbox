@@ -48,7 +48,8 @@ export default {
       updateSelection: 'update'
     }),
     ...mapActions('mapbox', {
-      getFeature: 'getFeature'
+      getFeature: 'getFeature',
+      updateFeature: 'updateFeature'
     }),
     setMapLocation() {
       this.$refs.map.map.on('load', () => {
@@ -64,6 +65,7 @@ export default {
       // TODO: update selections & features after an update
       const feature = event.features[0];
       this.updateSelection(feature);
+      this.updateFeature(feature);
     }
   }
 };
