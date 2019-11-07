@@ -2,7 +2,7 @@
   <div class="app-map">
     <v-mapbox
       class="app-map__map"
-      access-token="pk.eyJ1Ijoic2lnZ3lmIiwiYSI6ImNqbHcwcHFjNjBsdGIza3F1dW5iZjhhY2EifQ.zZkkozZlSRtmB9VgpR9HiQ"
+      :access-token="mapBoxToken"
       map-style="mapbox://styles/mapbox/streets-v11"
       id="map"
       ref="map"
@@ -34,7 +34,10 @@ export default {
     ...mapState({
       features: state => state.mapbox.features,
       wmsLayers: state => state.mapbox.wmsLayers
-    })
+    }),
+    mapBoxToken() {
+      return process.env.VUE_APP_MAPBOX_TOKEN;
+    }
   },
   mounted() {
     this.setMapLocation();
