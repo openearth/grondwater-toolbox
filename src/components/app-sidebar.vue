@@ -4,7 +4,7 @@
     <v-list>
       <v-list-item v-for="selection in selections" :key="selection.id">
         <v-list-item-content>
-          <v-list-item-title>{{ selection.id }}</v-list-item-title>
+          <v-list-item-title>{{ selection.name }}</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </v-list>

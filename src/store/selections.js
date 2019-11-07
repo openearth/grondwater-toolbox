@@ -1,11 +1,18 @@
+let selectionIndex = 1
+
 const selections = {
   namespaced: true,
   state: {
-    selections: []
+    selections: [],
   },
   mutations: {
     add(state, selection) {
-      state.selections.push(selection)
+      state.selections.push({
+        ...selection,
+        name: `Selection ${selectionIndex}`
+      })
+
+      selectionIndex++
     },
     update(state, selection) {
       state.selections = state.selections.map(s => {
