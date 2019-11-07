@@ -13,8 +13,6 @@
 
       <!-- map layers -->
       <map-layer v-for="feature in features" :key="feature.id" :options="feature" />
-
-      <!-- map layers -->
       <map-layer v-for="wmsLayer in wmsLayers" :key="wmsLayer.id" :options="wmsLayer" />
     </v-mapbox>
   </div>
@@ -62,7 +60,6 @@ export default {
       this.getFeature(feature);
     },
     onUpdateSelection(event) {
-      // TODO: update selections & features after an update
       const feature = event.features[0];
       this.updateSelection(feature);
       this.updateFeature(feature);
