@@ -11,9 +11,7 @@
         <v-card outlined>
           <v-card-title>Configuration</v-card-title>
 
-          <v-card-actions>
-            <v-btn @click="calculate" color="primary">Calculate</v-btn>
-          </v-card-actions>
+          <modeling-configuration />
         </v-card>
       </v-col>
     </v-row>
@@ -22,17 +20,12 @@
 
 <script>
 import SelectionsList from './selections-list';
-import { mapActions } from 'vuex';
+import ModelingConfiguration from './modeling-configuration';
 
 export default {
   components: {
-    SelectionsList
-  },
-  methods: {
-    ...mapActions('mapbox', ['calculateResult']),
-    calculate() {
-      this.calculateResult();
-    }
+    SelectionsList,
+    ModelingConfiguration
   }
 };
 </script>
