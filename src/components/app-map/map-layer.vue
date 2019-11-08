@@ -16,7 +16,7 @@ export default {
   date() {
     return {
       // used to determine if mounted or deferredMountedTo should be used
-      isInitialized: true
+      isInitialized: false
     };
   },
   watch: {
