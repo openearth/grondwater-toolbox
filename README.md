@@ -1,5 +1,7 @@
 # BRL waterbodemstool
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/1535c4c2-d3d3-496e-b404-38e41899efea/deploy-status)](https://app.netlify.com/sites/modest-allen-8e57cd/deploys)
+
 ## Project setup
 ```
 npm install
