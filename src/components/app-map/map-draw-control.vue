@@ -15,7 +15,7 @@ export default {
   },
   methods: {
     deferredMountedTo(map) {
-      var Draw = new MapboxDraw({
+      var draw = new MapboxDraw({
         displayControlsDefault: false,
         controls: {
           polygon: true
@@ -24,14 +24,16 @@ export default {
         defaultMode: 'simple_select'
       });
 
+      map.__draw = draw;
+
       if (this.position) {
-        map.addControl(Draw, this.position);
+        map.addControl(draw, this.position);
       } else {
-        map.addControl(Draw);
+        map.addControl(draw);
       }
 
       map.on('load', () => {
-        Draw.changeMode('static');
+        draw.changeMode('static');
       });
 
       map.on('draw.create', event => {
