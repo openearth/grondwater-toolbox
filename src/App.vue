@@ -7,7 +7,7 @@
     </v-app-bar>
 
     <v-content>
-      <app-map ref="map-wrapper" />
+      <app-map />
     </v-content>
   </v-app>
 </template>
@@ -20,9 +20,6 @@ export default {
   components: {
     AppMap,
     AppSidebar
-  },
-  mounted() {
-    // const w = this.$refs['map-wrapper'];
   }
 };
 </script>
