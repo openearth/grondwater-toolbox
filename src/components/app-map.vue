@@ -14,6 +14,9 @@
       <!-- map layers -->
       <map-layer v-for="feature in features" :key="feature.id" :options="feature" />
       <map-layer v-for="wmsLayer in wmsLayers" :key="wmsLayer.id" :options="wmsLayer" />
+
+      <v-mapbox-layer :options="borderLayer" />
+      <v-mapbox-layer :options="waterWaysLayer" />
     </v-mapbox>
   </div>
 </template>
@@ -22,11 +25,56 @@
 import { mapMutations, mapActions, mapState } from 'vuex';
 import DrawControl from './draw-control';
 import MapLayer from './map-layer';
+import wms from '../lib/mapbox/layers/wms';
+import geoserverUrl from '../lib/geoserver-url';
+
+const tileSize = 256;
+const wmsLayerDefaultConfig = {
+  request: 'GetMap',
+  width: tileSize,
+  height: tileSize,
+  format: 'image/png',
+  srs: 'EPSG:3857',
+  bbox: '{bbox-epsg-3857}',
+  transparent: 'true',
+  encode: false
+};
 
 export default {
   components: {
     DrawControl,
     MapLayer
+  },
+  data() {
+    return {
+      borderLayer: wms({
+        id: 'border',
+        tiles: [
+          geoserverUrl({
+            url:
+              'https://geodata.nationaalgeoregister.nl/bestuurlijkegrenzen/wms',
+            layers: 'landsgrens',
+            ...wmsLayerDefaultConfig
+          })
+        ],
+        tileSize: tileSize
+      }),
+      waterWaysLayer: wms({
+        id: 'water-ways',
+        tiles: [
+          geoserverUrl({
+            url:
+              'https://geoservices.rijkswaterstaat.nl/apps/geoserver/nwb_vaarwegen/wms',
+            layers: 'nwb_vaarwegen:vaarwegvakken',
+            ...wmsLayerDefaultConfig
+          })
+        ],
+        tileSize: tileSize
+      })
+    };
+  },
+  mounted() {
+    this.setMapLocation();
   },
   computed: {
     ...mapState({
@@ -36,9 +84,6 @@ export default {
     mapBoxToken() {
       return process.env.VUE_APP_MAPBOX_TOKEN;
     }
-  },
-  mounted() {
-    this.setMapLocation();
   },
   methods: {
     ...mapMutations('selections', {
