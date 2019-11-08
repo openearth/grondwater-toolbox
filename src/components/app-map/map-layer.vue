@@ -5,11 +5,6 @@ export default {
   render() {
     return null;
   },
-  data() {
-    return {
-      map: null
-    };
-  },
   props: {
     options: {
       default: () => {

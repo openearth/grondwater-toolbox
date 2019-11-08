@@ -17,10 +17,6 @@ export default {
     ...mapState({
       selections: state => state.selections.selections
     })
-  },
-  // mounted() {
-  //   const map = this.$root.getMap();
-  //   console.log(map);
-  // }
+  }
 };
 </script>
