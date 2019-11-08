@@ -16,7 +16,6 @@
     "mapbox-gl": "^1.5.0",
     "query-string": "^6.8.3",
     "vue": "^2.6.10",
-    "vue2mapbox-gl": "^0.8.4",
     "vuetify": "^2.1.0",
     "vuex": "^3.1.1"
   },
