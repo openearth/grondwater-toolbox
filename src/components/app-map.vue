@@ -76,9 +76,6 @@ export default {
       })
     };
   },
-  mounted() {
-    this.setMapLocation();
-  },
   computed: {
     ...mapState({
       features: state => state.mapbox.features,
@@ -87,6 +84,9 @@ export default {
     mapBoxToken() {
       return process.env.VUE_APP_MAPBOX_TOKEN;
     }
+  },
+  mounted() {
+    this.setMapLocation();
   },
   methods: {
     ...mapMutations('selections', {
