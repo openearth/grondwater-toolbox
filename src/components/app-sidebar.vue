@@ -11,7 +11,7 @@
         <v-card outlined>
           <v-card-title>Configuration</v-card-title>
 
-          <modeling-configuration />
+          <modeling-configuration :disabled="!selections.length" />
         </v-card>
       </v-col>
     </v-row>
@@ -21,11 +21,17 @@
 <script>
 import SelectionsList from './selections-list';
 import ModelingConfiguration from './modeling-configuration';
+import { mapState } from 'vuex';
 
 export default {
   components: {
     SelectionsList,
     ModelingConfiguration
+  },
+  computed: {
+    ...mapState({
+      selections: state => state.selections.selections
+    })
   }
 };
 </script>

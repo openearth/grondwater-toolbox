@@ -13,7 +13,6 @@ const features = {
       state.features.push(feature)
     },
     updateFeature(state, feature) {
-      console.log('update', feature.id)
       state.features = state.features.map(f => {
         return f.id === feature.id ? feature : f
       })
@@ -21,6 +20,9 @@ const features = {
     addWmsLayer(state, wmsLayer) {
       state.wmsLayers.push(wmsLayer)
     },
+    resetWmsLayers(state) {
+      state.wmsLayers = []
+    }
   },
   actions: {
     async getFeature({ commit }, feature) {
