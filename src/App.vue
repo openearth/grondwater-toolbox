@@ -7,19 +7,22 @@
     </v-app-bar>
 
     <v-content>
-      <app-map />
+      <app-map ref="map-wrapper" />
     </v-content>
   </v-app>
 </template>
 
 <script>
-import AppMap from './components/app-map';
-import AppSidebar from './components/app-sidebar';
+import AppMap from '@/components/app-map';
+import AppSidebar from '@/components/app-sidebar';
 
 export default {
   components: {
     AppMap,
     AppSidebar
+  },
+  mounted() {
+    // const w = this.$refs['map-wrapper'];
   }
 };
 </script>

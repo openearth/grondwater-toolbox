@@ -20,7 +20,7 @@
 
 <script>
 import { mapMutations, mapActions, mapState } from 'vuex';
-import DrawControl from './draw-control';
+import DrawControl from './map-draw-control';
 import MapLayer from './map-layer';
 
 export default {
@@ -38,7 +38,10 @@ export default {
     }
   },
   mounted() {
-    this.setMapLocation();
+    const map = this.$refs.map.map;
+    // this.$root.getMap = () => map;
+    console.log(map);
+    this.setMapLocation(map);
   },
   methods: {
     ...mapMutations('selections', {
@@ -49,9 +52,9 @@ export default {
       getFeature: 'getFeature',
       updateFeature: 'updateFeature'
     }),
-    setMapLocation() {
-      this.$refs.map.map.on('load', () => {
-        this.$refs.map.map.flyTo({ center: [5.2913, 52.1326], zoom: 6.5 });
+    setMapLocation(map) {
+      map.on('load', () => {
+        map.flyTo({ center: [5.2913, 52.1326], zoom: 6.5 });
       });
     },
     onSelection(event) {
