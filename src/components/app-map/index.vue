@@ -1,6 +1,6 @@
 <template>
   <div class="app-map">
-    <v-mapbox
+    <map-mapbox
       class="app-map__map"
       :access-token="mapBoxToken"
       map-style="mapbox://styles/mapbox/streets-v11"
@@ -8,24 +8,28 @@
       ref="map"
     >
       <!-- map controls -->
-      <draw-control position="top-left" @create="onSelection" @update="onUpdateSelection" />
-      <v-mapbox-navigation-control position="bottom-right" />
+      <map-draw-control position="top-left" @create="onSelection" @update="onUpdateSelection" />
+      <map-navigation-control position="bottom-right" />
 
       <!-- map layers -->
       <map-layer v-for="feature in features" :key="feature.id" :options="feature" />
       <map-layer v-for="wmsLayer in wmsLayers" :key="wmsLayer.id" :options="wmsLayer" />
-    </v-mapbox>
+    </map-mapbox>
   </div>
 </template>
 
 <script>
 import { mapMutations, mapActions, mapState } from 'vuex';
-import DrawControl from './map-draw-control';
+import MapMapbox from './map-mapbox';
+import MapDrawControl from './map-draw-control';
+import MapNavigationControl from './map-navigation-control';
 import MapLayer from './map-layer';
 
 export default {
   components: {
-    DrawControl,
+    MapMapbox,
+    MapDrawControl,
+    MapNavigationControl,
     MapLayer
   },
   computed: {
