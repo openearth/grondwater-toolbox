@@ -56,30 +56,34 @@ export default {
   },
   data() {
     return {
-      borderLayer: wms({
-        id: 'border',
-        tiles: [
-          geoserverUrl({
-            url:
-              'https://geodata.nationaalgeoregister.nl/bestuurlijkegrenzen/wms',
-            layers: 'landsgrens',
-            ...wmsLayerDefaultConfig
-          })
-        ],
-        tileSize: tileSize
-      }),
-      waterWaysLayer: wms({
-        id: 'water-ways',
-        tiles: [
-          geoserverUrl({
-            url:
-              'https://geoservices.rijkswaterstaat.nl/apps/geoserver/nwb_vaarwegen/wms',
-            layers: 'nwb_vaarwegen:vaarwegvakken',
-            ...wmsLayerDefaultConfig
-          })
-        ],
-        tileSize: tileSize
-      })
+      borderLayer: Object.freeze(
+        wms({
+          id: 'border',
+          tiles: [
+            geoserverUrl({
+              url:
+                'https://geodata.nationaalgeoregister.nl/bestuurlijkegrenzen/wms',
+              layers: 'landsgrens',
+              ...wmsLayerDefaultConfig
+            })
+          ],
+          tileSize: tileSize
+        })
+      ),
+      waterWaysLayer: Object.freeze(
+        wms({
+          id: 'water-ways',
+          tiles: [
+            geoserverUrl({
+              url:
+                'https://geoservices.rijkswaterstaat.nl/apps/geoserver/nwb_vaarwegen/wms',
+              layers: 'nwb_vaarwegen:vaarwegvakken',
+              ...wmsLayerDefaultConfig
+            })
+          ],
+          tileSize: tileSize
+        })
+      )
     };
   },
   computed: {
