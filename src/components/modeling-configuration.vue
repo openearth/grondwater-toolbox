@@ -30,7 +30,6 @@
         required
         :disabled="disabled"
       ></v-select>
-      {{ wmsLayersLoading }}
       <v-btn
         @click="calculate"
         color="primary"
