@@ -6,7 +6,8 @@ const features = {
   namespaced: true,
   state: {
     features: [],
-    wmsLayers: []
+    wmsLayers: [],
+    loadingWmsLayers: false
   },
   mutations: {
     addFeature(state, feature) {
@@ -22,6 +23,9 @@ const features = {
     },
     resetWmsLayers(state) {
       state.wmsLayers = []
+    },
+    setLoadingWmsLayers(state, value) {
+      state.loadingWmsLayers = value
     }
   },
   actions: {
@@ -76,6 +80,7 @@ const features = {
       })
     },
     async calculateResult({ commit, state }) {
+      commit('setLoadingWmsLayers', true)
       const wmsLayers = await Promise.all(state.features.map(async (feature) => {
         // TODO: this is a call to the wrong function, replace this with the BRL function
         const data = {
@@ -108,6 +113,8 @@ const features = {
       }))
 
       wmsLayers.forEach(wmsLayer => commit('addWmsLayer', wmsLayer))
+
+      commit('setLoadingWmsLayers', false)
     }
   }
 }

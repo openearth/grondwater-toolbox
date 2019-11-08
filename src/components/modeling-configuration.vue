@@ -30,14 +30,19 @@
         required
         :disabled="disabled"
       ></v-select>
-
-      <v-btn @click="calculate" color="primary" :disabled="disabled">Calculate</v-btn>
+      {{ wmsLayersLoading }}
+      <v-btn
+        @click="calculate"
+        color="primary"
+        :disabled="disabled || loadingWmsLayers"
+        :loading="loadingWmsLayers"
+      >Calculate</v-btn>
     </v-form>
   </div>
 </template>
 
 <script>
-import { mapActions, mapMutations } from 'vuex';
+import { mapActions, mapMutations, mapState } from 'vuex';
 
 export default {
   props: {
@@ -57,6 +62,11 @@ export default {
       calculationLayers: [1, 2, 3, 4, 5, 6, 7],
       visualisationLayers: [1, 2, 3, 4, 5, 6, 7]
     };
+  },
+  computed: {
+    ...mapState({
+      loadingWmsLayers: state => state.mapbox.loadingWmsLayers
+    })
   },
   methods: {
     ...mapMutations('mapbox', ['resetWmsLayers']),
