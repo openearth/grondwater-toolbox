@@ -10,6 +10,7 @@
       <!-- map controls -->
       <draw-control position="top-left" @create="onSelection" @update="onUpdateSelection" />
       <v-mapbox-navigation-control position="bottom-right" />
+      <map-search position="top-right" />
 
       <!-- map layers -->
       <map-layer v-for="feature in features" :key="feature.id" :options="feature" />
@@ -24,6 +25,7 @@
 <script>
 import { mapMutations, mapActions, mapState } from 'vuex';
 import DrawControl from './draw-control';
+import MapSearch from './map-search';
 import MapLayer from './map-layer';
 import wms from '../lib/mapbox/layers/wms';
 import geoserverUrl from '../lib/geoserver-url';
@@ -43,7 +45,8 @@ const wmsLayerDefaultConfig = {
 export default {
   components: {
     DrawControl,
-    MapLayer
+    MapLayer,
+    MapSearch
   },
   data() {
     return {
