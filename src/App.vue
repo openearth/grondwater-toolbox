@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import AppMap from './components/app-map';
-import AppSidebar from './components/app-sidebar';
+import AppMap from '@/components/app-map';
+import AppSidebar from '@/components/app-sidebar';
 
 export default {
   components: {

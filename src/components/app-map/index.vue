@@ -1,34 +1,38 @@
 <template>
   <div class="app-map">
-    <v-mapbox
+    <map-mapbox
       class="app-map__map"
       :access-token="mapBoxToken"
       map-style="mapbox://styles/mapbox/streets-v11"
       id="map"
       ref="map"
+      @mb-created="onMapCreated"
     >
       <!-- map controls -->
-      <draw-control position="top-left" @create="onSelection" @update="onUpdateSelection" />
-      <v-mapbox-navigation-control position="bottom-right" />
-      <map-search position="top-right" />
+      <map-draw-control position="top-left" @create="onSelection" @update="onUpdateSelection" />
+      <map-navigation-control position="bottom-right" />
+      <map-search />
 
       <!-- map layers -->
       <map-layer v-for="feature in features" :key="feature.id" :options="feature" />
       <map-layer v-for="wmsLayer in wmsLayers" :key="wmsLayer.id" :options="wmsLayer" />
 
-      <v-mapbox-layer :options="borderLayer" />
-      <v-mapbox-layer :options="waterWaysLayer" />
-    </v-mapbox>
+      <!-- default layers -->
+      <map-layer :options="borderLayer" />
+      <map-layer :options="waterWaysLayer" />
+    </map-mapbox>
   </div>
 </template>
 
 <script>
 import { mapMutations, mapActions, mapState } from 'vuex';
-import DrawControl from './draw-control';
-import MapSearch from './map-search';
+import MapMapbox from './map-mapbox';
+import MapDrawControl from './map-draw-control';
+import MapNavigationControl from './map-navigation-control';
 import MapLayer from './map-layer';
-import wms from '../lib/mapbox/layers/wms';
-import geoserverUrl from '../lib/geoserver-url';
+import MapSearch from './map-search';
+import wms from '../../lib/mapbox/layers/wms';
+import geoserverUrl from '../../lib/geoserver-url';
 
 const tileSize = 256;
 const wmsLayerDefaultConfig = {
@@ -44,7 +48,9 @@ const wmsLayerDefaultConfig = {
 
 export default {
   components: {
-    DrawControl,
+    MapMapbox,
+    MapDrawControl,
+    MapNavigationControl,
     MapLayer,
     MapSearch
   },
@@ -86,7 +92,7 @@ export default {
     }
   },
   mounted() {
-    this.setMapLocation();
+    this.setMapLocation(this.$root.map);
   },
   methods: {
     ...mapMutations('selections', {
@@ -97,10 +103,8 @@ export default {
       getFeature: 'getFeature',
       updateFeature: 'updateFeature'
     }),
-    setMapLocation() {
-      this.$refs.map.map.on('load', () => {
-        this.$refs.map.map.flyTo({ center: [5.2913, 52.1326], zoom: 6.5 });
-      });
+    onMapCreated(map) {
+      this.$root.map = map;
     },
     onSelection(event) {
       const feature = event.features[0];
@@ -111,6 +115,11 @@ export default {
       const feature = event.features[0];
       this.updateSelection(feature);
       this.updateFeature(feature);
+    },
+    setMapLocation(map) {
+      map.on('load', () => {
+        map.flyTo({ center: [5.2913, 52.1326], zoom: 6.5 });
+      });
     }
   }
 };

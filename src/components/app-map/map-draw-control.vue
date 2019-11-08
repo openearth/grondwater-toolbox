@@ -1,6 +1,6 @@
 <script>
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
-import StaticMode from '../lib/StaticMode';
+import StaticMode from '@/lib/StaticMode';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 
 export default {
