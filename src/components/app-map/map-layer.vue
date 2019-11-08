@@ -30,7 +30,7 @@ export default {
   },
   mounted() {
     // only execute when map is available and layer is not already initialized
-    if (this.getMap() || !this.isInitialized) {
+    if (this.getMap()) {
       this.removeLayer();
       this.addLayer();
       this.isInitialized = true;
@@ -50,19 +50,22 @@ export default {
     },
     removeLayer() {
       const map = this.getMap();
-      const layer = map.getLayer(this.options.id);
+      if (map) {
+        const layer = map.getLayer(this.options.id);
 
-      if (layer) {
-        map.removeLayer(this.options.id);
-        try {
-          map.removeSource(layer.source);
-        } catch {
-          console.warn('could not remove source', layer.source);
+        if (layer) {
+          map.removeLayer(this.options.id);
+          try {
+            map.removeSource(layer.source);
+          } catch {
+            console.warn('could not remove source', layer.source);
+          }
         }
       }
     },
     addLayer() {
-      this.getMap().addLayer(this.options);
+      const map = this.getMap();
+      map.addLayer(this.options);
     }
   }
 };
