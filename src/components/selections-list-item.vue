@@ -1,5 +1,5 @@
 <template>
-  <v-list-item>
+  <v-list-item class="px-0">
     <v-list-item-content class="pa-0">
       <v-list-item-title class="d-flex align-center flex-nowrap">
         <div class="flex-grow-1">{{ selection.name }}</div>
