@@ -28,14 +28,14 @@ export default {
   },
   methods: {
     deferredMountedTo(map) {
-      let control = new mapboxgl.NavigationControl(this.options)
-      // if not null/undefined
-      if (this.position) {
-        // if you pass an invalid position, this wil fail
-        map.addControl(control, this.position)
-      } else {
-        map.addControl(control)
-      }
+      let control = new mapboxgl.NavigationControl(this.options);
+      map.addControl(control, this.position);
+      const $zoomInButton = document.querySelector('.mapboxgl-ctrl-zoom-in');
+      const $zoomOutButton = document.querySelector('.mapboxgl-ctrl-zoom-out');
+      const $compassButton = document.querySelector('.mapboxgl-ctrl-compass');
+      [$zoomInButton, $zoomOutButton, $compassButton].forEach($el => {
+        $el.classList.add('map-control-tooltip', 'map-control-tooltip--left');
+      });
     }
   }
 };

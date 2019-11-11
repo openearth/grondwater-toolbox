@@ -26,11 +26,13 @@ export default {
 
       map.__draw = draw;
 
-      if (this.position) {
-        map.addControl(draw, this.position);
-      } else {
-        map.addControl(draw);
-      }
+      map.addControl(draw, this.position);
+      const $drawButton = document.querySelector('.mapbox-gl-draw_ctrl-draw-btn');
+      const drawLabel = 'Draw an area around your infrastructure';
+  $drawButton.setAttribute('title', drawLabel);
+  $drawButton.classList.add('map-control-tooltip', 'map-control-tooltip--right');
+
+
 
       map.on('load', () => {
         draw.changeMode('static');
@@ -49,9 +51,13 @@ export default {
 </script>
 
 <style>
+.mapbox-gl-draw_ctrl-draw-btn.mapbox-gl-draw_polygon {
+  border-radius: 4px;
+  transition: box-shadow .2s ease;
+}
+
 .mapbox-gl-draw_ctrl-draw-btn.mapbox-gl-draw_polygon.active {
-  border: solid 3px #008fc5;
-  transition: background 0.1s ease;
+  box-shadow: 0 0 2px 2px rgba(0, 150, 255, 1), inset 0 0 0 3px rgba(0, 150, 255, 1);
 }
 
 .mapbox-gl-draw_ctrl-draw-btn.mapbox-gl-draw_polygon:disabled {

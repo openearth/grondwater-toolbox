@@ -1,27 +1,27 @@
-const drawButtonClass = '.mapbox-gl-draw_ctrl-draw-btn'
+const drawButtonClass = '.mapbox-gl-draw_ctrl-draw-btn';
 
 const StaticMode = {
   onSetup() {
-    const drawButton = document.querySelector(drawButtonClass)
+    const drawButton = document.querySelector(drawButtonClass);
 
     if(drawButton) {
-      drawButton.setAttribute('disabled', true)
+      drawButton.setAttribute('disabled', true);
     }
 
-    this.setActionableState() // default actionable state is false for all actions
+    this.setActionableState(); // default actionable state is false for all actions
 
-    return {}
+    return {};
   },
   onStop() {
-    const drawButton = document.querySelector(drawButtonClass)
+    const drawButton = document.querySelector(drawButtonClass);
 
     if(drawButton) {
-      drawButton.removeAttribute('disabled')
+      drawButton.removeAttribute('disabled');
     }
   },
   toDisplayFeatures(state, geojson, display) {
-    display(geojson)
+    display(geojson);
   }
-}
+};
 
-export default StaticMode
+export default StaticMode;
