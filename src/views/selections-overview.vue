@@ -16,8 +16,8 @@
 
 <script>
 import { mapMutations, mapState } from 'vuex';
-import SidebarFooter from './sidebar-footer';
-import SelectionsList from './selections-list';
+import SidebarFooter from '@/components/sidebar-footer';
+import SelectionsList from '@/components/selections-list';
 
 export default {
   components: {

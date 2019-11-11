@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import SelectionsOverview from './components/selections-overview';
-import CalculationConfiguration from './components/calculation-configuration';
+import SelectionsOverview from '@/views/selections-overview';
+import CalculationConfiguration from '@/views/calculation-configuration';
 
 const routes = [{
     path: '/',

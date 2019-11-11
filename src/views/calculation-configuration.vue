@@ -12,7 +12,7 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
-import SidebarFooter from './sidebar-footer';
+import SidebarFooter from '@/components/sidebar-footer';
 
 export default {
   components: {
