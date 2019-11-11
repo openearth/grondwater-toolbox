@@ -84,34 +84,39 @@ const features = {
     },
     async calculateResult({ commit, state }, requestData) {
       commit('setLoadingWmsLayers', true);
-      const wmsLayers = await Promise.all(state.features.map(async (feature) => {
-        // TODO: this is a call to the wrong function, replace this with the BRL function
-        const data = {
-          functionId: "brl_gwmodel",
-          requestData,
-          polygon: {
-            "id": feature.id,
-            "type": "Feature",
-            "properties": {},
-            "geometry": feature.source.data
-          },
-          roadsIdentifier: feature.roadsIdentifier
-        };
 
-        const { baseUrl, layerName, style } = await wps(data);
-
-        const layerObject = {
-          url: baseUrl,
-          layer: layerName,
-          id: layerName,
-          style,
-          roadsId: 'roads_1573136423177466'
-        };
-
-        return generateWmsLayer(layerObject);
-      }));
-
-      wmsLayers.forEach(wmsLayer => commit('addWmsLayer', wmsLayer));
+      try {
+        const wmsLayers = await Promise.all(state.features.map(async (feature) => {
+          // TODO: this is a call to the wrong function, replace this with the BRL function
+          const data = {
+            functionId: "brl_gwmodel",
+            requestData,
+            polygon: {
+              "id": feature.id,
+              "type": "Feature",
+              "properties": {},
+              "geometry": feature.source.data
+            },
+            roadsIdentifier: feature.roadsIdentifier
+          };
+  
+          const { baseUrl, layerName, style } = await wps(data);
+  
+          const layerObject = {
+            url: baseUrl,
+            layer: layerName,
+            id: layerName,
+            style,
+            roadsId: 'roads_1573136423177466'
+          };
+  
+          return generateWmsLayer(layerObject);
+        }));
+  
+        wmsLayers.forEach(wmsLayer => commit('addWmsLayer', wmsLayer));
+      } catch (err) {
+        commit('setError', 'Error fetching result', { root: true });
+      }
 
       commit('setLoadingWmsLayers', false);
     }

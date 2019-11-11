@@ -1,5 +1,7 @@
 <template>
   <v-app>
+    <error-snackbar />
+
     <app-sidebar />
 
     <v-app-bar class="app-header" app color="indigo" dark>
@@ -15,11 +17,13 @@
 <script>
 import AppMap from '@/components/app-map';
 import AppSidebar from '@/components/app-sidebar';
+import ErrorSnackbar from '@/components/error-snackbar';
 
 export default {
   components: {
     AppMap,
-    AppSidebar
+    AppSidebar,
+    ErrorSnackbar
   }
 };
 </script>
