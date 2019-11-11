@@ -18,7 +18,6 @@
       <map-layer v-for="wmsLayer in wmsLayers" :key="wmsLayer.id" :options="wmsLayer" />
 
       <!-- default layers -->
-      <map-layer :options="borderLayer" />
       <map-layer :options="waterWaysLayer" />
     </map-mapbox>
   </div>
@@ -56,20 +55,6 @@ export default {
   },
   data() {
     return {
-      borderLayer: Object.freeze(
-        wms({
-          id: 'border',
-          tiles: [
-            geoserverUrl({
-              url:
-                'https://geodata.nationaalgeoregister.nl/bestuurlijkegrenzen/wms',
-              layers: 'landsgrens',
-              ...wmsLayerDefaultConfig
-            })
-          ],
-          tileSize: tileSize
-        })
-      ),
       waterWaysLayer: Object.freeze(
         wms({
           id: 'water-ways',

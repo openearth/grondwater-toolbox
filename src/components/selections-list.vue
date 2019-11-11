@@ -1,6 +1,6 @@
 <template>
-  <p class="ps-4" v-if="!selections.length">No selections found</p>
-  <v-list class="pt-0" v-else>
+  <p class="py-4" v-if="!selections.length">No selections found</p>
+  <v-list v-else>
     <selections-list-item
       v-for="selection in selections"
       :key="selection.id"
