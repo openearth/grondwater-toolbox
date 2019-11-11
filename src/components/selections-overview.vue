@@ -4,20 +4,30 @@
     <selections-list />
 
     <sidebar-footer>
-      <v-btn slot="end" class="primary" :to="{ name: 'calculation' }">Next</v-btn>
+      <v-btn 
+        :disabled="!selections.length"
+        slot="end"
+        class="primary"
+        :to="{ name: 'calculation' }"
+      >Next</v-btn>
     </sidebar-footer>
   </div>
 </template>
 
 <script>
+import { mapMutations, mapState } from 'vuex';
 import SidebarFooter from './sidebar-footer';
 import SelectionsList from './selections-list';
-import { mapMutations } from 'vuex';
 
 export default {
   components: {
     SelectionsList,
     SidebarFooter
+  },
+  computed: {
+    ...mapState({
+      selections: state => state.selections.selections
+    })
   },
   created() {
     this.resetWmsLayers();
