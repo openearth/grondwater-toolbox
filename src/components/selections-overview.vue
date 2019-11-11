@@ -12,16 +12,24 @@
 <script>
 import SidebarFooter from './sidebar-footer';
 import SelectionsList from './selections-list';
+import { mapMutations } from 'vuex';
 
 export default {
   components: {
     SelectionsList,
     SidebarFooter
   },
-  destroyed() {
-    const { __draw } = this.$root.map;
+  created() {
+    this.resetWmsLayers();
 
-    console.log(__draw);
+    if (this.$root.map) {
+      const { __draw } = this.$root.map;
+
+      __draw.changeMode('simple_select');
+    }
+  },
+  methods: {
+    ...mapMutations('mapbox', ['resetWmsLayers'])
   }
 };
 </script>

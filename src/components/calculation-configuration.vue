@@ -11,12 +11,28 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import SidebarFooter from './sidebar-footer';
 
 export default {
   components: {
     SidebarFooter
+  },
+  computed: {
+    ...mapState({
+      selections: state => state.selections.selections
+    })
+  },
+  created() {
+    if (!this.selections.length) {
+      this.$router.push({ name: 'selection' });
+    }
+
+    if (this.$root.map) {
+      const { __draw } = this.$root.map;
+
+      __draw.changeMode('static');
+    }
   },
   methods: {
     ...mapActions('mapbox', ['calculateResult']),
