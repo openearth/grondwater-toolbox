@@ -82,24 +82,20 @@ const features = {
         roadsIdentifier
       });
     },
-    async calculateResult({ commit, state }) {
+    async calculateResult({ commit, state }, requestData) {
       commit('setLoadingWmsLayers', true);
       const wmsLayers = await Promise.all(state.features.map(async (feature) => {
         // TODO: this is a call to the wrong function, replace this with the BRL function
         const data = {
-          "functionId": "ri2de_calc_slope",
-          "requestData": {
-            "classes": [ 0, 5, 10, 90],
-            "layername": "Global_Base_Maps:merit_gebco",
-            "owsurl": "https://fast.openearth.eu/geoserver/ows?"
-          },
-          "polygon": {
+          functionId: "brl_gwmodel",
+          requestData,
+          polygon: {
             "id": feature.id,
             "type": "Feature",
             "properties": {},
             "geometry": feature.source.data
           },
-          "roadsIdentifier": feature.roadsIdentifier
+          roadsIdentifier: feature.roadsIdentifier
         };
 
         const { baseUrl, layerName, style } = await wps(data);

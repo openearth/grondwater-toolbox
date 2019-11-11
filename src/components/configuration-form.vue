@@ -74,7 +74,7 @@ export default {
     ...mapActions('mapbox', ['calculateResult']),
     calculate() {
       this.resetWmsLayers();
-      this.calculateResult();
+      this.calculateResult(this.form);
     }
   }
 };

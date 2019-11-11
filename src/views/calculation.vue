@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapState } from 'vuex';
 import SidebarFooter from '@/components/sidebar-footer';
 import ConfigurationForm from '@/components/configuration-form';
 
@@ -35,15 +35,6 @@ export default {
 
       __draw.changeMode('static');
     }
-  },
-  methods: {
-    ...mapActions('mapbox', ['calculateResult']),
-    calculate() {
-      this.calculateResult();
-    }
   }
 };
 </script>
-
-<style>
-</style>

@@ -4,7 +4,7 @@ export const xmlRequestTemplate = ({ functionId, requestData, polygon, roadsIden
     <ows:Identifier xmlns:ows="http://www.opengis.net/ows/1.1">${functionId}</ows:Identifier>
     <wps:DataInputs>
       ${ wpsInput('roads_identifier', roadsIdentifier) }
-      ${ requestData ? wpsInput('layers_setup', JSON.stringify(requestData)) : '' }
+      ${ requestData ? wpsInput('configuration', JSON.stringify(requestData)) : '' }
       ${ polygon ? wpsInput('geojson_area', JSON.stringify(polygon)) : '' }
       ${ filterData ? wpsInput('keywords', JSON.stringify(filterData)): ''}
       ${ cswUrls ? wpsInput('csw_url', JSON.stringify(cswUrls)): ''}
@@ -19,7 +19,7 @@ export const xmlRequestTemplate = ({ functionId, requestData, polygon, roadsIden
       </wps:RawDataOutput>
     </wps:ResponseForm>
   </wps:Execute>
-`
+`;
 
 function wpsInput(identifier, data) {
   return `
@@ -30,5 +30,5 @@ function wpsInput(identifier, data) {
         <wps:LiteralData>${ data }</wps:LiteralData>
       </wps:Data>
     </wps:Input>
-  `
+  `;
 }
