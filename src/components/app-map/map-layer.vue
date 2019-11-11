@@ -13,7 +13,7 @@ export default {
       type: [Object, String]
     }
   },
-  date() {
+  data() {
     return {
       // used to determine if mounted or deferredMountedTo should be used
       isInitialized: false
