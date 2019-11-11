@@ -24,11 +24,7 @@ export default {
         defaultMode: 'simple_select'
       });
 
-      if (this.position) {
-        map.addControl(Draw, this.position);
-      } else {
-        map.addControl(Draw);
-      }
+      map.addControl(Draw, this.position);
 
       map.on('load', () => {
         Draw.changeMode('static');

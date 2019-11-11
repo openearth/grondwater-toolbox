@@ -24,8 +24,4 @@ export default {
 };
 </script>
 
-<style>
-.app-header {
-  left: 0 !important;
-}
-</style>
+<style src="./components/app-core/index.css"></style>
