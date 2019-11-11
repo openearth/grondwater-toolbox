@@ -9,7 +9,7 @@ export default function({
   height=256,
   ...rest
 }) {
-  if (!service || !request) {
+  if (!request) {
     return undefined
   }
 
