@@ -3,3 +3,7 @@
 .app-header {
   left: 0 !important;
 }
+
+.fill-height {
+  height: 100%;
+}

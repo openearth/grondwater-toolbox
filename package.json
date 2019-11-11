@@ -43,7 +43,10 @@
       "eslint:recommended"
     ],
     "rules": {
-      "semi": [1, "always"],
+      "semi": [
+        1,
+        "always"
+      ],
       "no-unused-vars": 1,
       "no-debugger": "off",
       "no-console": 0,
