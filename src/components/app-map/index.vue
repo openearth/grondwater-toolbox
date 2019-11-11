@@ -11,10 +11,15 @@
       <!-- map controls -->
       <map-draw-control position="top-left" @create="onSelection" @update="onUpdateSelection" />
       <map-navigation-control position="bottom-right" />
+      <map-search />
 
       <!-- map layers -->
       <map-layer v-for="feature in features" :key="feature.id" :options="feature" />
       <map-layer v-for="wmsLayer in wmsLayers" :key="wmsLayer.id" :options="wmsLayer" />
+
+      <!-- default layers -->
+      <map-layer :options="borderLayer" />
+      <map-layer :options="waterWaysLayer" />
     </map-mapbox>
   </div>
 </template>
@@ -25,13 +30,61 @@ import MapMapbox from './map-mapbox';
 import MapDrawControl from './map-draw-control';
 import MapNavigationControl from './map-navigation-control';
 import MapLayer from './map-layer';
+import MapSearch from './map-search';
+import wms from '../../lib/mapbox/layers/wms';
+import geoserverUrl from '../../lib/geoserver-url';
+
+const tileSize = 256;
+const wmsLayerDefaultConfig = {
+  request: 'GetMap',
+  width: tileSize,
+  height: tileSize,
+  format: 'image/png',
+  srs: 'EPSG:3857',
+  bbox: '{bbox-epsg-3857}',
+  transparent: 'true',
+  encode: false
+};
 
 export default {
   components: {
     MapMapbox,
     MapDrawControl,
     MapNavigationControl,
-    MapLayer
+    MapLayer,
+    MapSearch
+  },
+  data() {
+    return {
+      borderLayer: Object.freeze(
+        wms({
+          id: 'border',
+          tiles: [
+            geoserverUrl({
+              url:
+                'https://geodata.nationaalgeoregister.nl/bestuurlijkegrenzen/wms',
+              layers: 'landsgrens',
+              ...wmsLayerDefaultConfig
+            })
+          ],
+          tileSize: tileSize
+        })
+      ),
+      waterWaysLayer: Object.freeze(
+        wms({
+          id: 'water-ways',
+          tiles: [
+            geoserverUrl({
+              url:
+                'https://geoservices.rijkswaterstaat.nl/apps/geoserver/nwb_vaarwegen/wms',
+              layers: 'nwb_vaarwegen:vaarwegvakken',
+              ...wmsLayerDefaultConfig
+            })
+          ],
+          tileSize: tileSize
+        })
+      )
+    };
   },
   computed: {
     ...mapState({
@@ -71,7 +124,7 @@ export default {
       map.on('load', () => {
         map.flyTo({ center: [5.2913, 52.1326], zoom: 6.5 });
       });
-    },
+    }
   }
 };
 </script>
