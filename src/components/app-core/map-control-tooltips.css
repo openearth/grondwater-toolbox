@@ -14,7 +14,7 @@
   transform: translateY(-50%);
   padding: 4px 8px;
   border-radius: 4px;
-  background: var(--text-color);
+  background: #3f51b5;
   color: #fff;
   font-size: 14px;
   font-family: 'Roboto', sans-serif;
