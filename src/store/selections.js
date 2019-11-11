@@ -14,6 +14,9 @@ const selections = {
 
       selectionIndex++
     },
+    remove(state, id) {
+      state.selections = state.selections.filter(selection => selection.id !== id)
+    },
     update(state, selection) {
       state.selections = state.selections.map(s => {
         if (s.id === selection.id) {

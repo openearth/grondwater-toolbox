@@ -12,6 +12,9 @@ const features = {
     addFeature(state, feature) {
       state.features.push(feature)
     },
+    removeFeature(state, id) {
+      state.features =   state.features.filter(feature => feature.id !== id)
+    },
     updateFeature(state, feature) {
       console.log('update', feature.id)
       state.features = state.features.map(f => {
