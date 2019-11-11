@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import SelectionsOverview from './components/selections-overview';
-import CalculationConfiguration from './components/calculation-configuration';
+import Selection from '@/views/selection';
+import Calculation from '@/views/calculation';
 
 const routes = [{
     path: '/',
@@ -9,13 +9,13 @@ const routes = [{
   },
   {
     path: '/selection',
-    component: SelectionsOverview,
+    component: Selection,
     name: 'selection',
     meta: { step: 1 }
   },
   {
     path: '/calculation',
-    component: CalculationConfiguration,
+    component: Calculation,
     name: 'calculation',
     meta: { step: 2 }
   }

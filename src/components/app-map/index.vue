@@ -14,7 +14,12 @@
       <map-search />
 
       <!-- map layers -->
-      <map-layer v-for="feature in features" :key="feature.id" :options="feature" />
+      <map-layer
+        v-if="!wmsLayers.length"
+        v-for="feature in features"
+        :key="feature.id"
+        :options="feature"
+      />
       <map-layer v-for="wmsLayer in wmsLayers" :key="wmsLayer.id" :options="wmsLayer" />
 
       <!-- default layers -->
