@@ -15,7 +15,7 @@ export default {
   },
   methods: {
     deferredMountedTo(map) {
-      var draw = new MapboxDraw({
+      const draw = new MapboxDraw({
         displayControlsDefault: false,
         controls: {
           polygon: true
