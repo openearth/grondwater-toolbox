@@ -1,5 +1,5 @@
 <template>
-  <div class="px-4 pb-5">
+  <div class="py-6">
     <v-form :disabled="disabled">
       <v-text-field
         v-model="form.riverbedDifference"
@@ -30,12 +30,14 @@
         required
         :disabled="disabled"
       ></v-select>
-      <v-btn
-        @click="calculate"
-        color="primary"
-        :disabled="disabled || loadingWmsLayers"
-        :loading="loadingWmsLayers"
-      >Calculate</v-btn>
+      <div class="d-flex justify-end mt-2">
+        <v-btn
+          @click="calculate"
+          color="success"
+          :disabled="disabled || loadingWmsLayers"
+          :loading="loadingWmsLayers"
+        >Calculate</v-btn>
+      </div>
     </v-form>
   </div>
 </template>

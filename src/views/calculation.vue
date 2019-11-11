@@ -2,7 +2,7 @@
   <div class="pa-4 fill-height d-flex flex-column">
     <h2>Configuration</h2>
 
-    <v-btn @click="calculate" color="primary">Calculate</v-btn>
+    <configuration-form />
 
     <sidebar-footer>
       <v-btn slot="start" class="primary" :to="{ name: 'selection' }">Previous</v-btn>
@@ -13,10 +13,12 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 import SidebarFooter from '@/components/sidebar-footer';
+import ConfigurationForm from '@/components/configuration-form';
 
 export default {
   components: {
-    SidebarFooter
+    SidebarFooter,
+    ConfigurationForm
   },
   computed: {
     ...mapState({
