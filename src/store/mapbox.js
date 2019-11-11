@@ -75,7 +75,7 @@ const features = {
     },
     async calculateResult({ commit, state }) {
       const wmsLayers = await Promise.all(state.features.map(async (feature) => {
-        // TODO: this is a call to the wrong function, replace this with the BRL function
+        // TODO: this is a call to the wrong function, replace this with the BR1L function
         const data = {
           "functionId": "ri2de_calc_slope",
           "requestData": {

@@ -3,7 +3,7 @@
     <app-sidebar />
 
     <v-app-bar class="app-header" app color="indigo" dark>
-      <v-toolbar-title>BRL</v-toolbar-title>
+      <v-toolbar-title>BR1L</v-toolbar-title>
     </v-app-bar>
 
     <v-content>
