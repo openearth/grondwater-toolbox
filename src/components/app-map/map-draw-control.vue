@@ -1,6 +1,6 @@
 <script>
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
-import StaticMode from '@/lib/StaticMode';
+import StaticMode from '@/lib/static-mode';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 
 export default {
@@ -15,7 +15,7 @@ export default {
   },
   methods: {
     deferredMountedTo(map) {
-      var Draw = new MapboxDraw({
+      const draw = new MapboxDraw({
         displayControlsDefault: false,
         controls: {
           polygon: true
@@ -24,14 +24,18 @@ export default {
         defaultMode: 'simple_select'
       });
 
-      if (this.position) {
-        map.addControl(Draw, this.position);
-      } else {
-        map.addControl(Draw);
-      }
+      map.__draw = draw;
+
+      map.addControl(draw, this.position);
+      const $drawButton = document.querySelector('.mapbox-gl-draw_ctrl-draw-btn');
+      const drawLabel = 'Draw an area around your infrastructure';
+  $drawButton.setAttribute('title', drawLabel);
+  $drawButton.classList.add('map-control-tooltip', 'map-control-tooltip--right');
+
+
 
       map.on('load', () => {
-        Draw.changeMode('static');
+        draw.changeMode('static');
       });
 
       map.on('draw.create', event => {
@@ -47,9 +51,13 @@ export default {
 </script>
 
 <style>
+.mapbox-gl-draw_ctrl-draw-btn.mapbox-gl-draw_polygon {
+  border-radius: 4px;
+  transition: box-shadow .2s ease;
+}
+
 .mapbox-gl-draw_ctrl-draw-btn.mapbox-gl-draw_polygon.active {
-  border: solid 3px #008fc5;
-  transition: background 0.1s ease;
+  box-shadow: 0 0 2px 2px rgba(0, 150, 255, 1), inset 0 0 0 3px rgba(0, 150, 255, 1);
 }
 
 .mapbox-gl-draw_ctrl-draw-btn.mapbox-gl-draw_polygon:disabled {

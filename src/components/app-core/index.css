@@ -1,0 +1,5 @@
+@import './map-control-tooltips.css';
+
+.app-header {
+  left: 0 !important;
+}
