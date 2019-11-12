@@ -32,10 +32,10 @@ export default {
   $drawButton.setAttribute('title', drawLabel);
   $drawButton.classList.add('map-control-tooltip', 'map-control-tooltip--right');
 
-
-
       map.on('load', () => {
-        draw.changeMode('static');
+        if (draw) {
+          draw.changeMode('static');
+        }
       });
 
       map.on('draw.create', event => {
