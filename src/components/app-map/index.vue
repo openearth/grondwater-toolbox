@@ -9,7 +9,12 @@
       @mb-created="onMapCreated"
     >
       <!-- map controls -->
-      <map-draw-control position="top-left" @create="onSelection" @update="onUpdateSelection" />
+      <map-draw-control
+        position="top-left"
+        @create="onSelection"
+        @update="onUpdateSelection"
+        :options="drawOptions"
+      />
       <map-navigation-control position="bottom-right" />
       <map-search />
 
@@ -60,6 +65,21 @@ export default {
   },
   data() {
     return {
+      drawOptions: {
+        styles: [{
+          'id': 'gl-draw-polygon-fill-inactive',
+          'type': 'fill',
+          'filter': ['all', ['==', 'active', 'false'],
+            ['==', '$type', 'Polygon'],
+            ['!=', 'mode', 'static']
+          ],
+          'paint': {
+            'fill-color': '#ffcc00',
+            'fill-outline-color': '#3bb2d0',
+            'fill-opacity': 0.1
+          }
+        }]
+      },
       waterWaysLayer: Object.freeze(
         wms({
           id: 'water-ways',
