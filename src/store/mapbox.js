@@ -1,5 +1,5 @@
-import wps from '../lib/wps'
-import layers from '../lib/mapbox/layers'
+import wps from '../lib/wps';
+import layers from '../lib/mapbox/layers';
 import { generateWmsLayer } from '../lib/project-layers';
 
 const features = {
@@ -10,21 +10,21 @@ const features = {
   },
   mutations: {
     addFeature(state, feature) {
-      state.features.push(feature)
+      state.features.push(feature);
     },
     removeFeature(state, id) {
-      state.features =   state.features.filter(feature => feature.id !== id)
+      state.features =   state.features.filter(feature => feature.id !== id);
     },
     updateFeature(state, feature) {
       state.features = state.features.map(f => {
-        return f.id === feature.id ? feature : f
-      })
+        return f.id === feature.id ? feature : f;
+      });
     },
     addWmsLayer(state, wmsLayer) {
-      state.wmsLayers.push(wmsLayer)
+      state.wmsLayers.push(wmsLayer);
     },
     resetWmsLayers(state) {
-      state.wmsLayers = []
+      state.wmsLayers = [];
     }
   },
   actions: {
@@ -38,7 +38,7 @@ const features = {
           "geometry": feature.geometry
         },
         "bufferDist": "100"
-      })
+      });
 
       commit('addFeature', {
         ...layers.geojson.line({
@@ -51,7 +51,7 @@ const features = {
           }
         }),
         roadsIdentifier
-      })
+      });
     },
     async updateFeature({ commit }, feature) {
       const { roadsCollection, roadsIdentifier } = await wps({
@@ -63,7 +63,7 @@ const features = {
           "geometry": feature.geometry
         },
         "bufferDist": "100"
-      })
+      });
 
       commit('updateFeature', {
         ...layers.geojson.line({
@@ -76,7 +76,7 @@ const features = {
           }
         }),
         roadsIdentifier
-      })
+      });
     },
     async calculateResult({ commit, state }) {
       const wmsLayers = await Promise.all(state.features.map(async (feature) => {
@@ -95,7 +95,7 @@ const features = {
             "geometry": feature.source.data
           },
           "roadsIdentifier": feature.roadsIdentifier
-        }
+        };
 
         const { baseUrl, layerName, style } = await wps(data);
 
@@ -108,11 +108,11 @@ const features = {
         };
 
         return generateWmsLayer(layerObject);
-      }))
+      }));
 
-      wmsLayers.forEach(wmsLayer => commit('addWmsLayer', wmsLayer))
+      wmsLayers.forEach(wmsLayer => commit('addWmsLayer', wmsLayer));
     }
   }
-}
+};
 
-export default features
+export default features;

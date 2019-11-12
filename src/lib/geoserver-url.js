@@ -1,4 +1,4 @@
-import { stringify } from 'query-string'
+import { stringify } from 'query-string';
 
 export default function({
   url,
@@ -10,7 +10,7 @@ export default function({
   ...rest
 }) {
   if (!request) {
-    return undefined
+    return undefined;
   }
 
   const params = stringify({
@@ -19,7 +19,7 @@ export default function({
     width,
     height,
     ...rest,
-  }, { encode, sort: false })
+  }, { encode, sort: false });
 
-  return `${url}?${params}`
+  return `${url}?${params}`;
 }

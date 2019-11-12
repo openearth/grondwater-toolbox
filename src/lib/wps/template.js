@@ -19,7 +19,7 @@ export const xmlRequestTemplate = ({ functionId, requestData, polygon, roadsIden
       </wps:RawDataOutput>
     </wps:ResponseForm>
   </wps:Execute>
-`
+`;
 
 function wpsInput(identifier, data) {
   return `
@@ -30,5 +30,5 @@ function wpsInput(identifier, data) {
         <wps:LiteralData>${ data }</wps:LiteralData>
       </wps:Data>
     </wps:Input>
-  `
+  `;
 }
