@@ -8,8 +8,6 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   actions: {
     reset({ commit }) {
-      console.log('reset');
-      
       commit('mapbox/reset');
       commit('selections/reset');
     }
