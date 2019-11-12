@@ -2,7 +2,7 @@
   <div class="pa-4 fill-height d-flex flex-column">
     <h2>Configuratie</h2>
 
-    <v-btn @click="calculate" color="primary">Bereken</v-btn>
+    <v-btn @click="calculate" color="accent">Bereken</v-btn>
 
     <sidebar-footer>
       <v-btn slot="start" class="primary" :to="{ name: 'selection' }">Vorige</v-btn>
