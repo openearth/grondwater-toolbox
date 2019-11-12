@@ -1,10 +1,12 @@
 let selectionIndex = 1;
 
+const initialState = () => ({
+  selections: [],
+});
+
 const selections = {
   namespaced: true,
-  state: {
-    selections: [],
-  },
+  state: () => initialState(),
   mutations: {
     add(state, selection) {
       state.selections.push({
@@ -25,6 +27,9 @@ const selections = {
 
         return s;
       });
+    },
+    reset(state) {
+      Object.assign(state, initialState());
     }
   },
 };
