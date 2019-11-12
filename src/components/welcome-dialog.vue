@@ -4,8 +4,8 @@
     max-width="640"
   >
     <v-card>
-      <v-card-title>
-        Welcome
+      <v-card-title class="headline mb-2">
+        Basis Rivierbodem Ligging
       </v-card-title>
       <div class="welcome-dialog__images">
         <img
@@ -18,16 +18,32 @@
         >
       </div>
       <v-card-text>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        <p>Welkom op de website Basisrivierbodemligging. Middels deze website is het mogelijk de effecten van een
+          wijziging in de hoogte van de rivierbodem te simuleren met het Landelijk Hydrologisch Model (link naar
+          <a>https://nhi.nu</a>). De gebruikte modelversie is 3.4.0 en is gepubliceerd op <a>https://nhi.nu</a>.</p>
+
+        <p>De website is met de grootst mogelijke zorgvuldigheid opgezet. Echter, de website dient slechts voor
+          informatieve doeleinden. Er kunnen geen rechten aan de informatie op de website worden ontleend en het gebruik
+          van de website en de aangeboden informatie is voor uw eigen rekening en risico. Noch Deltares, noch andere
+          partijen bij het NHI, aanvaarden enige vorm van aansprakelijkheid - uit welke hoofde dan ook - voor enige vorm
+          van schade (met inbegrip van zaakschade, vermogensschade als gevolg van materiële schade en zuivere
+          vermogensschade) die op enigerlei wijze voortvloeit uit de werking van en/of het gebruik van (informatie op)
+          de website.</p>
+
+        <p>Noch Deltares noch andere partijen betrokken bij het NHI kunnen garanderen dat de website virusvrij is of
+          zonder fouten en/of onderbrekingen zal functioneren. De website kan te allen tijde worden gewijzigd door
+          Deltares. Op de website alsmede op deze voorwaarden is Nederlands recht van toepassing.</p>
+
+        <p>Door op 'starten' te klikken gaat de gebruiker akkoord met de voorwaarden zoals hierboven beschreven.</p>
       </v-card-text>
-      <v-card-actions>
+      <v-card-actions class="px-6 pb-6">
         <v-spacer></v-spacer>
         <v-btn
           class="primary"
           text
           @click="showWelcomeDialog = false"
         >
-          Let's get started
+          Starten
         </v-btn>
       </v-card-actions>
     </v-card>
