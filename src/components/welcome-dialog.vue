@@ -2,6 +2,7 @@
   <v-dialog
     v-model="showWelcomeDialog"
     max-width="640"
+    persistent
   >
     <v-card>
       <v-card-title class="headline mb-2">
