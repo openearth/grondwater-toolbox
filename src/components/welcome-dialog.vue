@@ -19,8 +19,8 @@
       </div>
       <v-card-text>
         <p>Welkom op de website Basisrivierbodemligging. Middels deze website is het mogelijk de effecten van een
-          wijziging in de hoogte van de rivierbodem te simuleren met het Landelijk Hydrologisch Model (link naar
-          <a>https://nhi.nu</a>). De gebruikte modelversie is 3.4.0 en is gepubliceerd op <a>https://nhi.nu</a>.</p>
+          wijziging in de hoogte van de rivierbodem te simuleren met het <a href="http://www.nhi.nu/">Landelijk Hydrologisch Model</a>. De
+          gebruikte modelversie is 3.4.0 en is gepubliceerd op <a href="http://www.nhi.nu/">nhi.nu</a>.</p>
 
         <p>De website is met de grootst mogelijke zorgvuldigheid opgezet. Echter, de website dient slechts voor
           informatieve doeleinden. Er kunnen geen rechten aan de informatie op de website worden ontleend en het gebruik
