@@ -13,6 +13,8 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 import SidebarFooter from '@/components/sidebar-footer';
+import bbox from '@turf/bbox';
+import { featureCollection } from '@turf/helpers';
 
 export default {
   components: {
@@ -20,7 +22,8 @@ export default {
   },
   computed: {
     ...mapState({
-      selections: state => state.selections.selections
+      selections: state => state.selections.selections,
+      features: state => state.mapbox.features,
     })
   },
   created() {
@@ -32,12 +35,30 @@ export default {
       const { __draw } = this.$root.map;
 
       __draw.changeMode('static');
+
+      this.zoomToSelection();
     }
   },
   methods: {
     ...mapActions('mapbox', ['calculateResult']),
     calculate() {
       this.calculateResult();
+    },
+    zoomToSelection() {
+      if(!this.features.length) {
+        return;
+      }
+
+      const bounds = bbox(
+        featureCollection(
+          this.features.map(feature => ({
+            geometry: feature.source.data,
+            type: 'Feature'
+          }))
+        )
+      );
+
+      this.$root.map.fitBounds(bounds, { padding: 50 });
     }
   }
 };
