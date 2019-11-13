@@ -1,5 +1,5 @@
 <template>
-  <div class="pa-4 fill-height d-flex flex-column">
+  <div class="pa-4 d-flex flex-column">
     <h2>Configuratie</h2>
 
     <v-btn @click="calculate" color="primary">Bereken</v-btn>
