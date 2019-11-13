@@ -106,7 +106,7 @@ export default {
     }
   },
   mounted() {
-    this.setMapLocation(this.$root.map);
+    this.setMapLocation();
   },
   methods: {
     ...mapMutations('selections', {
@@ -130,7 +130,9 @@ export default {
       this.updateSelection(feature);
       this.updateFeature(feature);
     },
-    setMapLocation(map) {
+    setMapLocation() {
+      const { map } = this.$root;
+
       map.on('load', () => {
         map.flyTo({ center: [5.2913, 52.1326], zoom: 6.5 });
       });
