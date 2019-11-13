@@ -63,6 +63,7 @@ export default {
   .welcome-dialog__images {
     display: flex;
     padding: 0 1.5rem 1.5rem;
+    align-items: flex-start;
   }
 
   .welcome-dialog__images img {
