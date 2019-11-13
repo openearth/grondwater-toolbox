@@ -81,10 +81,9 @@ const props = {
   //   type: Boolean,
   //   default: true
   // },
-  // maxBounds: {
-  //   // latLngLike
-  //   type: [Object, Array]
-  // },
+  maxBounds: {
+    type: [Object, Array]
+  },
   // scrollZoom: {
   //   type: [Boolean, Object],
   //   default: true
@@ -152,6 +151,10 @@ export default {
     // renamed properties
     if (this.mapStyle) {
       options.style = this.mapStyle;
+    }
+
+    if (this.maxBounds) {
+      options.maxBounds = this.maxBounds;
     }
 
     options.container = this.$el;

@@ -3,6 +3,7 @@
     <map-mapbox
       class="app-map__map"
       :access-token="mapBoxToken"
+      :max-bounds="maxBounds"
       map-style="mapbox://styles/mapbox/streets-v11"
       id="map"
       ref="map"
@@ -77,7 +78,11 @@ export default {
           }).source,
           id: 'water-ways'
         })
-      )
+      ),
+      maxBounds: [
+        [1.0108525782420372, 49.20932152251552],
+        [9.571747421758317, 54.87590973637714],
+      ]
     };
   },
   computed: {
@@ -88,9 +93,6 @@ export default {
     mapBoxToken() {
       return process.env.VUE_APP_MAPBOX_TOKEN;
     }
-  },
-  mounted() {
-    this.setMapLocation();
   },
   methods: {
     ...mapMutations('selections', {
@@ -113,13 +115,6 @@ export default {
       const feature = event.features[0];
       this.updateSelection(feature);
       this.updateFeature(feature);
-    },
-    setMapLocation() {
-      const { map } = this.$root;
-
-      map.on('load', () => {
-        map.flyTo({ center: [5.2913, 52.1326], zoom: 6.5 });
-      });
     }
   }
 };
