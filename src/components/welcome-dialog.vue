@@ -35,12 +35,16 @@
           zonder fouten en/of onderbrekingen zal functioneren. De website kan te allen tijde worden gewijzigd door
           Deltares. Op de website alsmede op deze voorwaarden is Nederlands recht van toepassing.</p>
 
-        <p>Door op 'starten' te klikken gaat de gebruiker akkoord met de voorwaarden zoals hierboven beschreven.</p>
+        <v-checkbox
+          v-model="accepted"
+          label="Ik ga akkoord met de voorwaarden zoals hierboven beschreven"
+        ></v-checkbox>
       </v-card-text>
       <v-card-actions class="px-6 pb-6">
         <v-spacer></v-spacer>
         <v-btn
-          class="primary"
+          :disabled="!accepted"
+          :class="{ primary: accepted }"
           text
           @click="showWelcomeDialog = false"
         >
@@ -54,6 +58,7 @@
 <script>
 export default {
   data: () => ({
+    accepted: false,
     showWelcomeDialog: true
   })
 };
