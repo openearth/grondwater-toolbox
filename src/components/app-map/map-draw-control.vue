@@ -40,9 +40,7 @@ export default {
       $drawButton.classList.add('map-control-tooltip', 'map-control-tooltip--right');
 
       map.on('load', () => {
-        if (draw) {
-          draw.changeMode('static');
-        }
+        draw.changeMode('static');
       });
 
       map.on('draw.create', event => {
