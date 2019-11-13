@@ -41,19 +41,7 @@ import MapNavigationControl from './map-navigation-control';
 import MapLayer from './map-layer';
 import MapSearch from './map-search';
 import wms from '../../lib/mapbox/layers/wms';
-import geoserverUrl from '../../lib/geoserver-url';
-
-const tileSize = 256;
-const wmsLayerDefaultConfig = {
-  request: 'GetMap',
-  width: tileSize,
-  height: tileSize,
-  format: 'image/png',
-  srs: 'EPSG:3857',
-  bbox: '{bbox-epsg-3857}',
-  transparent: 'true',
-  encode: false
-};
+import { generateWmsLayer } from '../../lib/project-layers';
 
 export default {
   components: {
@@ -82,16 +70,12 @@ export default {
       },
       waterWaysLayer: Object.freeze(
         wms({
-          id: 'water-ways',
-          tiles: [
-            geoserverUrl({
-              url:
-                'https://geoservices.rijkswaterstaat.nl/apps/geoserver/nwb_vaarwegen/wms',
-              layers: 'nwb_vaarwegen:vaarwegvakken',
-              ...wmsLayerDefaultConfig
-            })
-          ],
-          tileSize: tileSize
+          ...generateWmsLayer({
+            url: 'https://geoservices.rijkswaterstaat.nl/apps/geoserver/nwb_vaarwegen/wms',
+            id: 'water-ways',
+            layer: 'nwb_vaarwegen:vaarwegvakken'
+          }).source,
+          id: 'water-ways'
         })
       )
     };

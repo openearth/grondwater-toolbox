@@ -1,7 +1,7 @@
 import geoserverUrl from './geoserver-url';
 
 describe('Geoserver url', () => {
-  it("should return nothing if request parameter is not given", () => {
+  it("should return 'undefined' if request parameter is not given", () => {
     const testUrl = 'https://test.com'; 
     const url = geoserverUrl({ url: testUrl });
     expect(url).toBe(undefined);
