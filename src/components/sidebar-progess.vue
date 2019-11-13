@@ -35,10 +35,10 @@ export default {
           text: 'Calculate',
           completed: this.$route.name === 'calculate'
         }
-      ]
+      ];
     }
   }
-}
+};
 </script>
 
 <style>
