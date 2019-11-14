@@ -94,15 +94,22 @@ const features = {
         const wmsLayers = await Promise.all(state.features.map(async (feature) => {
           // TODO: this is a call to the wrong function, replace this with the BRL function
           const data = {
-            functionId: "brl_gwmodel",
-            requestData,
+            functionId: "ri2de_calc_culverts",
             polygon: {
               "id": feature.id,
               "type": "Feature",
               "properties": {},
               "geometry": feature.source.data
             },
-            roadsIdentifier: feature.roadsIdentifier
+            roadsIdentifier: feature.roadsIdentifier,
+            // TODO: uncomment this as it should be the data that is being sent
+            // requestData,
+            // TODO: should be removed when actual BRL is made
+            layersSetup: JSON.stringify({
+              "classes": [ 0, 5, 10, 90],
+              "layername": "Global_Base_Maps:merit_gebco",
+              "owsurl": "https://fast.openearth.eu/geoserver/ows?"
+            })
           };
   
           const { baseUrl, layerName, style } = await wps(data);
