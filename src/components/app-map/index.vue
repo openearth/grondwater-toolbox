@@ -17,11 +17,7 @@
       <mgl-navigation-control position="bottom-right" />
      
       <!-- base layer -->
-      <raster-layer
-        :source-id="`${waterWaysLayer.id}-source`"
-        :layer-id="`${waterWaysLayer.id}-layer`"
-        :layer="waterWaysLayer"
-      />
+      <raster-layer :layer="waterWaysLayer"/>
 
       <!-- selected area layers -->
       <raster-layer

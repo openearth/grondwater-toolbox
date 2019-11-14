@@ -4,7 +4,7 @@
     :source-id="`${layer.id}-source`"
     :layer-id="`${layer.id}-layer`"
     :layer="layer"
-    :replaceSource="true"
+    v-bind="$attrs"
   />
 </template>
 

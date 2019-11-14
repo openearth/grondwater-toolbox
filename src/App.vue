@@ -15,7 +15,6 @@
     </v-content>
 
     <welcome-dialog />
-
   </v-app>
 </template>
 
