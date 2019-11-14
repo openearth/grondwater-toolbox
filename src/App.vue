@@ -28,8 +28,8 @@ export default {
   components: {
     AppMap: () => import('@/components/app-map'),
     AppSidebar,
-    WelcomeDialog,
     ResetButton,
+    WelcomeDialog,
     ErrorSnackbar
   }
 };
