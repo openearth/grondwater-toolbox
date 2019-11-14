@@ -32,13 +32,6 @@ const features = {
     reset(state) {
       Object.assign(state, initialState());
     },
-    setLoadingFeature(state, { id, value }) {
-      if (!value && state.loadingFeature.id === id) {
-        state.loadingFeature = id;
-      }
-
-      state.loadingFeature = id;
-    }
   },
   actions: {
     async getFeature({ commit }, feature) {
