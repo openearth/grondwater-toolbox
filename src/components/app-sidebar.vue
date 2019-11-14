@@ -11,7 +11,14 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
+  computed: {
+    ...mapState({
+      selections: state => state.selections.selections
+    })
+  },
   data() {
     return {
       transitionName: 'slide-right'
