@@ -12,7 +12,7 @@
       <app-map />
     </v-content>
 
-    <welcome-dialog />
+    <!-- <welcome-dialog /> -->
 
   </v-app>
 </template>
@@ -20,14 +20,14 @@
 <script>
 import AppMap from '@/components/app-map';
 import AppSidebar from '@/components/app-sidebar';
-import WelcomeDialog from '@/components/welcome-dialog';
+// import WelcomeDialog from '@/components/welcome-dialog';
 import ResetButton from '@/components/reset-button';
 
 export default {
   components: {
     AppMap,
     AppSidebar,
-    WelcomeDialog,
+    // WelcomeDialog,
     ResetButton
   }
 };

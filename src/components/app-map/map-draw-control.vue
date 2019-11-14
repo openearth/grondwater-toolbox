@@ -5,6 +5,7 @@ import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import drawStyle from './draw-style';
 
 export default {
+  inject: ["map"],
   render() {
     return null;
   },
@@ -18,39 +19,37 @@ export default {
       required: false
     }
   },
-  methods: {
-    deferredMountedTo(map) {
-      const draw = new MapboxDraw({
-        displayControlsDefault: false,
-        controls: {
-          polygon: true
-        },
-        modes: { ...MapboxDraw.modes, static: StaticMode },
-        defaultMode: 'simple_select',
-        styles: drawStyle
-      });
+  created() {
+    const draw = new MapboxDraw({
+      displayControlsDefault: false,
+      controls: {
+        polygon: true 
+      },
+      modes: { ...MapboxDraw.modes, static: StaticMode },
+      defaultMode: 'simple_select',
+      styles: drawStyle
+    });
 
-      map.__draw = draw;
+    this.map.__draw = draw;
 
-      map.addControl(draw, this.position);
-      const $drawButton = document.querySelector('.mapbox-gl-draw_ctrl-draw-btn');
-      const drawLabel = 'Draw an area around your infrastructure';
+    this.map.addControl(draw, this.position);
+    const $drawButton = document.querySelector('.mapbox-gl-draw_ctrl-draw-btn');
+    const drawLabel = 'Draw an area around your infrastructure';
 
-      $drawButton.setAttribute('title', drawLabel);
-      $drawButton.classList.add('map-control-tooltip', 'map-control-tooltip--right');
+    $drawButton.setAttribute('title', drawLabel);
+    $drawButton.classList.add('map-control-tooltip', 'map-control-tooltip--right');
 
-      map.on('load', () => {
-        draw.changeMode('static');
-      });
+    this.map.on('load', () => {
+      draw.changeMode('static');
+    });
 
-      map.on('draw.create', event => {
-        this.$emit('create', event);
-      });
+    this.map.on('draw.create', event => {
+      this.$emit('create', event);
+    });
 
-      map.on('draw.update', event => {
-        this.$emit('update', event);
-      });
-    }
+    this.map.on('draw.update', event => {
+      this.$emit('update', event);
+    });
   }
 };
 </script>
