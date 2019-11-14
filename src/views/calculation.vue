@@ -2,7 +2,7 @@
   <div class="pa-4 fill-height d-flex flex-column">
     <h2>Configuratie</h2>
 
-    <v-btn @click="calculate" color="accent">Bereken</v-btn>
+    <configuration-form />
 
     <sidebar-footer>
       <v-btn slot="start" class="primary" :to="{ name: 'selection' }">Vorige</v-btn>
@@ -11,14 +11,16 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import SidebarFooter from '@/components/sidebar-footer';
+import ConfigurationForm from '@/components/configuration-form';
 import bbox from '@turf/bbox';
 import { featureCollection } from '@turf/helpers';
 
 export default {
   components: {
-    SidebarFooter
+    SidebarFooter,
+    ConfigurationForm
   },
   computed: {
     ...mapState({
@@ -63,6 +65,3 @@ export default {
   }
 };
 </script>
-
-<style>
-</style>
