@@ -2,13 +2,15 @@ import wps from '../lib/wps';
 import layers from '../lib/mapbox/layers';
 import { generateWmsLayer } from '../lib/project-layers';
 
+const initialState = () => ({
+  features: [],
+  wmsLayers: [],
+  loadingWmsLayers: false
+});
+
 const features = {
   namespaced: true,
-  state: {
-    features: [],
-    wmsLayers: [],
-    loadingWmsLayers: false
-  },
+  state: initialState(),
   mutations: {
     addFeature(state, feature) {
       state.features.push(feature);
@@ -29,6 +31,9 @@ const features = {
     },
     setLoadingWmsLayers(state, value) {
       state.loadingWmsLayers = value;
+    },
+    reset(state) {
+      Object.assign(state, initialState());
     }
   },
   actions: {

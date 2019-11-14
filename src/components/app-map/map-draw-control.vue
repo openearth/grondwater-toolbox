@@ -2,6 +2,7 @@
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import StaticMode from '@/lib/static-mode';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
+import drawStyle from './draw-style';
 
 export default {
   render() {
@@ -10,6 +11,10 @@ export default {
   props: {
     position: {
       type: String,
+      required: false
+    },
+    options: {
+      type: Object,
       required: false
     }
   },
@@ -21,7 +26,8 @@ export default {
           polygon: true
         },
         modes: { ...MapboxDraw.modes, static: StaticMode },
-        defaultMode: 'simple_select'
+        defaultMode: 'simple_select',
+        styles: drawStyle
       });
 
       map.__draw = draw;
@@ -29,10 +35,9 @@ export default {
       map.addControl(draw, this.position);
       const $drawButton = document.querySelector('.mapbox-gl-draw_ctrl-draw-btn');
       const drawLabel = 'Draw an area around your infrastructure';
-  $drawButton.setAttribute('title', drawLabel);
-  $drawButton.classList.add('map-control-tooltip', 'map-control-tooltip--right');
 
-
+      $drawButton.setAttribute('title', drawLabel);
+      $drawButton.classList.add('map-control-tooltip', 'map-control-tooltip--right');
 
       map.on('load', () => {
         draw.changeMode('static');

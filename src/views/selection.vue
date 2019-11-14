@@ -1,6 +1,6 @@
 <template>
   <div class="pa-4 fill-height d-flex flex-column">
-    <h2>Selections</h2>
+    <h2>Selecties</h2>
     <selections-list />
 
     <sidebar-footer>
@@ -9,7 +9,7 @@
         slot="end"
         class="primary"
         :to="{ name: 'calculation' }"
-      >Next</v-btn>
+      >Volgende</v-btn>
     </sidebar-footer>
   </div>
 </template>
@@ -35,7 +35,9 @@ export default {
     if (this.$root.map) {
       const { __draw } = this.$root.map;
 
-      __draw.changeMode('simple_select');
+      if (__draw) {
+        __draw.changeMode('simple_select');
+      }
     }
   },
   methods: {

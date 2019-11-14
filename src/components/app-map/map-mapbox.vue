@@ -10,9 +10,9 @@
 </template>
 
 <script>
-import mapboxgl from 'mapbox-gl'
-import { propsBinder, propsDefaults } from '@/lib/vue2mapbox/propsBinder'
-import { bindMapEvents } from '@/lib/vue2mapbox/eventsBinder'
+import mapboxgl from 'mapbox-gl';
+import { propsBinder, propsDefaults } from '@/lib/vue2mapbox/propsBinder';
+import { bindMapEvents } from '@/lib/vue2mapbox/eventsBinder';
 
 const mapEvents = [
   'load',
@@ -20,7 +20,7 @@ const mapEvents = [
   'zoomend',
   'zoom',
   'styledata'
-]
+];
 
 // props that we want to proxy
 // some are disabled pending testing
@@ -81,10 +81,9 @@ const props = {
   //   type: Boolean,
   //   default: true
   // },
-  // maxBounds: {
-  //   // latLngLike
-  //   type: [Object, Array]
-  // },
+  maxBounds: {
+    type: [Object, Array]
+  },
   // scrollZoom: {
   //   type: [Boolean, Object],
   //   default: true
@@ -133,7 +132,7 @@ const props = {
   //   type: Boolean,
   //   default: true
   // }
-}
+};
 
 export default {
   name: 'v-mapbox',
@@ -142,47 +141,51 @@ export default {
     // allows to use inject:  ['getMap']  in child components
     return {
       getMap: () => this.$options.map
-    }
+    };
   },
   mounted () {
     //Initialze Map
-    mapboxgl.accessToken = this.accessToken
+    mapboxgl.accessToken = this.accessToken;
 
-    let options = propsDefaults(props, this.$props)
+    let options = propsDefaults(props, this.$props);
     // renamed properties
     if (this.mapStyle) {
-      options.style = this.mapStyle
+      options.style = this.mapStyle;
     }
 
-    options.container = this.$el
+    if (this.maxBounds) {
+      options.maxBounds = this.maxBounds;
+    }
 
-    this.$options.map = new mapboxgl.Map(options)
+    options.container = this.$el;
+
+    this.$options.map = new mapboxgl.Map(options);
 
     // listen to property changes and set the corresponding data in mapbox
-    propsBinder(this, this.$options.map, options)
+    propsBinder(this, this.$options.map, options);
 
     // emit a map created event
-    this.$emit('mb-created', this.$options.map)
-    bindMapEvents(this, this.$options.map, mapEvents)
+    this.$emit('mb-created', this.$options.map);
+    bindMapEvents(this, this.$options.map, mapEvents);
 
     // ones the map  is loaded, add al layers that were present during mount time
     // we can consider watching our children.
     this.$on('mb-load', () => {
-      this.addLayers()
-    })
+      this.addLayers();
+    });
     this.$on('style:update', () => {
       // if the style was changed,  wait for the styledata to be loaded and re-add all the layers
       this.$once('mb-styledata', () => {
-        this.addLayers()
-      })
-    })
+        this.addLayers();
+      });
+    });
 
     // Mapbox has some resize issues
     // Create an observer on this object
     // Call resize on the map when we change szie
-    let observer = new ResizeObserver(this.resize)
-    observer.observe(this.$el)
-    this.resizeObserver = observer
+    let observer = new ResizeObserver(this.resize);
+    observer.observe(this.$el);
+    this.resizeObserver = observer;
   },
   methods: {
     addLayers () {
@@ -193,16 +196,16 @@ export default {
       // })
       this.$children.forEach(
         (child) => {
-          child.deferredMountedTo(this.$options.map)
+          child.deferredMountedTo(this.$options.map);
         }
-      )
+      );
 
     },
     resize() {
       if (this.$options.map) {
-        this.$options.map.resize()
+        this.$options.map.resize();
       }
     }
   }
-}
+};
 </script>

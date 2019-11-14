@@ -21,6 +21,12 @@ export default new Vuex.Store({
       errorId++;
     }
   },
+  actions: {
+    reset({ commit }) {
+      commit('mapbox/reset');
+      commit('selections/reset');
+    }
+  },
   modules: {
     selections,
     mapbox

@@ -3,13 +3,19 @@
     <map-mapbox
       class="app-map__map"
       :access-token="mapBoxToken"
+      :max-bounds="maxBounds"
       map-style="mapbox://styles/mapbox/streets-v11"
       id="map"
       ref="map"
       @mb-created="onMapCreated"
     >
       <!-- map controls -->
-      <map-draw-control position="top-left" @create="onSelection" @update="onUpdateSelection" />
+      <map-draw-control
+        position="top-left"
+        @create="onSelection"
+        @update="onUpdateSelection"
+        :options="drawOptions"
+      />
       <map-navigation-control position="bottom-right" />
       <map-search />
 
@@ -36,19 +42,7 @@ import MapNavigationControl from './map-navigation-control';
 import MapLayer from './map-layer';
 import MapSearch from './map-search';
 import wms from '../../lib/mapbox/layers/wms';
-import geoserverUrl from '../../lib/geoserver-url';
-
-const tileSize = 256;
-const wmsLayerDefaultConfig = {
-  request: 'GetMap',
-  width: tileSize,
-  height: tileSize,
-  format: 'image/png',
-  srs: 'EPSG:3857',
-  bbox: '{bbox-epsg-3857}',
-  transparent: 'true',
-  encode: false
-};
+import { generateWmsLayer } from '../../lib/project-layers';
 
 export default {
   components: {
@@ -60,20 +54,35 @@ export default {
   },
   data() {
     return {
+      drawOptions: {
+        styles: [{
+          'id': 'gl-draw-polygon-fill-inactive',
+          'type': 'fill',
+          'filter': ['all', ['==', 'active', 'false'],
+            ['==', '$type', 'Polygon'],
+            ['!=', 'mode', 'static']
+          ],
+          'paint': {
+            'fill-color': '#ffcc00',
+            'fill-outline-color': '#3bb2d0',
+            'fill-opacity': 0.1
+          }
+        }]
+      },
       waterWaysLayer: Object.freeze(
         wms({
-          id: 'water-ways',
-          tiles: [
-            geoserverUrl({
-              url:
-                'https://geoservices.rijkswaterstaat.nl/apps/geoserver/nwb_vaarwegen/wms',
-              layers: 'nwb_vaarwegen:vaarwegvakken',
-              ...wmsLayerDefaultConfig
-            })
-          ],
-          tileSize: tileSize
+          ...generateWmsLayer({
+            url: 'https://geoservices.rijkswaterstaat.nl/apps/geoserver/nwb_vaarwegen/wms',
+            id: 'water-ways',
+            layer: 'nwb_vaarwegen:vaarwegvakken'
+          }).source,
+          id: 'water-ways'
         })
-      )
+      ),
+      maxBounds: [
+        [1.0108525782420372, 49.20932152251552],
+        [9.571747421758317, 54.87590973637714],
+      ]
     };
   },
   computed: {
@@ -84,9 +93,6 @@ export default {
     mapBoxToken() {
       return process.env.VUE_APP_MAPBOX_TOKEN;
     }
-  },
-  mounted() {
-    this.setMapLocation(this.$root.map);
   },
   methods: {
     ...mapMutations('selections', {
@@ -109,11 +115,6 @@ export default {
       const feature = event.features[0];
       this.updateSelection(feature);
       this.updateFeature(feature);
-    },
-    setMapLocation(map) {
-      map.on('load', () => {
-        map.flyTo({ center: [5.2913, 52.1326], zoom: 6.5 });
-      });
     }
   }
 };
