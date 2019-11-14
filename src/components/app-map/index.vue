@@ -1,74 +1,66 @@
 <template>
   <div class="app-map">
-    <map-mapbox
-      class="app-map__map"
-      :access-token="mapBoxToken"
-      :max-bounds="maxBounds"
-      map-style="mapbox://styles/mapbox/streets-v11"
-      id="map"
-      ref="map"
-      @mb-created="onMapCreated"
+    <mgl-map
+      mapStyle="mapbox://styles/mapbox/streets-v11"
+      :accessToken="mapBoxToken"
+      :center="mapCenter"
+      :zoom="mapZoom"
+      @load="onMapCreated"
     >
-      <!-- map controls -->
+      <!-- controls -->
       <map-draw-control
         position="top-left"
         @create="onSelection"
         @update="onUpdateSelection"
-        :options="drawOptions"
       />
-      <map-navigation-control position="bottom-right" />
-      <map-search />
+      <map-search position="top-right" />
+      <mgl-navigation-control position="bottom-right" />
+     
+      <!-- base layer -->
+      <raster-layer
+        :source-id="`${waterWaysLayer.id}-source`"
+        :layer-id="`${waterWaysLayer.id}-layer`"
+        :layer="waterWaysLayer"
+      />
 
-      <!-- map layers -->
-      <map-layer
+      <!-- selected area layers -->
+      <raster-layer
         v-if="!wmsLayers.length"
         v-for="feature in features"
         :key="feature.id"
-        :options="feature"
+        :layer="feature"
       />
-      <map-layer v-for="wmsLayer in wmsLayers" :key="wmsLayer.id" :options="wmsLayer" />
-
-      <!-- default layers -->
-      <map-layer :options="waterWaysLayer" />
-    </map-mapbox>
+      <raster-layer
+        v-for="wmsLayer in wmsLayers"
+        :key="wmsLayer.id"
+        :layer="wmsLayer"
+       />
+    </mgl-map>
   </div>
 </template>
 
 <script>
 import { mapMutations, mapActions, mapState } from 'vuex';
-import MapMapbox from './map-mapbox';
+import Mapbox from "mapbox-gl";
+import { MglMap, MglNavigationControl } from "vue-mapbox";
+import RasterLayer from "./raster-layer";
+import MapSearch from "./map-search";
 import MapDrawControl from './map-draw-control';
-import MapNavigationControl from './map-navigation-control';
-import MapLayer from './map-layer';
-import MapSearch from './map-search';
 import wms from '../../lib/mapbox/layers/wms';
 import { generateWmsLayer } from '../../lib/project-layers';
 
 export default {
   components: {
-    MapMapbox,
+    MglMap,
+    RasterLayer,
     MapDrawControl,
-    MapNavigationControl,
-    MapLayer,
+    MglNavigationControl,
     MapSearch
   },
   data() {
     return {
-      drawOptions: {
-        styles: [{
-          'id': 'gl-draw-polygon-fill-inactive',
-          'type': 'fill',
-          'filter': ['all', ['==', 'active', 'false'],
-            ['==', '$type', 'Polygon'],
-            ['!=', 'mode', 'static']
-          ],
-          'paint': {
-            'fill-color': '#ffcc00',
-            'fill-outline-color': '#3bb2d0',
-            'fill-opacity': 0.1
-          }
-        }]
-      },
+      mapZoom: 6.5,
+      mapCenter: [5.2913, 52.1326],
       waterWaysLayer: Object.freeze(
         wms({
           ...generateWmsLayer({
@@ -79,10 +71,6 @@ export default {
           id: 'water-ways'
         })
       ),
-      maxBounds: [
-        [1.0108525782420372, 49.20932152251552],
-        [9.571747421758317, 54.87590973637714],
-      ]
     };
   },
   computed: {
@@ -94,6 +82,9 @@ export default {
       return process.env.VUE_APP_MAPBOX_TOKEN;
     }
   },
+  created() {
+    this.mapbox = Mapbox;
+  },
   methods: {
     ...mapMutations('selections', {
       addSelection: 'add',
@@ -103,7 +94,7 @@ export default {
       getFeature: 'getFeature',
       updateFeature: 'updateFeature'
     }),
-    onMapCreated(map) {
+    onMapCreated({ map }) {
       this.$root.map = map;
     },
     onSelection(event) {
