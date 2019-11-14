@@ -1,3 +1,4 @@
+import Vue from 'vue';
 let selectionIndex = 1;
 
 const initialState = () => ({
@@ -7,6 +8,11 @@ const initialState = () => ({
 const selections = {
   namespaced: true,
   state: () => initialState(),
+  getters: {
+    loading(state) {
+      return state.selections.some(selection => selection.loading);
+    }
+  },
   mutations: {
     add(state, selection) {
       state.selections.push({
@@ -30,6 +36,10 @@ const selections = {
     },
     reset(state) {
       Object.assign(state, initialState());
+    },
+    setLoadingSelection(state, { id, value }) {
+      const selection = state.selections.find(s => s.id === id);
+      Vue.set(selection, 'loading', value); 
     }
   },
 };

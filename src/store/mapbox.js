@@ -4,7 +4,8 @@ import { generateWmsLayer } from '../lib/project-layers';
 
 const initialState = () => ({
   features: [],
-  wmsLayers: []
+  wmsLayers: [],
+  loadingFeature: null
 });
 
 const features = {
@@ -30,10 +31,19 @@ const features = {
     },
     reset(state) {
       Object.assign(state, initialState());
+    },
+    setLoadingFeature(state, { id, value }) {
+      if (!value && state.loadingFeature.id === id) {
+        state.loadingFeature = id;
+      }
+
+      state.loadingFeature = id;
     }
   },
   actions: {
     async getFeature({ commit }, feature) {
+      commit('selections/setLoadingSelection', { id: feature.id, value: true }, { root: true });
+
       const { roadsCollection, roadsIdentifier } = await wps({
         "functionId": "ri2de_calc_roads",
         "polygon": {
@@ -57,8 +67,12 @@ const features = {
         }),
         roadsIdentifier
       });
+
+      commit('selections/setLoadingSelection', { id: feature.id, value: false }, { root: true });
     },
     async updateFeature({ commit }, feature) {
+      commit('selections/setLoadingSelection', { id: feature.id, value: true }, { root: true });
+
       const { roadsCollection, roadsIdentifier } = await wps({
         "functionId": "ri2de_calc_roads",
         "polygon": {
@@ -69,7 +83,7 @@ const features = {
         },
         "bufferDist": "100"
       });
-
+      
       commit('updateFeature', {
         ...layers.geojson.line({
           id: feature.id,
@@ -82,6 +96,8 @@ const features = {
         }),
         roadsIdentifier
       });
+
+      commit('selections/setLoadingSelection', { id: feature.id, value: false }, { root: true });
     },
     async calculateResult({ commit, state }) {
       const wmsLayers = await Promise.all(state.features.map(async (feature) => {

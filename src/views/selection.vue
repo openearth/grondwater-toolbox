@@ -5,17 +5,17 @@
 
     <sidebar-footer>
       <v-btn 
-        :disabled="!selections.length"
         slot="end"
-        class="primary"
+        :disabled="selectionsLoading || !selections.length"
         :to="{ name: 'calculation' }"
+        class="primary"
       >Volgende</v-btn>
     </sidebar-footer>
   </div>
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex';
+import { mapMutations, mapState, mapGetters } from 'vuex';
 import SidebarFooter from '@/components/sidebar-footer';
 import SelectionsList from '@/components/selections-list';
 
@@ -27,6 +27,9 @@ export default {
   computed: {
     ...mapState({
       selections: state => state.selections.selections
+    }),
+    ...mapGetters({
+      selectionsLoading: 'selections/loading'
     })
   },
   created() {
