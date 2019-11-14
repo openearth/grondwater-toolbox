@@ -15,12 +15,10 @@
     </v-content>
 
     <welcome-dialog />
-
   </v-app>
 </template>
 
 <script>
-import AppMap from '@/components/app-map';
 import AppSidebar from '@/components/app-sidebar';
 import WelcomeDialog from '@/components/welcome-dialog';
 import ResetButton from '@/components/reset-button';
@@ -28,7 +26,7 @@ import ErrorSnackbar from '@/components/error-snackbar';
 
 export default {
   components: {
-    AppMap,
+    AppMap: () => import('@/components/app-map'),
     AppSidebar,
     WelcomeDialog,
     ResetButton,
