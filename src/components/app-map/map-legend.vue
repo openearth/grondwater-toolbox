@@ -32,8 +32,8 @@ export default {
 <style>
 .map-legend {
   position: absolute;
-  left: 1rem;
-  bottom: 1rem;
+  left: 10px;
+  bottom: 30px;
   z-index: 100;
 }
 </style>
