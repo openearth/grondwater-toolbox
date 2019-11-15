@@ -7,6 +7,8 @@
       :zoom="mapZoom"
       @load="onMapCreated"
     >
+      <map-legend v-bind="legendSource"/>
+     
       <!-- controls -->
       <map-draw-control
         position="top-left"
@@ -41,6 +43,7 @@ import Mapbox from "mapbox-gl";
 import { MglMap, MglNavigationControl } from "vue-mapbox";
 import RasterLayer from "./raster-layer";
 import MapSearch from "./map-search";
+import MapLegend from "./map-legend";
 import MapDrawControl from './map-draw-control';
 import wms from '../../lib/mapbox/layers/wms';
 import { generateWmsLayer } from '../../lib/project-layers';
@@ -51,22 +54,15 @@ export default {
     RasterLayer,
     MapDrawControl,
     MglNavigationControl,
-    MapSearch
+    MapSearch,
+    MapLegend
   },
   data() {
     return {
       mapZoom: 6.5,
       mapCenter: [5.2913, 52.1326],
-      waterWaysLayer: Object.freeze(
-        wms({
-          ...generateWmsLayer({
-            url: 'https://geoservices.rijkswaterstaat.nl/apps/geoserver/nwb_vaarwegen/wms',
-            id: 'water-ways',
-            layer: 'nwb_vaarwegen:vaarwegvakken'
-          }).source,
-          id: 'water-ways'
-        })
-      ),
+      waterWaysUrl: 'https://geoservices.rijkswaterstaat.nl/apps/geoserver/nwb_vaarwegen/wms',
+      waterWaysLayerId: 'nwb_vaarwegen:vaarwegvakken',
     };
   },
   computed: {
@@ -76,7 +72,33 @@ export default {
     }),
     mapBoxToken() {
       return process.env.VUE_APP_MAPBOX_TOKEN;
-    }
+    },
+    firstWmsLayer() {
+      return this.wmsLayers[0];
+    },
+    legendSource() {
+      if (this.firstWmsLayer) {
+        return {
+          url: 'https://ri2de.openearth.eu/geoserver/wms',
+          layer: this.firstWmsLayer.id
+        };
+      } else {
+        return {
+          url: this.waterWaysUrl,
+          layer: this.waterWaysLayerId
+        };
+      }
+    },
+    waterWaysLayer() {
+      return wms({
+        ...generateWmsLayer({
+          url: this.waterWaysUrl,
+          id: 'water-ways',
+          layer: this.waterWaysLayerId
+        }).source,
+        id: 'water-ways'
+      });
+  }
   },
   created() {
     this.mapbox = Mapbox;
