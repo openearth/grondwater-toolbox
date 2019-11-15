@@ -4,8 +4,7 @@ import { generateWmsLayer } from '../lib/project-layers';
 
 const initialState = () => ({
   features: [],
-  wmsLayers: [],
-  loadingFeature: null
+  wmsLayers: []
 });
 
 const features = {
