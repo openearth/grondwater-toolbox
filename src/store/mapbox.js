@@ -4,7 +4,8 @@ import { generateWmsLayer } from '../lib/project-layers';
 
 const initialState = () => ({
   features: [],
-  wmsLayers: []
+  wmsLayers: [],
+  loadingWmsLayers: false
 });
 
 const features = {
@@ -27,6 +28,9 @@ const features = {
     },
     resetWmsLayers(state) {
       state.wmsLayers = [];
+    },
+    setLoadingWmsLayers(state, value) {
+      state.loadingWmsLayers = value;
     },
     reset(state) {
       Object.assign(state, initialState());
@@ -91,39 +95,50 @@ const features = {
 
       commit('selections/setLoadingSelection', { id: feature.id, value: false }, { root: true });
     },
-    async calculateResult({ commit, state }) {
-      const wmsLayers = await Promise.all(state.features.map(async (feature) => {
-        // TODO: this is a call to the wrong function, replace this with the BRL function
-        const data = {
-          "functionId": "ri2de_calc_slope",
-          "requestData": {
-            "classes": [ 0, 5, 10, 90],
-            "layername": "Global_Base_Maps:merit_gebco",
-            "owsurl": "https://fast.openearth.eu/geoserver/ows?"
-          },
-          "polygon": {
-            "id": feature.id,
-            "type": "Feature",
-            "properties": {},
-            "geometry": feature.source.data
-          },
-          "roadsIdentifier": feature.roadsIdentifier
-        };
+    async calculateResult({ commit, state }, requestData) {
+      commit('setLoadingWmsLayers', true);
 
-        const { baseUrl, layerName, style } = await wps(data);
+      try {
+        const wmsLayers = await Promise.all(state.features.map(async (feature) => {
+          // TODO: this is a call to the wrong function, replace this with the BRL function
+          const data = {
+            functionId: "ri2de_calc_culverts",
+            polygon: {
+              "id": feature.id,
+              "type": "Feature",
+              "properties": {},
+              "geometry": feature.source.data
+            },
+            roadsIdentifier: feature.roadsIdentifier,
+            // TODO: uncomment this as it should be the data that is being sent
+            // requestData,
+            // TODO: should be removed when actual BRL is made
+            layersSetup: JSON.stringify({
+              "classes": [ 0, 5, 10, 90],
+              "layername": "Global_Base_Maps:merit_gebco",
+              "owsurl": "https://fast.openearth.eu/geoserver/ows?"
+            })
+          };
+  
+          const { baseUrl, layerName, style } = await wps(data);
+  
+          const layerObject = {
+            url: baseUrl,
+            layer: layerName,
+            id: layerName,
+            style,
+            roadsId: 'roads_1573136423177466'
+          };
+  
+          return generateWmsLayer(layerObject);
+        }));
+  
+        wmsLayers.forEach(wmsLayer => commit('addWmsLayer', wmsLayer));
+      } catch (err) {
+        commit('setError', 'Error fetching result', { root: true });
+      }
 
-        const layerObject = {
-          url: baseUrl,
-          layer: layerName,
-          id: layerName,
-          style,
-          roadsId: 'roads_1573136423177466'
-        };
-
-        return generateWmsLayer(layerObject);
-      }));
-
-      wmsLayers.forEach(wmsLayer => commit('addWmsLayer', wmsLayer));
+      commit('setLoadingWmsLayers', false);
     }
   }
 };
