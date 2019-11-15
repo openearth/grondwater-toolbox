@@ -3,7 +3,16 @@
     <v-list-item-content class="pa-0">
       <v-list-item-title class="d-flex align-center flex-nowrap">
         <div class="flex-grow-1">{{ selection.name }}</div>
-        <v-btn text icon @click="onDelete">
+
+        <div v-if="selection.loading" class="pr-1">
+          <v-progress-circular
+            indeterminate
+            color="grey"
+            :size="26"
+          />
+        </div>
+
+        <v-btn v-else text icon @click="onDelete">
           <v-icon>mdi-delete</v-icon>
         </v-btn>
       </v-list-item-title>
