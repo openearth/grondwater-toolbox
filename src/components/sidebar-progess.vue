@@ -3,12 +3,12 @@
       <div class="sidebar-progress__steps">
         <template v-for="(item, index) in items">
           <v-stepper-step
-            :key="index"
+            :key="`${index}-step`"
             class="px-4"
             :step="index + 1"
-            :complete="item.complete"
+            :complete="item.completed"
           >{{ item.text }}</v-stepper-step>
-          <v-divider class="px-6" :key="index" v-if="index !== items.length - 1"></v-divider>
+          <v-divider class="px-6" :key="`${index}-divider`" v-if="index !== items.length - 1"></v-divider>
         </template>
       </div>
     </v-stepper>
@@ -29,7 +29,7 @@ export default {
       return [
         {
           text: 'Select',
-          completed: this.selections.length
+          completed: Boolean(this.selections.length)
         },
         {
           text: 'Calculate',
