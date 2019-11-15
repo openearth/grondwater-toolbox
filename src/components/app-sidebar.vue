@@ -1,9 +1,11 @@
 <template>
-  <v-navigation-drawer clipped app permanent class="pa-2" width="350">
+  <v-navigation-drawer clipped app permanent class="pa-2" width="400">
     <v-row dense class="fill-height">
-      <v-col :cols="12" class="fill-height">
+      <v-col :cols="12" class="fill-height d-flex flex-column">
+        <sidebar-progress class="px-4"/>
+
         <transition :name="transitionName" mode="out-in">
-          <router-view />
+          <router-view class="flex-grow-1" />
         </transition>
       </v-col>
     </v-row>
@@ -11,9 +13,13 @@
 </template>
 
 <script>
+import SidebarProgress from './sidebar-progess';
 import { mapState } from 'vuex';
 
 export default {
+  components: {
+    SidebarProgress
+  },
   computed: {
     ...mapState({
       selections: state => state.selections.selections
