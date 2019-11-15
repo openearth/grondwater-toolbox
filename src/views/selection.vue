@@ -35,7 +35,9 @@ export default {
     if (this.$root.map) {
       const { __draw } = this.$root.map;
 
-      __draw.changeMode('simple_select');
+      if (__draw) {
+        __draw.changeMode('simple_select');
+      }
     }
   },
   methods: {

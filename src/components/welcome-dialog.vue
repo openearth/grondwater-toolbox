@@ -20,8 +20,13 @@
       </div>
       <v-card-text>
         <p>Welkom op de website Basisrivierbodemligging. Middels deze website is het mogelijk de effecten van een
-          wijziging in de hoogte van de rivierbodem te simuleren met het <a href="http://www.nhi.nu/">Landelijk Hydrologisch Model</a>. De
-          gebruikte modelversie is 3.4.0 en is gepubliceerd op <a href="http://www.nhi.nu/">nhi.nu</a>.</p>
+          wijziging in de hoogte van de rivierbodem te simuleren met het <a href="http://www.nhi.nu/">Landelijk
+            Hydrologisch Model</a>. De
+          gebruikte modelversie is 3.4.0 en is gepubliceerd op <a href="http://www.nhi.nu/">nhi.nu</a>. De berekeningen
+          worden gedaan met een stationaire MODFLOW versie van het LHM waarbij voor de peilen van het hoofdsysteem
+          gebruik gemaakt wordt van het winterpeil en een gemiddelde grondwateraanvulling. De berekende effecten kunnen
+          in het geval van een zomersituatie met lagere grondwaterstanden en lagere peilen in het hoofdwatersysteem
+          anders zijn.</p>
 
         <p>De website is met de grootst mogelijke zorgvuldigheid opgezet. Echter, de website dient slechts voor
           informatieve doeleinden. Er kunnen geen rechten aan de informatie op de website worden ontleend en het gebruik
@@ -35,12 +40,16 @@
           zonder fouten en/of onderbrekingen zal functioneren. De website kan te allen tijde worden gewijzigd door
           Deltares. Op de website alsmede op deze voorwaarden is Nederlands recht van toepassing.</p>
 
-        <p>Door op 'starten' te klikken gaat de gebruiker akkoord met de voorwaarden zoals hierboven beschreven.</p>
+        <v-checkbox
+          v-model="accepted"
+          label="Ik ga akkoord met de voorwaarden zoals hierboven beschreven"
+        ></v-checkbox>
       </v-card-text>
       <v-card-actions class="px-6 pb-6">
         <v-spacer></v-spacer>
         <v-btn
-          class="primary"
+          :disabled="!accepted"
+          :class="{ primary: accepted }"
           text
           @click="showWelcomeDialog = false"
         >
@@ -54,6 +63,7 @@
 <script>
 export default {
   data: () => ({
+    accepted: false,
     showWelcomeDialog: true
   })
 };
@@ -63,6 +73,7 @@ export default {
   .welcome-dialog__images {
     display: flex;
     padding: 0 1.5rem 1.5rem;
+    align-items: flex-start;
   }
 
   .welcome-dialog__images img {

@@ -1,15 +1,16 @@
-export const xmlRequestTemplate = ({ functionId, requestData, polygon, roadsIdentifier, filterData, cswUrls, bufferDist, segmentLength}) => 
+export const xmlRequestTemplate = ({ functionId, requestData, polygon, roadsIdentifier, filterData, cswUrls, bufferDist, segmentLength, layersSetup }) => 
 `
   <wps:Execute xmlns:wps="http://www.opengis.net/wps/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0.0" service="WPS" xsi:schemaLocation="http://www.opengis.net/wps/1.0.0 http://schemas.opengis.net/wps/1.0.0/wpsAll.xsd">
     <ows:Identifier xmlns:ows="http://www.opengis.net/ows/1.1">${functionId}</ows:Identifier>
     <wps:DataInputs>
       ${ wpsInput('roads_identifier', roadsIdentifier) }
-      ${ requestData ? wpsInput('layers_setup', JSON.stringify(requestData)) : '' }
+      ${ requestData ? wpsInput('configuration', JSON.stringify(requestData)) : '' }
       ${ polygon ? wpsInput('geojson_area', JSON.stringify(polygon)) : '' }
       ${ filterData ? wpsInput('keywords', JSON.stringify(filterData)): ''}
       ${ cswUrls ? wpsInput('csw_url', JSON.stringify(cswUrls)): ''}
       ${ bufferDist ? wpsInput('buffer_dist', bufferDist): ''}
       ${ segmentLength ? wpsInput('segment_length', segmentLength): ''}
+      ${ layersSetup ? wpsInput('layers_setup', layersSetup): ''}
 
        
     </wps:DataInputs>

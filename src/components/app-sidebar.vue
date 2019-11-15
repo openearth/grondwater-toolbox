@@ -14,10 +14,16 @@
 
 <script>
 import SidebarProgress from './sidebar-progess';
+import { mapState } from 'vuex';
 
 export default {
   components: {
     SidebarProgress
+  },
+  computed: {
+    ...mapState({
+      selections: state => state.selections.selections
+    })
   },
   data() {
     return {
