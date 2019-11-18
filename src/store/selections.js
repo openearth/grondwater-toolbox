@@ -17,7 +17,7 @@ const selections = {
     add(state, selection) {
       state.selections.push({
         ...selection,
-        name: `Selectie ${selectionIndex}`
+        name: `Selectie ${ selectionIndex }`
       });
 
       selectionIndex++;
@@ -28,7 +28,7 @@ const selections = {
     update(state, selection) {
       state.selections = state.selections.map(s => {
         if (s.id === selection.id) {
-          return { ...selection, name: s.name }; 
+          return { ...selection, name: s.name };
         }
 
         return s;
@@ -39,7 +39,7 @@ const selections = {
     },
     setLoadingSelection(state, { id, value }) {
       const selection = state.selections.find(s => s.id === id);
-      Vue.set(selection, 'loading', value); 
+      Vue.set(selection, 'loading', value);
     }
   },
 };

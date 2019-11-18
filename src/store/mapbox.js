@@ -16,7 +16,7 @@ const features = {
       state.features.push(feature);
     },
     removeFeature(state, id) {
-      state.features =   state.features.filter(feature => feature.id !== id);
+      state.features = state.features.filter(feature => feature.id !== id);
     },
     updateFeature(state, feature) {
       state.features = state.features.map(f => {
@@ -37,11 +37,11 @@ const features = {
     },
   },
   actions: {
-    async getFeature({ commit }, feature) {
+    getFeature({ commit }, feature) {
       commit('selections/setLoadingSelection', { id: feature.id, value: true }, { root: true });
 
-      const { roadsCollection, roadsIdentifier } = await wps({
-        "functionId": "ri2de_calc_roads",
+      wps({
+        "functionId": "brl_watercourses",
         "polygon": {
           "id": feature.id,
           "type": "Feature",
@@ -49,22 +49,26 @@ const features = {
           "geometry": feature.geometry
         },
         "bufferDist": "100"
+      })
+      .then(({ roadsCollection, roadsIdentifier }) => {
+        commit('addFeature', {
+          ...layers.geojson.line({
+            id: feature.id,
+            data: roadsCollection,
+            paint: {
+              'line-width': 5,
+              'line-color': '#000',
+              'line-opacity': 0.8
+            }
+          }),
+          roadsIdentifier
+        });
+        commit('selections/setLoadingSelection', { id: feature.id, value: false }, { root: true });
+      })
+      .catch(err => {
+        // @TODO :: Have proper error handling here!
+        console.log('Error getting wps: ', err);
       });
-
-      commit('addFeature', {
-        ...layers.geojson.line({
-          id: feature.id,
-          data: roadsCollection,
-          paint: {
-            'line-width': 5,
-            'line-color': '#000',
-            'line-opacity': 0.8
-          }
-        }),
-        roadsIdentifier
-      });
-
-      commit('selections/setLoadingSelection', { id: feature.id, value: false }, { root: true });
     },
     async updateFeature({ commit }, feature) {
       commit('selections/setLoadingSelection', { id: feature.id, value: true }, { root: true });
@@ -79,7 +83,7 @@ const features = {
         },
         "bufferDist": "100"
       });
-      
+
       commit('updateFeature', {
         ...layers.geojson.line({
           id: feature.id,
@@ -119,9 +123,9 @@ const features = {
               "owsurl": "https://fast.openearth.eu/geoserver/ows?"
             })
           };
-  
+
           const { baseUrl, layerName, style } = await wps(data);
-  
+
           const layerObject = {
             url: baseUrl,
             layer: layerName,
@@ -129,10 +133,10 @@ const features = {
             style,
             roadsId: 'roads_1573136423177466'
           };
-  
+
           return generateWmsLayer(layerObject);
         }));
-  
+
         wmsLayers.forEach(wmsLayer => commit('addWmsLayer', wmsLayer));
       } catch (err) {
         commit('setError', 'Error fetching result', { root: true });

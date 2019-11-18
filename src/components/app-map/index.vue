@@ -7,8 +7,8 @@
       :zoom="mapZoom"
       @load="onMapCreated"
     >
-      <map-legend v-bind="legendSource"/>
-     
+      <!-- <map-legend v-bind="legendSource"/> -->
+
       <!-- controls -->
       <map-draw-control
         position="top-left"
@@ -17,22 +17,27 @@
       />
       <map-search position="top-right" />
       <mgl-navigation-control position="bottom-right" />
-     
+
       <!-- base layer -->
       <raster-layer :layer="waterWaysLayer"/>
 
-      <!-- selected area layers -->
-      <raster-layer
-        v-if="!wmsLayers.length"
-        v-for="feature in features"
-        :key="feature.id"
-        :layer="feature"
-      />
-      <raster-layer
-        v-for="wmsLayer in wmsLayers"
-        :key="wmsLayer.id"
-        :layer="wmsLayer"
-       />
+      <!-- Show Selection Layers Before Calculation -->
+      <template v-if="!wmsLayers.length">
+        <raster-layer
+          v-for="feature in features"
+          :key="feature.id"
+          :layer="feature"
+        />
+      </template>
+      <!-- Show Calculation Layers when available-->
+      <template v-else>
+        <raster-layer
+          v-for="wmsLayer in wmsLayers"
+          :key="wmsLayer.id"
+          :layer="wmsLayer"
+        />
+       </template>
+
     </mgl-map>
   </div>
 </template>
@@ -43,7 +48,7 @@ import Mapbox from "mapbox-gl";
 import { MglMap, MglNavigationControl } from "vue-mapbox";
 import RasterLayer from "./raster-layer";
 import MapSearch from "./map-search";
-import MapLegend from "./map-legend";
+// import MapLegend from "./map-legend";
 import MapDrawControl from './map-draw-control';
 import wms from '../../lib/mapbox/layers/wms';
 import { generateWmsLayer } from '../../lib/project-layers';
@@ -55,13 +60,13 @@ export default {
     MapDrawControl,
     MglNavigationControl,
     MapSearch,
-    MapLegend
+    // MapLegend
   },
   data() {
     return {
       mapZoom: 6.5,
       mapCenter: [5.2913, 52.1326],
-      waterWaysUrl: 'https://geoservices.rijkswaterstaat.nl/apps/geoserver/nwb_vaarwegen/wms',
+      waterWaysUrl: process.env.VUE_APP_WATERWAYS_WMS,
       waterWaysLayerId: 'nwb_vaarwegen:vaarwegvakken',
     };
   },
@@ -76,19 +81,19 @@ export default {
     firstWmsLayer() {
       return this.wmsLayers[0];
     },
-    legendSource() {
-      if (this.firstWmsLayer) {
-        return {
-          url: 'https://ri2de.openearth.eu/geoserver/wms',
-          layer: this.firstWmsLayer.id
-        };
-      } else {
-        return {
-          url: this.waterWaysUrl,
-          layer: this.waterWaysLayerId
-        };
-      }
-    },
+    // legendSource() {
+    //   if (this.firstWmsLayer) {
+    //     return {
+    //       url: 'https://ri2de.openearth.eu/geoserver/wms',
+    //       layer: this.firstWmsLayer.id
+    //     };
+    //   } else {
+    //     return {
+    //       url: this.waterWaysUrl,
+    //       layer: this.waterWaysLayerId
+    //     };
+    //   }
+    // },
     waterWaysLayer() {
       return wms({
         ...generateWmsLayer({
