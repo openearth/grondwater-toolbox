@@ -33,7 +33,7 @@
       <div class="d-flex justify-end mt-2">
         <v-btn
           @click="calculate"
-          color="success"
+          color="secondary"
           :disabled="disabled || loadingWmsLayers"
           :loading="loadingWmsLayers"
         >Calculate</v-btn>
