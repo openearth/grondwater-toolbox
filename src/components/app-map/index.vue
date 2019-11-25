@@ -7,7 +7,7 @@
       :zoom="mapZoom"
       @load="onMapCreated"
     >
-      <!-- <map-legend v-bind="legendSource"/> -->
+      <map-legend v-if="legendSource" v-bind="legendSource"/>
 
       <!-- controls -->
       <map-draw-control
@@ -48,7 +48,7 @@ import Mapbox from "mapbox-gl";
 import { MglMap, MglNavigationControl } from "vue-mapbox";
 import RasterLayer from "./raster-layer";
 import MapSearch from "./map-search";
-// import MapLegend from "./map-legend";
+import MapLegend from "./map-legend";
 import MapDrawControl from './map-draw-control';
 import wms from '../../lib/mapbox/layers/wms';
 import { generateWmsLayer } from '../../lib/project-layers';
@@ -60,7 +60,7 @@ export default {
     MapDrawControl,
     MglNavigationControl,
     MapSearch,
-    // MapLegend
+    MapLegend
   },
   data() {
     return {
@@ -81,19 +81,16 @@ export default {
     firstWmsLayer() {
       return this.wmsLayers[0];
     },
-    // legendSource() {
-    //   if (this.firstWmsLayer) {
-    //     return {
-    //       url: 'https://ri2de.openearth.eu/geoserver/wms',
-    //       layer: this.firstWmsLayer.id
-    //     };
-    //   } else {
-    //     return {
-    //       url: this.waterWaysUrl,
-    //       layer: this.waterWaysLayerId
-    //     };
-    //   }
-    // },
+    legendSource() {
+      if (this.firstWmsLayer) {
+        return {
+          url: this.firstWmsLayer.baseUrl,
+          layer: this.firstWmsLayer.id
+        };
+      }
+
+      return null;
+    },
     waterWaysLayer() {
       return wms({
         ...generateWmsLayer({

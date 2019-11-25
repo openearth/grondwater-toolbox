@@ -127,7 +127,10 @@ const features = {
             roadsId: 'roads_1573136423177466'
           };
 
-          return generateWmsLayer(layerObject);
+          return {
+            ...generateWmsLayer(layerObject),
+            baseUrl
+          };
         }));
 
         wmsLayers.forEach(wmsLayer => commit('addWmsLayer', wmsLayer));
