@@ -57,8 +57,8 @@ export default {
       form: {
         riverbedDifference: 0,
         extent: 0,
-        calculationLayer: null,
-        visualisationLayer: null
+        calculationLayer: 'Layer 1',
+        visualisationLayer: 'Layer 1'
       },
       calculationLayers: [1, 2, 3, 4, 5, 6, 7],
       visualisationLayers: [1, 2, 3, 4, 5, 6, 7]

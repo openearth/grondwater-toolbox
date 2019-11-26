@@ -1,9 +1,9 @@
-export const xmlRequestTemplate = ({ functionId, requestData, polygon, roadsIdentifier, filterData, cswUrls, bufferDist, segmentLength, layersSetup }) => 
+export const xmlRequestTemplate = ({ functionId, requestData, polygon, watersIdentifier, filterData, cswUrls, bufferDist, segmentLength, layersSetup }) => 
 `
   <wps:Execute xmlns:wps="http://www.opengis.net/wps/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0.0" service="WPS" xsi:schemaLocation="http://www.opengis.net/wps/1.0.0 http://schemas.opengis.net/wps/1.0.0/wpsAll.xsd">
     <ows:Identifier xmlns:ows="http://www.opengis.net/ows/1.1">${functionId}</ows:Identifier>
     <wps:DataInputs>
-      ${ wpsInput('roads_identifier', roadsIdentifier) }
+      ${ wpsInput('waters_identifier', watersIdentifier) }
       ${ requestData ? wpsInput('configuration', JSON.stringify(requestData)) : '' }
       ${ polygon ? wpsInput('geojson_area', JSON.stringify(polygon)) : '' }
       ${ filterData ? wpsInput('keywords', JSON.stringify(filterData)): ''}
