@@ -14,7 +14,6 @@
     "@mdi/js": "^4.5.95",
     "@turf/bbox": "^6.0.1",
     "@turf/helpers": "^6.1.4",
-    "@voorhoede/deltares-design-tokens": "^1.1.0",
     "@voorhoede/deltares-vuetify-theme": "^1.0.2",
     "axios": "^0.19.0",
     "core-js": "^3.3.2",
