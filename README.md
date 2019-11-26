@@ -2,7 +2,7 @@
 
 [BRL](https://basisrivierbodemligging.netlify.com) makes it possible to simulate the effects of changing the depth of a river bed.
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/1535c4c2-d3d3-496e-b404-38e41899efea/deploy-status)](https://app.netlify.com/sites/modest-allen-8e57cd/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/1535c4c2-d3d3-496e-b404-38e41899efea/deploy-status)](https://app.netlify.com/sites/basisrivierbodemligging/deploys)
 
 ## Development
 
