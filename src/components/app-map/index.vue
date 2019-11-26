@@ -25,7 +25,7 @@
       <template v-if="!wmsLayers.length">
         <raster-layer
           v-for="feature in features"
-          :key="feature.id"
+          :key="feature.watersIdentifier"
           :layer="feature"
         />
       </template>

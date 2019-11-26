@@ -22,8 +22,10 @@ export default {
       required: true
     }
   },
-  destroyed() {
-    this.removeLayer();
+  beforeMount() {
+    if (this.map.getLayer(this.layer.id)) {
+      this.removeLayer();
+    }
   },
   methods: {
     removeLayer() {
