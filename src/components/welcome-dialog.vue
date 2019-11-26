@@ -51,7 +51,7 @@
           :disabled="!accepted"
           :class="{ primary: accepted }"
           text
-          @click="showWelcomeDialog = false"
+          @click="onStartClick"
         >
           Starten
         </v-btn>
@@ -65,6 +65,7 @@ const LOCALSTORAGE_KEY = 'brl_accepted';
 
 export default {
   data: () => ({
+    accepted: false,
     showWelcomeDialog: true
   }),
   beforeMount() {
