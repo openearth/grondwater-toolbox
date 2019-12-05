@@ -66,7 +66,7 @@ export default {
     return {
       mapZoom: 6.5,
       mapCenter: [5.2913, 52.1326],
-      waterWaysUrl: process.env.VUE_APP_WATERWAYS_WMS,
+      waterWaysUrl: `${ process.env.VUE_APP_GEO_SERVER }/geoserver/vaarwegvakken/wms`,
       waterWaysLayerId: 'nwb_vaarwegen:vaarwegvakken',
     };
   },
@@ -87,9 +87,12 @@ export default {
           url: this.firstWmsLayer.baseUrl,
           layer: this.firstWmsLayer.id
         };
+      } else {
+        return {
+          url: this.waterWaysUrl,
+          layer: this.waterWaysLayerId
+        };
       }
-
-      return null;
     },
     waterWaysLayer() {
       return wms({
