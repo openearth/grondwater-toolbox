@@ -28,7 +28,7 @@ export default {
       value => {
         this.message = value.message;
         this.show = true;
-      },
+      }
     );
   }
 };
