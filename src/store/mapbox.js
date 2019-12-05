@@ -104,7 +104,6 @@ const features = {
 
       try {
         const wmsLayers = await Promise.all(state.features.map(async (feature) => {
-          // TODO: this is a call to the wrong function, replace this with the BRL function
           const data = {
             functionId: "brl_gwmodel",
             polygon: {

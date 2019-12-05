@@ -4,14 +4,14 @@
       <v-text-field
         v-model="form.riverbedDifference"
         type="number"
-        label="Difference in riverbed (m)"
+        label="Verschil in rivierbodemhoogte (m)"
         required
         :disabled="disabled"
       ></v-text-field>
       <v-text-field
         v-model="form.extent"
         type="number"
-        label="Extent (m)"
+        label="Grootte van het model (m)"
         required
         :disabled="disabled"
       ></v-text-field>
@@ -19,24 +19,26 @@
       <v-select
         v-model="form.calculationLayer"
         :items="calculationLayers.map(l => `Layer ${l}`)"
-        label="Layer for calculation"
+        label="Laag van berekening"
         required
         :disabled="disabled"
       ></v-select>
       <v-select
         v-model="form.visualisationLayer"
         :items="visualisationLayers.map(l => `Layer ${l}`)"
-        label="Layer for visualisation"
+        label="Laag van visualisatie"
         required
         :disabled="disabled"
       ></v-select>
       <div class="d-flex justify-end mt-2">
         <v-btn
           @click="calculate"
-          color="secondary"
+          color="primary"
           :disabled="disabled || loadingWmsLayers"
           :loading="loadingWmsLayers"
-        >Calculate</v-btn>
+        >
+          Bereken
+        </v-btn>
       </div>
     </v-form>
   </div>
