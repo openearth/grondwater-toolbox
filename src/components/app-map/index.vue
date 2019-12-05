@@ -87,9 +87,12 @@ export default {
           url: this.firstWmsLayer.baseUrl,
           layer: this.firstWmsLayer.id
         };
+      } else {
+        return {
+          url: this.waterWaysUrl,
+          layer: this.waterWaysLayerId
+        };
       }
-
-      return null;
     },
     waterWaysLayer() {
       return wms({
