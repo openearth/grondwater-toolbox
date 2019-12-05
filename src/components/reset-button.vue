@@ -4,9 +4,11 @@
 
 <script>
 import { mapActions } from 'vuex';
+
 export default {
   methods: {
     ...mapActions(['reset']),
+
     onClick() {
       const resetRouteName = 'selection';
       const accepted = confirm("Weet u zeker dat u opnieuw wilt beginnen?");

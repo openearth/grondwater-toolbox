@@ -22,16 +22,19 @@ export default {
       required: true
     }
   },
-  beforeMount() {
-    if (this.map.getLayer(this.layer.id)) {
-      this.removeLayer();
-    }
-  },
   methods: {
     removeLayer() {
-      this.map.removeLayer(this.layer.id);
-      this.map.removeSource(this.layer.id);
+      if(this.map.getLayer(this.layer.id)) {
+        this.map.removeLayer(this.layer.id);
+        this.map.removeSource(this.layer.id);
+      }
     }
+  },
+  beforeMount() {
+    this.removeLayer();
+  },
+  destroyed() {
+    this.removeLayer();
   }
 };
 </script>
