@@ -36,7 +36,12 @@
           :key="wmsLayer.id"
           :layer="wmsLayer"
         />
-       </template>
+        <map-layer-info
+          v-for="wmsLayer in wmsLayers"
+          :key="wmsLayer.id"
+          :layer="wmsLayer"
+        />
+      </template>
 
     </mgl-map>
   </div>
@@ -49,6 +54,7 @@ import { MglMap, MglNavigationControl } from "vue-mapbox";
 import RasterLayer from "./raster-layer";
 import MapSearch from "./map-search";
 import MapLegend from "./map-legend";
+import MapLayerInfo from "./map-layer-info";
 import MapDrawControl from './map-draw-control';
 import wms from '../../lib/mapbox/layers/wms';
 import { generateWmsLayer } from '../../lib/project-layers';
@@ -60,7 +66,8 @@ export default {
     MapDrawControl,
     MglNavigationControl,
     MapSearch,
-    MapLegend
+    MapLegend,
+    MapLayerInfo
   },
   data() {
     return {
@@ -103,7 +110,7 @@ export default {
         }).source,
         id: 'water-ways'
       });
-  }
+    }
   },
   created() {
     this.mapbox = Mapbox;
