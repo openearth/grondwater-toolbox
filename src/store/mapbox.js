@@ -5,7 +5,8 @@ import { generateWmsLayer } from '../lib/project-layers';
 const initialState = () => ({
   features: [],
   wmsLayers: [],
-  loadingWmsLayers: false
+  loadingWmsLayers: false,
+  activePopup: null
 });
 
 const features = {
@@ -35,6 +36,9 @@ const features = {
     reset(state) {
       Object.assign(state, initialState());
     },
+    setActivePopup(state, popup) {
+      state.activePopup = popup;
+    }
   },
   actions: {
     getFeature({ commit }, feature) {
