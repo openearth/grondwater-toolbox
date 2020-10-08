@@ -17,6 +17,10 @@
       />
       <map-search position="top-right" />
       <mgl-navigation-control position="bottom-right" />
+      <map-raster-opacity-control
+        v-if="wmsLayers.lenght"
+        :layers="wmsLayers"
+      />
 
       <!-- base layer -->
       <raster-layer :layer="waterWaysLayer"/>
@@ -51,6 +55,7 @@
 import { mapMutations, mapActions, mapState } from 'vuex';
 import Mapbox from "mapbox-gl";
 import { MglMap, MglNavigationControl } from "vue-mapbox";
+import MapRasterOpacityControl from "./map-raster-opacity-control";
 import RasterLayer from "./raster-layer";
 import MapSearch from "./map-search";
 import MapLegend from "./map-legend";
@@ -67,7 +72,8 @@ export default {
     MglNavigationControl,
     MapSearch,
     MapLegend,
-    MapLayerInfo
+    MapLayerInfo,
+    MapRasterOpacityControl
   },
   data() {
     return {
