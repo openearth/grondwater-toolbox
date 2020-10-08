@@ -38,7 +38,7 @@
         />
         <map-layer-info
           v-for="wmsLayer in wmsLayers"
-          :key="wmsLayer.id"
+          :key="`${wmsLayer.id}-info`"
           :layer="wmsLayer"
         />
       </template>
@@ -150,5 +150,22 @@ export default {
 .app-map__map {
   height: 100%;
   width: 100%;
+}
+
+.mapboxgl-popup-close-button {
+  position: absolute;
+  width: 1rem;
+  height: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  right: -0.5rem;
+  top: -0.5rem;
+  background-color: #ededed;
+  border-radius: 0.5rem;
+}
+
+.mapboxgl-popup-close-button:hover {
+  background-color: #d5d5d5;
 }
 </style>
