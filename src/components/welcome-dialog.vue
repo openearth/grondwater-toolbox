@@ -61,25 +61,14 @@
 </template>
 
 <script>
-const LOCALSTORAGE_KEY = 'brl_accepted';
-
 export default {
   data: () => ({
     accepted: false,
     showWelcomeDialog: true
   }),
-  beforeMount() {
-    const accepted = window.localStorage.getItem(LOCALSTORAGE_KEY);
-
-    if (accepted) {
-      this.showWelcomeDialog = false;
-    }
-  },
   methods: {
     onStartClick() {
       this.showWelcomeDialog = false;
-
-      window.localStorage.setItem(LOCALSTORAGE_KEY, true);
     }
   }
 };

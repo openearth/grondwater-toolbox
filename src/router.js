@@ -2,23 +2,30 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Selection from '@/views/selection';
 import Calculation from '@/views/calculation';
+import Introduction from '@/views/introduction';
 
-const routes = [{
-    path: '/',
-    redirect: '/selection'
+const routes = [
+  {
+    path: "/",
+    redirect: "/introduction",
   },
   {
-    path: '/selection',
+    path: "/introduction",
+    component: Introduction,
+    name: "introduction",
+  },
+  {
+    path: "/selection",
     component: Selection,
-    name: 'selection',
-    meta: { step: 1 }
+    name: "selection",
+    meta: { step: 1 },
   },
   {
-    path: '/calculation',
+    path: "/calculation",
     component: Calculation,
-    name: 'calculation',
-    meta: { step: 2 }
-  }
+    name: "calculation",
+    meta: { step: 2 },
+  },
 ];
 
 Vue.use(VueRouter);

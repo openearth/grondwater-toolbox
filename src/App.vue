@@ -5,7 +5,14 @@
     <app-sidebar />
 
     <v-app-bar class="app-header" app color="primary" dark>
-      <v-toolbar-title>BRL</v-toolbar-title>
+      <v-toolbar-title>
+        <router-link
+          :to="{ name: 'introduction' }"
+          class="white--text text-decoration-none"
+        >
+          BRL
+        </router-link>
+      </v-toolbar-title>
       <v-spacer />
       <reset-button />
     </v-app-bar>
