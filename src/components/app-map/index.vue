@@ -18,7 +18,7 @@
       <map-search position="top-right" />
       <mgl-navigation-control position="bottom-right" />
       <map-raster-opacity-control
-        v-if="wmsLayers.lenght"
+        v-if="wmsLayers.length"
         :layers="wmsLayers"
       />
 
