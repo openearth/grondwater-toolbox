@@ -41,9 +41,7 @@
           :layer="wmsLayer"
         />
         <map-layer-info
-          v-for="wmsLayer in wmsLayers"
-          :key="`${wmsLayer.id}-info`"
-          :layer="wmsLayer"
+          :layers="wmsLayers"
         />
       </template>
 

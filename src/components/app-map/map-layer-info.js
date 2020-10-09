@@ -1,6 +1,5 @@
-import { mapMutations, mapState } from "vuex";
 import Mapbox from "mapbox-gl";
-import getFeatureInfo from '@/lib/get-feature-info';
+import getFeatureInfo from "@/lib/get-feature-info";
 
 export default {
   name: "map-layer-info",
@@ -9,31 +8,27 @@ export default {
   },
   inject: ["map"],
   props: {
-    layer: {
-      type: Object,
+    layers: {
+      type: Array,
       required: true,
     },
   },
-  computed: {
-    ...mapState({
-      activePopup: state => state.mapbox.activePopup
-    })
+  data() {
+    return {
+      activePopup: null,
+    };
   },
   created() {
-    this.addListener(this.layer);
+    this.addListener();
   },
   destroyed() {
     this.map.off("click", this.layer, this.cb);
     this.removeActivePopup();
   },
   methods: {
-    ...mapMutations({
-      setActivePopup: 'mapbox/setActivePopup'
-    }),
     removeActivePopup() {
       if (this.activePopup) {
         this.activePopup.remove();
-        this.setActivePopup(null);
       }
     },
     async cb(event) {
@@ -43,34 +38,32 @@ export default {
       const { width, height } = canvas;
 
       this.removeActivePopup();
-      
-      const loadingPopup = new Mapbox.Popup()
+
+      new Mapbox.Popup()
         .setLngLat(event.lngLat)
-        .setHTML('loading...')
+        .setHTML("loading...")
         .addTo(this.map);
 
-      const info = await getFeatureInfo({
-        layer: this.layer.id,
-        bounds,
-        x,
-        y,
-        width,
-        height,
-      });
-
-      loadingPopup.remove();
+      const info = this.layers
+        .map(
+          async (layer) =>
+            await getFeatureInfo({
+              layer: layer.id,
+              bounds,
+              x,
+              y,
+              width,
+              height,
+            })
+        )
+        .find((info) => info);
 
       if (info) {
         const { properties } = info;
         const { GRAY_INDEX } = properties;
         const text = GRAY_INDEX.toFixed(2);
 
-        const popup = new Mapbox.Popup()
-          .setLngLat(event.lngLat)
-          .setHTML(text)
-          .addTo(this.map);
-
-        this.setActivePopup(popup);
+        this.activePopup.setLngLat(event.lngLat).setHTML(text);
       }
     },
     addListener() {
