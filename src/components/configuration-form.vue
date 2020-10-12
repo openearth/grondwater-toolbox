@@ -88,7 +88,7 @@ export default {
           value >= 500 || 'Een grootte van minimaal 500 meter is vereist.',
       },
       selectedColor: "#f79502",
-      originalLineColor: null
+      originalLineColor: "#000" 
     };
   },
   computed: {
@@ -130,11 +130,9 @@ export default {
     handleMouseLeave(id) {
       const { map } = this.$root;
       map.setPaintProperty(id, 'line-color', this.originalLineColor);
-      this.originalLineColor = null;
     },
     handleMouseEnter(id) {
       const { map } = this.$root;
-      this.originalLineColor = map.getPaintProperty(id, 'line-color');
       map.setPaintProperty(id, 'line-color', this.selectedColor);
     }
   },
