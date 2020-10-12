@@ -107,41 +107,41 @@ const features = {
       commit('setLoadingWmsLayers', true);
 
       try {
-        const wmsLayers = await Promise.all(state.features.map(async (feature) => {
           const data = {
             functionId: "brl_gwmodel",
-            polygon: {
+            polygons: state.features.map(feature => ({
               "id": feature.id,
               "type": "Feature",
               "properties": {},
-              "geometry": feature.source.data
-            },
-            watersIdentifier: feature.watersIdentifier,
-            requestData,
+              "geometry": feature.source.data,
+              configuration: requestData.find(({ id }) => id === feature.id),
+              watersIdentifier: feature.watersIdentifier,
+            })),
           };
 
-          const { baseUrl, layerName, style } = await wps(data);
+         // TODO: add request to backend below
 
-          const layerObject = {
-            url: baseUrl,
-            layer: layerName,
-            id: layerName,
-            style,
-            roadsId: 'roads_1573136423177466'
-          };
+          // const { baseUrl, layerName, style } = await wps(data);
 
-          return {
-            ...generateWmsLayer(layerObject),
-            baseUrl
-          };
-        }));
+          // const layerObject = {
+          //   url: baseUrl,
+          //   layer: layerName,
+          //   id: layerName,
+          //   style,
+          //   roadsId: 'roads_1573136423177466'
+          // };
 
-        wmsLayers.forEach(wmsLayer => commit('addWmsLayer', wmsLayer));
+          // return {
+          //   ...generateWmsLayer(layerObject),
+          //   baseUrl
+          // };
+
+        // wmsLayers.forEach(wmsLayer => commit('addWmsLayer', wmsLayer));
       } catch (err) {
         commit('setError', 'Error fetching result', { root: true });
       }
 
-      commit('setLoadingWmsLayers', false);
+      // commit('setLoadingWmsLayers', false);
     }
   }
 };

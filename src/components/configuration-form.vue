@@ -11,11 +11,13 @@
 
     <v-card
       class="mb-6"
-      v-for="(layer, index) in wmsLayers"
+      v-for="(feature, index) in features"
       :key="index"
+      @mouseenter="handleMouseEnter(feature.id)"
+      @mouseleave="handleMouseLeave(feature.id)"
     >
       <v-form  @input="setFormValidity(index, $event)">
-        <v-card-title>{{ layer.name }}</v-card-title>
+        <v-card-title>Selectie {{ index + 1 }}</v-card-title>
 
         <v-card-text>
           <v-text-field
@@ -85,11 +87,13 @@ export default {
         minExtent: (value) =>
           value >= 500 || 'Een grootte van minimaal 500 meter is vereist.',
       },
+      selectedColor: "#f79502",
+      originalLineColor: null
     };
   },
   computed: {
     ...mapState({
-      wmsLayers: (state) => state.wmsLayers,
+      features: (state) => state.mapbox.features,
       loadingWmsLayers: (state) => state.mapbox.loadingWmsLayers,
     }),
     valid() {
@@ -97,26 +101,41 @@ export default {
     }
   },
   beforeMount() {
-    this.$set(this, 'forms', this.wmsLayers.map(() => ({
+    this.$set(this, 'forms', this.features.map(({ id }) => ({
+      id,
       riverbedDifference: '1',
       calculationLayer: 'Layer 1',
       visualisationLayer: 'Layer 1',
     })));
 
-    this.$set(this, 'formsValid', this.wmsLayers.map(() => true));
+    this.$set(this, 'formsValid', this.features.map(() => true));
   },
   methods: {
     ...mapMutations('mapbox', ['resetWmsLayers']),
     ...mapActions('mapbox', ['calculateResult']),
     calculate() {
+      const formattedForms = this.forms.map(form => ({
+        ...form,
+        extent: this.extent
+      }));
       this.resetWmsLayers();
-      this.calculateResult(this.forms);
+      this.calculateResult(formattedForms);
     },
     setFormValidity(index, value) {
       this.$set(this.formsValid, index, value);
     },
     setExtentValidity(hasError) {
       this.extentValid = !hasError;
+    },
+    handleMouseLeave(id) {
+      const { map } = this.$root;
+      map.setPaintProperty(id, 'line-color', this.originalLineColor);
+      this.originalLineColor = null;
+    },
+    handleMouseEnter(id) {
+      const { map } = this.$root;
+      this.originalLineColor = map.getPaintProperty(id, 'line-color');
+      map.setPaintProperty(id, 'line-color', this.selectedColor);
     }
   },
 };
