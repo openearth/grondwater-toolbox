@@ -1,5 +1,5 @@
 <template>
-  <div class="pa-4">
+  <div class="pa-4 legal">
     <div v-html="content" />
   </div>
 </template>
@@ -15,3 +15,9 @@ export default {
   }
 };
 </script>
+
+<style>
+.legal h2 {
+  margin-bottom: 0.5rem;
+}
+</style>
