@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 import Selection from '@/views/selection';
 import Calculation from '@/views/calculation';
 import Introduction from '@/views/introduction';
+import Legal from '@/views/legal';
 
 const routes = [
   {
@@ -13,6 +14,11 @@ const routes = [
     path: "/introduction",
     component: Introduction,
     name: "introduction",
+  },
+  {
+    path: "/legal",
+    component: Legal,
+    name: "legal",
   },
   {
     path: "/selection",
