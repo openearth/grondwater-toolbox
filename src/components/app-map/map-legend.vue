@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import legendUrl from '@/lib/legend-url'
+import legendUrl from '@/lib/legend-url';
 
 export default {
   props: {
