@@ -8,7 +8,7 @@ import Legal from '@/views/legal';
 const routes = [
   {
     path: "/",
-    redirect: "/introduction",
+    redirect: "/selection",
   },
   {
     path: "/introduction",
