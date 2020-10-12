@@ -2,36 +2,23 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Selection from '@/views/selection';
 import Calculation from '@/views/calculation';
-import Introduction from '@/views/introduction';
-import Legal from '@/views/legal';
 
-const routes = [
-  {
-    path: "/",
-    redirect: "/introduction",
+const routes = [{
+    path: '/',
+    redirect: '/selection'
   },
   {
-    path: "/introduction",
-    component: Introduction,
-    name: "introduction",
-  },
-  {
-    path: "/legal",
-    component: Legal,
-    name: "legal",
-  },
-  {
-    path: "/selection",
+    path: '/selection',
     component: Selection,
-    name: "selection",
-    meta: { step: 1 },
+    name: 'selection',
+    meta: { step: 1 }
   },
   {
-    path: "/calculation",
+    path: '/calculation',
     component: Calculation,
-    name: "calculation",
-    meta: { step: 2 },
-  },
+    name: 'calculation',
+    meta: { step: 2 }
+  }
 ];
 
 Vue.use(VueRouter);
