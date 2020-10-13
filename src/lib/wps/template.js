@@ -4,7 +4,7 @@ export const xmlRequestTemplate = ({ functionId, requestData, polygon, watersIde
     <ows:Identifier xmlns:ows="http://www.opengis.net/ows/1.1">${functionId}</ows:Identifier>
     <wps:DataInputs>
       ${ wpsInput('waters_identifier', watersIdentifier) }
-      ${ requestData ? wpsInput('configuration', JSON.stringify(requestData)) : '' }
+      ${ requestData ? wpsInput('configuration', requestData.map(JSON.stringify).join(',')) : '' }
       ${ polygon ? wpsInput('geojson_area', JSON.stringify(polygon)) : '' }
       ${ filterData ? wpsInput('keywords', JSON.stringify(filterData)): ''}
       ${ cswUrls ? wpsInput('csw_url', JSON.stringify(cswUrls)): ''}
@@ -18,8 +18,8 @@ export const xmlRequestTemplate = ({ functionId, requestData, polygon, watersIde
       <wps:RawDataOutput mimeType="application/json">
         <ows:Identifier xmlns:ows="http://www.opengis.net/ows/1.1">output_json</ows:Identifier>
       </wps:RawDataOutput>
-    </wps:ResponseForm>
-  </wps:Execute>
+      </wps:ResponseForm>
+    </wps:Execute>
 `;
 
 function wpsInput(identifier, data) {
