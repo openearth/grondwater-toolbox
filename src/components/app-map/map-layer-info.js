@@ -20,10 +20,10 @@ export default {
     })
   },
   created() {
-    this.addListener(this.layer);
+    this.addListener();
   },
   destroyed() {
-    this.map.off("click", this.layer, this.cb);
+    this.removeListener();
     this.removeActivePopup();
   },
   methods: {
@@ -76,5 +76,8 @@ export default {
     addListener() {
       this.map.on("click", this.cb);
     },
+    removeListener() {
+      this.map.off("click", this.cb);
+    }
   },
 };
