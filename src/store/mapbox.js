@@ -105,7 +105,7 @@ const features = {
       try {
           const data = {
             functionId: "brl_gwmodel",
-            watersIdentifier: String(state.features.map(feature => feature.watersIdentifier).join(',')),
+            watersIdentifier: requestData.map(({ id }) => id).join(','),
             requestData: requestData
           };
 

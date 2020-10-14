@@ -2,7 +2,7 @@
   <div class="pa-4 d-flex flex-column">
     <h2>Configuratie</h2>
 
-    <configuration-form />
+    <selection-configuration />
 
     <sidebar-footer>
       <v-btn slot="start" class="primary" :to="{ name: 'selection' }">Vorige</v-btn>
@@ -13,14 +13,14 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import SidebarFooter from '@/components/sidebar-footer';
-import ConfigurationForm from '@/components/configuration-form';
+import SelectionConfiguration from '@/components/selection-configuration';
 import bbox from '@turf/bbox';
 import { featureCollection } from '@turf/helpers';
 
 export default {
   components: {
     SidebarFooter,
-    ConfigurationForm
+    SelectionConfiguration
   },
   computed: {
     ...mapState({

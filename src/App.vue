@@ -29,9 +29,9 @@
       </v-menu>
     </v-app-bar>
 
-    <v-content>
+    <v-main>
       <app-map />
-    </v-content>
+    </v-main>
 
     <welcome-dialog />
   </v-app>
