@@ -1,30 +1,27 @@
 <template>
   <v-form>
     <v-text-field
-      v-model="riverbedDifference"
+      v-model="formData.riverbedDifference"
       type="number"
       min="-10"
       max="10"
       label="Verschil in rivierbodemhoogte (m)"
       :rules="[rules.required, rules.notZero, rules.minMaxDifference]"
       :disabled="disabled"
-      @input="handleInput"
     />
 
     <v-select
-      v-model="calculationLayer"
+      v-model="formData.calculationLayer"
       :items="calculationLayers.map((l) => `Layer ${l}`)"
       label="Laag van berekening"
       :disabled="disabled"
-      @input="handleInput"
     />
 
     <v-select
-      v-model="visualisationLayer"
+      v-model="formData.visualisationLayer"
       :items="visualisationLayers.map((l) => `Layer ${l}`)"
       label="Laag van visualisatie"
       :disabled="disabled"
-      @input="handleInput"
     />
   </v-form>
 </template>
@@ -35,13 +32,19 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    },
+    value: {
+      type: Object,
+      required: true
     }
   },
   data() {
     return {
-      riverbedDifference: '1',
-      calculationLayer: 'Layer 1',
-      visualisationLayer: 'Layer 1',
+      formData: {
+        riverbedDifference: '1',
+        calculationLayer: 'Layer 1',
+        visualisationLayer: 'Layer 1',
+      },
       calculationLayers: [1, 2, 3, 4, 5, 6, 7],
       visualisationLayers: [1, 2, 3, 4, 5, 6, 7],
       rules: {
@@ -53,22 +56,13 @@ export default {
       },
     };
   },
-  computed: {
-    data() {
-      return  {
-        riverbedDifference: this.riverbedDifference,
-        calculationLayer: this.calculationLayer,
-        visualisationLayer: this.visualisationLayer
-      };
+  watch: {
+    formData() {
+      this.$emit('input', this.formData);
     }
   },
-  created() {
-    this.$emit('input', this.data);
+  beforeMount() {
+    this.formData = this.value;
   },
-  methods: {
-    handleInput() {
-      this.$emit('input', this.data);
-    }
-  }
 };
 </script>

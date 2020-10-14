@@ -99,7 +99,7 @@ const features = {
 
       commit('selections/setLoadingSelection', { id: feature.id, value: false }, { root: true });
     },
-    async calculateResult({ commit, state }, requestData) {
+    async calculateResult({ commit }, requestData) {
       commit("setLoadingWmsLayers", true);
 
       try {

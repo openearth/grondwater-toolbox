@@ -11,15 +11,23 @@
 
     <configuration-card
       class="mb-6"
-      v-for="(feature, index) in features"
-      :key="index"
-      :id="feature.watersIdentifier"
+      v-for="(form, index) in forms"
+      :key="form.id"
+      :id="form.id"
       :title="`Selection ${index}`"
       :disabled="disabled"
       @mouseenter="handleMouseEnter(feature.id)"
       @mouseleave="handleMouseLeave(feature.id)"
       @input="handleInput"
-    />
+    >
+      <configuration-form
+        v-for="formForm in form.forms"
+        :key="formForm.id"
+        :id="formForm.id"
+        :disabled="disabled"
+        v-model="formForm.data"
+      />
+    </configuration-card>
 
     <div class="d-flex justify-end">
       <v-btn
@@ -35,12 +43,15 @@
 </template>
 
 <script>
-import ConfigurationCard from '@/components/configuration-card';
+import { v4 as uuid } from 'uuid';
 import { mapActions, mapMutations, mapState } from 'vuex';
+import ConfigurationCard from '@/components/configuration-card';
+import ConfigurationForm from '@/components/configuration-form';
 
 export default {
   components: {
-    ConfigurationCard
+    ConfigurationCard,
+    ConfigurationForm
   },
   props: {
     disabled: {
@@ -51,11 +62,11 @@ export default {
   data() {
     return {
       extent: '1000',
-      forms: {}, 
+      forms: [],
       formsValid: [],
       extentValid: true,
-      selectedColor: "#f79502",
-      originalLineColor: "#000",
+      selectedColor: '#f79502',
+      originalLineColor: '#000',
       rules: {
         required: (value) => !!value || 'Benodigd.',
         minExtent: (value) =>
@@ -69,28 +80,44 @@ export default {
       loadingWmsLayers: (state) => state.mapbox.loadingWmsLayers,
     }),
     valid() {
-      return this.formsValid.every(valid => valid) && this.extentValid;
+      return this.formsValid.every((valid) => valid) && this.extentValid;
     },
     formattedForms() {
-      return Object
-        .entries(this.forms)
-        .reduce((acc, entry) => {
-          const [key, forms] = entry;
+      return this.forms.reduce((acc, feature) => {
+        const { forms, id } = feature;
 
-          forms.forEach(form => {
-            acc.push({
-              id: key,
-              extent: this.extent,
-              ...form,
-            });
+        forms.forEach((form) => {
+          acc.push({
+            id,
+            extent: this.extent,
+            ...form,
           });
+        });
 
-          return acc;
-        }, []);
-    }
+        return acc;
+      }, []);
+    },
   },
   beforeMount() {
-    this.$set(this, 'formsValid', this.features.map(() => true));
+    this.$set(this, 'forms', this.features.map((feature) => ({
+      id: feature.watersIdentifier,
+      forms: [
+        {
+          id: uuid(),
+          data: {
+            riverbedDifference: '1',
+            calculationLayer: 'Layer 1',
+            visualisationLayer: 'Layer 1',
+          }
+        },
+      ],
+    })));
+
+    this.$set(
+      this,
+      'formsValid',
+      this.features.map(() => true)
+    );
   },
   methods: {
     ...mapMutations('mapbox', ['resetWmsLayers']),
@@ -113,13 +140,12 @@ export default {
       const { map } = this.$root;
       map.setPaintProperty(id, 'line-color', this.selectedColor);
     },
-    handleInput({ id, index, data }) {
-      if (!this.forms[id]) {
-        this.forms[id] = []; 
-      } 
+    handleInput({ id, formId, data }) {
+      const feature = this.forms.find(({ id }) === id);
+      const form = feature && feature.forms.find(({ id }) => id === formId);    
 
-      this.forms[id][index] = data;
-    }
+      form.data = data;
+    },
   },
 };
 </script>
