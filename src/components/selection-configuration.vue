@@ -11,21 +11,21 @@
 
     <configuration-card
       class="mb-6"
-      v-for="(form, index) in forms"
-      :key="form.id"
-      :id="form.id"
+      v-for="(formGroup, index) in formGroups"
+      :key="formGroup.id"
+      :id="formGroup.id"
       :title="`Selection ${index}`"
       :disabled="disabled"
-      @mouseenter="handleMouseEnter(feature.id)"
-      @mouseleave="handleMouseLeave(feature.id)"
+      @mouseenter="handleMouseEnter(formGroup.id)"
+      @mouseleave="handleMouseLeave(formGroup.id)"
       @input="handleInput"
     >
       <configuration-form
-        v-for="formForm in form.forms"
-        :key="formForm.id"
-        :id="formForm.id"
+        v-for="form in formGroup.forms"
+        :key="form.id"
+        :id="form.id"
         :disabled="disabled"
-        v-model="formForm.data"
+        v-model="form.data"
       />
     </configuration-card>
 
@@ -62,7 +62,7 @@ export default {
   data() {
     return {
       extent: '1000',
-      forms: [],
+      formGroups: [],
       formsValid: [],
       extentValid: true,
       selectedColor: '#f79502',
@@ -83,7 +83,7 @@ export default {
       return this.formsValid.every((valid) => valid) && this.extentValid;
     },
     formattedForms() {
-      return this.forms.reduce((acc, feature) => {
+      return this.formGroups.reduce((acc, feature) => {
         const { forms, id } = feature;
 
         forms.forEach((form) => {
@@ -99,7 +99,7 @@ export default {
     },
   },
   beforeMount() {
-    this.$set(this, 'forms', this.features.map((feature) => ({
+    this.$set(this, 'formGroups', this.features.map((feature) => ({
       id: feature.watersIdentifier,
       forms: [
         {
