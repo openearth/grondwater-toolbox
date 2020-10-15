@@ -21,15 +21,15 @@
     >
       <configuration-form
         v-for="(form, index) in formGroup.forms"
+        v-model="form.data"
         :key="form.id"
         :id="form.id"
         :disabled="disabled"
         :deletable="index !== 0"
-        v-model="form.data"
         @delete="handleDeleteForm(formGroup.id, $event)"
       />
 
-      <v-btn @click="addForm(formGroup.forms)" icon-start>
+      <v-btn @click="addForm(formGroup.id)" icon-start>
         <v-icon left>mdi-plus</v-icon> Berekening
       </v-btn>
     </configuration-card>
@@ -156,7 +156,11 @@ export default {
         },
       };
     },
-    addForm(forms) {
+    addForm(id) {
+      const { forms } = this.formGroups.find(
+        (formGroup) => id === formGroup.id 
+      );
+
       forms.push(this.createForm());
     },
     handleDeleteForm(formGroupId, id) {
