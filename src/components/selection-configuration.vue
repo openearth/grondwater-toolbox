@@ -27,6 +27,7 @@
         :disabled="disabled"
         :deletable="index !== 0"
         @delete="handleDeleteForm(formGroup.id, $event)"
+        @validated="setFormValidity(formGroup.id, $event)"
       />
 
       <v-btn @click="addForm(formGroup.id)" icon-start>
@@ -68,7 +69,6 @@ export default {
     return {
       extent: '1000',
       formGroups: [],
-      formsValid: [],
       extentValid: true,
       selectedColor: '#f79502',
       originalLineColor: '#000',
@@ -85,7 +85,9 @@ export default {
       loadingWmsLayers: (state) => state.mapbox.loadingWmsLayers,
     }),
     valid() {
-      return this.formsValid.every((valid) => valid) && this.extentValid;
+      return this.formGroups.every(formGroup => {
+        return formGroup.forms.every(form => form.valid);
+      }) && this.extentValid;
     },
     formattedForms() {
       return this.formGroups.reduce((acc, feature) => {
@@ -112,12 +114,6 @@ export default {
         forms: [this.createForm()],
       }))
     );
-
-    this.$set(
-      this,
-      'formsValid',
-      this.features.map(() => true)
-    );
   },
   methods: {
     ...mapMutations('mapbox', ['resetWmsLayers']),
@@ -126,8 +122,13 @@ export default {
       this.resetWmsLayers();
       this.calculateResult(this.formattedForms);
     },
-    setFormValidity(index, value) {
-      this.$set(this.formsValid, index, value);
+    setFormValidity(formGroupId, { id, valid }) {
+      const formGroup = this.formGroups.find(
+        ({ id }) => id === formGroupId
+      );
+      const form = formGroup.forms.find(f => f.id === id);
+
+      form.valid = valid;
     },
     setExtentValidity(hasError) {
       this.extentValid = !hasError;
@@ -149,10 +150,11 @@ export default {
     createForm() {
       return {
         id: uuid(),
+        valid: true,
         data: {
           riverbedDifference: '1',
-          calculationLayer: 'Layer 1',
-          visualisationLayer: 'Layer 1',
+          calculationLayer: 1,
+          visualisationLayer: 1,
         },
       };
     },

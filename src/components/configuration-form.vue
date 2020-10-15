@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-form class="d-flex">
+    <v-form class="d-flex" v-model="valid">
       <div :style="{ flex: 1 }">
         <v-text-field
           v-model="formData.riverbedDifference"
@@ -14,18 +14,17 @@
 
         <v-select
           v-model="formData.calculationLayer"
-          :items="calculationLayers.map((l) => `Layer ${l}`)"
+          :items="calculationLayers.map((l) => ({ text: `Layer ${l}`, value: l}))"
           label="Laag van berekening"
           :disabled="disabled"
         />
 
         <v-select
           v-model="formData.visualisationLayer"
-          :items="visualisationLayers.map((l) => `Layer ${l}`)"
+          :items="visualisationLayers.map((l) => ({ text: `Layer ${l}`, value: l}))"
           label="Laag van visualisatie"
           :disabled="disabled"
         />
-
       </div>
       <div
         v-if="deletable"
@@ -62,8 +61,8 @@ export default {
     return {
       formData: {
         riverbedDifference: '1',
-        calculationLayer: 'Layer 1',
-        visualisationLayer: 'Layer 1',
+        calculationLayer: 1,
+        visualisationLayer: 1,
       },
       calculationLayers: [1, 2, 3, 4, 5, 6, 7],
       visualisationLayers: [1, 2, 3, 4, 5, 6, 7],
@@ -74,11 +73,15 @@ export default {
           (value >= -10 && value <= 10) ||
           'Waarde moet tussen -10 en 10 meter vallen.',
       },
+      valid: false
     };
   },
   watch: {
     formData() {
       this.$emit('input', this.formData);
+    },
+    valid() {
+      this.$emit('validated', { id: this.id, valid: this.valid });
     }
   },
   beforeMount() {
