@@ -63,7 +63,7 @@ export default {
         )
       );
 
-      this.$root.map.fitBounds(bounds, { padding: 50 });
+      this.$root.map.fitBounds(bounds, { padding: 150 });
     }
   }
 };
