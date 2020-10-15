@@ -6,6 +6,7 @@ const initialState = () => ({
   features: [],
   wmsLayers: [],
   loadingWmsLayers: false,
+  activePopup: null
 });
 
 const features = {
@@ -31,6 +32,9 @@ const features = {
     },
     setLoadingWmsLayers(state, value) {
       state.loadingWmsLayers = value;
+    },
+    setActivePopup(state, popup) {
+      state.activePopup = popup;
     },
     reset(state) {
       Object.assign(state, initialState());

@@ -4,6 +4,8 @@
 
     <selection-configuration />
 
+    <p v-if="wmsLayers.length"><v-icon>mdi-information-outline</v-icon> Click on a point on the map to get the exact value</p>
+
     <sidebar-footer>
       <v-btn slot="start" class="primary" :to="{ name: 'selection' }">Vorige</v-btn>
     </sidebar-footer>
@@ -26,6 +28,7 @@ export default {
     ...mapState({
       selections: state => state.selections.selections,
       features: state => state.mapbox.features,
+      wmsLayers: state => state.mapbox.wmsLayers
     })
   },
   created() {

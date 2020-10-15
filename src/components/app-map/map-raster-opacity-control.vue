@@ -58,7 +58,7 @@ export default {
   border-radius: 4px;
   padding: 1rem;
   position: absolute;
-  left: 6rem;
+  left: 7rem;
   bottom: 2.25rem;
 }
 
