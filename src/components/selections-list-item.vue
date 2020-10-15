@@ -12,7 +12,13 @@
           />
         </div>
 
-        <v-btn v-else text icon @click="onDelete">
+        <v-btn
+          v-else
+          text
+          icon
+          title="delete selection"
+          @click="onDelete"
+        >
           <v-icon>mdi-delete</v-icon>
         </v-btn>
       </v-list-item-title>

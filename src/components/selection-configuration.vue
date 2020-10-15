@@ -30,7 +30,11 @@
         @validated="setFormValidity(formGroup.id, $event)"
       />
 
-      <v-btn @click="addForm(formGroup.id)" icon-start>
+      <v-btn
+        @click="addForm(formGroup.id)"
+        icon-start
+        title="berekening toevoegen"
+      >
         <v-icon left>mdi-plus</v-icon> Berekening
       </v-btn>
     </configuration-card>
@@ -68,6 +72,7 @@ export default {
   data() {
     return {
       extent: '1000',
+      // formGroups contains all forms that belong to a selection
       formGroups: [],
       extentValid: true,
       selectedColor: '#f79502',
@@ -84,11 +89,13 @@ export default {
       features: (state) => state.mapbox.features,
       loadingWmsLayers: (state) => state.mapbox.loadingWmsLayers,
     }),
+    // iterates through all forms and checks if every one of them is valid
     valid() {
       return this.formGroups.every(formGroup => {
         return formGroup.forms.every(form => form.valid);
       }) && this.extentValid;
     },
+    // prepares form data to be sent to the 'calculate' action
     formattedForms() {
       return this.formGroups.reduce((acc, feature) => {
         const { forms, id } = feature;
@@ -148,6 +155,7 @@ export default {
       form.data = data;
     },
     createForm() {
+      // returns an object with a generated id and the validity + formData
       return {
         id: uuid(),
         valid: true,

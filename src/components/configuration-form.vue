@@ -30,7 +30,11 @@
         v-if="deletable"
         class="pl-4 pt-4"
       >
-        <v-btn icon @click="handleDelete"><v-icon>mdi-delete</v-icon></v-btn>
+        <v-btn
+          icon
+          @click="handleDelete"
+          title="delete form"
+        ><v-icon>mdi-delete</v-icon></v-btn>
       </div>
     </v-form>
     <v-divider class="mb-4" />
