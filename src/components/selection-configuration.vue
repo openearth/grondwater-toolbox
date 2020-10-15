@@ -18,15 +18,20 @@
       :disabled="disabled"
       @mouseenter="handleMouseEnter(formGroup.id)"
       @mouseleave="handleMouseLeave(formGroup.id)"
-      @input="handleInput"
     >
       <configuration-form
         v-for="form in formGroup.forms"
         :key="form.id"
-        :id="form.id"
         :disabled="disabled"
         v-model="form.data"
       />
+
+      <v-btn
+        @click="addForm(formGroup.forms)"
+        icon-start
+      >
+        <v-icon left>mdi-plus</v-icon> Berekening
+      </v-btn>
     </configuration-card>
 
     <div class="d-flex justify-end">
@@ -90,7 +95,7 @@ export default {
           acc.push({
             id,
             extent: this.extent,
-            ...form,
+            ...form.data,
           });
         });
 
@@ -101,16 +106,7 @@ export default {
   beforeMount() {
     this.$set(this, 'formGroups', this.features.map((feature) => ({
       id: feature.watersIdentifier,
-      forms: [
-        {
-          id: uuid(),
-          data: {
-            riverbedDifference: '1',
-            calculationLayer: 'Layer 1',
-            visualisationLayer: 'Layer 1',
-          }
-        },
-      ],
+      forms: [this.createForm()],
     })));
 
     this.$set(
@@ -146,6 +142,19 @@ export default {
 
       form.data = data;
     },
+    createForm() {
+      return {
+        id: uuid(),
+        data: {
+          riverbedDifference: '1',
+          calculationLayer: 'Layer 1',
+          visualisationLayer: 'Layer 1',
+        }
+      };
+    },
+    addForm(forms) {
+      forms.push(this.createForm());
+    }
   },
 };
 </script>

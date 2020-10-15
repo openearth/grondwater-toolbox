@@ -23,6 +23,8 @@
       label="Laag van visualisatie"
       :disabled="disabled"
     />
+
+    <v-divider class="mb-4" />
   </v-form>
 </template>
 
@@ -36,7 +38,7 @@ export default {
     value: {
       type: Object,
       required: true
-    }
+    },
   },
   data() {
     return {

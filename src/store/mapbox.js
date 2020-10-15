@@ -105,7 +105,6 @@ const features = {
       try {
           const data = {
             functionId: "brl_gwmodel",
-            watersIdentifier: requestData.map(({ id }) => id).join(','),
             requestData: requestData
           };
 
