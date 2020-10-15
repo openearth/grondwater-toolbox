@@ -20,16 +20,16 @@
       @mouseleave="handleMouseLeave(formGroup.id)"
     >
       <configuration-form
-        v-for="form in formGroup.forms"
+        v-for="(form, index) in formGroup.forms"
         :key="form.id"
+        :id="form.id"
         :disabled="disabled"
+        :deletable="index !== 0"
         v-model="form.data"
+        @delete="handleDeleteForm(formGroup.id, $event)"
       />
 
-      <v-btn
-        @click="addForm(formGroup.forms)"
-        icon-start
-      >
+      <v-btn @click="addForm(formGroup.forms)" icon-start>
         <v-icon left>mdi-plus</v-icon> Berekening
       </v-btn>
     </configuration-card>
@@ -56,7 +56,7 @@ import ConfigurationForm from '@/components/configuration-form';
 export default {
   components: {
     ConfigurationCard,
-    ConfigurationForm
+    ConfigurationForm,
   },
   props: {
     disabled: {
@@ -104,10 +104,14 @@ export default {
     },
   },
   beforeMount() {
-    this.$set(this, 'formGroups', this.features.map((feature) => ({
-      id: feature.watersIdentifier,
-      forms: [this.createForm()],
-    })));
+    this.$set(
+      this,
+      'formGroups',
+      this.features.map((feature) => ({
+        id: feature.watersIdentifier,
+        forms: [this.createForm()],
+      }))
+    );
 
     this.$set(
       this,
@@ -137,8 +141,8 @@ export default {
       map.setPaintProperty(id, 'line-color', this.selectedColor);
     },
     handleInput({ id, formId, data }) {
-      const feature = this.forms.find(({ id }) === id);
-      const form = feature && feature.forms.find(({ id }) => id === formId);    
+      const feature = this.forms.find({ id } === id);
+      const form = feature && feature.forms.find(({ id }) => id === formId);
 
       form.data = data;
     },
@@ -149,15 +153,19 @@ export default {
           riverbedDifference: '1',
           calculationLayer: 'Layer 1',
           visualisationLayer: 'Layer 1',
-        }
+        },
       };
     },
     addForm(forms) {
       forms.push(this.createForm());
-    }
+    },
+    handleDeleteForm(formGroupId, id) {
+      const formGroup = this.formGroups.find(
+        ({ id }) => id === formGroupId
+      );
+
+      formGroup.forms = formGroup.forms.filter(form => form.id !== id);
+    },
   },
 };
 </script>
-
-<style>
-</style>

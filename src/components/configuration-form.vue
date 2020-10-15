@@ -1,36 +1,50 @@
 <template>
-  <v-form>
-    <v-text-field
-      v-model="formData.riverbedDifference"
-      type="number"
-      min="-10"
-      max="10"
-      label="Verschil in rivierbodemhoogte (m)"
-      :rules="[rules.required, rules.notZero, rules.minMaxDifference]"
-      :disabled="disabled"
-    />
+  <div>
+    <v-form class="d-flex">
+      <div :style="{ flex: 1 }">
+        <v-text-field
+          v-model="formData.riverbedDifference"
+          type="number"
+          min="-10"
+          max="10"
+          label="Verschil in rivierbodemhoogte (m)"
+          :rules="[rules.required, rules.notZero, rules.minMaxDifference]"
+          :disabled="disabled"
+        />
 
-    <v-select
-      v-model="formData.calculationLayer"
-      :items="calculationLayers.map((l) => `Layer ${l}`)"
-      label="Laag van berekening"
-      :disabled="disabled"
-    />
+        <v-select
+          v-model="formData.calculationLayer"
+          :items="calculationLayers.map((l) => `Layer ${l}`)"
+          label="Laag van berekening"
+          :disabled="disabled"
+        />
 
-    <v-select
-      v-model="formData.visualisationLayer"
-      :items="visualisationLayers.map((l) => `Layer ${l}`)"
-      label="Laag van visualisatie"
-      :disabled="disabled"
-    />
+        <v-select
+          v-model="formData.visualisationLayer"
+          :items="visualisationLayers.map((l) => `Layer ${l}`)"
+          label="Laag van visualisatie"
+          :disabled="disabled"
+        />
 
+      </div>
+      <div
+        v-if="deletable"
+        class="pl-4 pt-4"
+      >
+        <v-btn icon @click="handleDelete"><v-icon>mdi-delete</v-icon></v-btn>
+      </div>
+    </v-form>
     <v-divider class="mb-4" />
-  </v-form>
+  </div>
 </template>
 
 <script>
 export default {
   props: {
+    id: {
+      type: String,
+      required: true
+    },
     disabled: {
       type: Boolean,
       default: false
@@ -39,6 +53,10 @@ export default {
       type: Object,
       required: true
     },
+    deletable: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
@@ -66,5 +84,10 @@ export default {
   beforeMount() {
     this.formData = this.value;
   },
+  methods: {
+    handleDelete() {
+      this.$emit('delete', this.id);
+    }
+  }
 };
 </script>
