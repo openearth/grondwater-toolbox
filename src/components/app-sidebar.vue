@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer clipped app permanent class="pa-2" width="400">
+  <v-navigation-drawer clipped app permanent class="pa-2" width="550">
     <v-row dense class="fill-height">
       <v-col :cols="12" class="fill-height d-flex flex-column">
         <sidebar-progress v-if="this.$route.meta.step" class="px-4"/>

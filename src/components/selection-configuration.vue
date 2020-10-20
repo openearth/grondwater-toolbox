@@ -1,5 +1,5 @@
 <template>
-  <div class="py-6">
+  <div class="selection-configuration py-6">
     <v-text-field
       v-model="extent"
       type="number"
@@ -19,21 +19,39 @@
       @mouseenter="handleMouseEnter(formGroup.id)"
       @mouseleave="handleMouseLeave(formGroup.id)"
     >
-      <configuration-form
-        v-for="(form, index) in formGroup.forms"
-        v-model="form.data"
-        :key="form.id"
-        :id="form.id"
-        :disabled="disabled"
-        :deletable="index !== 0"
-        @delete="handleDeleteForm(formGroup.id, $event)"
-        @validated="setFormValidity(formGroup.id, $event)"
-      />
+      <div class="selection-configuration__table">
+        <v-row no-gutters>
+          <v-col cols="12" sm="3">
+            <v-card class="pa-2" outlined tile>Maatregel</v-card>
+          </v-col>
+          <v-col cols="12" sm="2">
+            <v-card class="pa-2" outlined tile>Verschil</v-card>
+          </v-col>
+          <v-col cols="12" sm="3">
+            <v-card class="pa-2" outlined tile>Berekening</v-card>
+          </v-col>
+          <v-col cols="12" sm="3">
+            <v-card class="pa-2" outlined tile>Visualisatie</v-card>
+          </v-col>
+        </v-row>
+
+        <configuration-form
+          v-for="(form, index) in formGroup.forms"
+          v-model="form.data"
+          :key="form.id"
+          :id="form.id"
+          :disabled="disabled"
+          :deletable="index !== 0"
+          @delete="handleDeleteForm(formGroup.id, $event)"
+          @validated="setFormValidity(formGroup.id, $event)"
+        />
+      </div>
 
       <v-btn
-        @click="addForm(formGroup.id)"
         icon-start
+        class="mt-4"
         title="berekening toevoegen"
+        @click="addForm(formGroup.id)"
       >
         <v-icon left>mdi-plus</v-icon> Berekening
       </v-btn>
@@ -91,9 +109,11 @@ export default {
     }),
     // iterates through all forms and checks if every one of them is valid
     valid() {
-      return this.formGroups.every(formGroup => {
-        return formGroup.forms.every(form => form.valid);
-      }) && this.extentValid;
+      return (
+        this.formGroups.every((formGroup) => {
+          return formGroup.forms.every((form) => form.valid);
+        }) && this.extentValid
+      );
     },
     // prepares form data to be sent to the 'calculate' action
     formattedForms() {
@@ -101,10 +121,20 @@ export default {
         const { forms, id } = feature;
 
         forms.forEach((form) => {
+          const { data } = form;
+
+          const formattedData = {
+            ...data,
+            [data.measure]: data.difference
+          };
+
+          delete formattedData.measure;
+          delete formattedData.difference;
+
           acc.push({
             id,
             extent: this.extent,
-            ...form.data,
+            ...formattedData,
           });
         });
 
@@ -130,10 +160,8 @@ export default {
       this.calculateResult(this.formattedForms);
     },
     setFormValidity(formGroupId, { id, valid }) {
-      const formGroup = this.formGroups.find(
-        ({ id }) => id === formGroupId
-      );
-      const form = formGroup.forms.find(f => f.id === id);
+      const formGroup = this.formGroups.find(({ id }) => id === formGroupId);
+      const form = formGroup.forms.find((f) => f.id === id);
 
       form.valid = valid;
     },
@@ -160,26 +188,27 @@ export default {
         id: uuid(),
         valid: true,
         data: {
-          riverbedDifference: '1',
+          difference: '1',
           calculationLayer: 1,
           visualisationLayer: 1,
+          measure: 'riverbedDifference'
         },
       };
     },
     addForm(id) {
       const { forms } = this.formGroups.find(
-        (formGroup) => id === formGroup.id 
+        (formGroup) => id === formGroup.id
       );
 
       forms.push(this.createForm());
     },
     handleDeleteForm(formGroupId, id) {
-      const formGroup = this.formGroups.find(
-        ({ id }) => id === formGroupId
-      );
+      const formGroup = this.formGroups.find(({ id }) => id === formGroupId);
 
-      formGroup.forms = formGroup.forms.filter(form => form.id !== id);
+      formGroup.forms = formGroup.forms.filter((form) => form.id !== id);
     },
   },
 };
 </script>
+
+<style></style>

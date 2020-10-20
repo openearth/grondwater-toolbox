@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card outlined>
     <v-card-title>{{ title }}</v-card-title>
 
     <v-card-text>

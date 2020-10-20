@@ -1,44 +1,64 @@
 <template>
-  <div>
-    <v-form class="d-flex" v-model="valid">
-      <div :style="{ flex: 1 }">
-        <v-text-field
-          v-model="formData.riverbedDifference"
-          type="number"
-          min="-10"
-          max="10"
-          label="Verschil in rivierbodemhoogte (m)"
-          :rules="[rules.required, rules.notZero, rules.minMaxDifference]"
-          :disabled="disabled"
-        />
-
-        <v-select
-          v-model="formData.calculationLayer"
-          :items="calculationLayers.map((l) => ({ text: `Layer ${l}`, value: l}))"
-          label="Laag van berekening"
-          :disabled="disabled"
-        />
-
-        <v-select
-          v-model="formData.visualisationLayer"
-          :items="visualisationLayers.map((l) => ({ text: `Layer ${l}`, value: l}))"
-          label="Laag van visualisatie"
-          :disabled="disabled"
-        />
-      </div>
-      <div
-        v-if="deletable"
-        class="pl-4 pt-4"
-      >
-        <v-btn
-          icon
-          @click="handleDelete"
-          title="delete form"
-        ><v-icon>mdi-delete</v-icon></v-btn>
-      </div>
-    </v-form>
-    <v-divider class="mb-4" />
-  </div>
+  <v-form v-model="valid" class="configuration-form border">
+    <v-row no-gutters>
+      <v-col cols="12" sm="3">
+        <v-card class="pa-2 full-height d-flex align-center" outlined tile>
+          <v-select
+            v-model="formData.measure"
+            class="hide-label"
+            label="Laag van berekening"
+            :items="measures"
+            :disabled="disabled"
+          />
+        </v-card>
+      </v-col>
+      <v-col cols="12" sm="2">
+        <v-card class="pa-2 full-height d-flex align-center" outlined tile>
+          <v-text-field
+            v-model="formData.difference"
+            class="hide-label"
+            type="number"
+            min="-10"
+            max="10"
+            label="Verschil in rivierbodemhoogte (m)"
+            :rules="[rules.required, rules.notZero, rules.minMaxDifference]"
+            :disabled="disabled"
+          />
+        </v-card>
+      </v-col>
+      <v-col cols="12" sm="3">
+        <v-card class="pa-2 full-height d-flex align-center" outlined tile>
+          <v-select
+            v-model="formData.calculationLayer"
+            class="hide-label"
+            label="Laag van berekening"
+            :items="calculationLayers.map((l) => ({ text: `Layer ${l}`, value: l}))"
+            :disabled="disabled"
+          />
+        </v-card>
+      </v-col>
+      <v-col cols="12" sm="3">
+        <v-card class="pa-2 full-height d-flex align-center" outlined tile>
+          <v-select
+            v-model="formData.visualisationLayer"
+            class="hide-label"
+            label="Laag van visualisatie"
+            :items="visualisationLayers.map((l) => ({ text: `Layer ${l}`, value: l}))"
+            :disabled="disabled"
+          />
+        </v-card>
+      </v-col>
+      <v-col cols="12" sm="1">
+        <div v-if="deletable" class="d-flex justify-end align-center full-height">
+          <v-btn
+            icon
+            @click="handleDelete"
+            title="delete form"
+          ><v-icon>mdi-delete</v-icon></v-btn>
+        </div>
+      </v-col>
+    </v-row>
+  </v-form>
 </template>
 
 <script>
@@ -46,30 +66,38 @@ export default {
   props: {
     id: {
       type: String,
-      required: true
+      required: true,
     },
     disabled: {
       type: Boolean,
-      default: false
+      default: false,
     },
     value: {
       type: Object,
-      required: true
+      required: true,
     },
     deletable: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
       formData: {
-        riverbedDifference: '1',
+        difference: '1',
         calculationLayer: 1,
         visualisationLayer: 1,
+        measure: 'riverbedDifference'
       },
       calculationLayers: [1, 2, 3, 4, 5, 6, 7],
       visualisationLayers: [1, 2, 3, 4, 5, 6, 7],
+      measures: [{
+        text: 'Rivierbodem (unit m)',
+        value: 'riverbedDifference'
+      }, {
+        text: 'Weerstand (unit m/d)',
+        value: 'resistance'
+      }],
       rules: {
         required: (value) => !!value || 'Benodigd.',
         notZero: (value) => value !== '0' || 'Waarde mag niet 0 zijn.',
@@ -77,7 +105,7 @@ export default {
           (value >= -10 && value <= 10) ||
           'Waarde moet tussen -10 en 10 meter vallen.',
       },
-      valid: false
+      valid: false,
     };
   },
   watch: {
@@ -86,7 +114,7 @@ export default {
     },
     valid() {
       this.$emit('validated', { id: this.id, valid: this.valid });
-    }
+    },
   },
   beforeMount() {
     this.formData = this.value;
@@ -94,7 +122,29 @@ export default {
   methods: {
     handleDelete() {
       this.$emit('delete', this.id);
-    }
-  }
+    },
+  },
 };
 </script>
+
+<style>
+.hide-label {
+  padding-top: 0;
+  margin-top: 0;
+}
+
+.hide-label label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+
+.hide-label .v-text-field__details {
+  display: none;
+}
+</style>
