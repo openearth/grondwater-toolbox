@@ -1,5 +1,5 @@
 <template>
-  <v-card outlined>
+  <v-card outlined v-on="$listeners">
     <v-card-title>{{ title }}</v-card-title>
 
     <v-card-text>
@@ -15,6 +15,6 @@ export default {
       type: String,
       required: true
     },
-  },
+  }
 };
 </script>

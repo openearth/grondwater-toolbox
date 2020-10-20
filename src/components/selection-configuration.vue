@@ -15,7 +15,6 @@
       :key="formGroup.id"
       :id="formGroup.id"
       :title="`Selection ${index}`"
-      :disabled="disabled"
       @mouseenter="handleMouseEnter(formGroup.id)"
       @mouseleave="handleMouseLeave(formGroup.id)"
     >
@@ -118,7 +117,7 @@ export default {
     // prepares form data to be sent to the 'calculate' action
     formattedForms() {
       return this.formGroups.reduce((acc, feature) => {
-        const { forms, id } = feature;
+        const { forms, watersIdentifier } = feature;
 
         forms.forEach((form) => {
           const { data } = form;
@@ -132,7 +131,7 @@ export default {
           delete formattedData.difference;
 
           acc.push({
-            id,
+            id: watersIdentifier,
             extent: this.extent,
             ...formattedData,
           });
@@ -146,8 +145,9 @@ export default {
     this.$set(
       this,
       'formGroups',
-      this.features.map((feature) => ({
-        id: feature.watersIdentifier,
+      this.features.map(({ id, watersIdentifier }) => ({
+        id,
+        watersIdentifier,
         forms: [this.createForm()],
       }))
     );
@@ -174,6 +174,7 @@ export default {
     },
     handleMouseEnter(id) {
       const { map } = this.$root;
+      console.log(map.getStyle().layers);
       map.setPaintProperty(id, 'line-color', this.selectedColor);
     },
     handleInput({ id, formId, data }) {
