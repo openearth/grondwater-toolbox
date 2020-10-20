@@ -2,7 +2,7 @@
   <v-form v-model="valid" class="configuration-form border">
     <v-row no-gutters>
       <v-col cols="12" sm="3">
-        <v-card class="pa-2 full-height d-flex align-center" outlined tile>
+        <v-card class="pa-2 full-height d-flex" outlined tile>
           <v-select
             v-model="formData.measure"
             class="hide-label"
@@ -13,7 +13,7 @@
         </v-card>
       </v-col>
       <v-col cols="12" sm="2">
-        <v-card class="pa-2 full-height d-flex align-center" outlined tile>
+        <v-card class="pa-2 full-height d-flex" outlined tile>
           <v-text-field
             v-model="formData.difference"
             class="hide-label"
@@ -27,7 +27,7 @@
         </v-card>
       </v-col>
       <v-col cols="12" sm="3">
-        <v-card class="pa-2 full-height d-flex align-center" outlined tile>
+        <v-card class="pa-2 full-height d-flex" outlined tile>
           <v-select
             v-model="formData.calculationLayer"
             class="hide-label"
@@ -38,7 +38,7 @@
         </v-card>
       </v-col>
       <v-col cols="12" sm="3">
-        <v-card class="pa-2 full-height d-flex align-center" outlined tile>
+        <v-card class="pa-2 full-height d-flex" outlined tile>
           <v-select
             v-model="formData.visualisationLayer"
             class="hide-label"
@@ -153,7 +153,7 @@ export default {
   border: 0;
 }
 
-.hide-label .v-text-field__details {
-  display: none;
+.hide-label .v-text-field__details, .hide-label .v-text-field__details .v-messages {
+  min-height: 0;
 }
 </style>
