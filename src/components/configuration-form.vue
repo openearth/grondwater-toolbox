@@ -96,7 +96,7 @@ export default {
         value: 'riverbedDifference'
       }, {
         text: 'Weerstand (unit m/d)',
-        value: 'resistance'
+        value: 'conductance'
       }],
       rules: {
         required: (value) => !!value || 'Benodigd.',
