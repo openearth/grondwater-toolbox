@@ -174,7 +174,6 @@ export default {
     },
     handleMouseEnter(id) {
       const { map } = this.$root;
-      console.log(map.getStyle().layers);
       map.setPaintProperty(id, 'line-color', this.selectedColor);
     },
     handleInput({ id, formId, data }) {
