@@ -21,7 +21,7 @@
             min="-10"
             max="10"
             label="Verschil in rivierbodemhoogte (m)"
-            :rules="[rules.required, rules.notZero, rules.minMaxDifference]"
+            :rules="differenceRules"
             :disabled="disabled"
           />
         </v-card>
@@ -107,6 +107,15 @@ export default {
       },
       valid: false,
     };
+  },
+  computed: {
+    differenceRules() {
+      if (this.formData.measure === 'riverbedDifference') {
+        return [this.rules.required, this.rules.notZero, this.rules.minMaxDifference];
+      }
+
+      return null;
+    }
   },
   watch: {
     formData() {
