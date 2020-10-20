@@ -4,7 +4,7 @@
 
     <selection-configuration />
 
-    <p v-if="wmsLayers.length"><v-icon>mdi-information-outline</v-icon> Click on a point on the map to get the exact value</p>
+    <p v-if="wmsLayers.length"><v-icon>mdi-information-outline</v-icon> Klik op een punt op de kaart om de waarde te zien</p>
 
     <sidebar-footer>
       <v-btn slot="start" class="primary" :to="{ name: 'selection' }">Vorige</v-btn>
