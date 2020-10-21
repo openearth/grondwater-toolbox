@@ -1,5 +1,7 @@
 <template>
-  <v-btn text @click="onClick">Herstart</v-btn>
+  <v-list-item text @click="onClick">
+    <v-list-item-title>Herstart</v-list-item-title>
+  </v-list-item>
 </template>
 
 <script>

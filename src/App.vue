@@ -13,8 +13,9 @@
           BRL
         </router-link>
       </v-toolbar-title>
+
       <v-spacer />
-      <reset-button />
+
       <v-menu bottom left>
         <template v-slot:activator="{ on, attrs }">
           <v-btn dark icon v-bind="attrs" v-on="on">
@@ -22,6 +23,7 @@
           </v-btn>
         </template>
         <v-list>
+          <reset-button />
           <v-list-item :to="{ name: 'legal' }">
             <v-list-item-title>Legal</v-list-item-title>
           </v-list-item>
