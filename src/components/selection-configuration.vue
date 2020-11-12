@@ -57,7 +57,7 @@
       </v-btn>
     </configuration-card>
 
-    <div class="d-flex justify-end">
+    <div class="d-flex justify-end mt-5">
       <v-btn
         @click="calculate"
         color="primary"
