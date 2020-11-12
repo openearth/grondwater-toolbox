@@ -1,7 +1,7 @@
 <template>
   <v-navigation-drawer clipped app permanent class="pa-2" width="560">
     <v-row dense class="fill-height">
-      <v-col :cols="12" class="fill-height d-flex flex-column">
+      <v-col :cols="12" class="">
         <sidebar-progress v-if="this.$route.meta.step" class="px-4"/>
 
         <transition :name="transitionName" mode="out-in">

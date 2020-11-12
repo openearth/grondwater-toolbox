@@ -1,11 +1,9 @@
 <template>
-  <v-card outlined v-on="$listeners">
-    <v-card-title>{{ title }}</v-card-title>
+  <div class="pb-6 pt-4 border-bottom">
+    <h3 class="text-h6 mb-2">{{ title }}</h3>
 
-    <v-card-text>
-      <slot />
-    </v-card-text>
-  </v-card>
+    <slot />
+  </div>
 </template>
 
 <script>
