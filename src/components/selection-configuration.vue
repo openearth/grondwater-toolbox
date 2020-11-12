@@ -12,7 +12,6 @@
     <configuration-card
       class="border-bottom"
       v-for="(formGroup, index) in formGroups"
-      :class="{ 'border-top': index === 0 }"
       :key="formGroup.id"
       :id="formGroup.id"
       :title="`Selection ${index}`"
@@ -213,17 +212,9 @@ export default {
 </script>
 
 <style>
-.border-top, .border-bottom {
-  border-color: rgba(0, 0, 0, 0.12);
-}
-
-.border-top {
-  border-top-width: 2px;
-  border-top-style: solid;
-}
-
 .border-bottom {
-  border-bottom-width: 2px;
+  border-color: rgba(0, 0, 0, 0.42);
+  border-bottom-width: 1px;
   border-bottom-style: solid;
 }
 </style>
