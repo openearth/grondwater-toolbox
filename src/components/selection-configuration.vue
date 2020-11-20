@@ -20,7 +20,7 @@
     >
       <div class="selection-configuration__table">
         <v-row no-gutters>
-          <v-col cols="12" sm="3">
+          <v-col cols="12" sm="5">
             <v-card class="pa-2" outlined tile>Maatregel</v-card>
           </v-col>
           <v-col cols="12" sm="2">
@@ -28,9 +28,6 @@
           </v-col>
           <v-col cols="12" sm="3">
             <v-card class="pa-2" outlined tile>Berekening</v-card>
-          </v-col>
-          <v-col cols="12" sm="3">
-            <v-card class="pa-2" outlined tile>Visualisatie</v-card>
           </v-col>
         </v-row>
 

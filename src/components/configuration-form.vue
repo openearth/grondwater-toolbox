@@ -1,7 +1,7 @@
 <template>
   <v-form v-model="valid" class="configuration-form border">
     <v-row no-gutters>
-      <v-col cols="12" sm="3">
+      <v-col cols="12" sm="5">
         <v-card class="pa-2 full-height d-flex" outlined tile>
           <v-select
             v-model="formData.measure"
@@ -32,29 +32,21 @@
             v-model="formData.calculationLayer"
             class="hide-label"
             label="Laag van berekening"
-            :items="calculationLayers.map((l) => ({ text: `Layer ${l}`, value: l}))"
-            :disabled="disabled"
-          />
-        </v-card>
-      </v-col>
-      <v-col cols="12" sm="3">
-        <v-card class="pa-2 full-height d-flex" outlined tile>
-          <v-select
-            v-model="formData.visualisationLayer"
-            class="hide-label"
-            label="Laag van visualisatie"
-            :items="visualisationLayers.map((l) => ({ text: `Layer ${l}`, value: l}))"
+            :items="
+              calculationLayers.map((l) => ({ text: `Layer ${l}`, value: l }))
+            "
             :disabled="disabled"
           />
         </v-card>
       </v-col>
       <v-col cols="12" sm="1">
-        <div v-if="deletable" class="d-flex justify-end align-center full-height">
-          <v-btn
-            icon
-            @click="handleDelete"
-            title="delete form"
-          ><v-icon>mdi-delete</v-icon></v-btn>
+        <div
+          v-if="deletable"
+          class="d-flex justify-end align-center full-height"
+        >
+          <v-btn icon @click="handleDelete" title="delete form"
+            ><v-icon>mdi-delete</v-icon></v-btn
+          >
         </div>
       </v-col>
     </v-row>
@@ -86,18 +78,19 @@ export default {
       formData: {
         difference: '1',
         calculationLayer: 1,
-        visualisationLayer: 1,
-        measure: 'riverbedDifference'
+        measure: 'riverbedDifference',
       },
-      calculationLayers: [1, 2, 3, 4, 5, 6, 7],
-      visualisationLayers: [1, 2, 3, 4, 5, 6, 7],
-      measures: [{
-        text: 'Rivierbodem (unit m)',
-        value: 'riverbedDifference'
-      }, {
-        text: 'Weerstand (unit m/d)',
-        value: 'conductance'
-      }],
+      calculationLayers: [1, 2],
+      measures: [
+        {
+          text: 'Rivierbodem (unit m)',
+          value: 'riverbedDifference',
+        },
+        {
+          text: 'Weerstand (unit m/d)',
+          value: 'conductance',
+        },
+      ],
       rules: {
         required: (value) => !!value || 'Benodigd.',
         notZero: (value) => value !== '0' || 'Waarde mag niet 0 zijn.',
@@ -111,11 +104,15 @@ export default {
   computed: {
     differenceRules() {
       if (this.formData.measure === 'riverbedDifference') {
-        return [this.rules.required, this.rules.notZero, this.rules.minMaxDifference];
+        return [
+          this.rules.required,
+          this.rules.notZero,
+          this.rules.minMaxDifference,
+        ];
       }
 
       return null;
-    }
+    },
   },
   watch: {
     formData() {
@@ -149,11 +146,12 @@ export default {
   padding: 0;
   margin: -1px;
   overflow: hidden;
-  clip: rect(0,0,0,0);
+  clip: rect(0, 0, 0, 0);
   border: 0;
 }
 
-.hide-label .v-text-field__details, .hide-label .v-text-field__details .v-messages {
+.hide-label .v-text-field__details,
+.hide-label .v-text-field__details .v-messages {
   min-height: 0;
 }
 </style>
