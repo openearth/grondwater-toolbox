@@ -11,10 +11,10 @@
 
     <configuration-card
       class="border-bottom"
-      v-for="(formGroup, index) in formGroups"
+      v-for="formGroup in formGroups"
       :key="formGroup.id"
       :id="formGroup.id"
-      :title="`Selection ${index}`"
+      :title="formGroup.name"
       @mouseenter="handleMouseEnter(formGroup.id)"
       @mouseleave="handleMouseLeave(formGroup.id)"
     >
@@ -104,6 +104,7 @@ export default {
   computed: {
     ...mapState({
       features: (state) => state.mapbox.features,
+      selections: (state) => state.selections.selections,
       loadingWmsLayers: (state) => state.mapbox.loadingWmsLayers,
     }),
     // iterates through all forms and checks if every one of them is valid
@@ -124,7 +125,7 @@ export default {
 
           const formattedData = {
             ...data,
-            [data.measure]: data.difference
+            [data.measure]: data.difference,
           };
 
           delete formattedData.measure;
@@ -145,8 +146,9 @@ export default {
     this.$set(
       this,
       'formGroups',
-      this.features.map(({ id, watersIdentifier }) => ({
+      this.features.map(({ id, watersIdentifier }, index) => ({
         id,
+        name: this.selections[index].name,
         watersIdentifier,
         forms: [this.createForm()],
       }))
@@ -191,7 +193,7 @@ export default {
           difference: '1',
           calculationLayer: 1,
           visualisationLayer: 1,
-          measure: 'riverbedDifference'
+          measure: 'riverbedDifference',
         },
       };
     },
