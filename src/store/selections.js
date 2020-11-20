@@ -39,6 +39,7 @@ const selections = {
       });
     },
     reset(state) {
+      selectionIndex = 0;
       Object.assign(state, initialState());
     },
     setLoadingSelection(state, { id, value }) {
