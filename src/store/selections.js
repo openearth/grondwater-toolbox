@@ -25,6 +25,10 @@ const selections = {
     remove(state, id) {
       state.selections = state.selections.filter(selection => selection.id !== id);
     },
+    edit(state, { id, name }) {
+      const selection = state.selections.find((selection) => selection.id === id);
+      selection.name = name;
+    },
     update(state, selection) {
       state.selections = state.selections.map(s => {
         if (s.id === selection.id) {
