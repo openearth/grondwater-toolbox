@@ -8,10 +8,6 @@ import Legal from '@/views/legal';
 const routes = [
   {
     path: "/",
-    redirect: "/selection",
-  },
-  {
-    path: "/introduction",
     component: Introduction,
     name: "introduction",
   },
