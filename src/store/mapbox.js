@@ -107,26 +107,28 @@ const features = {
       commit("setLoadingWmsLayers", true);
 
       try {
-          const data = {
-            functionId: "brl_gwmodel",
-            requestData: requestData
-          };
+        const data = {
+          functionId: "brl_gwmodel",
+          requestData: requestData
+        };
 
-          const { baseUrl, layerName, style } = await wps(data);
+        const layers = await wps(data);
 
-          const wmsLayer = {
+        const wmsLayers = layers.map(({ url, layer, name }) => {
+          return {
             ...generateWmsLayer({
-              url: baseUrl,
-              layer: layerName,
-              id: layerName,
-              style,
-              roadsId: "roads_1573136423177466",
+              url,
+              layer,
+              id: layer,
             }),
-            baseUrl,
+            name: name,
+            baseUrl: url,
           };
+        });
 
-        commit("addWmsLayer", wmsLayer);
+        wmsLayers.forEach((wmsLayer) => commit("addWmsLayer", wmsLayer));
       } catch (err) {
+        console.log(err);
         commit("setError", "Error fetching result", { root: true });
       }
 

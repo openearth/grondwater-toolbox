@@ -4,6 +4,7 @@ import Selection from '@/views/selection';
 import Calculation from '@/views/calculation';
 import Introduction from '@/views/introduction';
 import Legal from '@/views/legal';
+import Results from '@/views/results';
 
 const routes = [
   {
@@ -27,6 +28,12 @@ const routes = [
     component: Calculation,
     name: "calculation",
     meta: { step: 2 },
+  },
+  {
+    path: "/results",
+    component: Results,
+    name: "results",
+    meta: { step: 3 },
   },
 ];
 

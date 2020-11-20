@@ -154,9 +154,10 @@ export default {
   methods: {
     ...mapMutations('mapbox', ['resetWmsLayers']),
     ...mapActions('mapbox', ['calculateResult']),
-    calculate() {
+    async calculate() {
       this.resetWmsLayers();
-      this.calculateResult(this.formattedForms);
+      await this.calculateResult(this.formattedForms);
+      this.$router.push({ name: 'results' });
     },
     setFormValidity(formGroupId, { id, valid }) {
       const formGroup = this.formGroups.find(({ id }) => id === formGroupId);
@@ -189,7 +190,6 @@ export default {
         data: {
           difference: '1',
           calculationLayer: 1,
-          visualisationLayer: 1,
           measure: 'riverbedDifference',
         },
       };

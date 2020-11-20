@@ -4,16 +4,21 @@
 
     <selection-configuration />
 
-    <p v-if="wmsLayers.length"><v-icon>mdi-information-outline</v-icon> Klik op een punt op de kaart om de waarde te zien</p>
+    <p v-if="wmsLayers.length">
+      <v-icon>mdi-information-outline</v-icon> Klik op een punt op de kaart om
+      de waarde te zien
+    </p>
 
     <sidebar-footer>
-      <v-btn slot="start" class="primary" :to="{ name: 'selection' }">Vorige</v-btn>
+      <v-btn slot="start" class="primary" :to="{ name: 'selection' }"
+        >Vorige</v-btn
+      >
     </sidebar-footer>
   </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapMutations, mapState } from 'vuex';
 import SidebarFooter from '@/components/sidebar-footer';
 import SelectionConfiguration from '@/components/selection-configuration';
 import bbox from '@turf/bbox';
@@ -22,16 +27,17 @@ import { featureCollection } from '@turf/helpers';
 export default {
   components: {
     SidebarFooter,
-    SelectionConfiguration
+    SelectionConfiguration,
   },
   computed: {
     ...mapState({
-      selections: state => state.selections.selections,
-      features: state => state.mapbox.features,
-      wmsLayers: state => state.mapbox.wmsLayers
-    })
+      selections: (state) => state.selections.selections,
+      features: (state) => state.mapbox.features,
+      wmsLayers: (state) => state.mapbox.wmsLayers,
+    }),
   },
   created() {
+    this.resetWmsLayers();
     if (!this.selections.length) {
       this.$router.push({ name: 'selection' });
     }
@@ -45,26 +51,23 @@ export default {
     }
   },
   methods: {
-    ...mapActions('mapbox', ['calculateResult']),
-    calculate() {
-      this.calculateResult();
-    },
+    ...mapMutations('mapbox', ['resetWmsLayers']),
     zoomToSelection() {
-      if(!this.features.length) {
+      if (!this.features.length) {
         return;
       }
 
       const bounds = bbox(
         featureCollection(
-          this.features.map(feature => ({
+          this.features.map((feature) => ({
             geometry: feature.source.data,
-            type: 'Feature'
+            type: 'Feature',
           }))
         )
       );
 
       this.$root.map.fitBounds(bounds, { padding: 50 });
-    }
-  }
+    },
+  },
 };
 </script>
