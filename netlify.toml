@@ -1,0 +1,4 @@
+[[redirects]] # Fallback to SPA router
+  from = "/*"
+  to ="/index.html"
+  status = 200
