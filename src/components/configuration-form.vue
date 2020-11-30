@@ -1,7 +1,7 @@
 <template>
   <v-form v-model="valid" class="configuration-form border">
     <v-row no-gutters>
-      <v-col cols="12" sm="5">
+      <v-col cols="12" sm="6">
         <v-card class="pa-2 full-height d-flex" outlined tile>
           <v-select
             v-model="formData.measure"
