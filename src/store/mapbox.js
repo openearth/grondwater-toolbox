@@ -103,45 +103,36 @@ const features = {
 
       commit('selections/setLoadingSelection', { id: feature.id, value: false }, { root: true });
     },
-    async calculateResult({ commit, state }, requestData) {
-      commit('setLoadingWmsLayers', true);
+    async calculateResult({ commit }, requestData) {
+      commit("setLoadingWmsLayers", true);
 
       try {
-        const wmsLayers = await Promise.all(state.features.map(async (feature) => {
-          const data = {
-            functionId: "brl_gwmodel",
-            polygon: {
-              "id": feature.id,
-              "type": "Feature",
-              "properties": {},
-              "geometry": feature.source.data
-            },
-            watersIdentifier: feature.watersIdentifier,
-            requestData,
-          };
+        const data = {
+          functionId: "brl_gwmodel",
+          requestData: requestData
+        };
 
-          const { baseUrl, layerName, style } = await wps(data);
+        const layers = await wps(data);
 
-          const layerObject = {
-            url: baseUrl,
-            layer: layerName,
-            id: layerName,
-            style,
-            roadsId: 'roads_1573136423177466'
-          };
-
+        const wmsLayers = layers.map(({ url, layer, name }) => {
           return {
-            ...generateWmsLayer(layerObject),
-            baseUrl
+            ...generateWmsLayer({
+              url,
+              layer,
+              id: layer,
+            }),
+            name: name,
+            baseUrl: url,
           };
-        }));
+        });
 
-        wmsLayers.forEach(wmsLayer => commit('addWmsLayer', wmsLayer));
+        wmsLayers.forEach((wmsLayer) => commit("addWmsLayer", wmsLayer));
       } catch (err) {
-        commit('setError', 'Error fetching result', { root: true });
+        console.log(err);
+        commit("setError", "Error fetching result", { root: true });
       }
 
-      commit('setLoadingWmsLayers', false);
+      commit("setLoadingWmsLayers", false);
     }
   }
 };

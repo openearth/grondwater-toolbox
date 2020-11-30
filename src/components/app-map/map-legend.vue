@@ -11,21 +11,21 @@ export default {
   props: {
     url: {
       type: String,
-      required: true
+      required: true,
     },
     layer: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   computed: {
     imgUrl() {
       return legendUrl({
         url: this.url,
-        layer: this.layer
+        layer: this.layer,
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -35,5 +35,9 @@ export default {
   left: 10px;
   bottom: 30px;
   z-index: 100;
+}
+
+.map-legend img {
+  max-height: 600px;
 }
 </style>

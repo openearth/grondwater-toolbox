@@ -2,19 +2,38 @@
   <v-list-item class="px-0">
     <v-list-item-content class="pa-0">
       <v-list-item-title class="d-flex align-center flex-nowrap">
-        <div class="flex-grow-1">{{ selection.name }}</div>
+        <form class="flex-grow-1" v-if="isEditing" @submit.prevent="onSave">
+          <v-text-field
+            v-if="isEditing"
+            v-model="name"
+            placeholder="Name"
+            class="pt-0 mb-n3"
+            autofocus
+          />
+        </form>
+        <div v-else class="flex-grow-1">{{ selection.name }}</div>
 
         <div v-if="selection.loading" class="pr-1">
-          <v-progress-circular
-            indeterminate
-            color="grey"
-            :size="26"
-          />
+          <v-progress-circular indeterminate color="grey" :size="26" />
         </div>
 
-        <v-btn v-else text icon @click="onDelete">
-          <v-icon>mdi-delete</v-icon>
-        </v-btn>
+        <template v-else>
+          <v-btn
+            v-if="isEditing"
+            text
+            icon
+            title="save selection name"
+            @click="onSave"
+          >
+            <v-icon>mdi-check</v-icon>
+          </v-btn>
+          <v-btn v-else text icon title="edit selection name" @click="onEdit">
+            <v-icon>mdi-pencil</v-icon>
+          </v-btn>
+          <v-btn text icon title="delete selection" @click="onDelete">
+            <v-icon>mdi-delete</v-icon>
+          </v-btn>
+        </template>
       </v-list-item-title>
     </v-list-item-content>
   </v-list-item>
@@ -26,13 +45,23 @@ export default {
   props: {
     selection: {
       type: Object,
-      required: false
-    }
+      required: false,
+    },
+  },
+  data() {
+    return {
+      isEditing: false,
+      name: '',
+    };
+  },
+  mounted() {
+    this.name = this.selection.name;
   },
   methods: {
     ...mapMutations('mapbox', ['removeFeature']),
     ...mapMutations('selections', {
-      removeSelection: 'remove'
+      removeSelection: 'remove',
+      editSelection: 'edit',
     }),
     onDelete() {
       const { __draw } = this.$root.map;
@@ -42,7 +71,15 @@ export default {
 
       this.removeSelection(id);
       this.removeFeature(id);
-    }
-  }
+    },
+    onEdit() {
+      this.isEditing = true;
+    },
+    onSave() {
+      const { id } = this.selection;
+      this.isEditing = false;
+      this.editSelection({ id, name: this.name });
+    },
+  },
 };
 </script>
