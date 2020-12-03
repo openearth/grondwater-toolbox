@@ -17,7 +17,7 @@ const selections = {
     add(state, selection) {
       state.selections.push({
         ...selection,
-        name: `Selectie ${ selectionIndex }`
+        name: selection.name || `Selectie ${ selectionIndex }`
       });
 
       selectionIndex++;
@@ -39,7 +39,7 @@ const selections = {
       });
     },
     reset(state) {
-      selectionIndex = 0;
+      selectionIndex = 1;
       Object.assign(state, initialState());
     },
     setLoadingSelection(state, { id, value }) {

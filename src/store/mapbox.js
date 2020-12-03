@@ -36,6 +36,9 @@ const features = {
     setActivePopup(state, popup) {
       state.activePopup = popup;
     },
+    set(state, data) {
+      state = data;
+    },
     reset(state) {
       Object.assign(state, initialState());
     },

@@ -14,6 +14,8 @@
         </router-link>
       </v-toolbar-title>
       <v-spacer />
+      <load-button />
+      <save-button />
       <reset-button />
       <v-menu bottom left>
         <template v-slot:activator="{ on, attrs }">
@@ -42,6 +44,8 @@ import AppSidebar from '@/components/app-sidebar';
 import WelcomeDialog from '@/components/welcome-dialog';
 import ResetButton from '@/components/reset-button';
 import ErrorSnackbar from '@/components/error-snackbar';
+import SaveButton from '@/components/save-button';
+import LoadButton from '@/components/load-button';
 
 export default {
   components: {
@@ -50,6 +54,8 @@ export default {
     ResetButton,
     WelcomeDialog,
     ErrorSnackbar,
+    SaveButton,
+    LoadButton,
   },
 };
 </script>

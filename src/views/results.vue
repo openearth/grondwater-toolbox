@@ -50,8 +50,6 @@ export default {
       const { __draw } = this.$root.map;
 
       __draw.changeMode('static');
-
-      this.zoomToSelection();
     }
   },
   methods: {
