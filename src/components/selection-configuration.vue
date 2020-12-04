@@ -103,6 +103,7 @@ export default {
       features: (state) => state.mapbox.features,
       selections: (state) => state.selections.selections,
       loadingWmsLayers: (state) => state.mapbox.loadingWmsLayers,
+      configuration: (state) => state.configuration.configurations
     }),
     // iterates through all forms and checks if every one of them is valid
     valid() {
@@ -140,19 +141,11 @@ export default {
     },
   },
   beforeMount() {
-    this.$set(
-      this,
-      'formGroups',
-      this.features.map(({ id, watersIdentifier }, index) => ({
-        id,
-        name: this.selections[index].name,
-        watersIdentifier,
-        forms: [this.createForm()],
-      }))
-    );
+    this.init();
   },
   methods: {
     ...mapMutations('mapbox', ['resetWmsLayers']),
+    ...mapMutations('configuration', ['init']),
     ...mapActions('mapbox', ['calculateResult']),
     async calculate() {
       this.resetWmsLayers();
