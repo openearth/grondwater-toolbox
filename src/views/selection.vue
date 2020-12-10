@@ -44,7 +44,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('mapbox', ['resetWmsLayers'])
+    ...mapMutations('mapbox', ['resetWmsLayers']),
   }
 };
 </script>
