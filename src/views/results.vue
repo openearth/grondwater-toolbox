@@ -4,8 +4,8 @@
 
     <ul class="risks-list mb-6">
       <li class="risks-list__item" v-for="layer in wmsLayers" :key="layer.id">
-        <v-btn class="mr-2" text icon>
-          <v-icon @click="onLayerVisibilityClick(layer.id)">{{
+        <v-btn @click="onLayerVisibilityClick(layer.id)" class="mr-2" text icon>
+          <v-icon>{{
             hiddenLayers.includes(layer.id) ? 'mdi-eye-off' : 'mdi-eye'
           }}</v-icon>
         </v-btn>
@@ -34,6 +34,23 @@ export default {
       hiddenLayers: [],
     };
   },
+  watch: {
+    hiddenLayers() {
+      const activeLayers = this.wmsLayers.filter((layer) =>
+        !this.hiddenLayers.find(id => id === layer.id)
+      ).map(({ id }) => id);
+
+      console.log(activeLayers, this.hiddenLayers);
+
+      this.hiddenLayers.forEach(id => {
+        this.$root.map.setPaintProperty(id, 'raster-opacity', 0);
+      });
+
+      activeLayers.forEach(id => {
+        this.$root.map.setPaintProperty(id, 'raster-opacity', 1);
+      });
+    },
+  },
   computed: {
     ...mapState({
       selections: (state) => state.selections.selections,
@@ -46,6 +63,10 @@ export default {
       this.$router.push({ name: 'selection' });
     }
 
+    this.hiddenLayers = this.wmsLayers
+      .filter((_, index) => index !== 0)
+      .map((layer) => layer.id);
+
     if (this.$root.map) {
       const { __draw } = this.$root.map;
 
@@ -54,19 +75,13 @@ export default {
   },
   methods: {
     onLayerVisibilityClick(id) {
-      let opacityToSet;
-
       if (this.hiddenLayers.includes(id)) {
-        opacityToSet = 1;
         this.hiddenLayers = this.hiddenLayers.filter(
           (hiddenLayerId) => hiddenLayerId !== id
         );
       } else {
-        opacityToSet = 0;
         this.hiddenLayers.push(id);
       }
-
-      this.$root.map.setPaintProperty(id, 'raster-opacity', opacityToSet);
     },
   },
 };
