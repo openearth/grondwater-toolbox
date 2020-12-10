@@ -11,12 +11,12 @@
 
     <configuration-card
       class="border-bottom"
-      v-for="formGroup in formGroups"
-      :key="formGroup.id"
-      :id="formGroup.id"
-      :title="formGroup.name"
-      @mouseenter="handleMouseEnter(formGroup.id)"
-      @mouseleave="handleMouseLeave(formGroup.id)"
+      v-for="selection in selections"
+      :key="selection.id"
+      :id="selection.id"
+      :title="selection.name"
+      @mouseenter="handleMouseEnter(selection.id)"
+      @mouseleave="handleMouseLeave(selection.id)"
     >
       <div class="selection-configuration__table">
         <v-row no-gutters>
@@ -32,14 +32,14 @@
         </v-row>
 
         <configuration-form
-          v-for="(form, index) in formGroup.forms"
+          v-for="(form, index) in selection.configuration"
           v-model="form.data"
           :key="form.id"
           :id="form.id"
           :disabled="disabled"
           :deletable="index !== 0"
-          @delete="handleDeleteForm(formGroup.id, $event)"
-          @validated="setFormValidity(formGroup.id, $event)"
+          @delete="handleDeleteForm(selection.id, $event)"
+          @validated="setFormValidity(selection, $event)"
         />
       </div>
 
@@ -47,7 +47,7 @@
         icon-start
         class="mt-4"
         title="berekening toevoegen"
-        @click="addForm(formGroup.id)"
+        @click="addForm(selection.id)"
       >
         <v-icon left>mdi-plus</v-icon> Berekening
       </v-btn>
@@ -67,8 +67,7 @@
 </template>
 
 <script>
-import { v4 as uuid } from 'uuid';
-import { mapActions, mapMutations, mapState } from 'vuex';
+import { mapActions, mapGetters, mapMutations, mapState } from 'vuex';
 import ConfigurationCard from '@/components/configuration-card';
 import ConfigurationForm from '@/components/configuration-form';
 
@@ -86,8 +85,6 @@ export default {
   data() {
     return {
       extent: '1000',
-      // formGroups contains all forms that belong to a selection
-      formGroups: [],
       extentValid: true,
       selectedColor: '#f79502',
       originalLineColor: '#000',
@@ -103,22 +100,25 @@ export default {
       features: (state) => state.mapbox.features,
       selections: (state) => state.selections.selections,
       loadingWmsLayers: (state) => state.mapbox.loadingWmsLayers,
-      configuration: (state) => state.configuration.configurations
+    }),
+    ...mapGetters({
+      configurations: 'selections/configurations'  
     }),
     // iterates through all forms and checks if every one of them is valid
     valid() {
       return (
-        this.formGroups.every((formGroup) => {
-          return formGroup.forms.every((form) => form.valid);
+        this.selections.every((selection) => {
+          return selection.configuration.every((form) => form.valid);
         }) && this.extentValid
       );
     },
     // prepares form data to be sent to the 'calculate' action
     formattedForms() {
-      return this.formGroups.reduce((acc, feature) => {
-        const { forms, watersIdentifier } = feature;
+      return this.selections.reduce((acc, selection) => {
+        const { configuration } = selection;
+        const feature = this.features.find(feature => feature.id === selection.id);
 
-        forms.forEach((form) => {
+        configuration.forEach((form) => {
           const { data } = form;
 
           const formattedData = {
@@ -130,7 +130,7 @@ export default {
           delete formattedData.difference;
 
           acc.push({
-            id: watersIdentifier,
+            id: feature.watersIdentifier,
             extent: this.extent,
             ...formattedData,
           });
@@ -140,21 +140,18 @@ export default {
       }, []);
     },
   },
-  beforeMount() {
-    this.init();
-  },
   methods: {
     ...mapMutations('mapbox', ['resetWmsLayers']),
-    ...mapMutations('configuration', ['init']),
+    ...mapMutations('selections', ['addConfiguration', 'deleteConfiguration']),
     ...mapActions('mapbox', ['calculateResult']),
     async calculate() {
       this.resetWmsLayers();
+      console.log(this.formattedForms);
       await this.calculateResult(this.formattedForms);
       this.$router.push({ name: 'results' });
     },
-    setFormValidity(formGroupId, { id, valid }) {
-      const formGroup = this.formGroups.find(({ id }) => id === formGroupId);
-      const form = formGroup.forms.find((f) => f.id === id);
+    setFormValidity(selection, { id, valid }) {
+      const form = selection.configuration.find((form => form.id === id));
 
       form.valid = valid;
     },
@@ -175,29 +172,11 @@ export default {
 
       form.data = data;
     },
-    createForm() {
-      // returns an object with a generated id and the validity + formData
-      return {
-        id: uuid(),
-        valid: true,
-        data: {
-          difference: '1',
-          calculationLayer: 1,
-          measure: 'riverbedDifference',
-        },
-      };
-    },
     addForm(id) {
-      const { forms } = this.formGroups.find(
-        (formGroup) => id === formGroup.id
-      );
-
-      forms.push(this.createForm());
+      this.addConfiguration(id);
     },
-    handleDeleteForm(formGroupId, id) {
-      const formGroup = this.formGroups.find(({ id }) => id === formGroupId);
-
-      formGroup.forms = formGroup.forms.filter((form) => form.id !== id);
+    handleDeleteForm(selectionId, formId) {
+      this.deleteConfiguration({ selectionId, formId });
     },
   },
 };

@@ -2,7 +2,6 @@ import Vue from "vue";
 import Vuex from "vuex";
 import FileSaver from "file-saver";
 import selections from "./selections";
-import configuration from "./configuration";
 import mapbox from "./mapbox";
 
 Vue.use(Vuex);
@@ -51,6 +50,5 @@ export default new Vuex.Store({
   modules: {
     selections,
     mapbox,
-    configuration
   },
 });
