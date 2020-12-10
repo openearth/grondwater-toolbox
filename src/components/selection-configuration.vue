@@ -146,7 +146,6 @@ export default {
     ...mapActions('mapbox', ['calculateResult']),
     async calculate() {
       this.resetWmsLayers();
-      console.log(this.formattedForms);
       await this.calculateResult(this.formattedForms);
       this.$router.push({ name: 'results' });
     },
