@@ -40,8 +40,6 @@ export default {
         !this.hiddenLayers.find(id => id === layer.id)
       ).map(({ id }) => id);
 
-      console.log(activeLayers, this.hiddenLayers);
-
       this.hiddenLayers.forEach(id => {
         this.$root.map.setPaintProperty(id, 'raster-opacity', 0);
       });
