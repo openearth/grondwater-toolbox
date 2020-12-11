@@ -126,9 +126,11 @@ export default {
       addSelection: 'add',
       updateSelection: 'update'
     }),
+    ...mapMutations('mapbox', {
+      removeFeature: 'removeFeature',
+    }),
     ...mapActions('mapbox', {
       getFeature: 'getFeature',
-      updateFeature: 'updateFeature'
     }),
     onMapCreated({ map }) {
       this.$root.map = map;
@@ -141,7 +143,8 @@ export default {
     onUpdateSelection(event) {
       const feature = event.features[0];
       this.updateSelection(feature);
-      this.updateFeature(feature);
+      this.removeFeature(feature.id);
+      this.getFeature(feature);
     }
   }
 };

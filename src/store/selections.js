@@ -49,7 +49,7 @@ const selections = {
     update(state, selection) {
       state.selections = state.selections.map(s => {
         if (s.id === selection.id) {
-          return { ...selection, name: s.name };
+          return { ...s, ...selection, name: s.name };
         }
         
         return s;

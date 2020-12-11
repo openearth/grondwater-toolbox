@@ -19,11 +19,6 @@ const features = {
     removeFeature(state, id) {
       state.features = state.features.filter(feature => feature.id !== id);
     },
-    updateFeature(state, feature) {
-      state.features = state.features.map(f => {
-        return f.id === feature.id ? feature : f;
-      });
-    },
     addWmsLayer(state, wmsLayer) {
       state.wmsLayers.push(wmsLayer);
     },
@@ -76,35 +71,6 @@ const features = {
         // @TODO :: Have proper error handling here!
         console.log('Error getting wps: ', err);
       });
-    },
-    async updateFeature({ commit }, feature) {
-      commit('selections/setLoadingSelection', { id: feature.id, value: true }, { root: true });
-
-      const { watersCollection, watersIdentifier } = await wps({
-        "functionId": "brl_watercourses",
-        "polygon": {
-          "id": feature.id,
-          "type": "Feature",
-          "properties": {},
-          "geometry": feature.geometry
-        },
-        "bufferDist": "100"
-      });
-
-      commit('updateFeature', {
-        ...layers.geojson.line({
-          id: feature.id,
-          data: watersCollection,
-          paint: {
-            'line-width': 5,
-            'line-color': '#000',
-            'line-opacity': 0.8
-          }
-        }),
-        watersIdentifier
-      });
-
-      commit('selections/setLoadingSelection', { id: feature.id, value: false }, { root: true });
     },
     async calculateResult({ commit }, requestData) {
       commit("setLoadingWmsLayers", true);
