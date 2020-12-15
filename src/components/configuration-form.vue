@@ -18,8 +18,6 @@
             v-model="formData.difference"
             class="hide-label"
             type="number"
-            min="-10"
-            max="10"
             label="Verschil in rivierbodemhoogte (m)"
             :rules="differenceRules"
             :disabled="disabled"
@@ -90,6 +88,10 @@ export default {
           text: 'Weerstand (unit m/d)',
           value: 'conductance',
         },
+        {
+          text: 'Waterpeil (unit m)',
+          value: 'stageDifference',
+        },
       ],
       rules: {
         required: (value) => !!value || 'Benodigd.',
@@ -108,6 +110,16 @@ export default {
           this.rules.required,
           this.rules.notZero,
           this.rules.minMaxDifference,
+        ];
+      }
+
+      if (this.formData.measure === 'stageDifference') {
+        return [
+          this.rules.required,
+          this.rules.notZero,
+          (value) =>
+            (value >= -20 && value <= 20) ||
+            'Waarde moet tussen -20 en 20 meter vallen.',
         ];
       }
 
