@@ -14,13 +14,13 @@ export const generateWmsLayer = ({ url, id, layer, style='', paint={} }) => {
     transparent: true,
     bbox: '{bbox-epsg-3857}',
     format: 'image/png',
-    encode: false
+    encode: false,
   });
 
   return layers.wms({
     id,
     tiles: [ tile ],
     tileSize: 256,
-    paint
+    paint,
   });
 };

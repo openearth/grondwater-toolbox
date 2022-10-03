@@ -41,20 +41,20 @@
 </template>
 
 <script>
-import content from '../content/introduction.md';
+  import content from '../content/introduction.md';
 
-export default {
-  data: () => ({
-    accepted: false,
-    showWelcomeDialog: true,
-    content
-  }),
-  methods: {
-    onStartClick() {
-      this.showWelcomeDialog = false;
-    }
-  }
-};
+  export default {
+    data: () => ({
+      accepted: false,
+      showWelcomeDialog: true,
+      content,
+    }),
+    methods: {
+      onStartClick() {
+        this.showWelcomeDialog = false;
+      },
+    },
+  };
 </script>
 
 <style>

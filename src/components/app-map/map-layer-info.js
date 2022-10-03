@@ -1,13 +1,13 @@
-import { mapMutations, mapState } from "vuex";
-import Mapbox from "mapbox-gl";
+import { mapMutations, mapState } from 'vuex';
+import Mapbox from 'mapbox-gl';
 import getFeatureInfo from '@/lib/get-feature-info';
 
 export default {
-  name: "map-layer-info",
+  name: 'map-layer-info',
   render() {
     return null;
   },
-  inject: ["map"],
+  inject: [ 'map' ],
   props: {
     layer: {
       type: Object,
@@ -16,8 +16,8 @@ export default {
   },
   computed: {
     ...mapState({
-      activePopup: state => state.mapbox.activePopup
-    })
+      activePopup: state => state.mapbox.activePopup,
+    }),
   },
   created() {
     this.addListener();
@@ -28,7 +28,7 @@ export default {
   },
   methods: {
     ...mapMutations({
-      setActivePopup: 'mapbox/setActivePopup'
+      setActivePopup: 'mapbox/setActivePopup',
     }),
     removeActivePopup() {
       if (this.activePopup) {
@@ -74,10 +74,10 @@ export default {
       }
     },
     addListener() {
-      this.map.on("click", this.cb);
+      this.map.on('click', this.cb);
     },
     removeListener() {
-      this.map.off("click", this.cb);
-    }
+      this.map.off('click', this.cb);
+    },
   },
 };

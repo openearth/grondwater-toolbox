@@ -21,5 +21,5 @@ export default function({
     ...rest,
   }, { encode, sort: false });
 
-  return `${url}?${params}`;
+  return `${ url }?${ params }`;
 }

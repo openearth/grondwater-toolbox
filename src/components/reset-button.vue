@@ -3,33 +3,33 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+  import { mapActions } from 'vuex';
 
-export default {
-  methods: {
-    ...mapActions(['reset']),
+  export default {
+    methods: {
+      ...mapActions([ 'reset' ]),
 
-    onClick() {
-      const resetRouteName = 'introduction';
-      const accepted = confirm("Weet u zeker dat u opnieuw wilt beginnen?");
+      onClick() {
+        const resetRouteName = 'introduction';
+        const accepted = confirm('Weet u zeker dat u opnieuw wilt beginnen?');
 
-      if (accepted) {
-        const { map } = this.$root;
-        const { __draw } = map;
+        if (accepted) {
+          const { map } = this.$root;
+          const { __draw } = map;
 
-        this.reset();
+          this.reset();
 
-        __draw.deleteAll();
+          __draw.deleteAll();
 
-        map.flyTo({ center: [5.2913, 52.1326], zoom: 6.5 });
+          map.flyTo({ center: [ 5.2913, 52.1326 ], zoom: 6.5 });
 
-        if (this.$route.name !== resetRouteName) {
-          this.$router.push({ name: resetRouteName });
+          if (this.$route.name !== resetRouteName) {
+            this.$router.push({ name: resetRouteName });
+          }
         }
-      }
-    }
-  }
-};
+      },
+    },
+  };
 </script>
 
 <style>

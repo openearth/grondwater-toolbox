@@ -5,28 +5,28 @@
 </template>
 
 <script>
-import legendUrl from '@/lib/legend-url';
+  import legendUrl from '@/lib/legend-url';
 
-export default {
-  props: {
-    url: {
-      type: String,
-      required: true,
+  export default {
+    props: {
+      url: {
+        type: String,
+        required: true,
+      },
+      layer: {
+        type: String,
+        required: true,
+      },
     },
-    layer: {
-      type: String,
-      required: true,
+    computed: {
+      imgUrl() {
+        return legendUrl({
+          url: this.url,
+          layer: this.layer,
+        });
+      },
     },
-  },
-  computed: {
-    imgUrl() {
-      return legendUrl({
-        url: this.url,
-        layer: this.layer,
-      });
-    },
-  },
-};
+  };
 </script>
 
 <style>

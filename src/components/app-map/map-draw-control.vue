@@ -1,57 +1,57 @@
 <script>
-import MapboxDraw from '@mapbox/mapbox-gl-draw';
-import StaticMode from '@/lib/static-mode';
-import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
-import drawStyle from './draw-style';
+  import MapboxDraw from '@mapbox/mapbox-gl-draw';
+  import StaticMode from '@/lib/static-mode';
+  import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
+  import drawStyle from './draw-style';
 
-export default {
-  inject: ["map"],
-  render() {
-    return null;
-  },
-  props: {
-    position: {
-      type: String,
-      required: false
+  export default {
+    inject: [ 'map' ],
+    render() {
+      return null;
     },
-    options: {
-      type: Object,
-      required: false
-    }
-  },
-  created() {
-    const draw = new MapboxDraw({
-      displayControlsDefault: false,
-      controls: {
-        polygon: true 
+    props: {
+      position: {
+        type: String,
+        required: false,
       },
-      modes: { ...MapboxDraw.modes, static: StaticMode },
-      defaultMode: 'simple_select',
-      styles: drawStyle
-    });
+      options: {
+        type: Object,
+        required: false,
+      },
+    },
+    created() {
+      const draw = new MapboxDraw({
+        displayControlsDefault: false,
+        controls: {
+          polygon: true,
+        },
+        modes: { ...MapboxDraw.modes, static: StaticMode },
+        defaultMode: 'simple_select',
+        styles: drawStyle,
+      });
 
-    this.map.__draw = draw;
+      this.map.__draw = draw;
 
-    this.map.addControl(draw, this.position);
-    const $drawButton = document.querySelector('.mapbox-gl-draw_ctrl-draw-btn');
-    const drawLabel = 'Draw an area around your infrastructure';
+      this.map.addControl(draw, this.position);
+      const $drawButton = document.querySelector('.mapbox-gl-draw_ctrl-draw-btn');
+      const drawLabel = 'Draw an area around your infrastructure';
 
-    $drawButton.setAttribute('title', drawLabel);
-    $drawButton.classList.add('map-control-tooltip', 'map-control-tooltip--right');
+      $drawButton.setAttribute('title', drawLabel);
+      $drawButton.classList.add('map-control-tooltip', 'map-control-tooltip--right');
 
-    this.map.on('load', () => {
-      draw.changeMode('static');
-    });
+      this.map.on('load', () => {
+        draw.changeMode('static');
+      });
 
-    this.map.on('draw.create', event => {
-      this.$emit('create', event);
-    });
+      this.map.on('draw.create', event => {
+        this.$emit('create', event);
+      });
 
-    this.map.on('draw.update', event => {
-      this.$emit('update', event);
-    });
-  }
-};
+      this.map.on('draw.update', event => {
+        this.$emit('update', event);
+      });
+    },
+  };
 </script>
 
 <style>

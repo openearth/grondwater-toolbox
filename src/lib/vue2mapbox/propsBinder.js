@@ -22,7 +22,7 @@ function propsDefaults (props, options) {
   // pass along  the props  and fill in the options
   let entries = Object.entries(props);
   let result = {};
-  entries.forEach(([key, value]) => {
+  entries.forEach(([ key, value ]) => {
     // if  value is not set, we're  done
     if (value === undefined || value === null) {
       return;
@@ -35,7 +35,7 @@ function propsDefaults (props, options) {
   });
   // override with options (which can be null or undefined)
   let optionEntries = Object.entries(options ||  {});
-  optionEntries.forEach(([key, value]) => {
+  optionEntries.forEach(([ key, value ]) => {
     if (value !== null && value !== undefined) {
       result[key] =  value;
     }
@@ -45,5 +45,5 @@ function propsDefaults (props, options) {
 
 export {
   propsBinder,
-  propsDefaults
+  propsDefaults,
 };

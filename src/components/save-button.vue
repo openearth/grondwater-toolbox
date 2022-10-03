@@ -3,11 +3,11 @@
 </template>
 
 <script>
-export default {
-  methods: {
-    save() {
-      this.$store.dispatch('saveProject');
+  export default {
+    methods: {
+      save() {
+        this.$store.dispatch('saveProject');
+      },
     },
-  },
-};
+  };
 </script>

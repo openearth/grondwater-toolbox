@@ -8,6 +8,6 @@ export default function ({ layer, url }) {
     width: 40,
     height: 40,
     layer,
-    url
+    url,
   });
 }

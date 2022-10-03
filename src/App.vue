@@ -4,7 +4,12 @@
 
     <app-sidebar />
 
-    <v-app-bar class="app-header" app color="primary" dark>
+    <v-app-bar
+      class="app-header"
+      app
+      color="primary"
+      dark
+    >
       <v-toolbar-title>
         <router-link
           :to="{ name: 'introduction' }"
@@ -19,7 +24,12 @@
       <reset-button />
       <v-menu bottom left>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn dark icon v-bind="attrs" v-on="on">
+          <v-btn
+            dark
+            icon
+            v-bind="attrs"
+            v-on="on"
+          >
             <v-icon>mdi-dots-vertical</v-icon>
           </v-btn>
         </template>
@@ -40,24 +50,24 @@
 </template>
 
 <script>
-import AppSidebar from '@/components/app-sidebar';
-import WelcomeDialog from '@/components/welcome-dialog';
-import ResetButton from '@/components/reset-button';
-import ErrorSnackbar from '@/components/error-snackbar';
-import SaveButton from '@/components/save-button';
-import LoadButton from '@/components/load-button';
+  import AppSidebar from '@/components/app-sidebar';
+  import WelcomeDialog from '@/components/welcome-dialog';
+  import ResetButton from '@/components/reset-button';
+  import ErrorSnackbar from '@/components/error-snackbar';
+  import SaveButton from '@/components/save-button';
+  import LoadButton from '@/components/load-button';
 
-export default {
-  components: {
-    AppMap: () => import('@/components/app-map'),
-    AppSidebar,
-    ResetButton,
-    WelcomeDialog,
-    ErrorSnackbar,
-    SaveButton,
-    LoadButton,
-  },
-};
+  export default {
+    components: {
+      AppMap: () => import('@/components/app-map'),
+      AppSidebar,
+      ResetButton,
+      WelcomeDialog,
+      ErrorSnackbar,
+      SaveButton,
+      LoadButton,
+    },
+  };
 </script>
 
 <style src="./components/app-core/index.css"></style>

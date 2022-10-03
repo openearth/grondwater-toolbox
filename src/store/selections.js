@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { v4 as uuid } from "uuid";
+import { v4 as uuid } from 'uuid';
 let selectionIndex = 1;
 
 function createForm() {
@@ -7,9 +7,9 @@ function createForm() {
     id: uuid(),
     valid: true,
     data: {
-      difference: "1",
+      difference: '1',
       calculationLayer: 1,
-      measure: "riverbedDifference",
+      measure: 'riverbedDifference',
     },
   };
 }
@@ -27,14 +27,14 @@ const selections = {
     },
     configurations(state) {
       return state.selections.map(selection => selection.configuration);
-    }
+    },
   },
   mutations: {
     add(state, selection) {
       state.selections.push({
         ...selection,
-        name: selection.name || `Selectie ${selectionIndex}`,
-        configuration: selection.configuration || [createForm()],
+        name: selection.name || `Selectie ${ selectionIndex }`,
+        configuration: selection.configuration || [ createForm() ],
       });
 
       selectionIndex++;
@@ -70,7 +70,7 @@ const selections = {
     deleteConfiguration(state, { selectionId, formId }) {
       const selection = state.selections.find((selection) => selection.id === selectionId);
       selection.configuration = selection.configuration.filter(({ id }) => id !== formId);
-    }
+    },
   },
 };
 

@@ -1,14 +1,14 @@
 module.exports = {
-  transpileDependencies: ["vuetify"],
+  transpileDependencies: [ 'vuetify' ],
   chainWebpack: (config) => {
     config.module
-      .rule("markdown")
+      .rule('markdown')
       .test(/\.md$/)
-      .use("html-loader")
-      .loader("html-loader")
+      .use('html-loader')
+      .loader('html-loader')
       .end()
-      .use("markdown-loader")
-      .loader("markdown-loader")
+      .use('markdown-loader')
+      .loader('markdown-loader')
       .end();
   },
 };

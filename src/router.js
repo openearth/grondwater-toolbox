@@ -8,31 +8,31 @@ import Results from '@/views/results';
 
 const routes = [
   {
-    path: "/",
+    path: '/',
     component: Introduction,
-    name: "introduction",
+    name: 'introduction',
   },
   {
-    path: "/legal",
+    path: '/legal',
     component: Legal,
-    name: "legal",
+    name: 'legal',
   },
   {
-    path: "/selection",
+    path: '/selection',
     component: Selection,
-    name: "selection",
+    name: 'selection',
     meta: { step: 1 },
   },
   {
-    path: "/calculation",
+    path: '/calculation',
     component: Calculation,
-    name: "calculation",
+    name: 'calculation',
     meta: { step: 2 },
   },
   {
-    path: "/results",
+    path: '/results',
     component: Results,
-    name: "results",
+    name: 'results',
     meta: { step: 3 },
   },
 ];
@@ -41,5 +41,5 @@ Vue.use(VueRouter);
 
 export default new VueRouter({
   mode: 'history',
-  routes
+  routes,
 });
