@@ -19,7 +19,7 @@
         marker: false,
         position: this.position,
       });
-åå
+
       this.map.addControl(geocoder);
     },
   };
