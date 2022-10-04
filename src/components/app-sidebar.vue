@@ -1,7 +1,7 @@
 <template>
   <v-navigation-drawer clipped app permanent class="pa-2" width="560">
     <v-row dense class="fill-height">
-      <v-col :cols="12" class="">
+      <v-col :cols="12">
         <sidebar-progress v-if="this.$route.meta.step" class="px-4"/>
 
         <transition :name="transitionName" mode="out-in">
@@ -18,7 +18,7 @@ import { mapState } from 'vuex';
 
 export default {
   components: {
-    SidebarProgress
+    SidebarProgress,
   },
   computed: {
     ...mapState({
@@ -32,8 +32,11 @@ export default {
   },
   created() {
     this.$router.beforeEach((to, from, next) => {
-      this.transitionName =
-        to.meta.step < from.meta.step ? 'slide-right' : 'slide-left';
+      this.transitionName = to.meta.step
+        ? to.meta.step < from.meta.step
+          ? 'slide-right'
+          : 'slide-left'
+        : 'slide-right';
 
       next();
     });
@@ -46,7 +49,7 @@ export default {
 .slide-left-leave-active,
 .slide-right-enter-active,
 .slide-right-leave-active {
-  transition-duration: 0.5s;
+  transition-duration: 0.3s;
   transition-property: height, opacity, transform;
   transition-timing-function: cubic-bezier(0.55, 0, 0.1, 1);
   overflow: hidden;

@@ -1,6 +1,6 @@
 <template>
   <div class="pa-4 d-flex flex-column">
-    <h2 class="mb-4">Results</h2>
+    <h2 class="text-h4">Results</h2>
 
     <ul class="risks-list mb-6">
       <li class="risks-list__item" v-for="layer in wmsLayers" :key="layer.id">
@@ -14,9 +14,14 @@
     </ul>
 
     <sidebar-footer>
-      <v-btn slot="start" class="primary" :to="{ name: 'calculation' }"
-        >Vorige</v-btn
+      <v-btn
+        slot="start"
+        color="primary"
+        :to="{ name: 'tool-calculation' }"
+        depressed
       >
+        Vorige
+      </v-btn>
     </sidebar-footer>
   </div>
 </template>
@@ -58,7 +63,7 @@ export default {
   },
   created() {
     if (!this.selections.length) {
-      this.$router.push({ name: 'selection' });
+      this.$router.push({ name: 'tool-selection' });
     }
 
     this.hiddenLayers = this.wmsLayers

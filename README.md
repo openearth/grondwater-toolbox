@@ -1,4 +1,4 @@
-# BRL waterbodemstool
+# Grondwater Toolbox
 
 [BRL](https://basisrivierbodemligging.netlify.com) makes it possible to simulate the effects of changing the depth of a river bed.
 

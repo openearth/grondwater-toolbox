@@ -1,47 +1,50 @@
 <template>
-  <div class="pa-4 home d-flex flex-column">
-    <div>
-      <h2 class="h2">
-        Introduction
-      </h2>
+  <div class="pa-4 introduction d-flex flex-column">
+    <h2 class="text-h4">Introduction</h2>
+    <v-divider class="mt-4 mb-4" />
 
-      <v-divider class="mt-4 mb-4" />
+    <div class="introduction__content">
+      <div class="text-body-1" v-html="viewerIntroduction" />
     </div>
 
-    <div class="home__content">
-      <div v-html="content" />
-    </div>
-
-    <div class="d-flex pt-4">
-      <v-btn class="primary ml-auto" :to="{ name: 'selection' }">Get started</v-btn>
-    </div>
+    <sidebar-footer>
+      <v-btn
+        slot="end"
+        color="primary"
+        class="ml-auto"
+        :to="{ name: 'tool-selection' }"
+        depressed
+      >
+        Volgende
+        <v-icon>mdi-chevron-right</v-icon>
+      </v-btn>
+    </sidebar-footer>
   </div>
 </template>
 
 <script>
-import content from '../content/introduction.md';
+  import { mapState } from 'vuex';
 
-export default {
-  data() {
-    return {
-      content
-    };
-  }
-};
+  import SidebarFooter from '@/components/sidebar-footer';
+
+  export default {
+    components: {
+      SidebarFooter,
+    },
+    computed: {
+      ...mapState('app', [ 'viewerIntroduction' ]),
+    },
+  };
 </script>
 
 <style>
-  .home {
+  .introduction {
     height: 100%;
     overflow: hidden;
-  } 
-  
-  .home__content {
-    overflow-y: auto;
-    flex: 1;
   }
 
-  .home__logos img {
-    height: 100%;
+  .introduction__content {
+    overflow-y: auto;
+    flex: 1;
   }
 </style>

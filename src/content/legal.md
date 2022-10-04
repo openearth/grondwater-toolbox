@@ -1,6 +1,4 @@
-## Legal
-
-Welkom op de website Basisrivierbodemligging. Middels deze website is het mogelijk de effecten van een
+Welkom op de website Grondwater Toolbox. Middels deze website is het mogelijk de effecten van een
 wijziging in de hoogte van de rivierbodem te simuleren met het [Landelijk Hydrologisch Model](http://www.nhi.nu/). De
 gebruikte modelversie is 3.4.0 en is gepubliceerd op [nhi.nu](http://www.nhi.nu/). De berekeningen
 worden gedaan met een stationaire MODFLOW versie van het LHM waarbij voor de peilen van het hoofdsysteem

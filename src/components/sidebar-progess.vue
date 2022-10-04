@@ -38,7 +38,7 @@ export default {
         },
         {
           text: 'Calculate',
-          completed: this.$route.name === 'results',
+          completed: this.$route.name === 'tool-results',
         },
         {
           text: 'Results',

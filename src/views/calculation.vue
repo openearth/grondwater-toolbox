@@ -1,18 +1,25 @@
 <template>
   <div class="pa-4 d-flex flex-column">
-    <h2>Configuratie</h2>
+    <h2 class="text-h4">Configuratie</h2>
+    <v-divider class="mt-4 mb-4" />
 
     <selection-configuration />
 
-    <p v-if="wmsLayers.length">
-      <v-icon>mdi-information-outline</v-icon> Klik op een punt op de kaart om
-      de waarde te zien
+    <p v-if="wmsLayers.length" class="text-body-1">
+      <v-icon>mdi-information-outline</v-icon>
+      <span>Klik op een punt op de kaart om de waarde te zien</span>
     </p>
 
     <sidebar-footer>
-      <v-btn slot="start" class="primary" :to="{ name: 'selection' }"
-        >Vorige</v-btn
+      <v-btn
+        slot="start"
+        color="primary"
+        :to="{ name: 'tool-selection' }"
+        depressed
       >
+        <v-icon>mdi-chevron-left</v-icon>
+        Vorige
+      </v-btn>
     </sidebar-footer>
   </div>
 </template>
@@ -39,7 +46,7 @@ export default {
   created() {
     this.resetWmsLayers();
     if (!this.selections.length) {
-      this.$router.push({ name: 'selection' });
+      this.$router.push({ name: 'tool-selection' });
     }
 
     if (this.$root.map) {

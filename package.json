@@ -1,12 +1,13 @@
 {
-  "name": "brl",
+  "name": "grondwater-toolbox",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "start": "npm run serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "format": "vue-cli-service lint --fix"
   },
   "dependencies": {
     "@mapbox/mapbox-gl-draw": "^1.1.2",

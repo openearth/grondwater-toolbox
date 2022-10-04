@@ -9,7 +9,7 @@
       text
       @click="show = false"
     >
-      Close
+      Sluiten
     </v-btn>
   </v-snackbar>
 </template>

@@ -10,7 +10,7 @@ export default {
     ...mapActions(['reset']),
 
     onClick() {
-      const resetRouteName = 'introduction';
+      const resetRouteName = 'home';
       const accepted = confirm("Weet u zeker dat u opnieuw wilt beginnen?");
 
       if (accepted) {

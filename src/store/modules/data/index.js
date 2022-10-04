@@ -1,0 +1,60 @@
+import FileSaver from 'file-saver';
+
+import configRepo from '@/repo/configRepo.js';
+
+let errorId = 0;
+
+export default {
+  namespaced: true,
+
+  state: () => ({
+    error: null,
+  }),
+
+  mutations: {
+    setError(state, message) {
+      state.error = {
+        message: message,
+        id: errorId,
+      };
+
+      errorId++;
+    },
+  },
+
+  actions: {
+    async getAppData({ dispatch }, route) {
+      const viewer = route && route.params.config;
+      const { name, introduction } = await configRepo.getConfig(viewer);
+
+      dispatch('app/setViewerName', { name }, { root: true });
+      dispatch('app/setViewerIntroduction', { introduction }, { root: true });
+    },
+
+    reset({ commit }) {
+      commit("mapbox/reset");
+      commit("selections/reset");
+    },
+
+    saveProject({ state }) {
+      const project = {
+        selections: state.selections,
+        mapbox: state.mapbox,
+      };
+      const title = "brl_project";
+      const blob = new Blob([JSON.stringify(project, null, 2)], {
+        type: "application/json",
+      });
+
+      FileSaver.saveAs(blob, `${title}.json`);
+    },
+
+    loadProject({ commit }, data) {
+      data.selections.selections.forEach((selection) => {
+        commit("selections/add", selection);
+      });
+
+      commit('mapbox/set', data.mapbox);
+    },
+  },
+};

@@ -1,6 +1,7 @@
 <template>
-  <p class="selections-list__empty-state py-4" v-if="!selections.length">
-    <v-icon small class="selections-list__icon">{{ icons.mdiVectorSquare }}</v-icon> Selecteer waterwegen waar u uw berekeningen op wilt uitvoeren
+  <p class="selections-list__empty-state text-body-1 py-4" v-if="!selections.length">
+    <v-icon small>{{ icons.mdiVectorSquare }}</v-icon>
+    <span>Selecteer waterwegen waar u uw berekeningen op wilt uitvoeren</span>
   </p>
   <v-list v-else>
     <selections-list-item
@@ -36,11 +37,9 @@ export default {
 </script>
 
 <style>
-.selections-list__empty-state {
-  vertical-align: baseline;
-}
-
-.selections-list__icon {
-  margin-top: -4px;
-}
+  .selections-list__empty-state {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
 </style>

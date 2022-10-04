@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { v4 as uuid } from "uuid";
+import { v4 as uuid } from 'uuid';
 let selectionIndex = 1;
 
 function createForm() {
@@ -7,9 +7,9 @@ function createForm() {
     id: uuid(),
     valid: true,
     data: {
-      difference: "1",
+      difference: '1',
       calculationLayer: 1,
-      measure: "riverbedDifference",
+      measure: 'riverbedDifference',
     },
   };
 }
@@ -51,7 +51,7 @@ const selections = {
         if (s.id === selection.id) {
           return { ...s, ...selection, name: s.name };
         }
-        
+
         return s;
       });
     },

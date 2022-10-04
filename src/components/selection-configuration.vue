@@ -147,7 +147,7 @@ export default {
     async calculate() {
       this.resetWmsLayers();
       await this.calculateResult(this.formattedForms);
-      this.$router.push({ name: 'results' });
+      this.$router.push({ name: 'tool-results' });
     },
     setFormValidity(selection, { id, valid }) {
       const form = selection.configuration.find((form => form.id === id));

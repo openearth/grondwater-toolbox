@@ -72,10 +72,10 @@ export default {
       this.selectionsCount = data.selections.selections.length;
 
       if (this.$route.name !== 'selection') {
-        this.$router.push({ name: 'selection' });
+        this.$router.push({ name: 'tool-selection' });
       }
 
-      this.shouldZoomIn = true; 
+      this.shouldZoomIn = true;
     },
   },
 };
