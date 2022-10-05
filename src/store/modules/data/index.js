@@ -50,7 +50,7 @@ export default {
       FileSaver.saveAs(blob, `${ title }.json`);
     },
 
-    loadProject({ dispatch }, data) {
+    loadProject({ commit, dispatch }, data) {
       data.selections.selections.forEach((selection) => {
         dispatch('selections/addSelection', { selection });
       });
