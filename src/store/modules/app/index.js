@@ -6,7 +6,7 @@ export default {
     viewerIntroduction: '',
     viewerName: '',
     viewerSteps: [],
-    viewerStepsLocked: [ 2, 3 ],
+    viewerStepsLocked: [ 2, 3 ], // only unlock the first step.
     viewerCurrentStep: null,
     viewerCurrentStepNumber: 1,
   }),
