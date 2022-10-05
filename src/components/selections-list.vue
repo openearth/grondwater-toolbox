@@ -16,7 +16,7 @@
   import { mapGetters } from 'vuex';
   import { mdiVectorSquare } from '@mdi/js';
 
-  import SelectionsListItem from './selections-list-item';
+  import SelectionsListItem from '@/components/selections-list-item';
 
   export default {
     components: { SelectionsListItem },

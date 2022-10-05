@@ -1,6 +1,6 @@
-import wps from '../../../lib/wps';
-import layers from '../../../lib/mapbox/layers';
-import { generateWmsLayer } from '../../../lib/project-layers';
+import wps from '@/lib/wps';
+import layers from '@/lib/mapbox/layers';
+import { generateWmsLayer } from '@/lib/project-layers';
 
 const initialState = () => ({
   features: [],

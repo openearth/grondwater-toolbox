@@ -19,8 +19,9 @@
 </template>
 
 <script>
-  import SidebarProgress from './sidebar-progess';
   import { mapGetters } from 'vuex';
+
+  import SidebarProgress from '@/components/sidebar-progess';
 
   export default {
     components: { SidebarProgress },

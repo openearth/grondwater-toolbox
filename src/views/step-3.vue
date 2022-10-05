@@ -38,7 +38,8 @@
 
 <script>
   import { mapGetters, mapState } from 'vuex';
-  import SidebarFooter from '../components/sidebar-footer';
+
+  import SidebarFooter from '@/components/sidebar-footer';
 
   export default {
     components: { SidebarFooter },

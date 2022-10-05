@@ -8,7 +8,7 @@
 </template>
 
 <script>
-  import content from '../content/legal.md';
+  import content from '@/content/legal.md';
 
   export default {
     data() {

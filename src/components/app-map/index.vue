@@ -55,25 +55,27 @@
   import { mapMutations, mapActions, mapState } from 'vuex';
   import Mapbox from 'mapbox-gl';
   import { MglMap, MglNavigationControl } from 'vue-mapbox';
-  import MapRasterOpacityControl from './map-raster-opacity-control';
-  import RasterLayer from './raster-layer';
-  import MapSearch from './map-search';
-  import MapLegend from './map-legend';
-  import MapLayerInfo from './map-layer-info';
+
   import MapDrawControl from './map-draw-control';
-  import wms from '../../lib/mapbox/layers/wms';
-  import { generateWmsLayer } from '../../lib/project-layers';
+  import MapLayerInfo from './map-layer-info';
+  import MapLegend from './map-legend';
+  import MapRasterOpacityControl from './map-raster-opacity-control';
+  import MapSearch from './map-search';
+  import RasterLayer from './raster-layer';
+
+  import wms from '@/lib/mapbox/layers/wms';
+  import { generateWmsLayer } from '@/lib/project-layers';
 
   export default {
     components: {
-      MglMap,
-      RasterLayer,
       MapDrawControl,
-      MglNavigationControl,
-      MapSearch,
-      MapLegend,
       MapLayerInfo,
+      MapLegend,
       MapRasterOpacityControl,
+      MapSearch,
+      MglMap,
+      MglNavigationControl,
+      RasterLayer,
     },
     data() {
       return {

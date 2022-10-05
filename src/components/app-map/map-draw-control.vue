@@ -1,8 +1,10 @@
 <script>
   import MapboxDraw from '@mapbox/mapbox-gl-draw';
-  import StaticMode from '@/lib/static-mode';
   import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
+
   import drawStyle from './draw-style';
+
+  import StaticMode from '@/lib/static-mode';
 
   export default {
     inject: [ 'map' ],
