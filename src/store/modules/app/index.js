@@ -6,7 +6,7 @@ export default {
     viewerIntroduction: '',
     viewerName: '',
     viewerSteps: [],
-    viewerStepsUnlocked: [ 1, 2, 3 ],
+    viewerStepsLocked: [ 2, 3 ],
     viewerCurrentStep: null,
     viewerCurrentStepNumber: 1,
   }),
@@ -17,7 +17,7 @@ export default {
     viewerCurrentStepNumber: state => state.viewerCurrentStepNumber,
     viewerIntroduction: state => state.viewerIntroduction,
     viewerSteps: state => state.viewerSteps,
-    viewerStepsUnlocked: state => state.viewerStepsUnlocked,
+    viewerStepsLocked: state => state.viewerStepsLocked,
   },
 
   mutations: {
@@ -32,6 +32,14 @@ export default {
     },
     SET_VIEWER_STEPS(state, { steps }) {
       state.viewerSteps = steps;
+    },
+    ADD_LOCKED_VIEWER_STEP(state, { step }) {
+      if (!state.viewerStepsLocked.includes(step)) {
+        state.viewerStepsLocked.push(step);
+      }
+    },
+    REMOVE_LOCKED_VIEWER_STEP(state, { step }) {
+      state.viewerStepsLocked = state.viewerStepsLocked.filter(item => item !== step);
     },
     SET_VIEWER_CURRENT_NUMBER(state, { step }) {
       state.viewerCurrentStepNumber = step;
@@ -51,6 +59,12 @@ export default {
     },
     setViewerSteps({ commit }, { steps }) {
       commit('SET_VIEWER_STEPS', { steps });
+    },
+    addLockedViewerStep({ commit }, { step }) {
+      commit('ADD_LOCKED_VIEWER_STEP', { step });
+    },
+    removeLockedViewerStep({ commit }, { step }) {
+      commit('REMOVE_LOCKED_VIEWER_STEP', { step });
     },
     setViewerCurrentStepNumber({ commit }, { step }) {
       commit('SET_VIEWER_CURRENT_NUMBER', { step });

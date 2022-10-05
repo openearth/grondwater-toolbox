@@ -84,7 +84,7 @@
       </v-btn>
     </div>
 
-    <p v-if="wmsLayers.length" class="text-body-1">
+    <p v-if="wmsLayers.length" class="text-body-1 mt-5">
       <v-icon>mdi-information-outline</v-icon>
       <span>Klik op een punt op de kaart om de waarde te zien</span>
     </p>
@@ -125,6 +125,13 @@
     },
     created() {
       this.resetWmsLayers();
+
+      // TODO: wmsLayers is empty when the user navigates back to the selection page.
+      if (this.wmsLayers.length) {
+        this.removeLockedViewerStep({ step: 3 });
+      } else {
+        this.addLockedViewerStep({ step: 3 });
+      }
 
       if (!this.selections.length) {
         this.$router.push({ name: 'tool-step-1' });
@@ -180,6 +187,7 @@
       },
     },
     methods: {
+      ...mapActions('app', [ 'addLockedViewerStep', 'removeLockedViewerStep' ]),
       ...mapActions('mapbox', [ 'calculateResult', 'resetWmsLayers' ]),
       ...mapActions('selections', [ 'addSelectionConfiguration', 'removeSelectionConfiguration' ]),
       addForm(id) {
@@ -188,7 +196,14 @@
       async calculate() {
         this.resetWmsLayers();
         await this.calculateResult(this.formattedForms);
-        this.$router.push({ name: 'tool-step-3' });
+
+        if (this.valid) {
+          this.removeLockedViewerStep({ step: 3 });
+        } else {
+          this.addLockedViewerStep({ step: 3 });
+        }
+
+        // this.$router.push({ name: 'tool-step-3' });
       },
       handleMouseLeave(id) {
         const { map } = this.$root;

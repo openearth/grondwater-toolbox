@@ -44,15 +44,16 @@
       this.setViewerCurrentStepNumber({ step: 1 });
     },
     computed: {
-      ...mapGetters('app', [ 'viewerCurrentStep', 'viewerStepsUnlocked' ]),
+      ...mapGetters('app', [ 'viewerCurrentStep', 'viewerStepsLocked' ]),
       stepTitle() {
         return this.viewerCurrentStep && this.viewerCurrentStep.title;
       },
       nextIsDisabled() {
-        return !this.viewerStepsUnlocked.includes(2);
+        return this.viewerStepsLocked.includes(2);
       },
     },
     methods: {
+      ...mapActions('app', [ 'addLockedViewerStep', 'removeLockedViewerStep' ]),
       ...mapActions('app', [ 'setViewerCurrentStepNumber']),
       onNext() {
         this.$router.push({ name: 'tool-step-2' });

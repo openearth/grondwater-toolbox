@@ -65,11 +65,11 @@
       },
     },
     computed: {
-      ...mapGetters('app', [ 'viewerStepsUnlocked' ]),
+      ...mapGetters('app', [ 'viewerStepsLocked' ]),
       ...mapGetters('mapbox', [ 'features', 'wmsLayers' ]),
       ...mapGetters('selections', [ 'selections' ]),
       previousIsDisabled() {
-        return !this.viewerStepsUnlocked.includes(2);
+        return this.viewerStepsLocked.includes(2);
       },
     },
     created() {

@@ -45,13 +45,13 @@
       this.setViewerCurrentStepNumber({ step: 2 });
     },
     computed: {
-      ...mapGetters('app', [ 'viewerCurrentStep', 'viewerStepsUnlocked' ]),
+      ...mapGetters('app', [ 'viewerCurrentStep', 'viewerStepsLocked' ]),
       ...mapGetters('mapbox', [ 'features' ]),
       nextIsDisabled() {
-        return !this.viewerStepsUnlocked.includes(3);
+        return this.viewerStepsLocked.includes(3);
       },
       previousIsDisabled() {
-        return !this.viewerStepsUnlocked.includes(1);
+        return this.viewerStepsLocked.includes(1);
       },
       stepTitle() {
         return this.viewerCurrentStep && this.viewerCurrentStep.title;

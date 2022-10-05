@@ -38,10 +38,18 @@
         }
       }
     },
+    updated() {
+      if (this.selections.length) {
+        this.removeLockedViewerStep({ step: 2 });
+      } else {
+        this.addLockedViewerStep({ step: 2 });
+      }
+    },
     computed: {
       ...mapGetters('selections', [ 'selections' ]),
     },
     methods: {
+      ...mapActions('app', [ 'addLockedViewerStep', 'removeLockedViewerStep' ]),
       ...mapActions('mapbox', [ 'resetWmsLayers' ]),
     },
   };
