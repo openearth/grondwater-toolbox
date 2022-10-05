@@ -1,5 +1,11 @@
 <template>
-  <v-navigation-drawer clipped app permanent class="pa-2" width="560">
+  <v-navigation-drawer
+    clipped
+    app
+    permanent
+    class="pa-2"
+    width="560"
+  >
     <v-row dense class="fill-height">
       <v-col :cols="12">
         <sidebar-progress v-if="this.$route.meta.step" class="px-4"/>
@@ -13,37 +19,37 @@
 </template>
 
 <script>
-import SidebarProgress from './sidebar-progess';
-import { mapState } from 'vuex';
+  import SidebarProgress from './sidebar-progess';
+  import { mapState } from 'vuex';
 
-export default {
-  components: { SidebarProgress },
-  computed: {
-    ...mapState('selections', ['selections']),
-  },
-  data() {
-    return {
-      transitionName: 'slide-right'
-    };
-  },
-  created() {
-    this.$router.beforeEach((to, from, next) => {
-      if (!isNaN(to.meta.step) && !isNaN(from.meta.step)) {
-        this.transitionName = to.meta.step < from.meta.step
-          ? 'slide-right'
-          : 'slide-left';
-      } else if (isNaN(to.meta.step) && !isNaN(from.meta.step)) {
-        this.transitionName = 'slide-right';
-      } else if (!isNaN(to.meta.step) && isNaN(from.meta.step)) {
-        this.transitionName = 'slide-left';
-      } else {
-        this.transitionName = 'slide-left';
-      }
+  export default {
+    components: { SidebarProgress },
+    computed: {
+      ...mapState('selections', [ 'selections' ]),
+    },
+    data() {
+      return {
+        transitionName: 'slide-right',
+      };
+    },
+    created() {
+      this.$router.beforeEach((to, from, next) => {
+        if (!isNaN(to.meta.step) && !isNaN(from.meta.step)) {
+          this.transitionName = to.meta.step < from.meta.step
+            ? 'slide-right'
+            : 'slide-left';
+        } else if (isNaN(to.meta.step) && !isNaN(from.meta.step)) {
+          this.transitionName = 'slide-right';
+        } else if (!isNaN(to.meta.step) && isNaN(from.meta.step)) {
+          this.transitionName = 'slide-left';
+        } else {
+          this.transitionName = 'slide-left';
+        }
 
-      next();
-    });
-  },
-};
+        next();
+      });
+    },
+  };
 </script>
 
 <style>

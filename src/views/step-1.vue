@@ -29,42 +29,42 @@
 </template>
 
 <script>
-import { mapMutations, mapState, mapGetters, mapActions } from 'vuex';
+  import { mapMutations, mapState, mapGetters, mapActions } from 'vuex';
 
-import SidebarFooter from '@/components/sidebar-footer';
-import StepComponents from '@/components/step-components';
+  import SidebarFooter from '@/components/sidebar-footer';
+  import StepComponents from '@/components/step-components';
 
-export default {
-  components: {
-    StepComponents,
-    SidebarFooter,
-  },
-  computed: {
-    ...mapState('selections', ['selections']),
-    ...mapGetters('selections', ['loading']),
-    ...mapGetters('app', ['viewerCurrentStep']),
-    stepTitle() {
-      return this.viewerCurrentStep && this.viewerCurrentStep.title;
+  export default {
+    components: {
+      StepComponents,
+      SidebarFooter,
     },
-  },
-  created() {
-    this.resetWmsLayers();
+    computed: {
+      ...mapState('selections', [ 'selections' ]),
+      ...mapGetters('selections', [ 'loading' ]),
+      ...mapGetters('app', [ 'viewerCurrentStep' ]),
+      stepTitle() {
+        return this.viewerCurrentStep && this.viewerCurrentStep.title;
+      },
+    },
+    created() {
+      this.resetWmsLayers();
 
-    if (this.$root.map) {
-      const { __draw } = this.$root.map;
+      if (this.$root.map) {
+        const { __draw } = this.$root.map;
 
-      if (__draw) {
-        __draw.changeMode('simple_select');
+        if (__draw) {
+          __draw.changeMode('simple_select');
+        }
       }
-    }
-  },
-  methods: {
-    ...mapActions('app', ['setViewerCurrentStepIndex']),
-    ...mapMutations('mapbox', ['resetWmsLayers']),
-    onNext() {
-      this.$router.push({ name: 'tool-step-2' });
-      this.setViewerCurrentStepIndex({ step: 1 });
     },
-  }
-};
+    methods: {
+      ...mapActions('app', [ 'setViewerCurrentStepIndex' ]),
+      ...mapMutations('mapbox', [ 'resetWmsLayers' ]),
+      onNext() {
+        this.$router.push({ name: 'tool-step-2' });
+        this.setViewerCurrentStepIndex({ step: 1 });
+      },
+    },
+  };
 </script>

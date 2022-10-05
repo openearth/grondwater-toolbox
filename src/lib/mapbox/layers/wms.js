@@ -7,6 +7,6 @@ export default function({ id, tiles=[], tileSize=512, paint={} }) {
       tiles,
       tileSize,
     },
-    paint
+    paint,
   };
 }

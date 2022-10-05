@@ -20,22 +20,22 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex';
+  import { mapGetters, mapState } from 'vuex';
 
-export default {
-  computed: {
-    ...mapState('selections', ['selections']),
-    ...mapGetters('app', ['viewerSteps']),
-    steps() {
-      const finalStep = { text: 'Resultaat' };
-      let customSteps = this.viewerSteps.map(step => ({
-        text: step.title,
-      }));
+  export default {
+    computed: {
+      ...mapState('selections', [ 'selections' ]),
+      ...mapGetters('app', [ 'viewerSteps' ]),
+      steps() {
+        const finalStep = { text: 'Resultaat' };
+        let customSteps = this.viewerSteps.map(step => ({
+          text: step.title,
+        }));
 
-      return [...customSteps, finalStep];
+        return [ ...customSteps, finalStep ];
+      },
     },
-  },
-};
+  };
 </script>
 
 <style>

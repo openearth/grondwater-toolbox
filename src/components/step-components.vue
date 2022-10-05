@@ -21,7 +21,7 @@
 
   export default {
     computed: {
-      ...mapGetters('app', ['viewerCurrentStep']),
+      ...mapGetters('app', [ 'viewerCurrentStep' ]),
       renderComponents() {
         return this.viewerCurrentStep.components
           .map((component) => COMPONENT_MAP[component] || 'div');

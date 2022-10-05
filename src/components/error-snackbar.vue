@@ -15,23 +15,23 @@
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      message: '',
-      show: false
-    };
-  },
-  created() {
-    this.$store.watch(
-      state => state.error,
-      value => {
-        this.message = value.message;
-        this.show = true;
-      }
-    );
-  }
-};
+  export default {
+    data() {
+      return {
+        message: '',
+        show: false,
+      };
+    },
+    created() {
+      this.$store.watch(
+        state => state.error,
+        value => {
+          this.message = value.message;
+          this.show = true;
+        }
+      );
+    },
+  };
 </script>
 
 <style>

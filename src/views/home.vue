@@ -48,6 +48,6 @@
         return await Promise.all(this.configs.map(config => getToolData(config)))
           .then(data => this.toolData = data);
       },
-    }
+    },
   };
 </script>

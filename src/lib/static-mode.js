@@ -4,7 +4,7 @@ const StaticMode = {
   onSetup() {
     const drawButton = document.querySelector(drawButtonClass);
 
-    if(drawButton) {
+    if (drawButton) {
       drawButton.setAttribute('disabled', true);
     }
 
@@ -15,13 +15,13 @@ const StaticMode = {
   onStop() {
     const drawButton = document.querySelector(drawButtonClass);
 
-    if(drawButton) {
+    if (drawButton) {
       drawButton.removeAttribute('disabled');
     }
   },
   toDisplayFeatures(state, geojson, display) {
     display(geojson);
-  }
+  },
 };
 
 export default StaticMode;

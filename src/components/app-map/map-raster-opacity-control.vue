@@ -13,43 +13,43 @@
 </template>
 
 <script>
-export default {
-  name: "map-raster-opacity-control",
-  render() {
-    return null;
-  },
-  inject: ["map"],
-  props: {
-    layers: {
-      type: Array,
-      required: true
-    }
-  },
-  data() {
-    return {
-      value: '100'
-    };
-  },
-  watch: {
-    value() {
-      this.setLayersOpacity();
+  export default {
+    name: 'map-raster-opacity-control',
+    render() {
+      return null;
     },
-    layers() {
-      this.setLayersOpacity();
-    }
-  },
-  methods: {
-    setLayersOpacity() {
-      this.layers.map(({ id }) => {
-        this.map.setPaintProperty(
-          id,
-          'raster-opacity',
-          parseInt(this.value, 10) / 100
-        );
-      });
-    }
-  }
-};
+    inject: [ 'map' ],
+    props: {
+      layers: {
+        type: Array,
+        required: true,
+      },
+    },
+    data() {
+      return {
+        value: '100',
+      };
+    },
+    watch: {
+      value() {
+        this.setLayersOpacity();
+      },
+      layers() {
+        this.setLayersOpacity();
+      },
+    },
+    methods: {
+      setLayersOpacity() {
+        this.layers.map(({ id }) => {
+          this.map.setPaintProperty(
+            id,
+            'raster-opacity',
+            parseInt(this.value, 10) / 100
+          );
+        });
+      },
+    },
+  };
 </script>
 
 <style>

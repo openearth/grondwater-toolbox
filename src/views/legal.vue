@@ -8,13 +8,13 @@
 </template>
 
 <script>
-import content from '../content/legal.md';
+  import content from '../content/legal.md';
 
-export default {
-  data() {
-    return {
-      content
-    };
-  }
-};
+  export default {
+    data() {
+      return {
+        content,
+      };
+    },
+  };
 </script>

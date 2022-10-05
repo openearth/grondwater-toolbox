@@ -6,7 +6,7 @@ const initialState = () => ({
   features: [],
   wmsLayers: [],
   loadingWmsLayers: false,
-  activePopup: null
+  activePopup: null,
 });
 
 const features = {
@@ -48,9 +48,9 @@ const features = {
           'id': feature.id,
           'type': 'Feature',
           'properties': {},
-          'geometry': feature.geometry
+          'geometry': feature.geometry,
         },
-        'bufferDist': '100'
+        'bufferDist': '100',
       })
       .then(({ watersCollection, watersIdentifier }) => {
         commit('addFeature', {
@@ -60,10 +60,10 @@ const features = {
             paint: {
               'line-width': 5,
               'line-color': '#000',
-              'line-opacity': 0.8
-            }
+              'line-opacity': 0.8,
+            },
           }),
-          watersIdentifier
+          watersIdentifier,
         });
         commit('selections/setLoadingSelection', { id: feature.id, value: false }, { root: true });
       })
@@ -78,7 +78,7 @@ const features = {
       try {
         const data = {
           functionId: 'brl_gwmodel',
-          requestData: requestData
+          requestData: requestData,
         };
 
         const layers = await wps(data);
@@ -102,8 +102,8 @@ const features = {
       }
 
       commit('setLoadingWmsLayers', false);
-    }
-  }
+    },
+  },
 };
 
 export default features;

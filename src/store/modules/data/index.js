@@ -33,8 +33,8 @@ export default {
     },
 
     reset({ commit }) {
-      commit("mapbox/reset");
-      commit("selections/reset");
+      commit('mapbox/reset');
+      commit('selections/reset');
     },
 
     saveProject({ state }) {
@@ -42,17 +42,17 @@ export default {
         selections: state.selections,
         mapbox: state.mapbox,
       };
-      const title = "brl_project";
-      const blob = new Blob([JSON.stringify(project, null, 2)], {
-        type: "application/json",
+      const title = 'brl_project';
+      const blob = new Blob([ JSON.stringify(project, null, 2) ], {
+        type: 'application/json',
       });
 
-      FileSaver.saveAs(blob, `${title}.json`);
+      FileSaver.saveAs(blob, `${ title }.json`);
     },
 
     loadProject({ commit }, data) {
       data.selections.selections.forEach((selection) => {
-        commit("selections/add", selection);
+        commit('selections/add', selection);
       });
 
       commit('mapbox/set', data.mapbox);

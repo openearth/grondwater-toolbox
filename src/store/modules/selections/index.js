@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import { v4 as uuid } from 'uuid';
-
 let selectionIndex = 1;
 
 function createForm() {
@@ -34,8 +33,8 @@ export default {
     add(state, selection) {
       state.selections.push({
         ...selection,
-        name: selection.name || `Selectie ${selectionIndex}`,
-        configuration: selection.configuration || [createForm()],
+        name: selection.name || `Selectie ${ selectionIndex }`,
+        configuration: selection.configuration || [ createForm() ],
       });
 
       selectionIndex++;
@@ -71,6 +70,6 @@ export default {
     deleteConfiguration(state, { selectionId, formId }) {
       const selection = state.selections.find((selection) => selection.id === selectionId);
       selection.configuration = selection.configuration.filter(({ id }) => id !== formId);
-    }
+    },
   },
 };

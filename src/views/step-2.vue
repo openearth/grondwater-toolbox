@@ -20,66 +20,66 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations, mapState } from 'vuex';
-import bbox from '@turf/bbox';
-import { featureCollection } from '@turf/helpers';
+  import { mapActions, mapGetters, mapMutations, mapState } from 'vuex';
+  import bbox from '@turf/bbox';
+  import { featureCollection } from '@turf/helpers';
 
-import SidebarFooter from '@/components/sidebar-footer';
-import StepComponents from '@/components/step-components';
+  import SidebarFooter from '@/components/sidebar-footer';
+  import StepComponents from '@/components/step-components';
 
-export default {
-  components: {
-    SidebarFooter,
-    StepComponents,
-  },
-  computed: {
-    ...mapGetters('app', ['viewerCurrentStep']),
-    ...mapState({
-      selections: (state) => state.selections.selections,
-      features: (state) => state.mapbox.features,
-      wmsLayers: (state) => state.mapbox.wmsLayers,
-    }),
-    stepTitle() {
-      return this.viewerCurrentStep && this.viewerCurrentStep.title;
+  export default {
+    components: {
+      SidebarFooter,
+      StepComponents,
     },
-  },
-  created() {
-    this.resetWmsLayers();
-    if (!this.selections.length) {
-      this.$router.push({ name: 'tool-step-1' });
-    }
-
-    if (this.$root.map) {
-      const { __draw } = this.$root.map;
-
-      __draw.changeMode('static');
-
-      this.zoomToSelection();
-    }
-  },
-  methods: {
-    ...mapActions('app', ['setViewerCurrentStepIndex']),
-    ...mapMutations('mapbox', ['resetWmsLayers']),
-    onPrevious() {
-      this.$router.push({ name: 'tool-step-1' });
-      this.setViewerCurrentStepIndex({ step: 0 });
+    computed: {
+      ...mapGetters('app', [ 'viewerCurrentStep' ]),
+      ...mapState({
+        selections: (state) => state.selections.selections,
+        features: (state) => state.mapbox.features,
+        wmsLayers: (state) => state.mapbox.wmsLayers,
+      }),
+      stepTitle() {
+        return this.viewerCurrentStep && this.viewerCurrentStep.title;
+      },
     },
-    zoomToSelection() {
-      if (!this.features.length) {
-        return;
+    created() {
+      this.resetWmsLayers();
+      if (!this.selections.length) {
+        this.$router.push({ name: 'tool-step-1' });
       }
 
-      const bounds = bbox(
-        featureCollection(
-          this.features.map((feature) => ({
-            geometry: feature.source.data,
-            type: 'Feature',
-          }))
-        )
-      );
+      if (this.$root.map) {
+        const { __draw } = this.$root.map;
 
-      this.$root.map.fitBounds(bounds, { padding: 50 });
+        __draw.changeMode('static');
+
+        this.zoomToSelection();
+      }
     },
-  },
-};
+    methods: {
+      ...mapActions('app', [ 'setViewerCurrentStepIndex' ]),
+      ...mapMutations('mapbox', [ 'resetWmsLayers' ]),
+      onPrevious() {
+        this.$router.push({ name: 'tool-step-1' });
+        this.setViewerCurrentStepIndex({ step: 0 });
+      },
+      zoomToSelection() {
+        if (!this.features.length) {
+          return;
+        }
+
+        const bounds = bbox(
+          featureCollection(
+            this.features.map((feature) => ({
+              geometry: feature.source.data,
+              type: 'Feature',
+            }))
+          )
+        );
+
+        this.$root.map.fitBounds(bounds, { padding: 50 });
+      },
+    },
+  };
 </script>
