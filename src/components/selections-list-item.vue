@@ -2,7 +2,11 @@
   <v-list-item class="px-0">
     <v-list-item-content class="pa-0">
       <v-list-item-title class="d-flex align-center flex-nowrap">
-        <form class="flex-grow-1" v-if="isEditing" @submit.prevent="onSave">
+        <form
+          class="flex-grow-1"
+          v-if="isEditing"
+          @submit.prevent="onSave"
+        >
           <v-text-field
             v-if="isEditing"
             v-model="name"
@@ -14,7 +18,11 @@
         <div v-else class="flex-grow-1">{{ selection.name }}</div>
 
         <div v-if="selection.loading" class="pr-1">
-          <v-progress-circular indeterminate color="grey" :size="26" />
+          <v-progress-circular
+            indeterminate
+            color="grey"
+            :size="26"
+          />
         </div>
 
         <template v-else>
@@ -27,10 +35,21 @@
           >
             <v-icon>mdi-check</v-icon>
           </v-btn>
-          <v-btn v-else text icon title="edit selection name" @click="onEdit">
+          <v-btn
+            v-else
+            text
+            icon
+            title="edit selection name"
+            @click="onEdit"
+          >
             <v-icon>mdi-pencil</v-icon>
           </v-btn>
-          <v-btn text icon title="delete selection" @click="onDelete">
+          <v-btn
+            text
+            icon
+            title="delete selection"
+            @click="onDelete"
+          >
             <v-icon>mdi-delete</v-icon>
           </v-btn>
         </template>
@@ -40,46 +59,46 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
-export default {
-  props: {
-    selection: {
-      type: Object,
-      required: false,
+  import { mapMutations } from 'vuex';
+  export default {
+    props: {
+      selection: {
+        type: Object,
+        required: false,
+      },
     },
-  },
-  data() {
-    return {
-      isEditing: false,
-      name: '',
-    };
-  },
-  mounted() {
-    this.name = this.selection.name;
-  },
-  methods: {
-    ...mapMutations('mapbox', ['removeFeature']),
-    ...mapMutations('selections', {
-      removeSelection: 'remove',
-      editSelection: 'edit',
-    }),
-    onDelete() {
-      const { __draw } = this.$root.map;
-      const { id } = this.selection;
+    data() {
+      return {
+        isEditing: false,
+        name: '',
+      };
+    },
+    mounted() {
+      this.name = this.selection.name;
+    },
+    methods: {
+      ...mapMutations('mapbox', [ 'removeFeature' ]),
+      ...mapMutations('selections', {
+        removeSelection: 'remove',
+        editSelection: 'edit',
+      }),
+      onDelete() {
+        const { __draw } = this.$root.map;
+        const { id } = this.selection;
 
-      __draw.delete(id);
+        __draw.delete(id);
 
-      this.removeSelection(id);
-      this.removeFeature(id);
+        this.removeSelection(id);
+        this.removeFeature(id);
+      },
+      onEdit() {
+        this.isEditing = true;
+      },
+      onSave() {
+        const { id } = this.selection;
+        this.isEditing = false;
+        this.editSelection({ id, name: this.name });
+      },
     },
-    onEdit() {
-      this.isEditing = true;
-    },
-    onSave() {
-      const { id } = this.selection;
-      this.isEditing = false;
-      this.editSelection({ id, name: this.name });
-    },
-  },
-};
+  };
 </script>

@@ -8,7 +8,7 @@ export default function({ functionId, requestData, polygon, watersIdentifier, fi
     method: 'post',
     url: `${ process.env.VUE_APP_GEO_SERVER }/wps`,
     data: template,
-    headers: {'Content-Type': 'application/xml'},
+    headers: { 'Content-Type': 'application/xml' },
   })
   .then(({ data }) => {
     return typeof data === 'object'

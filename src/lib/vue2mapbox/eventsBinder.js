@@ -20,5 +20,5 @@ function bindLayerEvents(vueElement, map, layer, events) {
 
 export {
   bindMapEvents,
-  bindLayerEvents
+  bindLayerEvents,
 };

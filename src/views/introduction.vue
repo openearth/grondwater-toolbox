@@ -19,23 +19,23 @@
 </template>
 
 <script>
-import content from '../content/introduction.md';
+  import content from '../content/introduction.md';
 
-export default {
-  data() {
-    return {
-      content
-    };
-  }
-};
+  export default {
+    data() {
+      return {
+        content,
+      };
+    },
+  };
 </script>
 
 <style>
   .home {
     height: 100%;
     overflow: hidden;
-  } 
-  
+  }
+
   .home__content {
     overflow-y: auto;
     flex: 1;

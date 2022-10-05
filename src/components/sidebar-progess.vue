@@ -20,34 +20,34 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+  import { mapState } from 'vuex';
 
-export default {
-  computed: {
-    ...mapState({
-      selections: (state) => state.selections.selections,
-    }),
-    currentStep() {
-      return this.$route.meta.step;
+  export default {
+    computed: {
+      ...mapState({
+        selections: (state) => state.selections.selections,
+      }),
+      currentStep() {
+        return this.$route.meta.step;
+      },
+      items() {
+        return [
+          {
+            text: 'Select',
+            completed: Boolean(this.selections.length),
+          },
+          {
+            text: 'Calculate',
+            completed: this.$route.name === 'results',
+          },
+          {
+            text: 'Results',
+            completed: false,
+          },
+        ];
+      },
     },
-    items() {
-      return [
-        {
-          text: 'Select',
-          completed: Boolean(this.selections.length),
-        },
-        {
-          text: 'Calculate',
-          completed: this.$route.name === 'results',
-        },
-        {
-          text: 'Results',
-          completed: false,
-        },
-      ];
-    },
-  },
-};
+  };
 </script>
 
 <style>

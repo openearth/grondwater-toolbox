@@ -21,13 +21,31 @@
       <div class="selection-configuration__table">
         <v-row no-gutters>
           <v-col cols="12" sm="6">
-            <v-card class="pa-2" outlined tile>Maatregel</v-card>
+            <v-card
+              class="pa-2"
+              outlined
+              tile
+            >
+              Maatregel
+            </v-card>
           </v-col>
           <v-col cols="12" sm="2">
-            <v-card class="pa-2" outlined tile>Verschil</v-card>
+            <v-card
+              class="pa-2"
+              outlined
+              tile
+            >
+              Verschil
+            </v-card>
           </v-col>
           <v-col cols="12" sm="3">
-            <v-card class="pa-2" outlined tile>Berekening</v-card>
+            <v-card
+              class="pa-2"
+              outlined
+              tile
+            >
+              Berekening
+            </v-card>
           </v-col>
         </v-row>
 
@@ -67,118 +85,118 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations, mapState } from 'vuex';
-import ConfigurationCard from '@/components/configuration-card';
-import ConfigurationForm from '@/components/configuration-form';
+  import { mapActions, mapGetters, mapMutations, mapState } from 'vuex';
+  import ConfigurationCard from '@/components/configuration-card';
+  import ConfigurationForm from '@/components/configuration-form';
 
-export default {
-  components: {
-    ConfigurationCard,
-    ConfigurationForm,
-  },
-  props: {
-    disabled: {
-      type: Boolean,
-      required: false,
+  export default {
+    components: {
+      ConfigurationCard,
+      ConfigurationForm,
     },
-  },
-  data() {
-    return {
-      extent: '1000',
-      extentValid: true,
-      selectedColor: '#f79502',
-      originalLineColor: '#000',
-      rules: {
-        required: (value) => !!value || 'Benodigd.',
-        minExtent: (value) =>
-          value >= 500 || 'Een grootte van minimaal 500 meter is vereist.',
+    props: {
+      disabled: {
+        type: Boolean,
+        required: false,
       },
-    };
-  },
-  computed: {
-    ...mapState({
-      features: (state) => state.mapbox.features,
-      selections: (state) => state.selections.selections,
-      loadingWmsLayers: (state) => state.mapbox.loadingWmsLayers,
-    }),
-    ...mapGetters({
-      configurations: 'selections/configurations'  
-    }),
-    // iterates through all forms and checks if every one of them is valid
-    valid() {
-      return (
-        this.selections.every((selection) => {
-          return selection.configuration.every((form) => form.valid);
-        }) && this.extentValid
-      );
     },
-    // prepares form data to be sent to the 'calculate' action
-    formattedForms() {
-      return this.selections.reduce((acc, selection) => {
-        const { configuration } = selection;
-        const feature = this.features.find(feature => feature.id === selection.id);
+    data() {
+      return {
+        extent: '1000',
+        extentValid: true,
+        selectedColor: '#f79502',
+        originalLineColor: '#000',
+        rules: {
+          required: (value) => !!value || 'Benodigd.',
+          minExtent: (value) =>
+            value >= 500 || 'Een grootte van minimaal 500 meter is vereist.',
+        },
+      };
+    },
+    computed: {
+      ...mapState({
+        features: (state) => state.mapbox.features,
+        selections: (state) => state.selections.selections,
+        loadingWmsLayers: (state) => state.mapbox.loadingWmsLayers,
+      }),
+      ...mapGetters({
+        configurations: 'selections/configurations',  
+      }),
+      // iterates through all forms and checks if every one of them is valid
+      valid() {
+        return (
+          this.selections.every((selection) => {
+            return selection.configuration.every((form) => form.valid);
+          }) && this.extentValid
+        );
+      },
+      // prepares form data to be sent to the 'calculate' action
+      formattedForms() {
+        return this.selections.reduce((acc, selection) => {
+          const { configuration } = selection;
+          const feature = this.features.find(feature => feature.id === selection.id);
 
-        configuration.forEach((form) => {
-          const { data } = form;
+          configuration.forEach((form) => {
+            const { data } = form;
 
-          const formattedData = {
-            ...data,
-            [data.measure]: data.difference,
-          };
+            const formattedData = {
+              ...data,
+              [data.measure]: data.difference,
+            };
 
-          delete formattedData.measure;
-          delete formattedData.difference;
+            delete formattedData.measure;
+            delete formattedData.difference;
 
-          acc.push({
-            id: feature.watersIdentifier,
-            extent: this.extent,
-            ...formattedData,
+            acc.push({
+              id: feature.watersIdentifier,
+              extent: this.extent,
+              ...formattedData,
+            });
           });
-        });
 
-        return acc;
-      }, []);
+          return acc;
+        }, []);
+      },
     },
-  },
-  methods: {
-    ...mapMutations('mapbox', ['resetWmsLayers']),
-    ...mapMutations('selections', ['addConfiguration', 'deleteConfiguration']),
-    ...mapActions('mapbox', ['calculateResult']),
-    async calculate() {
-      this.resetWmsLayers();
-      await this.calculateResult(this.formattedForms);
-      this.$router.push({ name: 'results' });
-    },
-    setFormValidity(selection, { id, valid }) {
-      const form = selection.configuration.find((form => form.id === id));
+    methods: {
+      ...mapMutations('mapbox', [ 'resetWmsLayers' ]),
+      ...mapMutations('selections', [ 'addConfiguration', 'deleteConfiguration' ]),
+      ...mapActions('mapbox', [ 'calculateResult' ]),
+      async calculate() {
+        this.resetWmsLayers();
+        await this.calculateResult(this.formattedForms);
+        this.$router.push({ name: 'results' });
+      },
+      setFormValidity(selection, { id, valid }) {
+        const form = selection.configuration.find((form => form.id === id));
 
-      form.valid = valid;
-    },
-    setExtentValidity(hasError) {
-      this.extentValid = !hasError;
-    },
-    handleMouseLeave(id) {
-      const { map } = this.$root;
-      map.setPaintProperty(id, 'line-color', this.originalLineColor);
-    },
-    handleMouseEnter(id) {
-      const { map } = this.$root;
-      map.setPaintProperty(id, 'line-color', this.selectedColor);
-    },
-    handleInput({ id, formId, data }) {
-      const feature = this.forms.find({ id } === id);
-      const form = feature && feature.forms.find(({ id }) => id === formId);
+        form.valid = valid;
+      },
+      setExtentValidity(hasError) {
+        this.extentValid = !hasError;
+      },
+      handleMouseLeave(id) {
+        const { map } = this.$root;
+        map.setPaintProperty(id, 'line-color', this.originalLineColor);
+      },
+      handleMouseEnter(id) {
+        const { map } = this.$root;
+        map.setPaintProperty(id, 'line-color', this.selectedColor);
+      },
+      handleInput({ id, formId, data }) {
+        const feature = this.forms.find({ id } === id);
+        const form = feature && feature.forms.find(({ id }) => id === formId);
 
-      form.data = data;
+        form.data = data;
+      },
+      addForm(id) {
+        this.addConfiguration(id);
+      },
+      handleDeleteForm(selectionId, formId) {
+        this.deleteConfiguration({ selectionId, formId });
+      },
     },
-    addForm(id) {
-      this.addConfiguration(id);
-    },
-    handleDeleteForm(selectionId, formId) {
-      this.deleteConfiguration({ selectionId, formId });
-    },
-  },
-};
+  };
 </script>
 
 <style>

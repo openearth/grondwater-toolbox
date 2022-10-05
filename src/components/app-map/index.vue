@@ -52,102 +52,102 @@
 </template>
 
 <script>
-import { mapMutations, mapActions, mapState } from 'vuex';
-import Mapbox from "mapbox-gl";
-import { MglMap, MglNavigationControl } from "vue-mapbox";
-import MapRasterOpacityControl from "./map-raster-opacity-control";
-import RasterLayer from "./raster-layer";
-import MapSearch from "./map-search";
-import MapLegend from "./map-legend";
-import MapLayerInfo from "./map-layer-info";
-import MapDrawControl from './map-draw-control';
-import wms from '../../lib/mapbox/layers/wms';
-import { generateWmsLayer } from '../../lib/project-layers';
+  import { mapMutations, mapActions, mapState } from 'vuex';
+  import Mapbox from 'mapbox-gl';
+  import { MglMap, MglNavigationControl } from 'vue-mapbox';
+  import MapRasterOpacityControl from './map-raster-opacity-control';
+  import RasterLayer from './raster-layer';
+  import MapSearch from './map-search';
+  import MapLegend from './map-legend';
+  import MapLayerInfo from './map-layer-info';
+  import MapDrawControl from './map-draw-control';
+  import wms from '../../lib/mapbox/layers/wms';
+  import { generateWmsLayer } from '../../lib/project-layers';
 
-export default {
-  components: {
-    MglMap,
-    RasterLayer,
-    MapDrawControl,
-    MglNavigationControl,
-    MapSearch,
-    MapLegend,
-    MapLayerInfo,
-    MapRasterOpacityControl
-  },
-  data() {
-    return {
-      mapZoom: 6.5,
-      mapCenter: [5.2913, 52.1326],
-      waterWaysUrl: `${ process.env.VUE_APP_GEO_SERVER }/geoserver/vaarwegvakken/wms`,
-      waterWaysLayerId: 'nwb_vaarwegen:vaarwegvakken',
-    };
-  },
-  computed: {
-    ...mapState({
-      features: state => state.mapbox.features,
-      wmsLayers: state => state.mapbox.wmsLayers
-    }),
-    mapBoxToken() {
-      return process.env.VUE_APP_MAPBOX_TOKEN;
+  export default {
+    components: {
+      MglMap,
+      RasterLayer,
+      MapDrawControl,
+      MglNavigationControl,
+      MapSearch,
+      MapLegend,
+      MapLayerInfo,
+      MapRasterOpacityControl,
     },
-    firstWmsLayer() {
-      return this.wmsLayers[0];
+    data() {
+      return {
+        mapZoom: 6.5,
+        mapCenter: [ 5.2913, 52.1326 ],
+        waterWaysUrl: `${ process.env.VUE_APP_GEO_SERVER }/geoserver/vaarwegvakken/wms`,
+        waterWaysLayerId: 'nwb_vaarwegen:vaarwegvakken',
+      };
     },
-    legendSource() {
-      if (this.firstWmsLayer) {
-        return {
-          url: this.firstWmsLayer.baseUrl,
-          layer: this.firstWmsLayer.id
-        };
-      } else {
-        return {
-          url: this.waterWaysUrl,
-          layer: this.waterWaysLayerId
-        };
-      }
-    },
-    waterWaysLayer() {
-      return wms({
-        ...generateWmsLayer({
-          url: this.waterWaysUrl,
+    computed: {
+      ...mapState({
+        features: state => state.mapbox.features,
+        wmsLayers: state => state.mapbox.wmsLayers,
+      }),
+      mapBoxToken() {
+        return process.env.VUE_APP_MAPBOX_TOKEN;
+      },
+      firstWmsLayer() {
+        return this.wmsLayers[0];
+      },
+      legendSource() {
+        if (this.firstWmsLayer) {
+          return {
+            url: this.firstWmsLayer.baseUrl,
+            layer: this.firstWmsLayer.id,
+          };
+        } else {
+          return {
+            url: this.waterWaysUrl,
+            layer: this.waterWaysLayerId,
+          };
+        }
+      },
+      waterWaysLayer() {
+        return wms({
+          ...generateWmsLayer({
+            url: this.waterWaysUrl,
+            id: 'water-ways',
+            layer: this.waterWaysLayerId,
+          }).source,
           id: 'water-ways',
-          layer: this.waterWaysLayerId
-        }).source,
-        id: 'water-ways'
-      });
-    }
-  },
-  created() {
-    this.mapbox = Mapbox;
-  },
-  methods: {
-    ...mapMutations('selections', {
-      addSelection: 'add',
-      updateSelection: 'update'
-    }),
-    ...mapMutations('mapbox', {
-      removeFeature: 'removeFeature',
-    }),
-    ...mapActions('mapbox', {
-      getFeature: 'getFeature',
-    }),
-    onMapCreated({ map }) {
-      this.$root.map = map;
+        });
+      },
     },
-    onSelection(event) {
-      const feature = event.features[0];
-      this.addSelection(feature);
-      this.getFeature(feature);
+    created() {
+      this.mapbox = Mapbox;
     },
-    onUpdateSelection(event) {
-      const feature = event.features[0];
-      this.updateSelection(feature);
-      this.removeFeature(feature.id);
-      this.getFeature(feature);
-    }
-  }
-};
+    methods: {
+      ...mapMutations('selections', {
+        addSelection: 'add',
+        updateSelection: 'update',
+      }),
+      ...mapMutations('mapbox', {
+        removeFeature: 'removeFeature',
+      }),
+      ...mapActions('mapbox', {
+        getFeature: 'getFeature',
+      }),
+      onMapCreated({ map }) {
+        this.$root.map = map;
+      },
+      onSelection(event) {
+        const feature = event.features[0];
+        this.addSelection(feature);
+        this.getFeature(feature);
+      },
+      onUpdateSelection(event) {
+        const feature = event.features[0];
+        this.updateSelection(feature);
+        this.removeFeature(feature.id);
+        this.getFeature(feature);
+      },
+    },
+  };
 </script>
 
 <style>

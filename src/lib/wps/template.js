@@ -10,27 +10,27 @@ export const xmlRequestTemplate = ({
 }) =>
   `
   <wps:Execute xmlns:wps="http://www.opengis.net/wps/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0.0" service="WPS" xsi:schemaLocation="http://www.opengis.net/wps/1.0.0 http://schemas.opengis.net/wps/1.0.0/wpsAll.xsd">
-    <ows:Identifier xmlns:ows="http://www.opengis.net/ows/1.1">${functionId}</ows:Identifier>
+    <ows:Identifier xmlns:ows="http://www.opengis.net/ows/1.1">${ functionId }</ows:Identifier>
     <wps:DataInputs>
       ${
         requestData
           ? wpsInput(
-              "waters_identifier",
-              requestData.map(({ id }) => id).join(",")
+              'waters_identifier',
+              requestData.map(({ id }) => id).join(',')
             )
-          : ""
+          : ''
       }
       ${
         requestData
-          ? wpsInput("configuration", requestData.map(JSON.stringify).join(","))
-          : ""
+          ? wpsInput('configuration', requestData.map(JSON.stringify).join(','))
+          : ''
       }
-      ${polygon ? wpsInput("geojson_area", JSON.stringify(polygon)) : ""}
-      ${filterData ? wpsInput("keywords", JSON.stringify(filterData)) : ""}
-      ${cswUrls ? wpsInput("csw_url", JSON.stringify(cswUrls)) : ""}
-      ${bufferDist ? wpsInput("buffer_dist", bufferDist) : ""}
-      ${segmentLength ? wpsInput("segment_length", segmentLength) : ""}
-      ${layersSetup ? wpsInput("layers_setup", layersSetup) : ""}
+      ${ polygon ? wpsInput('geojson_area', JSON.stringify(polygon)) : '' }
+      ${ filterData ? wpsInput('keywords', JSON.stringify(filterData)) : '' }
+      ${ cswUrls ? wpsInput('csw_url', JSON.stringify(cswUrls)) : '' }
+      ${ bufferDist ? wpsInput('buffer_dist', bufferDist) : '' }
+      ${ segmentLength ? wpsInput('segment_length', segmentLength) : '' }
+      ${ layersSetup ? wpsInput('layers_setup', layersSetup) : '' }
 
        
     </wps:DataInputs>
@@ -45,10 +45,10 @@ export const xmlRequestTemplate = ({
 function wpsInput(identifier, data) {
   return `
     <wps:Input>
-      <ows:Identifier xmlns:ows="http://www.opengis.net/ows/1.1">${identifier}</ows:Identifier>
-      <ows:Title xmlns:ows="http://www.opengis.net/ows/1.1">${identifier}</ows:Title>
+      <ows:Identifier xmlns:ows="http://www.opengis.net/ows/1.1">${ identifier }</ows:Identifier>
+      <ows:Title xmlns:ows="http://www.opengis.net/ows/1.1">${ identifier }</ows:Title>
       <wps:Data>
-        <wps:LiteralData>${data}</wps:LiteralData>
+        <wps:LiteralData>${ data }</wps:LiteralData>
       </wps:Data>
     </wps:Input>
   `;

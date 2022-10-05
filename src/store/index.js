@@ -1,8 +1,8 @@
-import Vue from "vue";
-import Vuex from "vuex";
-import FileSaver from "file-saver";
-import selections from "./selections";
-import mapbox from "./mapbox";
+import Vue from 'vue';
+import Vuex from 'vuex';
+import FileSaver from 'file-saver';
+import selections from './selections';
+import mapbox from './mapbox';
 
 Vue.use(Vuex);
 
@@ -24,24 +24,24 @@ export default new Vuex.Store({
   },
   actions: {
     reset({ commit }) {
-      commit("mapbox/reset");
-      commit("selections/reset");
+      commit('mapbox/reset');
+      commit('selections/reset');
     },
     saveProject({ state }) {
       const project = {
         selections: state.selections,
         mapbox: state.mapbox,
       };
-      const title = "brl_project";
-      const blob = new Blob([JSON.stringify(project, null, 2)], {
-        type: "application/json",
+      const title = 'brl_project';
+      const blob = new Blob([ JSON.stringify(project, null, 2) ], {
+        type: 'application/json',
       });
 
-      FileSaver.saveAs(blob, `${title}.json`);
+      FileSaver.saveAs(blob, `${ title }.json`);
     },
     loadProject({ commit }, data) {
       data.selections.selections.forEach((selection) => {
-        commit("selections/add", selection);
+        commit('selections/add', selection);
       });
 
       commit('mapbox/set', data.mapbox);

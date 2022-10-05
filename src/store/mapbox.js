@@ -6,7 +6,7 @@ const initialState = () => ({
   features: [],
   wmsLayers: [],
   loadingWmsLayers: false,
-  activePopup: null
+  activePopup: null,
 });
 
 const features = {
@@ -43,14 +43,14 @@ const features = {
       commit('selections/setLoadingSelection', { id: feature.id, value: true }, { root: true });
 
       wps({
-        "functionId": "brl_watercourses",
-        "polygon": {
-          "id": feature.id,
-          "type": "Feature",
-          "properties": {},
-          "geometry": feature.geometry
+        'functionId': 'brl_watercourses',
+        'polygon': {
+          'id': feature.id,
+          'type': 'Feature',
+          'properties': {},
+          'geometry': feature.geometry,
         },
-        "bufferDist": "100"
+        'bufferDist': '100',
       })
       .then(({ watersCollection, watersIdentifier }) => {
         commit('addFeature', {
@@ -60,10 +60,10 @@ const features = {
             paint: {
               'line-width': 5,
               'line-color': '#000',
-              'line-opacity': 0.8
-            }
+              'line-opacity': 0.8,
+            },
           }),
-          watersIdentifier
+          watersIdentifier,
         });
         commit('selections/setLoadingSelection', { id: feature.id, value: false }, { root: true });
       })
@@ -73,12 +73,12 @@ const features = {
       });
     },
     async calculateResult({ commit }, requestData) {
-      commit("setLoadingWmsLayers", true);
+      commit('setLoadingWmsLayers', true);
 
       try {
         const data = {
-          functionId: "brl_gwmodel",
-          requestData: requestData
+          functionId: 'brl_gwmodel',
+          requestData: requestData,
         };
 
         const layers = await wps(data);
@@ -95,15 +95,15 @@ const features = {
           };
         });
 
-        wmsLayers.forEach((wmsLayer) => commit("addWmsLayer", wmsLayer));
+        wmsLayers.forEach((wmsLayer) => commit('addWmsLayer', wmsLayer));
       } catch (err) {
         console.log(err);
-        commit("setError", "Error fetching result", { root: true });
+        commit('setError', 'Error fetching result', { root: true });
       }
 
-      commit("setLoadingWmsLayers", false);
-    }
-  }
+      commit('setLoadingWmsLayers', false);
+    },
+  },
 };
 
 export default features;
