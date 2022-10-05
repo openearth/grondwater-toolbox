@@ -12,7 +12,7 @@
 </template>
 
 <script>
-  import { mapActions, mapState } from 'vuex';
+  import { mapActions, mapGetters } from 'vuex';
   import getLoadedFileContents from '@/lib/get-loaded-file-contents';
   import { featureCollection } from '@turf/helpers';
   import bbox from '@turf/bbox';
@@ -26,7 +26,7 @@
       };
     },
     computed: {
-      ...mapState('mapbox', [ 'features' ]),
+      ...mapGetters('mapbox', [ 'features' ]),
     },
     watch: {
       features() {
@@ -60,7 +60,7 @@
 
         data.selections.selections.forEach((selection) => {
           this.addSelection({ selection });
-          this.$store.dispatch('mapbox/getFeature', selection);
+          this.$store.dispatch('mapbox/getFeature', { feature: selection });
         });
 
         this.$store.dispatch('reset');

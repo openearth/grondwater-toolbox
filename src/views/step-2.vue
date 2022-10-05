@@ -20,7 +20,7 @@
 </template>
 
 <script>
-  import { mapActions, mapGetters, mapMutations, mapState } from 'vuex';
+  import { mapActions, mapGetters } from 'vuex';
   import bbox from '@turf/bbox';
   import { featureCollection } from '@turf/helpers';
 
@@ -34,8 +34,8 @@
     },
     computed: {
       ...mapGetters('app', [ 'viewerCurrentStep' ]),
+      ...mapGetters('mapbox', [ 'features', 'wmsLayers' ]),
       ...mapGetters('selections', [ 'selections' ]),
-      ...mapState('mapbox', [ 'features', 'wmsLayers' ]),
       stepTitle() {
         return this.viewerCurrentStep && this.viewerCurrentStep.title;
       },
@@ -56,7 +56,7 @@
     },
     methods: {
       ...mapActions('app', [ 'setViewerCurrentStepIndex' ]),
-      ...mapMutations('mapbox', [ 'resetWmsLayers' ]),
+      ...mapActions('mapbox', [ 'resetWmsLayers' ]),
       onPrevious() {
         this.$router.push({ name: 'tool-step-1' });
         this.setViewerCurrentStepIndex({ step: 0 });

@@ -21,14 +21,14 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex';
+  import { mapGetters } from 'vuex';
 
   import SidebarFooter from '@/components/sidebar-footer';
 
   export default {
     components: { SidebarFooter },
     computed: {
-      ...mapState('app', [ 'viewerIntroduction' ]),
+      ...mapGetters('app', [ 'viewerIntroduction' ]),
     },
   };
 </script>

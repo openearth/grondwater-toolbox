@@ -92,7 +92,7 @@
 </template>
 
 <script>
-  import { mapActions, mapGetters, mapMutations, mapState } from 'vuex';
+  import { mapActions, mapGetters } from 'vuex';
   import ConfigurationCard from '@/components/configuration-card';
   import ConfigurationForm from '@/components/configuration-form';
 
@@ -122,7 +122,7 @@
     },
     computed: {
       ...mapGetters('selections', [ 'selections' ]),
-      ...mapState('mapbox', [ 'features', 'loadingWmsLayers', 'wmsLayers' ]),
+      ...mapGetters('mapbox', [ 'features', 'loadingWmsLayers', 'wmsLayers' ]),
       // iterates through all forms and checks if every one of them is valid
       valid() {
         return (
@@ -160,9 +160,8 @@
       },
     },
     methods: {
-      ...mapActions('mapbox', [ 'calculateResult' ]),
+      ...mapActions('mapbox', [ 'calculateResult', 'resetWmsLayers' ]),
       ...mapActions('selections', [ 'addSelectionConfiguration', 'removeSelectionConfiguration' ]),
-      ...mapMutations('mapbox', [ 'resetWmsLayers' ]),
       async calculate() {
         this.resetWmsLayers();
         await this.calculateResult(this.formattedForms);

@@ -73,7 +73,7 @@ router.beforeEach((to, from, next) => {
   if (!isValidConfig) {
     return next({ ...to, path: `/tools/${ config }`, params: { config } });
   } else {
-    store.commit('app/SET_VIEWER_CONFIG', { config });
+    store.dispatch('app/setViewerConfig', { config });
     store.dispatch('data/getAppData', to);
   }
 

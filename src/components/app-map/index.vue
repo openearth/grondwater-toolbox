@@ -52,7 +52,7 @@
 </template>
 
 <script>
-  import { mapMutations, mapActions, mapState } from 'vuex';
+  import { mapActions, mapGetters } from 'vuex';
   import Mapbox from 'mapbox-gl';
   import { MglMap, MglNavigationControl } from 'vue-mapbox';
 
@@ -86,7 +86,7 @@
       };
     },
     computed: {
-      ...mapState('mapbox', [ 'features', 'wmsLayers' ]),
+      ...mapGetters('mapbox', [ 'features', 'wmsLayers' ]),
       mapBoxToken() {
         return process.env.VUE_APP_MAPBOX_TOKEN;
       },
@@ -121,22 +121,21 @@
       this.mapbox = Mapbox;
     },
     methods: {
-      ...mapActions('mapbox', [ 'getFeature' ]),
+      ...mapActions('mapbox', [ 'getFeature', 'removeFeature' ]),
       ...mapActions('selections', [ 'addSelection', 'updateSelection' ]),
-      ...mapMutations('mapbox', [ 'removeFeature' ]),
       onMapCreated({ map }) {
         this.$root.map = map;
       },
       onSelection(event) {
         const feature = event.features[0];
         this.addSelection({ selection: feature });
-        this.getFeature(feature);
+        this.getFeature({ feature });
       },
       onUpdateSelection(event) {
         const feature = event.features[0];
         this.updateSelection({ selection: feature });
-        this.removeFeature(feature.id);
-        this.getFeature(feature);
+        this.removeFeature({ id: feature.id });
+        this.getFeature({ feature });
       },
     },
   };

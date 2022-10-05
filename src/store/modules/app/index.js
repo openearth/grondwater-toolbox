@@ -14,6 +14,7 @@ export default {
     viewerConfig: state => state.viewerConfig,
     viewerCurrentStep: state => state.viewerSteps[state.viewerCurrentStepIndex],
     viewerCurrentStepIndex: state => state.viewerCurrentStepIndex,
+    viewerIntroduction: state => state.viewerIntroduction,
     viewerSteps: state => state.viewerSteps,
   },
 
@@ -36,6 +37,9 @@ export default {
   },
 
   actions: {
+    setViewerConfig({ commit }, { config }) {
+      commit('SET_VIEWER_CONFIG', { config });
+    },
     setViewerName({ commit }, { name }) {
       document.title = name;
       commit('SET_VIEWER_NAME', { name });

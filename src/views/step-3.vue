@@ -37,7 +37,7 @@
 </template>
 
 <script>
-  import { mapGetters, mapState } from 'vuex';
+  import { mapGetters } from 'vuex';
 
   import SidebarFooter from '@/components/sidebar-footer';
 
@@ -64,7 +64,7 @@
       },
     },
     computed: {
-      ...mapState('mapbox', [ 'features', 'wmsLayers' ]),
+      ...mapGetters('mapbox', [ 'features', 'wmsLayers' ]),
       ...mapGetters('selections', [ 'selections' ]),
     },
     created() {

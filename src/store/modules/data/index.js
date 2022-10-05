@@ -32,8 +32,8 @@ export default {
       dispatch('app/setViewerSteps', { steps }, { root: true });
     },
 
-    reset({ commit, dispatch }) {
-      commit('mapbox/reset');
+    reset({ dispatch }) {
+      dispatch('mapbox/resetMapbox');
       dispatch('selections/resetSelections');
     },
 
@@ -50,12 +50,12 @@ export default {
       FileSaver.saveAs(blob, `${ title }.json`);
     },
 
-    loadProject({ commit, dispatch }, data) {
+    loadProject({ dispatch }, data) {
       data.selections.selections.forEach((selection) => {
         dispatch('selections/addSelection', { selection });
       });
 
-      commit('mapbox/set', data.mapbox);
+      dispatch('mapbox/setMapboxData', { data: data.mapbox });
     },
   },
 };

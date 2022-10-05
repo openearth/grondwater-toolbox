@@ -29,7 +29,7 @@
 </template>
 
 <script>
-  import { mapMutations, mapGetters, mapActions } from 'vuex';
+  import { mapGetters, mapActions } from 'vuex';
 
   import SidebarFooter from '@/components/sidebar-footer';
   import StepComponents from '@/components/step-components';
@@ -59,7 +59,7 @@
     },
     methods: {
       ...mapActions('app', [ 'setViewerCurrentStepIndex' ]),
-      ...mapMutations('mapbox', [ 'resetWmsLayers' ]),
+      ...mapActions('mapbox', [ 'resetWmsLayers' ]),
       onNext() {
         this.$router.push({ name: 'tool-step-2' });
         this.setViewerCurrentStepIndex({ step: 1 });
