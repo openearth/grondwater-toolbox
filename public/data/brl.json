@@ -2,5 +2,19 @@
   "id": "brl",
   "name": "BasisRivierbodemLigging (BRL)",
   "description": "Praesent quis varius turpis. Vivamus elit ante, gravida eu tristique eu, maximus ut magna. Aliquam vestibulum mattis leo, eget dictum neque aliquam sit amet.",
-  "introduction": "<p>Vestibulum imperdiet augue in magna mattis, a lobortis risus pharetra. Mauris euismod venenatis lectus et accumsan. Aenean ac urna nunc. Suspendisse consequat nulla eu sapien cursus fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet neque ut nisl ultricies feugiat.</p><p></p>"
+  "introduction": "<p>Vestibulum imperdiet augue in magna mattis, a lobortis risus pharetra. Mauris euismod venenatis lectus et accumsan. Aenean ac urna nunc. Suspendisse consequat nulla eu sapien cursus fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet neque ut nisl ultricies feugiat.</p><p></p>",
+  "steps": [
+    {
+      "title": "Selecties",
+      "components": [
+        "selections-list"
+      ]
+    },
+    {
+      "title": "Configuratie",
+      "components": [
+        "selection-configuration"
+      ]
+    }
+  ]
 }

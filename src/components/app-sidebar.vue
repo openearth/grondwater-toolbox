@@ -17,13 +17,9 @@ import SidebarProgress from './sidebar-progess';
 import { mapState } from 'vuex';
 
 export default {
-  components: {
-    SidebarProgress,
-  },
+  components: { SidebarProgress },
   computed: {
-    ...mapState({
-      selections: state => state.selections.selections
-    })
+    ...mapState('selections', ['selections']),
   },
   data() {
     return {
@@ -32,15 +28,21 @@ export default {
   },
   created() {
     this.$router.beforeEach((to, from, next) => {
-      this.transitionName = to.meta.step
-        ? to.meta.step < from.meta.step
+      if (!isNaN(to.meta.step) && !isNaN(from.meta.step)) {
+        this.transitionName = to.meta.step < from.meta.step
           ? 'slide-right'
-          : 'slide-left'
-        : 'slide-right';
+          : 'slide-left';
+      } else if (isNaN(to.meta.step) && !isNaN(from.meta.step)) {
+        this.transitionName = 'slide-right';
+      } else if (!isNaN(to.meta.step) && isNaN(from.meta.step)) {
+        this.transitionName = 'slide-left';
+      } else {
+        this.transitionName = 'slide-left';
+      }
 
       next();
     });
-  }
+  },
 };
 </script>
 
@@ -51,7 +53,7 @@ export default {
 .slide-right-leave-active {
   transition-duration: 0.3s;
   transition-property: height, opacity, transform;
-  transition-timing-function: cubic-bezier(0.55, 0, 0.1, 1);
+  transition-timing-function: ease;
   overflow: hidden;
 }
 

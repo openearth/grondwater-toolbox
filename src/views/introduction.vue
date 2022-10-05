@@ -1,18 +1,16 @@
 <template>
-  <div class="pa-4 introduction d-flex flex-column">
+  <div class="pa-4 d-flex flex-column">
     <h2 class="text-h4">Introduction</h2>
     <v-divider class="mt-4 mb-4" />
 
-    <div class="introduction__content">
-      <div class="text-body-1" v-html="viewerIntroduction" />
-    </div>
+    <div class="text-body-1" v-html="viewerIntroduction" />
 
     <sidebar-footer>
       <v-btn
         slot="end"
         color="primary"
         class="ml-auto"
-        :to="{ name: 'tool-selection' }"
+        :to="{ name: 'tool-step-1' }"
         depressed
       >
         Volgende
@@ -28,23 +26,9 @@
   import SidebarFooter from '@/components/sidebar-footer';
 
   export default {
-    components: {
-      SidebarFooter,
-    },
+    components: { SidebarFooter },
     computed: {
       ...mapState('app', [ 'viewerIntroduction' ]),
     },
   };
 </script>
-
-<style>
-  .introduction {
-    height: 100%;
-    overflow: hidden;
-  }
-
-  .introduction__content {
-    overflow-y: auto;
-    flex: 1;
-  }
-</style>

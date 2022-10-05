@@ -98,7 +98,7 @@ const features = {
         wmsLayers.forEach((wmsLayer) => commit('addWmsLayer', wmsLayer));
       } catch (err) {
         console.log(err);
-        commit('setError', 'Error fetching result', { root: true });
+        commit('SET_ERROR_MESSAGE', { message: 'Error fetching result' }, { root: true });
       }
 
       commit('setLoadingWmsLayers', false);

@@ -1,11 +1,9 @@
 <template>
-  <div class="pa-4 selection d-flex flex-column">
-    <h2 class="text-h4">Selecties</h2>
+  <div class="pa-4 d-flex flex-column">
+    <h2 class="text-h4">{{ stepTitle }}</h2>
     <v-divider class="mt-4 mb-4" />
 
-    <div class="selection__content">
-      <selections-list />
-    </div>
+    <step-components />
 
     <sidebar-footer>
       <v-btn
@@ -19,9 +17,9 @@
       <v-btn
         slot="end"
         class="primary"
-        :disabled="selectionsLoading || !selections.length"
-        :to="{ name: 'tool-calculation' }"
+        :disabled="loading || !selections.length"
         depressed
+        @click="onNext"
       >
         Volgende
         <v-icon>mdi-chevron-right</v-icon>
@@ -31,23 +29,23 @@
 </template>
 
 <script>
-import { mapMutations, mapState, mapGetters } from 'vuex';
+import { mapMutations, mapState, mapGetters, mapActions } from 'vuex';
 
 import SidebarFooter from '@/components/sidebar-footer';
-import SelectionsList from '@/components/selections-list';
+import StepComponents from '@/components/step-components';
 
 export default {
   components: {
-    SelectionsList,
+    StepComponents,
     SidebarFooter,
   },
   computed: {
-    ...mapState({
-      selections: state => state.selections.selections
-    }),
-    ...mapGetters({
-      selectionsLoading: 'selections/loading'
-    })
+    ...mapState('selections', ['selections']),
+    ...mapGetters('selections', ['loading']),
+    ...mapGetters('app', ['viewerCurrentStep']),
+    stepTitle() {
+      return this.viewerCurrentStep && this.viewerCurrentStep.title;
+    },
   },
   created() {
     this.resetWmsLayers();
@@ -61,19 +59,12 @@ export default {
     }
   },
   methods: {
+    ...mapActions('app', ['setViewerCurrentStepIndex']),
     ...mapMutations('mapbox', ['resetWmsLayers']),
+    onNext() {
+      this.$router.push({ name: 'tool-step-2' });
+      this.setViewerCurrentStepIndex({ step: 1 });
+    },
   }
 };
 </script>
-
-<style>
-  .selection {
-    height: 100%;
-    overflow: hidden;
-  }
-
-  .selection__content {
-    overflow-y: auto;
-    flex: 1;
-  }
-</style>

@@ -12,7 +12,7 @@ export default {
   }),
 
   mutations: {
-    setError(state, message) {
+    SET_ERROR_MESSAGE(state, { message }) {
       state.error = {
         message: message,
         id: errorId,
@@ -25,10 +25,11 @@ export default {
   actions: {
     async getAppData({ dispatch }, route) {
       const viewer = route && route.params.config;
-      const { name, introduction } = await configRepo.getConfig(viewer);
+      const { name, introduction, steps } = await configRepo.getConfig(viewer);
 
       dispatch('app/setViewerName', { name }, { root: true });
       dispatch('app/setViewerIntroduction', { introduction }, { root: true });
+      dispatch('app/setViewerSteps', { steps }, { root: true });
     },
 
     reset({ commit }) {

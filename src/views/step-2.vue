@@ -1,21 +1,16 @@
 <template>
   <div class="pa-4 d-flex flex-column">
-    <h2 class="text-h4">Configuratie</h2>
+    <h2 class="text-h4">{{ stepTitle }}</h2>
     <v-divider class="mt-4 mb-4" />
 
-    <selection-configuration />
-
-    <p v-if="wmsLayers.length" class="text-body-1">
-      <v-icon>mdi-information-outline</v-icon>
-      <span>Klik op een punt op de kaart om de waarde te zien</span>
-    </p>
+    <step-components />
 
     <sidebar-footer>
       <v-btn
         slot="start"
         color="primary"
-        :to="{ name: 'tool-selection' }"
         depressed
+        @click="onPrevious"
       >
         <v-icon>mdi-chevron-left</v-icon>
         Vorige
@@ -25,28 +20,33 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex';
-import SidebarFooter from '@/components/sidebar-footer';
-import SelectionConfiguration from '@/components/selection-configuration';
+import { mapActions, mapGetters, mapMutations, mapState } from 'vuex';
 import bbox from '@turf/bbox';
 import { featureCollection } from '@turf/helpers';
+
+import SidebarFooter from '@/components/sidebar-footer';
+import StepComponents from '@/components/step-components';
 
 export default {
   components: {
     SidebarFooter,
-    SelectionConfiguration,
+    StepComponents,
   },
   computed: {
+    ...mapGetters('app', ['viewerCurrentStep']),
     ...mapState({
       selections: (state) => state.selections.selections,
       features: (state) => state.mapbox.features,
       wmsLayers: (state) => state.mapbox.wmsLayers,
     }),
+    stepTitle() {
+      return this.viewerCurrentStep && this.viewerCurrentStep.title;
+    },
   },
   created() {
     this.resetWmsLayers();
     if (!this.selections.length) {
-      this.$router.push({ name: 'tool-selection' });
+      this.$router.push({ name: 'tool-step-1' });
     }
 
     if (this.$root.map) {
@@ -58,7 +58,12 @@ export default {
     }
   },
   methods: {
+    ...mapActions('app', ['setViewerCurrentStepIndex']),
     ...mapMutations('mapbox', ['resetWmsLayers']),
+    onPrevious() {
+      this.$router.push({ name: 'tool-step-1' });
+      this.setViewerCurrentStepIndex({ step: 0 });
+    },
     zoomToSelection() {
       if (!this.features.length) {
         return;

@@ -63,6 +63,11 @@
         Bereken
       </v-btn>
     </div>
+
+    <p v-if="wmsLayers.length" class="text-body-1">
+      <v-icon>mdi-information-outline</v-icon>
+      <span>Klik op een punt op de kaart om de waarde te zien</span>
+    </p>
   </div>
 </template>
 
@@ -100,9 +105,10 @@ export default {
       features: (state) => state.mapbox.features,
       selections: (state) => state.selections.selections,
       loadingWmsLayers: (state) => state.mapbox.loadingWmsLayers,
+      wmsLayers: (state) => state.mapbox.wmsLayers,
     }),
     ...mapGetters({
-      configurations: 'selections/configurations'  
+      configurations: 'selections/configurations',
     }),
     // iterates through all forms and checks if every one of them is valid
     valid() {
@@ -147,7 +153,7 @@ export default {
     async calculate() {
       this.resetWmsLayers();
       await this.calculateResult(this.formattedForms);
-      this.$router.push({ name: 'tool-results' });
+      this.$router.push({ name: 'tool-step-3' });
     },
     setFormValidity(selection, { id, valid }) {
       const form = selection.configuration.find((form => form.id === id));

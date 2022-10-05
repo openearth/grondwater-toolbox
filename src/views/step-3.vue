@@ -17,7 +17,7 @@
       <v-btn
         slot="start"
         color="primary"
-        :to="{ name: 'tool-calculation' }"
+        :to="{ name: 'tool-step-2' }"
         depressed
       >
         Vorige
@@ -31,9 +31,7 @@ import { mapState } from 'vuex';
 import SidebarFooter from '../components/sidebar-footer';
 
 export default {
-  components: {
-    SidebarFooter,
-  },
+  components: { SidebarFooter },
   data() {
     return {
       hiddenLayers: [],
@@ -63,7 +61,7 @@ export default {
   },
   created() {
     if (!this.selections.length) {
-      this.$router.push({ name: 'tool-selection' });
+      this.$router.push({ name: 'tool-step-1' });
     }
 
     this.hiddenLayers = this.wmsLayers

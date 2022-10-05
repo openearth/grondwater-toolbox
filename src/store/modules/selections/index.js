@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import { v4 as uuid } from 'uuid';
+
 let selectionIndex = 1;
 
 function createForm() {
@@ -18,17 +19,17 @@ const initialState = () => ({
   selections: [],
 });
 
-const selections = {
+export default {
   namespaced: true,
+
   state: () => initialState(),
+
   getters: {
-    loading(state) {
-      return state.selections.some(selection => selection.loading);
-    },
-    configurations(state) {
-      return state.selections.map(selection => selection.configuration);
-    }
+    configurations: state => state.selections.map(selection => selection.configuration),
+    loading: state => state.selections.some(selection => selection.loading),
+    selections: state => state.selections,
   },
+
   mutations: {
     add(state, selection) {
       state.selections.push({
@@ -73,5 +74,3 @@ const selections = {
     }
   },
 };
-
-export default selections;
