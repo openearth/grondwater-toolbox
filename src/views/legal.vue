@@ -1,5 +1,5 @@
 <template>
-  <div class="pa-4 legal">
+  <div class="pa-4">
     <h2 class="text-h4">Legal</h2>
     <v-divider class="mt-4 mb-4" />
 
