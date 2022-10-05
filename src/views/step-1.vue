@@ -11,7 +11,7 @@
         :to="{ name: 'tool-introduction' }"
         depressed
       >
-        <v-icon>mdi-chevron-left</v-icon>
+        <v-icon left>mdi-chevron-left</v-icon>
         Vorige
       </v-btn>
       <v-btn
@@ -22,7 +22,7 @@
         @click="onNext"
       >
         Volgende
-        <v-icon>mdi-chevron-right</v-icon>
+        <v-icon right>mdi-chevron-right</v-icon>
       </v-btn>
     </sidebar-footer>
   </div>

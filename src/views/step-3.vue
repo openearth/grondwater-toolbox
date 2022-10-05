@@ -29,6 +29,7 @@
         :to="{ name: 'tool-step-2' }"
         depressed
       >
+        <v-icon left>mdi-chevron-left</v-icon>
         Vorige
       </v-btn>
     </sidebar-footer>

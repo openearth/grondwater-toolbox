@@ -12,7 +12,7 @@
         depressed
         @click="onPrevious"
       >
-        <v-icon>mdi-chevron-left</v-icon>
+        <v-icon left>mdi-chevron-left</v-icon>
         Vorige
       </v-btn>
     </sidebar-footer>

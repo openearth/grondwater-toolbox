@@ -65,9 +65,11 @@
         icon-start
         class="mt-4"
         title="berekening toevoegen"
+        depressed
         @click="addForm(selection.id)"
       >
-        <v-icon left>mdi-plus</v-icon> Berekening
+        <v-icon left>mdi-plus</v-icon>
+        Berekening
       </v-btn>
     </configuration-card>
 
