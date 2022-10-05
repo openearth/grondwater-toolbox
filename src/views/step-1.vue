@@ -54,7 +54,7 @@
     },
     methods: {
       ...mapActions('app', [ 'addLockedViewerStep', 'removeLockedViewerStep' ]),
-      ...mapActions('app', [ 'setViewerCurrentStepNumber']),
+      ...mapActions('app', [ 'setViewerCurrentStepNumber' ]),
       onNext() {
         this.$router.push({ name: 'tool-step-2' });
         this.setViewerCurrentStepNumber({ step: 2 });
