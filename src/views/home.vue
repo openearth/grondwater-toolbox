@@ -17,7 +17,7 @@
           :to="{ name: 'tool-introduction', params: { config: tool.id } }"
           depressed
         >
-          Selecteer
+          Bekijken
         </v-btn>
       </v-card-actions>
     </v-card>
