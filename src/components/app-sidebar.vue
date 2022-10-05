@@ -20,12 +20,12 @@
 
 <script>
   import SidebarProgress from './sidebar-progess';
-  import { mapState } from 'vuex';
+  import { mapGetters } from 'vuex';
 
   export default {
     components: { SidebarProgress },
     computed: {
-      ...mapState('selections', [ 'selections' ]),
+      ...mapGetters('selections', [ 'selections' ]),
     },
     data() {
       return {

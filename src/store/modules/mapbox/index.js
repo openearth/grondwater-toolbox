@@ -39,8 +39,8 @@ const features = {
     },
   },
   actions: {
-    getFeature({ commit }, feature) {
-      commit('selections/setLoadingSelection', { id: feature.id, value: true }, { root: true });
+    getFeature({ commit, dispatch }, feature) {
+      dispatch('selections/setSelectionLoading', { id: feature.id, value: true }, { root: true });
 
       wps({
         'functionId': 'brl_watercourses',
@@ -65,7 +65,7 @@ const features = {
           }),
           watersIdentifier,
         });
-        commit('selections/setLoadingSelection', { id: feature.id, value: false }, { root: true });
+        dispatch('selections/setSelectionLoading', { id: feature.id, value: false }, { root: true });
       })
       .catch(err => {
         // @TODO :: Have proper error handling here!

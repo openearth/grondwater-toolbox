@@ -13,11 +13,13 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex';
-  import SelectionsListItem from './selections-list-item';
+  import { mapGetters } from 'vuex';
   import { mdiVectorSquare } from '@mdi/js';
 
+  import SelectionsListItem from './selections-list-item';
+
   export default {
+    components: { SelectionsListItem },
     data() {
       return {
         icons: {
@@ -25,13 +27,8 @@
         },
       };
     },
-    components: {
-      SelectionsListItem,
-    },
     computed: {
-      ...mapState({
-        selections: state => state.selections.selections,
-      }),
+      ...mapGetters('selections', [ 'selections' ]),
     },
   };
 </script>

@@ -84,10 +84,7 @@
       };
     },
     computed: {
-      ...mapState({
-        features: state => state.mapbox.features,
-        wmsLayers: state => state.mapbox.wmsLayers,
-      }),
+      ...mapState('mapbox', [ 'features', 'wmsLayers' ]),
       mapBoxToken() {
         return process.env.VUE_APP_MAPBOX_TOKEN;
       },
@@ -122,27 +119,20 @@
       this.mapbox = Mapbox;
     },
     methods: {
-      ...mapMutations('selections', {
-        addSelection: 'add',
-        updateSelection: 'update',
-      }),
-      ...mapMutations('mapbox', {
-        removeFeature: 'removeFeature',
-      }),
-      ...mapActions('mapbox', {
-        getFeature: 'getFeature',
-      }),
+      ...mapActions('mapbox', [ 'getFeature' ]),
+      ...mapActions('selections', [ 'addSelection', 'updateSelection' ]),
+      ...mapMutations('mapbox', [ 'removeFeature' ]),
       onMapCreated({ map }) {
         this.$root.map = map;
       },
       onSelection(event) {
         const feature = event.features[0];
-        this.addSelection(feature);
+        this.addSelection({ selection: feature });
         this.getFeature(feature);
       },
       onUpdateSelection(event) {
         const feature = event.features[0];
-        this.updateSelection(feature);
+        this.updateSelection({ selection: feature });
         this.removeFeature(feature.id);
         this.getFeature(feature);
       },

@@ -59,7 +59,8 @@
 </template>
 
 <script>
-  import { mapMutations } from 'vuex';
+  import { mapActions, mapMutations } from 'vuex';
+
   export default {
     props: {
       selection: {
@@ -77,18 +78,15 @@
       this.name = this.selection.name;
     },
     methods: {
+      ...mapActions('selections', [ 'removeSelection', 'editSelectionName' ]),
       ...mapMutations('mapbox', [ 'removeFeature' ]),
-      ...mapMutations('selections', {
-        removeSelection: 'remove',
-        editSelection: 'edit',
-      }),
       onDelete() {
         const { __draw } = this.$root.map;
         const { id } = this.selection;
 
         __draw.delete(id);
 
-        this.removeSelection(id);
+        this.removeSelection({ id });
         this.removeFeature(id);
       },
       onEdit() {
@@ -97,7 +95,7 @@
       onSave() {
         const { id } = this.selection;
         this.isEditing = false;
-        this.editSelection({ id, name: this.name });
+        this.editSelectionName({ id, name: this.name });
       },
     },
   };

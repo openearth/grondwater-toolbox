@@ -32,9 +32,9 @@ export default {
       dispatch('app/setViewerSteps', { steps }, { root: true });
     },
 
-    reset({ commit }) {
+    reset({ commit, dispatch }) {
       commit('mapbox/reset');
-      commit('selections/reset');
+      dispatch('selections/resetSelections');
     },
 
     saveProject({ state }) {

@@ -24,13 +24,12 @@ export default {
   state: () => initialState(),
 
   getters: {
-    configurations: state => state.selections.map(selection => selection.configuration),
     loading: state => state.selections.some(selection => selection.loading),
     selections: state => state.selections,
   },
 
   mutations: {
-    add(state, selection) {
+    ADD_SELECTION(state, { selection }) {
       state.selections.push({
         ...selection,
         name: selection.name || `Selectie ${ selectionIndex }`,
@@ -39,14 +38,14 @@ export default {
 
       selectionIndex++;
     },
-    remove(state, id) {
+    REMOVE_SELECTION(state, { id }) {
       state.selections = state.selections.filter(selection => selection.id !== id);
     },
-    edit(state, { id, name }) {
+    EDIT_SELECTION_NAME(state, { id, name }) {
       const selection = state.selections.find((selection) => selection.id === id);
       selection.name = name;
     },
-    update(state, selection) {
+    UPDATE_SELECTION(state, { selection }) {
       state.selections = state.selections.map(s => {
         if (s.id === selection.id) {
           return { ...s, ...selection, name: s.name };
@@ -55,21 +54,48 @@ export default {
         return s;
       });
     },
-    reset(state) {
+    RESET_STATE(state) {
       selectionIndex = 1;
       Object.assign(state, initialState());
     },
-    setLoadingSelection(state, { id, value }) {
+    SET_SELECTION_LOADING(state, { id, value }) {
       const selection = state.selections.find(s => s.id === id);
       Vue.set(selection, 'loading', value);
     },
-    addConfiguration(state, id) {
+    ADD_SELECTION_CONFIGURATION(state, id) {
       const selection = state.selections.find((selection) => selection.id === id);
       selection.configuration.push(createForm());
     },
-    deleteConfiguration(state, { selectionId, formId }) {
+    REMOVE_SELECTION_CONFIGURATION(state, { selectionId, formId }) {
       const selection = state.selections.find((selection) => selection.id === selectionId);
       selection.configuration = selection.configuration.filter(({ id }) => id !== formId);
+    },
+  },
+
+  actions: {
+    addSelection({ commit }, { selection }) {
+      commit('ADD_SELECTION', { selection });
+    },
+    removeSelection({ commit }, { id }) {
+      commit('REMOVE_SELECTION', { id });
+    },
+    editSelectionName({ commit }, { id, name }) {
+      commit('EDIT_SELECTION_NAME', { id, name });
+    },
+    updateSelection({ commit }, { selection }) {
+      commit('UPDATE_SELECTION', { selection });
+    },
+    resetSelections({ commit }) {
+      commit('RESET_STATE');
+    },
+    setSelectionLoading({ commit }, { id, value }) {
+      commit('SET_SELECTION_LOADING', { id, value });
+    },
+    addSelectionConfiguration({ commit }, { id }) {
+      commit('ADD_SELECTION_CONFIGURATION', { id });
+    },
+    removeSelectionConfiguration({ commit }, { selectionId, formId }) {
+      commit('REMOVE_SELECTION_CONFIGURATION', { selectionId, formId });
     },
   },
 };

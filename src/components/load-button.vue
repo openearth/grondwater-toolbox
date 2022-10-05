@@ -26,9 +26,7 @@
       };
     },
     computed: {
-      ...mapState('mapbox', {
-        features: (state) => state.features,
-      }),
+      ...mapState('mapbox', [ 'features' ]),
     },
     watch: {
       features() {
@@ -49,9 +47,7 @@
       },
     },
     methods: {
-      ...mapActions({
-        showError: 'notifications/showError',
-      }),
+      ...mapActions('selections', [ 'addSelection' ]),
       async onFileInput(event) {
         const { __draw } = this.$root.map;
         const data = await getLoadedFileContents(event);
@@ -63,7 +59,7 @@
         });
 
         data.selections.selections.forEach((selection) => {
-          this.$store.commit('selections/add', selection);
+          this.addSelection({ selection });
           this.$store.dispatch('mapbox/getFeature', selection);
         });
 
@@ -71,7 +67,7 @@
         this.$store.dispatch('loadProject', data);
         this.selectionsCount = data.selections.selections.length;
 
-        if (this.$route.name !== 'selection') {
+        if (this.$route.name !== 'tool-step-1') {
           this.$router.push({ name: 'tool-step-1' });
         }
 

@@ -121,14 +121,8 @@
       };
     },
     computed: {
-      ...mapState({
-        features: (state) => state.mapbox.features,
-        selections: (state) => state.selections.selections,
-        loadingWmsLayers: (state) => state.mapbox.loadingWmsLayers,
-      }),
-      ...mapGetters({
-        configurations: 'selections/configurations',
-      }),
+      ...mapGetters('selections', [ 'selections' ]),
+      ...mapState('mapbox', [ 'features', 'loadingWmsLayers', 'wmsLayers' ]),
       // iterates through all forms and checks if every one of them is valid
       valid() {
         return (
@@ -166,13 +160,13 @@
       },
     },
     methods: {
-      ...mapMutations('mapbox', [ 'resetWmsLayers' ]),
-      ...mapMutations('selections', [ 'addConfiguration', 'deleteConfiguration' ]),
       ...mapActions('mapbox', [ 'calculateResult' ]),
+      ...mapActions('selections', [ 'addSelectionConfiguration', 'removeSelectionConfiguration' ]),
+      ...mapMutations('mapbox', [ 'resetWmsLayers' ]),
       async calculate() {
         this.resetWmsLayers();
         await this.calculateResult(this.formattedForms);
-        this.$router.push({ name: 'results' });
+        this.$router.push({ name: 'tool-step-3' });
       },
       setFormValidity(selection, { id, valid }) {
         const form = selection.configuration.find((form => form.id === id));
@@ -197,10 +191,10 @@
         form.data = data;
       },
       addForm(id) {
-        this.addConfiguration(id);
+        this.addSelectionConfiguration({ id });
       },
       handleDeleteForm(selectionId, formId) {
-        this.deleteConfiguration({ selectionId, formId });
+        this.removeSelectionConfiguration({ selectionId, formId });
       },
     },
   };

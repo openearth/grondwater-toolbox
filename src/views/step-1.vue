@@ -29,7 +29,7 @@
 </template>
 
 <script>
-  import { mapMutations, mapState, mapGetters, mapActions } from 'vuex';
+  import { mapMutations, mapGetters, mapActions } from 'vuex';
 
   import SidebarFooter from '@/components/sidebar-footer';
   import StepComponents from '@/components/step-components';
@@ -40,8 +40,7 @@
       SidebarFooter,
     },
     computed: {
-      ...mapState('selections', [ 'selections' ]),
-      ...mapGetters('selections', [ 'loading' ]),
+      ...mapGetters('selections', [ 'loading', 'selections' ]),
       ...mapGetters('app', [ 'viewerCurrentStep' ]),
       stepTitle() {
         return this.viewerCurrentStep && this.viewerCurrentStep.title;

@@ -34,11 +34,8 @@
     },
     computed: {
       ...mapGetters('app', [ 'viewerCurrentStep' ]),
-      ...mapState({
-        selections: (state) => state.selections.selections,
-        features: (state) => state.mapbox.features,
-        wmsLayers: (state) => state.mapbox.wmsLayers,
-      }),
+      ...mapGetters('selections', [ 'selections' ]),
+      ...mapState('mapbox', [ 'features', 'wmsLayers' ]),
       stepTitle() {
         return this.viewerCurrentStep && this.viewerCurrentStep.title;
       },

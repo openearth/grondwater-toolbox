@@ -20,12 +20,12 @@
 </template>
 
 <script>
-  import { mapGetters, mapState } from 'vuex';
+  import { mapGetters } from 'vuex';
 
   export default {
     computed: {
-      ...mapState('selections', [ 'selections' ]),
       ...mapGetters('app', [ 'viewerSteps' ]),
+      ...mapGetters('selections', [ 'selections' ]),
       steps() {
         const finalStep = { text: 'Resultaat' };
         let customSteps = this.viewerSteps.map(step => ({

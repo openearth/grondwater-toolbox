@@ -15,9 +15,7 @@ export default {
     },
   },
   computed: {
-    ...mapState({
-      activePopup: state => state.mapbox.activePopup,
-    }),
+    ...mapState('mapbox', [ 'activePopup' ]),
   },
   created() {
     this.addListener();
@@ -27,9 +25,7 @@ export default {
     this.removeActivePopup();
   },
   methods: {
-    ...mapMutations({
-      setActivePopup: 'mapbox/setActivePopup',
-    }),
+    ...mapMutations('mapbox', [ 'setActivePopup' ]),
     removeActivePopup() {
       if (this.activePopup) {
         this.activePopup.remove();
@@ -43,7 +39,7 @@ export default {
       const { width, height } = canvas;
 
       this.removeActivePopup();
-      
+
       const loadingPopup = new Mapbox.Popup()
         .setLngLat(event.lngLat)
         .setHTML('loading...')
