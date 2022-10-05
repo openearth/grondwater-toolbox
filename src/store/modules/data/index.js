@@ -50,9 +50,9 @@ export default {
       FileSaver.saveAs(blob, `${ title }.json`);
     },
 
-    loadProject({ commit }, data) {
+    loadProject({ dispatch }, data) {
       data.selections.selections.forEach((selection) => {
-        commit('selections/add', selection);
+        dispatch('selections/addSelection', { selection });
       });
 
       commit('mapbox/set', data.mapbox);
