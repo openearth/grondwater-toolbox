@@ -1,0 +1,20 @@
+{
+  "id": "eleifend-scelerisque",
+  "name": "Eleifend Scelerisque",
+  "description": "Sed ut aliquet dolor. Curabitur porttitor, felis maximus pharetra molestie, nisl enim fringilla tellus, accumsan malesuada lacus lacus sed sem. Morbi ante nibh, auctor ac leo ut, euismod laoreet diam.",
+  "introduction": "<p>Pellentesque tempor urna non quam volutpat consequat. Praesent quis ultricies diam. Phasellus at mi elit. Donec commodo fringilla tortor, id pharetra lorem dignissim ac. Duis ornare varius dui, at vehicula elit molestie eu. Proin elementum lectus consequat mattis cursus. Maecenas venenatis faucibus purus, vitae egestas mi tempus quis. Sed mauris arcu, viverra convallis arcu at, placerat vehicula tellus. Fusce tempus neque in mattis sollicitudin. Cras posuere sem nulla, at eleifend ipsum interdum et. Integer sed metus nec tellus pulvinar laoreet quis ornare orci. Nunc ut gravida odio. In augue nunc, rhoncus nec dignissim cursus, commodo ac sapien. Nam convallis euismod orci non sollicitudin.</p><p>Etiam ultrices diam non massa sagittis, ac varius velit aliquet. Sed justo augue, gravida at hendrerit nec, suscipit scelerisque enim. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum vitae fermentum ipsum. Vivamus cursus nulla molestie sapien tincidunt, ultrices commodo nibh finibus. Donec accumsan lectus vel dui imperdiet consequat.</p>",
+  "steps": [
+    {
+      "title": "Auctor",
+      "components": [
+        "selections-list"
+      ]
+    },
+    {
+      "title": "Dignissim",
+      "components": [
+        "selection-configuration"
+      ]
+    }
+  ]
+}
