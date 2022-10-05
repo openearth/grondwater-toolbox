@@ -2,25 +2,8 @@ import FileSaver from 'file-saver';
 
 import configRepo from '@/repo/configRepo.js';
 
-let errorId = 0;
-
 export default {
   namespaced: true,
-
-  state: () => ({
-    error: null,
-  }),
-
-  mutations: {
-    SET_ERROR_MESSAGE(state, { message }) {
-      state.error = {
-        message: message,
-        id: errorId,
-      };
-
-      errorId++;
-    },
-  },
 
   actions: {
     async getAppData({ dispatch }, route) {
@@ -31,12 +14,17 @@ export default {
       dispatch('app/setViewerIntroduction', { introduction }, { root: true });
       dispatch('app/setViewerSteps', { steps }, { root: true });
     },
+    loadProject({ dispatch }, data) {
+      data.selections.selections.forEach((selection) => {
+        dispatch('selections/addSelection', { selection });
+      });
 
+      dispatch('mapbox/setMapboxData', { data: data.mapbox });
+    },
     reset({ dispatch }) {
       dispatch('mapbox/resetMapbox');
       dispatch('selections/resetSelections');
     },
-
     saveProject({ state }) {
       const project = {
         selections: state.selections,
@@ -48,14 +36,6 @@ export default {
       });
 
       FileSaver.saveAs(blob, `${ title }.json`);
-    },
-
-    loadProject({ dispatch }, data) {
-      data.selections.selections.forEach((selection) => {
-        dispatch('selections/addSelection', { selection });
-      });
-
-      dispatch('mapbox/setMapboxData', { data: data.mapbox });
     },
   },
 };

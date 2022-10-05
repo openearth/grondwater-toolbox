@@ -8,8 +8,9 @@
     <sidebar-footer>
       <v-btn
         slot="start"
-        :to="{ name: 'tool-introduction' }"
+        color="primary"
         depressed
+        @click="onPrevious"
       >
         <v-icon left>mdi-chevron-left</v-icon>
         Vorige
@@ -17,7 +18,7 @@
       <v-btn
         slot="end"
         class="primary"
-        :disabled="loading || !selections.length"
+        :disabled="nextIsDisabled"
         depressed
         @click="onNext"
       >
@@ -39,30 +40,27 @@
       StepComponents,
       SidebarFooter,
     },
+    created() {
+      this.setViewerCurrentStepNumber({ step: 1 });
+    },
     computed: {
-      ...mapGetters('selections', [ 'loading', 'selections' ]),
-      ...mapGetters('app', [ 'viewerCurrentStep' ]),
+      ...mapGetters('app', [ 'viewerCurrentStep', 'viewerStepsUnlocked' ]),
       stepTitle() {
         return this.viewerCurrentStep && this.viewerCurrentStep.title;
       },
-    },
-    created() {
-      this.resetWmsLayers();
-
-      if (this.$root.map) {
-        const { __draw } = this.$root.map;
-
-        if (__draw) {
-          __draw.changeMode('simple_select');
-        }
-      }
+      nextIsDisabled() {
+        return !this.viewerStepsUnlocked.includes(2);
+      },
     },
     methods: {
-      ...mapActions('app', [ 'setViewerCurrentStepIndex' ]),
-      ...mapActions('mapbox', [ 'resetWmsLayers' ]),
+      ...mapActions('app', [ 'setViewerCurrentStepNumber']),
       onNext() {
         this.$router.push({ name: 'tool-step-2' });
-        this.setViewerCurrentStepIndex({ step: 1 });
+        this.setViewerCurrentStepNumber({ step: 2 });
+      },
+      onPrevious() {
+        this.$router.push({ name: 'tool-introduction' });
+        this.setViewerCurrentStepNumber({ step: 1 });
       },
     },
   };

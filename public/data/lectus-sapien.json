@@ -7,13 +7,13 @@
     {
       "title": "Donec",
       "components": [
-        "selections-list"
+        "some-new-component"
       ]
     },
     {
       "title": "Pharetra",
       "components": [
-        "selection-configuration"
+        "some-new-component"
       ]
     }
   ]

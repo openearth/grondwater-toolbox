@@ -93,6 +93,9 @@
 
 <script>
   import { mapActions, mapGetters } from 'vuex';
+  import bbox from '@turf/bbox';
+  import { featureCollection } from '@turf/helpers';
+
   import ConfigurationCard from '@/components/configuration-card';
   import ConfigurationForm from '@/components/configuration-form';
 
@@ -119,6 +122,23 @@
             value >= 500 || 'Een grootte van minimaal 500 meter is vereist.',
         },
       };
+    },
+    created() {
+      this.resetWmsLayers();
+
+      if (!this.selections.length) {
+        this.$router.push({ name: 'tool-step-1' });
+      }
+
+      if (this.$root.map) {
+        const { __draw } = this.$root.map;
+
+        if (__draw) {
+          __draw.changeMode('static');
+        }
+
+        this.zoomToSelection();
+      }
     },
     computed: {
       ...mapGetters('selections', [ 'selections' ]),
@@ -162,18 +182,13 @@
     methods: {
       ...mapActions('mapbox', [ 'calculateResult', 'resetWmsLayers' ]),
       ...mapActions('selections', [ 'addSelectionConfiguration', 'removeSelectionConfiguration' ]),
+      addForm(id) {
+        this.addSelectionConfiguration({ id });
+      },
       async calculate() {
         this.resetWmsLayers();
         await this.calculateResult(this.formattedForms);
         this.$router.push({ name: 'tool-step-3' });
-      },
-      setFormValidity(selection, { id, valid }) {
-        const form = selection.configuration.find((form => form.id === id));
-
-        form.valid = valid;
-      },
-      setExtentValidity(hasError) {
-        this.extentValid = !hasError;
       },
       handleMouseLeave(id) {
         const { map } = this.$root;
@@ -189,11 +204,32 @@
 
         form.data = data;
       },
-      addForm(id) {
-        this.addSelectionConfiguration({ id });
-      },
       handleDeleteForm(selectionId, formId) {
         this.removeSelectionConfiguration({ selectionId, formId });
+      },
+      setFormValidity(selection, { id, valid }) {
+        const form = selection.configuration.find((form => form.id === id));
+
+        form.valid = valid;
+      },
+      setExtentValidity(hasError) {
+        this.extentValid = !hasError;
+      },
+      zoomToSelection() {
+        if (!this.features.length) {
+          return;
+        }
+
+        const bounds = bbox(
+          featureCollection(
+            this.features.map((feature) => ({
+              geometry: feature.source.data,
+              type: 'Feature',
+            }))
+          )
+        );
+
+        this.$root.map.fitBounds(bounds, { padding: 50 });
       },
     },
   };

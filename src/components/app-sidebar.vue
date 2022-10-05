@@ -1,10 +1,10 @@
 <template>
   <v-navigation-drawer
-    clipped
-    app
-    permanent
     class="pa-2"
-    width="560"
+    app
+    clipped
+    permanent
+    width="580"
   >
     <v-row dense class="fill-height">
       <v-col :cols="12">
@@ -19,15 +19,10 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
-
   import SidebarProgress from '@/components/sidebar-progess';
 
   export default {
     components: { SidebarProgress },
-    computed: {
-      ...mapGetters('selections', [ 'selections' ]),
-    },
     data() {
       return {
         transitionName: 'slide-right',

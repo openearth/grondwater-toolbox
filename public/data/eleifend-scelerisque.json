@@ -7,13 +7,13 @@
     {
       "title": "Auctor",
       "components": [
-        "selections-list"
+        "some-new-component"
       ]
     },
     {
       "title": "Dignissim",
       "components": [
-        "selection-configuration"
+        "some-new-component"
       ]
     }
   ]

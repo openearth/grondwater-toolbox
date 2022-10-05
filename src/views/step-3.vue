@@ -1,6 +1,6 @@
 <template>
   <div class="pa-4 d-flex flex-column">
-    <h2 class="text-h4">Results</h2>
+    <h2 class="text-h4">Resultaat</h2>
 
     <ul class="risks-list mb-6">
       <li
@@ -26,8 +26,9 @@
       <v-btn
         slot="start"
         color="primary"
-        :to="{ name: 'tool-step-2' }"
+        :disabled="previousIsDisabled"
         depressed
+        @click="onPrevious"
       >
         <v-icon left>mdi-chevron-left</v-icon>
         Vorige
@@ -37,7 +38,7 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
+  import { mapActions, mapGetters } from 'vuex';
 
   import SidebarFooter from '@/components/sidebar-footer';
 
@@ -64,13 +65,19 @@
       },
     },
     computed: {
+      ...mapGetters('app', [ 'viewerStepsUnlocked' ]),
       ...mapGetters('mapbox', [ 'features', 'wmsLayers' ]),
       ...mapGetters('selections', [ 'selections' ]),
+      previousIsDisabled() {
+        return !this.viewerStepsUnlocked.includes(2);
+      },
     },
     created() {
       if (!this.selections.length) {
         this.$router.push({ name: 'tool-step-1' });
       }
+
+      this.setViewerCurrentStepNumber({ step: 3 });
 
       this.hiddenLayers = this.wmsLayers
         .filter((_, index) => index !== 0)
@@ -79,10 +86,13 @@
       if (this.$root.map) {
         const { __draw } = this.$root.map;
 
-        __draw.changeMode('static');
+        if (__draw) {
+          __draw.changeMode('static');
+        }
       }
     },
     methods: {
+      ...mapActions('app', [ 'setViewerCurrentStepNumber' ]),
       onLayerVisibilityClick(id) {
         if (this.hiddenLayers.includes(id)) {
           this.hiddenLayers = this.hiddenLayers.filter(
@@ -91,6 +101,10 @@
         } else {
           this.hiddenLayers.push(id);
         }
+      },
+      onPrevious() {
+        this.$router.push({ name: 'tool-step-2' });
+        this.setViewerCurrentStepNumber({ step: 2 });
       },
     },
   };

@@ -7,7 +7,7 @@
           class="px-4"
           :step="index + 1"
         >
-          {{ step.text }}
+          {{ step }}
         </v-stepper-step>
         <v-divider
           class="px-6"
@@ -25,12 +25,9 @@
   export default {
     computed: {
       ...mapGetters('app', [ 'viewerSteps' ]),
-      ...mapGetters('selections', [ 'selections' ]),
       steps() {
-        const finalStep = { text: 'Resultaat' };
-        let customSteps = this.viewerSteps.map(step => ({
-          text: step.title,
-        }));
+        const finalStep = 'Resultaat';
+        let customSteps = this.viewerSteps.map(step => (step.title));
 
         return [ ...customSteps, finalStep ];
       },

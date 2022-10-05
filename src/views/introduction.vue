@@ -1,6 +1,6 @@
 <template>
   <div class="pa-4 d-flex flex-column">
-    <h2 class="text-h4">Introduction</h2>
+    <h2 class="text-h4">Introductie</h2>
     <v-divider class="mt-4 mb-4" />
 
     <div class="text-body-1" v-html="viewerIntroduction" />

@@ -13,7 +13,7 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
+  import { mapActions, mapGetters } from 'vuex';
   import { mdiVectorSquare } from '@mdi/js';
 
   import SelectionsListItem from '@/components/selections-list-item';
@@ -27,8 +27,22 @@
         },
       };
     },
+    created() {
+      this.resetWmsLayers();
+
+      if (this.$root.map) {
+        const { __draw } = this.$root.map;
+
+        if (__draw) {
+          __draw.changeMode('simple_select');
+        }
+      }
+    },
     computed: {
       ...mapGetters('selections', [ 'selections' ]),
+    },
+    methods: {
+      ...mapActions('mapbox', [ 'resetWmsLayers' ]),
     },
   };
 </script>

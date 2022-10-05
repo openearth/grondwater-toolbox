@@ -55,7 +55,7 @@ export default {
     addWmsLayer({ commit }, { layer }) {
       commit('ADD_WMS_LAYER', { layer });
     },
-    async calculateResult({ commit, dispatch }, requestData) {
+    async calculateResult({ dispatch }, requestData) {
       dispatch('setWmsLayersLoading', { isLoading: true });
 
       try {
@@ -81,7 +81,6 @@ export default {
         wmsLayers.forEach((layer) => dispatch('addWmsLayer', { layer }));
       } catch (err) {
         console.log(err);
-        commit('SET_ERROR_MESSAGE', { message: 'Error fetching result' }, { root: true });
       }
 
       dispatch('setWmsLayersLoading', { isLoading: false });

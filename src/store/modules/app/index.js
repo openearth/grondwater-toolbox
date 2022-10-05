@@ -6,16 +6,18 @@ export default {
     viewerIntroduction: '',
     viewerName: '',
     viewerSteps: [],
+    viewerStepsUnlocked: [ 1, 2, 3 ],
     viewerCurrentStep: null,
-    viewerCurrentStepIndex: 0,
+    viewerCurrentStepNumber: 1,
   }),
 
   getters: {
     viewerConfig: state => state.viewerConfig,
-    viewerCurrentStep: state => state.viewerSteps[state.viewerCurrentStepIndex],
-    viewerCurrentStepIndex: state => state.viewerCurrentStepIndex,
+    viewerCurrentStep: state => state.viewerSteps[state.viewerCurrentStepNumber - 1],
+    viewerCurrentStepNumber: state => state.viewerCurrentStepNumber,
     viewerIntroduction: state => state.viewerIntroduction,
     viewerSteps: state => state.viewerSteps,
+    viewerStepsUnlocked: state => state.viewerStepsUnlocked,
   },
 
   mutations: {
@@ -31,8 +33,8 @@ export default {
     SET_VIEWER_STEPS(state, { steps }) {
       state.viewerSteps = steps;
     },
-    SET_VIEWER_CURRENT_INDEX(state, { step }) {
-      state.viewerCurrentStepIndex = step;
+    SET_VIEWER_CURRENT_NUMBER(state, { step }) {
+      state.viewerCurrentStepNumber = step;
     },
   },
 
@@ -50,8 +52,8 @@ export default {
     setViewerSteps({ commit }, { steps }) {
       commit('SET_VIEWER_STEPS', { steps });
     },
-    setViewerCurrentStepIndex({ commit }, { step }) {
-      commit('SET_VIEWER_CURRENT_INDEX', { step });
+    setViewerCurrentStepNumber({ commit }, { step }) {
+      commit('SET_VIEWER_CURRENT_NUMBER', { step });
     },
   },
 };

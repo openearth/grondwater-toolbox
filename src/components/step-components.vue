@@ -13,10 +13,12 @@
 
   import SelectionsList from '@/components/selections-list';
   import SelectionConfiguration from '@/components/selection-configuration';
+  import SomeNewComponent from '@/components/some-new-component/some-new-component';
 
   const COMPONENT_MAP = {
     'selections-list': SelectionsList,
     'selection-configuration': SelectionConfiguration,
+    'some-new-component': SomeNewComponent,
   };
 
   export default {

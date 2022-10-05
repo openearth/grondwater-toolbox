@@ -1,7 +1,5 @@
 <template>
   <v-app>
-    <error-snackbar />
-
     <app-sidebar />
 
     <v-app-bar
@@ -51,7 +49,6 @@
 
 <script>
   import AppSidebar from '@/components/app-sidebar';
-  import ErrorSnackbar from '@/components/error-snackbar';
   import LoadButton from '@/components/load-button';
   import ResetButton from '@/components/reset-button';
   import SaveButton from '@/components/save-button';
@@ -61,7 +58,6 @@
     components: {
       AppMap: () => import('@/components/app-map'),
       AppSidebar,
-      ErrorSnackbar,
       LoadButton,
       ResetButton,
       SaveButton,

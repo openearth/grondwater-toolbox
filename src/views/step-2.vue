@@ -9,11 +9,22 @@
       <v-btn
         slot="start"
         color="primary"
+        :disabled="previousIsDisabled"
         depressed
         @click="onPrevious"
       >
         <v-icon left>mdi-chevron-left</v-icon>
         Vorige
+      </v-btn>
+      <v-btn
+        slot="end"
+        class="primary"
+        :disabled="nextIsDisabled"
+        depressed
+        @click="onNext"
+      >
+        Volgende
+        <v-icon right>mdi-chevron-right</v-icon>
       </v-btn>
     </sidebar-footer>
   </div>
@@ -21,8 +32,6 @@
 
 <script>
   import { mapActions, mapGetters } from 'vuex';
-  import bbox from '@turf/bbox';
-  import { featureCollection } from '@turf/helpers';
 
   import SidebarFooter from '@/components/sidebar-footer';
   import StepComponents from '@/components/step-components';
@@ -32,50 +41,31 @@
       SidebarFooter,
       StepComponents,
     },
+    created() {
+      this.setViewerCurrentStepNumber({ step: 2 });
+    },
     computed: {
-      ...mapGetters('app', [ 'viewerCurrentStep' ]),
-      ...mapGetters('mapbox', [ 'features', 'wmsLayers' ]),
-      ...mapGetters('selections', [ 'selections' ]),
+      ...mapGetters('app', [ 'viewerCurrentStep', 'viewerStepsUnlocked' ]),
+      ...mapGetters('mapbox', [ 'features' ]),
+      nextIsDisabled() {
+        return !this.viewerStepsUnlocked.includes(3);
+      },
+      previousIsDisabled() {
+        return !this.viewerStepsUnlocked.includes(1);
+      },
       stepTitle() {
         return this.viewerCurrentStep && this.viewerCurrentStep.title;
       },
     },
-    created() {
-      this.resetWmsLayers();
-      if (!this.selections.length) {
-        this.$router.push({ name: 'tool-step-1' });
-      }
-
-      if (this.$root.map) {
-        const { __draw } = this.$root.map;
-
-        __draw.changeMode('static');
-
-        this.zoomToSelection();
-      }
-    },
     methods: {
-      ...mapActions('app', [ 'setViewerCurrentStepIndex' ]),
-      ...mapActions('mapbox', [ 'resetWmsLayers' ]),
+      ...mapActions('app', [ 'setViewerCurrentStepNumber' ]),
+      onNext() {
+        this.$router.push({ name: 'tool-step-3' });
+        this.setViewerCurrentStepNumber({ step: 3 });
+      },
       onPrevious() {
         this.$router.push({ name: 'tool-step-1' });
-        this.setViewerCurrentStepIndex({ step: 0 });
-      },
-      zoomToSelection() {
-        if (!this.features.length) {
-          return;
-        }
-
-        const bounds = bbox(
-          featureCollection(
-            this.features.map((feature) => ({
-              geometry: feature.source.data,
-              type: 'Feature',
-            }))
-          )
-        );
-
-        this.$root.map.fitBounds(bounds, { padding: 50 });
+        this.setViewerCurrentStepNumber({ step: 1 });
       },
     },
   };
