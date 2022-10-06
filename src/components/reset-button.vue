@@ -3,7 +3,7 @@
     v-if="isToolStepRoute"
     icon
     @click="onClick"
-    title="Reset"
+    title="Resetten"
   >
     <v-icon>mdi-refresh</v-icon>
   </v-btn>

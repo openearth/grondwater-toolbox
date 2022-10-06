@@ -38,7 +38,7 @@
         </template>
         <v-list>
           <v-list-item :to="{ name: 'about' }">
-            <v-list-item-title>Over Grondwater Toolkit</v-list-item-title>
+            <v-list-item-title>Over de Grondwater Toolkit</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>

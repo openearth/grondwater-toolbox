@@ -4,7 +4,7 @@
     <v-btn
       icon
       @click="onClick"
-      title="Import selection"
+      title="Selectie importeren"
     >
       <v-icon>mdi-folder-open</v-icon>
     </v-btn>

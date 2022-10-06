@@ -2,7 +2,7 @@
   <v-btn
     v-if="isToolStepRoute"
     icon
-    title="Save selection"
+    title="Selectie opslaan"
     @click="save"
   >
     <v-icon>mdi-content-save</v-icon>
