@@ -32,7 +32,7 @@ export default {
     ADD_SELECTION(state, { selection }) {
       state.selections.push({
         ...selection,
-        name: selection.name || `Selectie ${ selectionIndex }`,
+        name: selection.name || `Selectie #${ selectionIndex }`,
         configuration: selection.configuration || [ createForm() ],
       });
 
