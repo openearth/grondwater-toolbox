@@ -1,9 +1,12 @@
 <template>
   <div class="pa-4 d-flex flex-column">
     <h2 class="text-h4">Introductie</h2>
-    <v-divider class="mt-4 mb-4" />
+
+    <v-divider class="my-6" />
 
     <div class="text-body-1" v-html="viewerIntroduction" />
+
+    <v-divider class="my-6" />
 
     <sidebar-footer>
       <v-btn

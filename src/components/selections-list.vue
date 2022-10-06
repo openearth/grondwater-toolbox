@@ -1,8 +1,12 @@
 <template>
-  <p class="selections-list__empty-state text-body-1 py-4" v-if="!selections.length">
-    <v-icon small>{{ icons.mdiVectorSquare }}</v-icon>
-    <span>Selecteer waterwegen waar u uw berekeningen op wilt uitvoeren</span>
-  </p>
+  <v-alert
+    v-if="!selections.length"
+    dense
+    outlined
+    type="info"
+  >
+    Selecteer waterwegen op de kaart waar u uw berekeningen op wilt uitvoeren.
+  </v-alert>
   <v-list v-else>
     <selections-list-item
       v-for="selection in selections"
@@ -29,12 +33,13 @@
     },
     created() {
       this.resetWmsLayers();
-
+    },
+    beforeDestroy() {
       if (this.$root.map) {
         const { __draw } = this.$root.map;
 
         if (__draw) {
-          __draw.changeMode('simple_select');
+          __draw.changeMode('static');
         }
       }
     },
