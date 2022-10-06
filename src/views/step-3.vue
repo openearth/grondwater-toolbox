@@ -74,7 +74,7 @@
     },
     created() {
       if (!this.selections.length) {
-        this.$router.push({ name: 'tool-step-1' });
+        this.$router.push({ name: 'tool-introduction' });
       }
 
       this.setViewerCurrentStepNumber({ step: 3 });
@@ -82,14 +82,6 @@
       this.hiddenLayers = this.wmsLayers
         .filter((_, index) => index !== 0)
         .map((layer) => layer.id);
-
-      if (this.$root.map) {
-        const { __draw } = this.$root.map;
-
-        if (__draw) {
-          __draw.changeMode('static');
-        }
-      }
     },
     methods: {
       ...mapActions('app', [ 'setViewerCurrentStepNumber' ]),

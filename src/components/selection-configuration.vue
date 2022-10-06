@@ -141,7 +141,7 @@
       }
 
       if (!this.selections.length) {
-        this.$router.push({ name: 'tool-step-1' });
+        this.$router.push({ name: 'tool-introduction' });
       }
 
       if (this.$root.map) {

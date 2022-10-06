@@ -27,8 +27,8 @@
 
           map.flyTo({ center: [ 5.2913, 52.1326 ], zoom: 6.5 });
 
-          if (this.$route.name !== 'tool-step-1') {
-            this.$router.push({ name: 'tool-step-1' });
+          if (this.$route.name !== 'tool-introduction') {
+            this.$router.push({ name: 'tool-introduction' });
           }
         }
       },

@@ -33,6 +33,16 @@
     },
     created() {
       this.resetWmsLayers();
+
+      if (this.$root.map) {
+        const { __draw } = this.$root.map;
+
+        if (__draw) {
+          __draw.changeMode('simple_select');
+        }
+      } else {
+        this.$router.push({ name: 'tool-introduction' });
+      }
     },
     beforeDestroy() {
       if (this.$root.map) {
