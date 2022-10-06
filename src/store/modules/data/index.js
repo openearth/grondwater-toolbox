@@ -16,14 +16,14 @@ export default {
     },
     loadProject({ dispatch }, data) {
       data.selections.selections.forEach((selection) => {
-        dispatch('selections/addSelection', { selection });
+        dispatch('selections/addSelection', { selection }, { root: true });
       });
 
-      dispatch('mapbox/setMapboxData', { data: data.mapbox });
+      dispatch('mapbox/setMapboxData', { data: data.mapbox }, { root: true });
     },
     reset({ dispatch }) {
-      dispatch('mapbox/resetMapbox');
-      dispatch('selections/resetSelections');
+      dispatch('mapbox/resetMapbox', null, { root: true });
+      dispatch('selections/resetSelections', null, { root: true });
     },
     saveProject({ state }) {
       const project = {
