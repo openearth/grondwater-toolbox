@@ -2,9 +2,9 @@
   <div class="pa-4 d-flex flex-column">
     <h2 class="text-h4">Resultaat</h2>
 
-    <ul class="risks-list mb-6">
+    <ul class="layers-list mb-6">
       <li
-        class="risks-list__item"
+        class="layers-list__item"
         v-for="layer in wmsLayers"
         :key="layer.id"
       >
@@ -18,7 +18,7 @@
             {{ hiddenLayers.includes(layer.id) ? 'mdi-eye-off' : 'mdi-eye' }}
           </v-icon>
         </v-btn>
-        <span class="risks-list__item-title">{{ layer.name }}</span>
+        <span class="layers-list__item-title">{{ layer.name }}</span>
       </li>
     </ul>
 
@@ -103,18 +103,18 @@
 </script>
 
 <style>
-.risks-list {
+.layers-list {
   padding: 0 !important;
   list-style: none outside none;
   border-top: thin solid #eee;
 }
 
-.risks-list__item {
+.layers-list__item {
   padding: 0.5rem 0;
   border-bottom: thin solid #eee;
 }
 
-.risks-list__item-title {
+.layers-list__item-title {
   text-transform: capitalize;
 }
 </style>
