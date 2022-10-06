@@ -1,5 +1,6 @@
 <template>
   <v-btn
+    v-if="isToolStepRoute"
     icon
     title="Save selection"
     @click="save"
@@ -12,6 +13,11 @@
   import { mapActions } from 'vuex';
 
   export default {
+    computed: {
+      isToolStepRoute() {
+        return this.$route.name.includes('tool-step');
+      },
+    },
     methods: {
       ...mapActions('data', [ 'saveProject' ]),
       save() {

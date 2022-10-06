@@ -1,6 +1,6 @@
 
 <template>
-  <div class="export-button">
+  <div v-if="isToolStepRoute" class="export-button">
     <v-btn
       icon
       @click="onClick"
@@ -34,6 +34,9 @@
     },
     computed: {
       ...mapGetters('mapbox', [ 'features' ]),
+      isToolStepRoute() {
+        return this.$route.name.includes('tool-step');
+      },
     },
     watch: {
       features() {
