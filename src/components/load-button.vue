@@ -1,8 +1,15 @@
 
 <template>
   <div class="export-button">
-    <v-btn icon><v-icon>mdi-folder-open</v-icon></v-btn>
+    <v-btn
+      icon
+      @click="onClick"
+      title="Import selection"
+    >
+      <v-icon>mdi-folder-open</v-icon>
+    </v-btn>
     <input
+      ref="uploader"
       class="page-index__input-file"
       type="file"
       accept="application/json"
@@ -20,7 +27,7 @@
   export default {
     data() {
       return {
-        showSnackBar: true,
+        isSelecting: false,
         selectionsCount: null,
         shouldZoomIn: false,
       };
@@ -47,8 +54,15 @@
       },
     },
     methods: {
+      ...mapActions('data', [ 'loadProject', 'reset' ]),
+      ...mapActions('mapbox', [ 'getFeature' ]),
       ...mapActions('selections', [ 'addSelection' ]),
+      onClick() {
+        this.$refs.uploader.click();
+      },
       async onFileInput(event) {
+        this.isSelecting = true;
+
         const { __draw } = this.$root.map;
         const data = await getLoadedFileContents(event);
 
@@ -60,17 +74,18 @@
 
         data.selections.selections.forEach((selection) => {
           this.addSelection({ selection });
-          this.$store.dispatch('mapbox/getFeature', { feature: selection });
+          this.getFeature({ feature: selection });
         });
 
-        this.$store.dispatch('reset');
-        this.$store.dispatch('loadProject', data);
+        this.reset();
+        this.loadProject(data);
         this.selectionsCount = data.selections.selections.length;
 
         if (this.$route.name !== 'tool-step-1') {
           this.$router.push({ name: 'tool-step-1' });
         }
 
+        this.isSelecting = false;
         this.shouldZoomIn = true;
       },
     },
@@ -83,18 +98,13 @@
   cursor: pointer;
   display: flex;
 }
+
 .export-button .md-button {
   flex: 1;
   z-index: 0;
 }
+
 .page-index__input-file {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  z-index: 1;
-  opacity: 0;
-  cursor: pointer;
+  display: none;
 }
 </style>

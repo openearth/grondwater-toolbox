@@ -1,5 +1,11 @@
 <template>
-  <v-btn text @click="onClick">Herstart</v-btn>
+  <v-btn
+    icon
+    @click="onClick"
+    title="Reset"
+  >
+    <v-icon>mdi-refresh</v-icon>
+  </v-btn>
 </template>
 
 <script>
@@ -7,7 +13,7 @@
 
   export default {
     methods: {
-      ...mapActions([ 'reset' ]),
+      ...mapActions('data', [ 'reset' ]),
       onClick() {
         const accepted = confirm('Weet u zeker dat u opnieuw wilt beginnen?');
 
@@ -21,15 +27,11 @@
 
           map.flyTo({ center: [ 5.2913, 52.1326 ], zoom: 6.5 });
 
-          if (this.$route.name !== 'home') {
-            this.$router.push({ name: 'home' });
+          if (this.$route.name !== 'tool-step-1') {
+            this.$router.push({ name: 'tool-step-1' });
           }
         }
       },
     },
   };
 </script>
-
-<style>
-
-</style>
