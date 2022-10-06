@@ -143,26 +143,30 @@
 
 <style>
 .app-map {
-  height: 100%;
   width: 100%;
+  height: 100%;
 }
 
 .app-map__map {
-  height: 100%;
   width: 100%;
+  height: 100%;
+}
+
+.mapboxgl-popup-content {
+  box-shadow: 0 0 5px 2px rgba(0, 0, 0, .3);
 }
 
 .mapboxgl-popup-close-button {
   position: absolute;
-  width: 1rem;
-  height: 1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  right: -0.5rem;
-  top: -0.5rem;
+  top: -12px;
+  right: -12px;
+  width: 24px;
+  height: 24px;
+  padding-bottom: 2px;
+  border-radius: 50%;
   background-color: #ededed;
-  border-radius: 0.5rem;
+  font-size: 1.25rem;
+  line-height: 0;
 }
 
 .mapboxgl-popup-close-button:hover {
