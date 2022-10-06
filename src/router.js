@@ -3,7 +3,7 @@ import VueRouter from 'vue-router';
 
 import Home from '@/views/home';
 import Introduction from '@/views/introduction';
-import Legal from '@/views/legal';
+import About from '@/views/about';
 import StepOne from '@/views/step-1';
 import StepThree from '@/views/step-3';
 import StepTwo from '@/views/step-2';
@@ -19,9 +19,9 @@ const routes = [
     name: 'home',
   },
   {
-    path: '/legal',
-    component: Legal,
-    name: 'legal',
+    path: '/about',
+    component: About,
+    name: 'about',
   },
   {
     path: '/tools/:config',

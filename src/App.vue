@@ -16,10 +16,15 @@
           Grondwater Toolbox
         </router-link>
       </v-toolbar-title>
+
       <v-spacer />
+
       <load-button />
       <save-button />
       <reset-button />
+
+      <v-spacer />
+
       <v-menu bottom left>
         <template v-slot:activator="{ on, attrs }">
           <v-btn
@@ -32,8 +37,8 @@
           </v-btn>
         </template>
         <v-list>
-          <v-list-item :to="{ name: 'legal' }">
-            <v-list-item-title>Legal</v-list-item-title>
+          <v-list-item :to="{ name: 'about' }">
+            <v-list-item-title>Over Grondwater Toolkit</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
