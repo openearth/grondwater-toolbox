@@ -28,7 +28,6 @@
           polygon: true,
         },
         modes: { ...MapboxDraw.modes, static: StaticMode },
-        defaultMode: 'simple_select',
         styles: drawStyle,
       });
 
@@ -40,6 +39,9 @@
 
       $drawButton.setAttribute('title', drawLabel);
       $drawButton.classList.add('map-control-tooltip', 'map-control-tooltip--right');
+
+      // This is to make sure the draw button is disabled by default.
+      draw.changeMode('static');
 
       this.map.on('load', () => {
         draw.changeMode('static');
