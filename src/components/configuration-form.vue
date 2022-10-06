@@ -16,7 +16,7 @@
           />
         </v-card>
       </v-col>
-      <v-col cols="12" sm="2">
+      <v-col cols="12" sm="3">
         <v-card
           class="pa-2 full-height d-flex"
           outlined
