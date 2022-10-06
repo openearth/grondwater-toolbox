@@ -202,8 +202,6 @@
         } else {
           this.addLockedViewerStep({ step: 3 });
         }
-
-        // this.$router.push({ name: 'tool-step-3' });
       },
       handleMouseLeave(id) {
         const { map } = this.$root;
