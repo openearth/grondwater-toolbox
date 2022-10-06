@@ -1,6 +1,6 @@
 <template>
   <div class="configuration-card">
-    <h3 class="text-h6 mb-2">
+    <h3 class="text-h6 mb-2 d-flex">
       <v-icon>mdi-vector-line</v-icon>
       {{ title }}
     </h3>
