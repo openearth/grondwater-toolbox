@@ -52,28 +52,30 @@
 </template>
 
 <script>
-  import { mapMutations, mapActions, mapState } from 'vuex';
+  import { mapActions, mapGetters } from 'vuex';
   import Mapbox from 'mapbox-gl';
   import { MglMap, MglNavigationControl } from 'vue-mapbox';
-  import MapRasterOpacityControl from './map-raster-opacity-control';
-  import RasterLayer from './raster-layer';
-  import MapSearch from './map-search';
-  import MapLegend from './map-legend';
-  import MapLayerInfo from './map-layer-info';
+
   import MapDrawControl from './map-draw-control';
-  import wms from '../../lib/mapbox/layers/wms';
-  import { generateWmsLayer } from '../../lib/project-layers';
+  import MapLayerInfo from './map-layer-info';
+  import MapLegend from './map-legend';
+  import MapRasterOpacityControl from './map-raster-opacity-control';
+  import MapSearch from './map-search';
+  import RasterLayer from './raster-layer';
+
+  import wms from '@/lib/mapbox/layers/wms';
+  import { generateWmsLayer } from '@/lib/project-layers';
 
   export default {
     components: {
-      MglMap,
-      RasterLayer,
       MapDrawControl,
-      MglNavigationControl,
-      MapSearch,
-      MapLegend,
       MapLayerInfo,
+      MapLegend,
       MapRasterOpacityControl,
+      MapSearch,
+      MglMap,
+      MglNavigationControl,
+      RasterLayer,
     },
     data() {
       return {
@@ -84,10 +86,7 @@
       };
     },
     computed: {
-      ...mapState({
-        features: state => state.mapbox.features,
-        wmsLayers: state => state.mapbox.wmsLayers,
-      }),
+      ...mapGetters('mapbox', [ 'features', 'wmsLayers' ]),
       mapBoxToken() {
         return process.env.VUE_APP_MAPBOX_TOKEN;
       },
@@ -122,29 +121,21 @@
       this.mapbox = Mapbox;
     },
     methods: {
-      ...mapMutations('selections', {
-        addSelection: 'add',
-        updateSelection: 'update',
-      }),
-      ...mapMutations('mapbox', {
-        removeFeature: 'removeFeature',
-      }),
-      ...mapActions('mapbox', {
-        getFeature: 'getFeature',
-      }),
+      ...mapActions('mapbox', [ 'getFeature', 'removeFeature' ]),
+      ...mapActions('selections', [ 'addSelection', 'updateSelection' ]),
       onMapCreated({ map }) {
         this.$root.map = map;
       },
       onSelection(event) {
         const feature = event.features[0];
-        this.addSelection(feature);
-        this.getFeature(feature);
+        this.addSelection({ selection: feature });
+        this.getFeature({ feature });
       },
       onUpdateSelection(event) {
         const feature = event.features[0];
-        this.updateSelection(feature);
-        this.removeFeature(feature.id);
-        this.getFeature(feature);
+        this.updateSelection({ selection: feature });
+        this.removeFeature({ id: feature.id });
+        this.getFeature({ feature });
       },
     },
   };
@@ -152,26 +143,30 @@
 
 <style>
 .app-map {
-  height: 100%;
   width: 100%;
+  height: 100%;
 }
 
 .app-map__map {
-  height: 100%;
   width: 100%;
+  height: 100%;
+}
+
+.mapboxgl-popup-content {
+  box-shadow: 0 0 5px 2px rgba(0, 0, 0, .3);
 }
 
 .mapboxgl-popup-close-button {
   position: absolute;
-  width: 1rem;
-  height: 1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  right: -0.5rem;
-  top: -0.5rem;
+  top: -12px;
+  right: -12px;
+  width: 24px;
+  height: 24px;
+  padding-bottom: 2px;
+  border-radius: 50%;
   background-color: #ededed;
-  border-radius: 0.5rem;
+  font-size: 1.25rem;
+  line-height: 0;
 }
 
 .mapboxgl-popup-close-button:hover {

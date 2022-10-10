@@ -1,5 +1,5 @@
 <template>
-  <div class="selection-configuration py-6">
+  <div class="selection-configuration">
     <v-text-field
       v-model="extent"
       type="number"
@@ -10,8 +10,7 @@
     ></v-text-field>
 
     <configuration-card
-      class="border-bottom"
-      v-for="selection in selections"
+      v-for="(selection, index) in selections"
       :key="selection.id"
       :id="selection.id"
       :title="selection.name"
@@ -29,7 +28,7 @@
               Maatregel
             </v-card>
           </v-col>
-          <v-col cols="12" sm="2">
+          <v-col cols="12" sm="3">
             <v-card
               class="pa-2"
               outlined
@@ -65,27 +64,45 @@
         icon-start
         class="mt-4"
         title="berekening toevoegen"
+        depressed
         @click="addForm(selection.id)"
       >
-        <v-icon left>mdi-plus</v-icon> Berekening
+        <v-icon left>mdi-plus</v-icon>
+        Berekening
       </v-btn>
+
+      <v-divider v-if="index !== selections.length - 1" class="mt-6" />
     </configuration-card>
 
-    <div class="d-flex justify-end mt-5">
+    <div class="d-flex justify-end">
       <v-btn
         @click="calculate"
         color="primary"
         :disabled="!valid || loadingWmsLayers"
         :loading="loadingWmsLayers"
+        depressed
       >
         Bereken
       </v-btn>
     </div>
+
+    <v-alert
+      v-if="wmsLayers.length"
+      class="mt-5"
+      dense
+      outlined
+      type="info"
+    >
+      Klik op een punt op de kaart om de waarde te zien.
+    </v-alert>
   </div>
 </template>
 
 <script>
-  import { mapActions, mapGetters, mapMutations, mapState } from 'vuex';
+  import { mapActions, mapGetters } from 'vuex';
+  import bbox from '@turf/bbox';
+  import { featureCollection } from '@turf/helpers';
+
   import ConfigurationCard from '@/components/configuration-card';
   import ConfigurationForm from '@/components/configuration-form';
 
@@ -113,15 +130,33 @@
         },
       };
     },
+    created() {
+      this.resetWmsLayers();
+
+      // TODO: wmsLayers is empty when the user navigates back to the selection page.
+      if (this.wmsLayers.length) {
+        this.removeLockedViewerStep({ step: 3 });
+      } else {
+        this.addLockedViewerStep({ step: 3 });
+      }
+
+      if (!this.selections.length) {
+        this.$router.push({ name: 'tool-introduction' });
+      }
+
+      if (this.$root.map) {
+        const { __draw } = this.$root.map;
+
+        if (__draw) {
+          __draw.changeMode('static');
+        }
+
+        this.zoomToSelection();
+      }
+    },
     computed: {
-      ...mapState({
-        features: (state) => state.mapbox.features,
-        selections: (state) => state.selections.selections,
-        loadingWmsLayers: (state) => state.mapbox.loadingWmsLayers,
-      }),
-      ...mapGetters({
-        configurations: 'selections/configurations',  
-      }),
+      ...mapGetters('selections', [ 'selections' ]),
+      ...mapGetters('mapbox', [ 'features', 'loadingWmsLayers', 'wmsLayers' ]),
       // iterates through all forms and checks if every one of them is valid
       valid() {
         return (
@@ -159,13 +194,36 @@
       },
     },
     methods: {
-      ...mapMutations('mapbox', [ 'resetWmsLayers' ]),
-      ...mapMutations('selections', [ 'addConfiguration', 'deleteConfiguration' ]),
-      ...mapActions('mapbox', [ 'calculateResult' ]),
+      ...mapActions('app', [ 'addLockedViewerStep', 'removeLockedViewerStep' ]),
+      ...mapActions('mapbox', [ 'calculateResult', 'resetWmsLayers' ]),
+      ...mapActions('selections', [ 'addSelectionConfiguration', 'removeSelectionConfiguration' ]),
+      addForm(id) {
+        this.addSelectionConfiguration({ id });
+      },
       async calculate() {
         this.resetWmsLayers();
         await this.calculateResult(this.formattedForms);
-        this.$router.push({ name: 'results' });
+
+        if (this.valid) {
+          this.removeLockedViewerStep({ step: 3 });
+        } else {
+          this.addLockedViewerStep({ step: 3 });
+        }
+      },
+      handleMouseLeave(id) {
+        this.$root.map.setPaintProperty(id, 'line-color', this.originalLineColor);
+      },
+      handleMouseEnter(id) {
+        this.$root.map.setPaintProperty(id, 'line-color', this.selectedColor);
+      },
+      handleInput({ id, formId, data }) {
+        const feature = this.forms.find({ id } === id);
+        const form = feature && feature.forms.find(({ id }) => id === formId);
+
+        form.data = data;
+      },
+      handleDeleteForm(selectionId, formId) {
+        this.removeSelectionConfiguration({ selectionId, formId });
       },
       setFormValidity(selection, { id, valid }) {
         const form = selection.configuration.find((form => form.id === id));
@@ -175,34 +233,30 @@
       setExtentValidity(hasError) {
         this.extentValid = !hasError;
       },
-      handleMouseLeave(id) {
-        const { map } = this.$root;
-        map.setPaintProperty(id, 'line-color', this.originalLineColor);
-      },
-      handleMouseEnter(id) {
-        const { map } = this.$root;
-        map.setPaintProperty(id, 'line-color', this.selectedColor);
-      },
-      handleInput({ id, formId, data }) {
-        const feature = this.forms.find({ id } === id);
-        const form = feature && feature.forms.find(({ id }) => id === formId);
+      zoomToSelection() {
+        if (!this.features.length) {
+          return;
+        }
 
-        form.data = data;
-      },
-      addForm(id) {
-        this.addConfiguration(id);
-      },
-      handleDeleteForm(selectionId, formId) {
-        this.deleteConfiguration({ selectionId, formId });
+        const bounds = bbox(
+          featureCollection(
+            this.features.map((feature) => ({
+              geometry: feature.source.data,
+              type: 'Feature',
+            }))
+          )
+        );
+
+        this.$root.map.fitBounds(bounds, { padding: 50 });
       },
     },
   };
 </script>
 
 <style>
-.border-bottom {
-  border-color: rgba(0, 0, 0, 0.42);
-  border-bottom-width: 1px;
-  border-bottom-style: solid;
+.selection-configuration {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 </style>

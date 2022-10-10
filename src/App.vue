@@ -1,7 +1,5 @@
 <template>
   <v-app>
-    <error-snackbar />
-
     <app-sidebar />
 
     <v-app-bar
@@ -12,16 +10,21 @@
     >
       <v-toolbar-title>
         <router-link
-          :to="{ name: 'introduction' }"
+          :to="{ name: 'home' }"
           class="white--text text-decoration-none"
         >
-          BRL
+          Grondwater Toolbox
         </router-link>
       </v-toolbar-title>
+
       <v-spacer />
+
       <load-button />
       <save-button />
       <reset-button />
+
+      <v-spacer />
+
       <v-menu bottom left>
         <template v-slot:activator="{ on, attrs }">
           <v-btn
@@ -34,8 +37,8 @@
           </v-btn>
         </template>
         <v-list>
-          <v-list-item :to="{ name: 'legal' }">
-            <v-list-item-title>Legal</v-list-item-title>
+          <v-list-item :to="{ name: 'about' }">
+            <v-list-item-title>Over de Grondwater Toolkit</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -51,21 +54,19 @@
 
 <script>
   import AppSidebar from '@/components/app-sidebar';
-  import WelcomeDialog from '@/components/welcome-dialog';
-  import ResetButton from '@/components/reset-button';
-  import ErrorSnackbar from '@/components/error-snackbar';
-  import SaveButton from '@/components/save-button';
   import LoadButton from '@/components/load-button';
+  import ResetButton from '@/components/reset-button';
+  import SaveButton from '@/components/save-button';
+  import WelcomeDialog from '@/components/welcome-dialog';
 
   export default {
     components: {
       AppMap: () => import('@/components/app-map'),
       AppSidebar,
-      ResetButton,
-      WelcomeDialog,
-      ErrorSnackbar,
-      SaveButton,
       LoadButton,
+      ResetButton,
+      SaveButton,
+      WelcomeDialog,
     },
   };
 </script>

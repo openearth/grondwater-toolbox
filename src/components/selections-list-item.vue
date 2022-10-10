@@ -1,5 +1,8 @@
 <template>
   <v-list-item class="px-0">
+    <v-list-item-icon>
+      <v-icon>mdi-vector-line</v-icon>
+    </v-list-item-icon>
     <v-list-item-content class="pa-0">
       <v-list-item-title class="d-flex align-center flex-nowrap">
         <form
@@ -8,14 +11,13 @@
           @submit.prevent="onSave"
         >
           <v-text-field
-            v-if="isEditing"
             v-model="name"
-            placeholder="Name"
+            placeholder="Selectie naam"
             class="pt-0 mb-n3"
             autofocus
           />
         </form>
-        <div v-else class="flex-grow-1">{{ selection.name }}</div>
+        <span v-else class="flex-grow-1 text-body-1">{{ selection.name }}</span>
 
         <div v-if="selection.loading" class="pr-1">
           <v-progress-circular
@@ -30,7 +32,7 @@
             v-if="isEditing"
             text
             icon
-            title="save selection name"
+            title="Save selection name"
             @click="onSave"
           >
             <v-icon>mdi-check</v-icon>
@@ -39,7 +41,7 @@
             v-else
             text
             icon
-            title="edit selection name"
+            title="Edit selection name"
             @click="onEdit"
           >
             <v-icon>mdi-pencil</v-icon>
@@ -47,7 +49,7 @@
           <v-btn
             text
             icon
-            title="delete selection"
+            title="Delete selection"
             @click="onDelete"
           >
             <v-icon>mdi-delete</v-icon>
@@ -59,7 +61,8 @@
 </template>
 
 <script>
-  import { mapMutations } from 'vuex';
+  import { mapActions } from 'vuex';
+
   export default {
     props: {
       selection: {
@@ -77,19 +80,16 @@
       this.name = this.selection.name;
     },
     methods: {
-      ...mapMutations('mapbox', [ 'removeFeature' ]),
-      ...mapMutations('selections', {
-        removeSelection: 'remove',
-        editSelection: 'edit',
-      }),
+      ...mapActions('selections', [ 'removeSelection', 'editSelectionName' ]),
+      ...mapActions('mapbox', [ 'removeFeature' ]),
       onDelete() {
         const { __draw } = this.$root.map;
         const { id } = this.selection;
 
         __draw.delete(id);
 
-        this.removeSelection(id);
-        this.removeFeature(id);
+        this.removeSelection({ id });
+        this.removeFeature({ id });
       },
       onEdit() {
         this.isEditing = true;
@@ -97,7 +97,7 @@
       onSave() {
         const { id } = this.selection;
         this.isEditing = false;
-        this.editSelection({ id, name: this.name });
+        this.editSelectionName({ id, name: this.name });
       },
     },
   };

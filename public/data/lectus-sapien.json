@@ -1,0 +1,20 @@
+{
+  "id": "lectus-sapien",
+  "name": "Lectus Sapien",
+  "description": "Nulla lacus mauris, hendrerit eu tempor a, pretium ut lectus. Duis consectetur, turpis sed tristique tincidunt, lacus enim vulputate velit.",
+  "introduction": "<p>Curabitur accumsan risus eget aliquam suscipit. Vestibulum porttitor vitae dui ac dignissim. Mauris id egestas felis, quis mollis turpis. Praesent non feugiat mauris, non condimentum turpis. Nam ut accumsan lectus, sit amet varius nulla. Etiam rhoncus libero ac sapien dignissim, accumsan pellentesque ligula fringilla. Interdum et malesuada fames ac ante ipsum primis in faucibus. Quisque id eros eget velit pulvinar ultricies ac vitae dui. Duis vestibulum vestibulum felis eget ultrices. Duis sed pretium leo. Suspendisse viverra maximus arcu, quis molestie nisl egestas sit amet.</p><p>Nulla lacus mauris, hendrerit eu tempor a, pretium ut lectus. Duis consectetur, turpis sed tristique tincidunt, lacus enim vulputate velit, sed hendrerit tellus ex sit amet leo. Sed sit amet metus nec erat viverra viverra. Vivamus auctor eros hendrerit ultrices sodales. Donec nec nunc hendrerit diam molestie laoreet. Nulla congue auctor risus, quis hendrerit nisi efficitur ac. Praesent porta sodales erat vitae condimentum. Phasellus non velit ut velit varius cursus non eu lacus. Donec sem lorem, egestas et libero at, ultrices sagittis lorem. Fusce luctus lorem ex, vel dapibus libero feugiat at.</p>",
+  "steps": [
+    {
+      "title": "Donec",
+      "components": [
+        "some-new-component"
+      ]
+    },
+    {
+      "title": "Pharetra",
+      "components": [
+        "some-new-component"
+      ]
+    }
+  ]
+}

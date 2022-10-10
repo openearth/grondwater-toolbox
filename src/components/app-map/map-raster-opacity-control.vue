@@ -1,6 +1,8 @@
 <template>
   <div class="map-raster-opacity-control">
-    <label class="map-raster-opacity-control__label" for="opacity">Opacity: {{ value }}%</label>
+    <label class="map-raster-opacity-control__label text-body-2" for="opacity">
+      Opacity: {{ value }}%
+    </label>
     <input
       class="map-raster-opacity-control__input"
       id="opacity"
@@ -54,12 +56,21 @@
 
 <style>
 .map-raster-opacity-control {
-  background: white;
-  border-radius: 4px;
-  padding: 1rem;
+  display: flex;
   position: absolute;
-  left: 7rem;
-  bottom: 2.25rem;
+  z-index: 100;
+  bottom: 36px;
+  left: 10px;
+  flex-direction: column;
+  width: 200px;
+  padding: 16px;
+  border-radius: 4px;
+  background-color: #ffffff;
+  box-shadow: 0 0 5px 2px rgba(0, 0, 0, .12);
+}
+
+.map-legend + .map-raster-opacity-control {
+  left: 220px;
 }
 
 .map-raster-opacity-control__label {

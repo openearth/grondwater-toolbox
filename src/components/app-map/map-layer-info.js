@@ -1,4 +1,4 @@
-import { mapMutations, mapState } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import Mapbox from 'mapbox-gl';
 import getFeatureInfo from '@/lib/get-feature-info';
 
@@ -15,9 +15,7 @@ export default {
     },
   },
   computed: {
-    ...mapState({
-      activePopup: state => state.mapbox.activePopup,
-    }),
+    ...mapGetters('mapbox', [ 'activePopup' ]),
   },
   created() {
     this.addListener();
@@ -27,13 +25,11 @@ export default {
     this.removeActivePopup();
   },
   methods: {
-    ...mapMutations({
-      setActivePopup: 'mapbox/setActivePopup',
-    }),
+    ...mapActions('mapbox', [ 'setActivePopup' ]),
     removeActivePopup() {
       if (this.activePopup) {
         this.activePopup.remove();
-        this.setActivePopup(null);
+        this.setActivePopup({ popup: null });
       }
     },
     async cb(event) {
@@ -43,7 +39,7 @@ export default {
       const { width, height } = canvas;
 
       this.removeActivePopup();
-      
+
       const loadingPopup = new Mapbox.Popup()
         .setLngLat(event.lngLat)
         .setHTML('loading...')
@@ -70,7 +66,7 @@ export default {
           .setHTML(text)
           .addTo(this.map);
 
-        this.setActivePopup(popup);
+        this.setActivePopup({ popup });
       }
     },
     addListener() {

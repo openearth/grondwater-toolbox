@@ -1,13 +1,13 @@
 <template>
   <v-navigation-drawer
-    clipped
-    app
-    permanent
     class="pa-2"
-    width="560"
+    app
+    clipped
+    permanent
+    width="580"
   >
     <v-row dense class="fill-height">
-      <v-col :cols="12" class="">
+      <v-col :cols="12">
         <sidebar-progress v-if="this.$route.meta.step" class="px-4"/>
 
         <transition :name="transitionName" mode="out-in">
@@ -19,18 +19,10 @@
 </template>
 
 <script>
-  import SidebarProgress from './sidebar-progess';
-  import { mapState } from 'vuex';
+  import SidebarProgress from '@/components/sidebar-progess';
 
   export default {
-    components: {
-      SidebarProgress,
-    },
-    computed: {
-      ...mapState({
-        selections: state => state.selections.selections,
-      }),
-    },
+    components: { SidebarProgress },
     data() {
       return {
         transitionName: 'slide-right',
@@ -38,8 +30,17 @@
     },
     created() {
       this.$router.beforeEach((to, from, next) => {
-        this.transitionName =
-          to.meta.step < from.meta.step ? 'slide-right' : 'slide-left';
+        if (!isNaN(to.meta.step) && !isNaN(from.meta.step)) {
+          this.transitionName = to.meta.step < from.meta.step
+            ? 'slide-right'
+            : 'slide-left';
+        } else if (isNaN(to.meta.step) && !isNaN(from.meta.step)) {
+          this.transitionName = 'slide-right';
+        } else if (!isNaN(to.meta.step) && isNaN(from.meta.step)) {
+          this.transitionName = 'slide-left';
+        } else {
+          this.transitionName = 'slide-left';
+        }
 
         next();
       });
@@ -52,9 +53,9 @@
 .slide-left-leave-active,
 .slide-right-enter-active,
 .slide-right-leave-active {
-  transition-duration: 0.5s;
+  transition-duration: 0.3s;
   transition-property: height, opacity, transform;
-  transition-timing-function: cubic-bezier(0.55, 0, 0.1, 1);
+  transition-timing-function: ease;
   overflow: hidden;
 }
 

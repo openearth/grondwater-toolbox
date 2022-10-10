@@ -1,8 +1,15 @@
 
 <template>
-  <div class="export-button">
-    <v-btn icon><v-icon>mdi-folder-open</v-icon></v-btn>
+  <div v-if="isToolStepRoute" class="export-button">
+    <v-btn
+      icon
+      @click="onClick"
+      title="Selectie importeren"
+    >
+      <v-icon>mdi-folder-open</v-icon>
+    </v-btn>
     <input
+      ref="uploader"
       class="page-index__input-file"
       type="file"
       accept="application/json"
@@ -12,7 +19,7 @@
 </template>
 
 <script>
-  import { mapActions, mapState } from 'vuex';
+  import { mapActions, mapGetters } from 'vuex';
   import getLoadedFileContents from '@/lib/get-loaded-file-contents';
   import { featureCollection } from '@turf/helpers';
   import bbox from '@turf/bbox';
@@ -20,15 +27,16 @@
   export default {
     data() {
       return {
-        showSnackBar: true,
+        isSelecting: false,
         selectionsCount: null,
         shouldZoomIn: false,
       };
     },
     computed: {
-      ...mapState('mapbox', {
-        features: (state) => state.features,
-      }),
+      ...mapGetters('mapbox', [ 'features' ]),
+      isToolStepRoute() {
+        return this.$route.name.includes('tool-step');
+      },
     },
     watch: {
       features() {
@@ -41,7 +49,7 @@
               }))
             )
           );
-  
+
           this.$root.map.fitBounds(bounds, { padding: 50 });
 
           this.shouldZoomIn = false;
@@ -49,10 +57,15 @@
       },
     },
     methods: {
-      ...mapActions({
-        showError: 'notifications/showError',
-      }),
+      ...mapActions('data', [ 'loadProject', 'reset' ]),
+      ...mapActions('mapbox', [ 'getFeature' ]),
+      ...mapActions('selections', [ 'addSelection' ]),
+      onClick() {
+        this.$refs.uploader.click();
+      },
       async onFileInput(event) {
+        this.isSelecting = true;
+
         const { __draw } = this.$root.map;
         const data = await getLoadedFileContents(event);
 
@@ -63,19 +76,20 @@
         });
 
         data.selections.selections.forEach((selection) => {
-          this.$store.commit('selections/add', selection);
-          this.$store.dispatch('mapbox/getFeature', selection);
+          this.addSelection({ selection });
+          this.getFeature({ feature: selection });
         });
 
-        this.$store.dispatch('reset');
-        this.$store.dispatch('loadProject', data);
+        this.reset();
+        this.loadProject(data);
         this.selectionsCount = data.selections.selections.length;
 
-        if (this.$route.name !== 'selection') {
-          this.$router.push({ name: 'selection' });
+        if (this.$route.name !== 'tool-introduction') {
+          this.$router.push({ name: 'tool-introduction' });
         }
 
-        this.shouldZoomIn = true; 
+        this.isSelecting = false;
+        this.shouldZoomIn = true;
       },
     },
   };
@@ -87,18 +101,13 @@
   cursor: pointer;
   display: flex;
 }
+
 .export-button .md-button {
   flex: 1;
   z-index: 0;
 }
+
 .page-index__input-file {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  z-index: 1;
-  opacity: 0;
-  cursor: pointer;
+  display: none;
 }
 </style>

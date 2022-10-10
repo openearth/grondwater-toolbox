@@ -1,16 +1,29 @@
 <template>
-  <v-btn text @click="onClick">Herstart</v-btn>
+  <v-btn
+    v-if="isToolStepRoute"
+    icon
+    @click="onClick"
+    title="Resetten"
+  >
+    <v-icon>mdi-refresh</v-icon>
+  </v-btn>
 </template>
 
 <script>
   import { mapActions } from 'vuex';
 
   export default {
+    computed: {
+      isNotIntroRoute() {
+        return this.$route.name !== 'tool-introduction';
+      },
+      isToolStepRoute() {
+        return this.$route.name.includes('tool-step');
+      },
+    },
     methods: {
-      ...mapActions([ 'reset' ]),
-
+      ...mapActions('data', [ 'reset' ]),
       onClick() {
-        const resetRouteName = 'introduction';
         const accepted = confirm('Weet u zeker dat u opnieuw wilt beginnen?');
 
         if (accepted) {
@@ -23,15 +36,11 @@
 
           map.flyTo({ center: [ 5.2913, 52.1326 ], zoom: 6.5 });
 
-          if (this.$route.name !== resetRouteName) {
-            this.$router.push({ name: resetRouteName });
+          if (this.isNotIntroRoute) {
+            this.$router.push({ name: 'tool-introduction' });
           }
         }
       },
     },
   };
 </script>
-
-<style>
-
-</style>

@@ -1,7 +1,12 @@
 <template>
-  <p class="selections-list__empty-state py-4" v-if="!selections.length">
-    <v-icon small class="selections-list__icon">{{ icons.mdiVectorSquare }}</v-icon> Selecteer waterwegen waar u uw berekeningen op wilt uitvoeren
-  </p>
+  <v-alert
+    v-if="!selections.length"
+    dense
+    outlined
+    type="info"
+  >
+    Selecteer waterwegen op de kaart waar u uw berekeningen op wilt uitvoeren.
+  </v-alert>
   <v-list v-else>
     <selections-list-item
       v-for="selection in selections"
@@ -12,11 +17,13 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex';
-  import SelectionsListItem from './selections-list-item';
+  import { mapActions, mapGetters } from 'vuex';
   import { mdiVectorSquare } from '@mdi/js';
 
+  import SelectionsListItem from '@/components/selections-list-item';
+
   export default {
+    components: { SelectionsListItem },
     data() {
       return {
         icons: {
@@ -24,23 +31,49 @@
         },
       };
     },
-    components: {
-      SelectionsListItem,
+    created() {
+      this.resetWmsLayers();
+
+      if (this.$root.map) {
+        const { __draw } = this.$root.map;
+
+        if (__draw) {
+          __draw.changeMode('simple_select');
+        }
+      } else {
+        this.$router.push({ name: 'tool-introduction' });
+      }
+    },
+    beforeDestroy() {
+      if (this.$root.map) {
+        const { __draw } = this.$root.map;
+
+        if (__draw) {
+          __draw.changeMode('static');
+        }
+      }
+    },
+    updated() {
+      if (this.selections.length) {
+        this.removeLockedViewerStep({ step: 2 });
+      } else {
+        this.addLockedViewerStep({ step: 2 });
+      }
     },
     computed: {
-      ...mapState({
-        selections: state => state.selections.selections,
-      }),
+      ...mapGetters('selections', [ 'selections' ]),
+    },
+    methods: {
+      ...mapActions('app', [ 'addLockedViewerStep', 'removeLockedViewerStep' ]),
+      ...mapActions('mapbox', [ 'resetWmsLayers' ]),
     },
   };
 </script>
 
 <style>
-.selections-list__empty-state {
-  vertical-align: baseline;
-}
-
-.selections-list__icon {
-  margin-top: -4px;
-}
+  .selections-list__empty-state {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
 </style>

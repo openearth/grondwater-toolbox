@@ -6,7 +6,7 @@
   >
     <v-card>
       <v-card-title class="headline mb-2">
-        Basis Rivierbodem Ligging
+        Grondwater Toolbox
       </v-card-title>
       <div class="welcome-dialog__images">
         <img
@@ -19,7 +19,7 @@
         >
       </div>
       <v-card-text>
-        <div v-html="content" />
+        <div class="text-body-2" v-html="content" />
         <v-checkbox
           v-model="accepted"
           label="Ik ga akkoord met de voorwaarden zoals hierboven beschreven"
@@ -31,6 +31,7 @@
           :disabled="!accepted"
           :class="{ primary: accepted }"
           text
+          depressed
           @click="onStartClick"
         >
           Starten
@@ -41,7 +42,7 @@
 </template>
 
 <script>
-  import content from '../content/introduction.md';
+  import content from '@/content/legal.md';
 
   export default {
     data: () => ({

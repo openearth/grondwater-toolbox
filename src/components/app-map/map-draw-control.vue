@@ -1,8 +1,10 @@
 <script>
   import MapboxDraw from '@mapbox/mapbox-gl-draw';
-  import StaticMode from '@/lib/static-mode';
   import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
+
   import drawStyle from './draw-style';
+
+  import StaticMode from '@/lib/static-mode';
 
   export default {
     inject: [ 'map' ],
@@ -26,7 +28,6 @@
           polygon: true,
         },
         modes: { ...MapboxDraw.modes, static: StaticMode },
-        defaultMode: 'simple_select',
         styles: drawStyle,
       });
 
@@ -38,6 +39,9 @@
 
       $drawButton.setAttribute('title', drawLabel);
       $drawButton.classList.add('map-control-tooltip', 'map-control-tooltip--right');
+
+      // This is to make sure the draw button is disabled by default.
+      draw.changeMode('static');
 
       this.map.on('load', () => {
         draw.changeMode('static');
