@@ -1,21 +1,25 @@
+const initialState = () => ({
+  viewerConfig: '',
+  viewerIntroduction: '',
+  viewerMap: null,
+  viewerName: '',
+  viewerSteps: [],
+  viewerStepsLocked: [ 2, 3 ], // only unlock the first step.
+  viewerCurrentStep: null,
+  viewerCurrentStepNumber: 1,
+});
+
 export default {
   namespaced: true,
 
-  state: () => ({
-    viewerConfig: '',
-    viewerIntroduction: '',
-    viewerName: '',
-    viewerSteps: [],
-    viewerStepsLocked: [ 2, 3 ], // only unlock the first step.
-    viewerCurrentStep: null,
-    viewerCurrentStepNumber: 1,
-  }),
+  state: initialState(),
 
   getters: {
     viewerConfig: state => state.viewerConfig,
     viewerCurrentStep: state => state.viewerSteps[state.viewerCurrentStepNumber - 1],
     viewerCurrentStepNumber: state => state.viewerCurrentStepNumber,
     viewerIntroduction: state => state.viewerIntroduction,
+    viewerMap: state => state.viewerMap,
     viewerSteps: state => state.viewerSteps,
     viewerStepsLocked: state => state.viewerStepsLocked,
   },
@@ -44,6 +48,12 @@ export default {
     SET_VIEWER_CURRENT_NUMBER(state, { step }) {
       state.viewerCurrentStepNumber = step;
     },
+    SET_VIEWER_MAP(state, { map }) {
+      state.viewerMap = map;
+    },
+    RESET_STATE(state) {
+      Object.assign(state, initialState());
+    },
   },
 
   actions: {
@@ -68,6 +78,12 @@ export default {
     },
     setViewerCurrentStepNumber({ commit }, { step }) {
       commit('SET_VIEWER_CURRENT_NUMBER', { step });
+    },
+    setViewerMap({ commit }, { map }) {
+      commit('SET_VIEWER_MAP', { map });
+    },
+    resetViewer({ commit }) {
+      commit('RESET_STATE');
     },
   },
 };

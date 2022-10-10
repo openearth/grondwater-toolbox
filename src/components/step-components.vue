@@ -11,10 +11,14 @@
 <script>
   import { mapGetters } from 'vuex';
 
+  import AbstractionStep1 from '@/components/abstraction-step-1/abstraction-step-1';
+  import AbstractionStep2 from '@/components/abstraction-step-2/abstraction-step-2';
   import SelectionsList from '@/components/selections-list';
   import SelectionConfiguration from '@/components/selection-configuration';
 
   const COMPONENT_MAP = {
+    'abstraction-step-1': AbstractionStep1,
+    'abstraction-step-2': AbstractionStep2,
     'selections-list': SelectionsList,
     'selection-configuration': SelectionConfiguration,
   };

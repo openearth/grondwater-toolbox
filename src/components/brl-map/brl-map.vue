@@ -1,5 +1,5 @@
 <template>
-  <div class="app-map">
+  <div class="brl-map">
     <mgl-map
       mapStyle="mapbox://styles/mapbox/streets-v11"
       :accessToken="mapBoxToken"
@@ -142,34 +142,34 @@
 </script>
 
 <style>
-.app-map {
-  width: 100%;
-  height: 100%;
-}
+  .brl-map {
+    width: 100%;
+    height: 100%;
+  }
 
-.app-map__map {
-  width: 100%;
-  height: 100%;
-}
+  .brl-map__map {
+    width: 100%;
+    height: 100%;
+  }
 
-.mapboxgl-popup-content {
-  box-shadow: 0 0 5px 2px rgba(0, 0, 0, .3);
-}
+  .mapboxgl-popup-content {
+    box-shadow: 0 0 5px 2px rgba(0, 0, 0, .3);
+  }
 
-.mapboxgl-popup-close-button {
-  position: absolute;
-  top: -12px;
-  right: -12px;
-  width: 24px;
-  height: 24px;
-  padding-bottom: 2px;
-  border-radius: 50%;
-  background-color: #ededed;
-  font-size: 1.25rem;
-  line-height: 0;
-}
+  .mapboxgl-popup-close-button {
+    position: absolute;
+    top: -12px;
+    right: -12px;
+    width: 24px;
+    height: 24px;
+    padding-bottom: 2px;
+    border-radius: 50%;
+    background-color: #ededed;
+    font-size: 1.25rem;
+    line-height: 0;
+  }
 
-.mapboxgl-popup-close-button:hover {
-  background-color: #d5d5d5;
-}
+  .mapboxgl-popup-close-button:hover {
+    background-color: #d5d5d5;
+  }
 </style>

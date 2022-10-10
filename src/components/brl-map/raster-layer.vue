@@ -33,7 +33,7 @@
     beforeMount() {
       this.removeLayer();
     },
-    destroyed() {
+    beforeDestroy() {
       this.removeLayer();
     },
   };
