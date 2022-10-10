@@ -67,7 +67,7 @@
     components: {
       AppSidebar,
       LoadButton,
-      MapComponents: () => import('@/components/map-components'),
+      MapComponents: () => import('@/components/map-components/map-components'),
       ResetButton,
       SaveButton,
       WelcomeDialog,

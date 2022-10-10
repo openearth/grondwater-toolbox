@@ -14,8 +14,8 @@
 <script>
   import { mapGetters } from 'vuex';
 
-  import AbstractionMap from '@/components/abstraction-map/abstraction-map';
-  import AppMap from '@/components/brl-map/brl-map';
+  import AbstractionMap from '@/components/map-components/abstraction-map/abstraction-map';
+  import AppMap from '@/components/map-components/brl-map/brl-map';
 
   const COMPONENT_MAP = {
     'abstraction-map': AbstractionMap,

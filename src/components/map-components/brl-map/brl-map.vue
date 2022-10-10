@@ -53,8 +53,8 @@
 
 <script>
   import { mapActions, mapGetters } from 'vuex';
-  import Mapbox from 'mapbox-gl';
   import { MglMap, MglNavigationControl } from 'vue-mapbox';
+  import Mapbox from 'mapbox-gl';
 
   import MapDrawControl from './map-draw-control';
   import MapLayerInfo from './map-layer-info';
