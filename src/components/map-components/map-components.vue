@@ -51,4 +51,9 @@
     align-items: center;
     justify-content: center;
   }
+
+  /* overwrite MapBox styles */
+  .mapboxgl-ctrl-group:not(:empty) {
+    box-shadow: 0 0 5px 2px rgba(0, 0, 0, .12);
+  }
 </style>

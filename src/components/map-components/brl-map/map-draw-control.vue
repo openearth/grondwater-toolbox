@@ -59,29 +59,13 @@
 </script>
 
 <style>
-.mapbox-gl-draw_ctrl-draw-btn.mapbox-gl-draw_polygon {
-  border-radius: 4px;
-  transition: box-shadow .2s ease;
-}
+  .mapbox-gl-draw_ctrl-draw-btn.mapbox-gl-draw_polygon {
+    border-radius: 4px;
+    background-color: #fff;
+  }
 
-.mapbox-gl-draw_ctrl-draw-btn.mapbox-gl-draw_polygon.active {
-  box-shadow: 0 0 2px 2px rgba(0, 150, 255, 1), inset 0 0 0 3px rgba(0, 150, 255, 1);
-}
-
-.mapbox-gl-draw_ctrl-draw-btn.mapbox-gl-draw_polygon:disabled {
-  background-color: rgba(0, 0, 0, 0.05);
-  cursor: not-allowed;
-  position: relative;
-}
-
-.mapbox-gl-draw_ctrl-draw-btn.mapbox-gl-draw_polygon:disabled:after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  background: #fff;
-  opacity: 0.6;
-  width: 30px;
-  height: 30px;
-}
+  .mapbox-gl-draw_ctrl-draw-btn.mapbox-gl-draw_polygon:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+  }
 </style>

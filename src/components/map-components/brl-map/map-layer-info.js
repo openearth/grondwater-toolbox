@@ -42,7 +42,7 @@ export default {
 
       const loadingPopup = new Mapbox.Popup()
         .setLngLat(event.lngLat)
-        .setHTML('loading...')
+        .setHTML('Loading...')
         .addTo(this.map);
 
       const info = await getFeatureInfo({
