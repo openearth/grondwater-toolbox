@@ -1,7 +1,6 @@
 import cookie from '@/lib/cookie';
 
 const initialState = () => ({
-  termsAndConditionsAccepted: false,
   viewerConfig: '',
   viewerIntroduction: '',
   viewerMap: null,
@@ -15,7 +14,10 @@ const initialState = () => ({
 export default {
   namespaced: true,
 
-  state: initialState(),
+  state: {
+    termsAndConditionsAccepted: false,
+    ...initialState(),
+  },
 
   getters: {
     termsAndConditionsAccepted: state => state.termsAndConditionsAccepted,
