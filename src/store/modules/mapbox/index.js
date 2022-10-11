@@ -3,10 +3,12 @@ import layers from '@/lib/mapbox/layers';
 import { generateWmsLayer } from '@/lib/project-layers';
 
 const initialState = () => ({
-  features: [],
-  wmsLayers: [],
-  loadingWmsLayers: false,
   activePopup: null,
+  activeMarker: null,
+  features: [],
+  loadingWmsLayers: false,
+  mapIsActive: false,
+  wmsLayers: [],
 });
 
 export default {
@@ -15,10 +17,12 @@ export default {
   state: initialState(),
 
   getters: {
-    features: state => state.features,
-    wmsLayers: state => state.wmsLayers,
-    loadingWmsLayers: state => state.loadingWmsLayers,
     activePopup: state => state.activePopup,
+    activeMarker: state => state.activeMarker,
+    features: state => state.features,
+    loadingWmsLayers: state => state.loadingWmsLayers,
+    mapIsActive: state => state.mapIsActive,
+    wmsLayers: state => state.wmsLayers,
   },
 
   mutations: {
@@ -43,8 +47,14 @@ export default {
     SET_ACTIVE_POPUP(state, { popup }) {
       state.activePopup = popup;
     },
+    SET_ACTIVE_MARKER(state, { marker }) {
+      state.activeMarker = {...marker};
+    },
     SET_MAPBOX_DATA(state, { data }) {
       state = data;
+    },
+    SET_MAP_IS_ACTIVE(state, { isActive }) {
+      state.mapIsActive = isActive;
     },
   },
 
@@ -132,11 +142,17 @@ export default {
     setActivePopup({ commit }, { popup }) {
       commit('SET_ACTIVE_POPUP', { popup });
     },
+    setActiveMarker({ commit }, { marker }) {
+      commit('SET_ACTIVE_MARKER', { marker });
+    },
     setMapboxData({ commit }, { data }) {
       commit('SET_MAPBOX_DATA', { data });
     },
     setWmsLayersLoading({ commit }, { isLoading }) {
       commit('SET_WMS_LAYERS_LOADING', { isLoading });
+    },
+    setMapIsActive({ commit }, { isActive }) {
+      commit('SET_MAP_IS_ACTIVE', { isActive });
     },
   },
 };

@@ -7,7 +7,7 @@
     {
       "title": "Selecties",
       "components": [
-        "selections-list"
+        "selection-list"
       ]
     },
     {

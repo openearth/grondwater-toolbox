@@ -10,22 +10,21 @@
       <!-- controls -->
       <mgl-navigation-control position="bottom-right" />
 
-      <!-- base layer -->
-      <!-- TODO: add base layer -->
+      <map-layer-info v-if="mapIsActive" />
     </mgl-map>
   </div>
 </template>
 
 <script>
-  // import { mapActions, mapGetters } from 'vuex';
+  import { mapGetters } from 'vuex';
   import { MglMap, MglNavigationControl } from 'vue-mapbox';
   import Mapbox from 'mapbox-gl';
 
-  // import wms from '@/lib/mapbox/layers/wms';
-  // import { generateWmsLayer } from '@/lib/project-layers';
+  import MapLayerInfo from './map-layer-info';
 
   export default {
     components: {
+      MapLayerInfo,
       MglMap,
       MglNavigationControl,
     },
@@ -36,6 +35,7 @@
       };
     },
     computed: {
+      ...mapGetters('mapbox', [ 'mapIsActive' ]),
       mapBoxToken() {
         return process.env.VUE_APP_MAPBOX_TOKEN;
       },

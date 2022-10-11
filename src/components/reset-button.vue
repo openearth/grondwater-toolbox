@@ -32,7 +32,9 @@
 
           this.reset();
 
-          __draw.deleteAll();
+          if (__draw) {
+            __draw.deleteAll();
+          }
 
           map.flyTo({ center: [ 5.2913, 52.1326 ], zoom: 6.5 });
 

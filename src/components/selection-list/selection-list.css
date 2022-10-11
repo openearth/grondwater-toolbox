@@ -1,0 +1,5 @@
+.selection-list__empty-state {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
