@@ -1,7 +1,10 @@
+import cookie from '@/lib/cookie';
+
 export default {
   namespaced: true,
 
   state: () => ({
+    termsAndConditionsAccepted: false,
     viewerConfig: '',
     viewerIntroduction: '',
     viewerName: '',
@@ -12,6 +15,7 @@ export default {
   }),
 
   getters: {
+    termsAndConditionsAccepted: state => state.termsAndConditionsAccepted,
     viewerConfig: state => state.viewerConfig,
     viewerCurrentStep: state => state.viewerSteps[state.viewerCurrentStepNumber - 1],
     viewerCurrentStepNumber: state => state.viewerCurrentStepNumber,
@@ -44,6 +48,9 @@ export default {
     SET_VIEWER_CURRENT_NUMBER(state, { step }) {
       state.viewerCurrentStepNumber = step;
     },
+    SET_TERMS_AND_CONDITIONS_ACCEPTED(state, { accepted }) {
+      state.termsAndConditionsAccepted = accepted;
+    },
   },
 
   actions: {
@@ -68,6 +75,10 @@ export default {
     },
     setViewerCurrentStepNumber({ commit }, { step }) {
       commit('SET_VIEWER_CURRENT_NUMBER', { step });
+    },
+    setTermsAndConditionsAccepted({ commit }, { accepted }) {
+      cookie('gtb_tac_accepted', accepted, 1);
+      commit('SET_TERMS_AND_CONDITIONS_ACCEPTED', { accepted });
     },
   },
 };

@@ -19,7 +19,7 @@ module.exports = {
     'array-bracket-spacing': [ 'warn', 'always' ],
     'brace-style': [ 'warn', '1tbs' ],
     'curly': [ 'warn', 'all' ],
-    'comma-dangle': [ 'error', 'always-multiline' ],
+    'comma-dangle': [ 'warn', 'always-multiline' ],
     'eol-last': [ 'error', 'always' ],
     'jsx-quotes': [ 'error', 'prefer-double' ],
     'keyword-spacing': [ 'warn', { 'before': true, 'after': true } ],
