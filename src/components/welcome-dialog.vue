@@ -1,6 +1,6 @@
 <template>
   <v-dialog
-    v-model="showWelcomeDialog"
+    v-model="showDialog"
     max-width="640"
     persistent
   >
@@ -32,9 +32,9 @@
           :class="{ primary: accepted }"
           text
           depressed
-          @click="onStartClick"
+          @click="onClick"
         >
-          Starten
+          Accepteren
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -42,17 +42,34 @@
 </template>
 
 <script>
+  import { mapActions, mapGetters } from 'vuex';
+
+  import cookie from '@/lib/cookie';
+
   import content from '@/content/legal.md';
 
   export default {
     data: () => ({
       accepted: false,
-      showWelcomeDialog: true,
       content,
     }),
+    created() {
+      let termsAndConditionsAccepted = cookie('gtb_tac_accepted');
+
+      if (termsAndConditionsAccepted) {
+        this.setTermsAndConditionsAccepted({ accepted: true });
+      }
+    },
+    computed: {
+      ...mapGetters('app', [ 'termsAndConditionsAccepted' ]),
+      showDialog() {
+        return !this.termsAndConditionsAccepted;
+      },
+    },
     methods: {
-      onStartClick() {
-        this.showWelcomeDialog = false;
+      ...mapActions('app', [ 'setTermsAndConditionsAccepted' ]),
+      onClick() {
+        this.setTermsAndConditionsAccepted({ accepted: true });
       },
     },
   };
