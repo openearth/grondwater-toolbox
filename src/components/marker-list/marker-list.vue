@@ -11,6 +11,14 @@
           </v-list-item-title>
           <v-list-item-subtitle>Lng: {{ longitude }} - Lat: {{ latitute }}</v-list-item-subtitle>
         </v-list-item-content>
+        <v-btn
+          text
+          icon
+          title="Delete marker"
+          @click="onDelete"
+        >
+          <v-icon>mdi-delete</v-icon>
+        </v-btn>
       </v-list-item>
     </v-list>
     <v-alert
@@ -21,7 +29,7 @@
     >
       Selecteer een punt op de kaart waar u uw berekeningen op wilt uitvoeren.
     </v-alert>
-    <v-divider class="my-6" />
+    <v-divider v-if="hasCoordinates" class="my-6" />
   </div>
 </template>
 

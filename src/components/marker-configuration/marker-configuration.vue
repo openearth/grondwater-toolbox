@@ -35,15 +35,17 @@
       </v-row>
     </v-form>
 
-    <v-btn
-      @click="calculate"
-      color="primary"
-      :disabled="!valid || loadingWmsLayers"
-      :loading="loadingWmsLayers"
-      depressed
-    >
-      Berekenen
-    </v-btn>
+    <div class="d-flex justify-end">
+      <v-btn
+        @click="calculate"
+        color="primary"
+        :disabled="!valid || loadingWmsLayers"
+        :loading="loadingWmsLayers"
+        depressed
+      >
+        Berekenen
+      </v-btn>
+    </div>
   </div>
 </template>
 
