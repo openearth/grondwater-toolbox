@@ -48,7 +48,7 @@ export default {
       state.activePopup = popup;
     },
     SET_ACTIVE_MARKER(state, { marker }) {
-      state.activeMarker = {...marker};
+      state.activeMarker = { ...marker };
     },
     SET_MAPBOX_DATA(state, { data }) {
       state = data;

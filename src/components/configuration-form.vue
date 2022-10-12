@@ -42,9 +42,7 @@
             v-model="formData.calculationLayer"
             class="hide-label"
             label="Laag van berekening"
-            :items="
-              calculationLayers.map((l) => ({ text: `Layer ${l}`, value: l }))
-            "
+            :items="calculationLayers.map((l) => ({ text: `Layer ${l}`, value: l }))"
             :disabled="disabled"
           />
         </v-card>

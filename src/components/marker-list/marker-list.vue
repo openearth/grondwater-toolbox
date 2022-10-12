@@ -7,8 +7,9 @@
         </v-list-item-icon>
         <v-list-item-content class="pa-0">
           <v-list-item-title>
-            Lng: {{ longitude }} - Lat: {{ latitute }}
+            Geplaatste speld
           </v-list-item-title>
+          <v-list-item-subtitle>Lng: {{ longitude }} - Lat: {{ latitute }}</v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
     </v-list>
@@ -20,11 +21,12 @@
     >
       Selecteer een punt op de kaart waar u uw berekeningen op wilt uitvoeren.
     </v-alert>
+    <v-divider class="my-6" />
   </div>
 </template>
 
 <script>
-  import { mapActions, mapGetters } from 'vuex';
+  import { mapGetters } from 'vuex';
 
   export default {
     computed: {
@@ -38,15 +40,6 @@
       longitude() {
         return this.hasCoordinates && this.activeMarker._lngLat.lng;
       },
-    },
-    created() {
-      this.setMapIsActive({ isActive: true });
-    },
-    beforeDestroy() {
-      this.setMapIsActive({ isActive: false });
-    },
-    methods: {
-      ...mapActions('mapbox', [ 'setMapIsActive' ]),
     },
   };
 </script>

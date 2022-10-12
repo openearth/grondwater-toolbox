@@ -1,6 +1,6 @@
 import geoServerUrl from './geoserver-url';
 
-const DATA_TEMPLATE = (coordinates) =>
+const DATA_TEMPLATE = ({ area, coordinates, layer, abstraction }) =>
   JSON.stringify({
     type: 'FeatureCollection',
     name: 'point',
@@ -13,9 +13,9 @@ const DATA_TEMPLATE = (coordinates) =>
         type: 'Feature',
         properties: {
           fid: 1,
-          layer: 3,
-          area: 5000,
-          modelprofile: 10000,
+          layer,
+          area,
+          abstraction,
         },
         geometry: {
           type: 'Point',
@@ -25,16 +25,17 @@ const DATA_TEMPLATE = (coordinates) =>
     ],
   }, 0, false);
 
-export default async function getProfileData ({ height, lng, lat, width }) {
-  const data = DATA_TEMPLATE([ lng, lat ]);
+export default async function getAbstractionData ({ area, coordinates, layer, abstraction }) {
+  console.log({ area, coordinates, layer, abstraction });
+  const data = DATA_TEMPLATE({ area, coordinates, layer, abstraction });
   const url = await geoServerUrl({
     url: process.env.VUE_APP_GEO_SERVER + '/wps',
     request: 'Execute',
     service: 'WPS',
-    identifier: 'brl_wps_modelprofile',
+    identifier: 'brl_wps_abstraction',
     version: '1.0.0',
-    width,
-    height,
+    width: false,
+    height: false,
     encode: false,
     DataInputs: 'geojson_point=' + data,
   });

@@ -9,7 +9,7 @@
     >
       <map-legend v-if="legendSource" v-bind="legendSource"/>
 
-      <!-- controls -->
+      <!-- Controls -->
       <map-draw-control
         position="top-left"
         @create="onSelection"
@@ -17,15 +17,12 @@
       />
       <map-search position="top-right" />
       <mgl-navigation-control position="bottom-right" />
-      <map-raster-opacity-control
-        v-if="wmsLayers.length"
-        :layers="wmsLayers"
-      />
+      <map-raster-opacity-control v-if="wmsLayers.length" :layers="wmsLayers" />
 
-      <!-- base layer -->
+      <!-- Base layer -->
       <raster-layer :layer="waterWaysLayer"/>
 
-      <!-- Show Selection Layers Before Calculation -->
+      <!-- Show selection layers before calculation -->
       <template v-if="!wmsLayers.length">
         <raster-layer
           v-for="feature in features"
@@ -33,7 +30,7 @@
           :layer="feature"
         />
       </template>
-      <!-- Show Calculation Layers when available-->
+      <!-- Show calculation layers when available -->
       <template v-else>
         <raster-layer
           v-for="wmsLayer in wmsLayers"
@@ -56,12 +53,14 @@
   import { MglMap, MglNavigationControl } from 'vue-mapbox';
   import Mapbox from 'mapbox-gl';
 
+  // Shared map components
+  import MapLegend from '../map-legend';
+  import MapRasterOpacityControl from '../map-raster-opacity-control';
+  import MapSearch from '../map-search';
+  import RasterLayer from '../raster-layer';
+
   import MapDrawControl from './map-draw-control';
   import MapLayerInfo from './map-layer-info';
-  import MapLegend from './map-legend';
-  import MapRasterOpacityControl from './map-raster-opacity-control';
-  import MapSearch from './map-search';
-  import RasterLayer from './raster-layer';
 
   import wms from '@/lib/mapbox/layers/wms';
   import { generateWmsLayer } from '@/lib/project-layers';

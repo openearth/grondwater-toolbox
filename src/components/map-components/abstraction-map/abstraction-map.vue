@@ -1,5 +1,8 @@
 <template>
-  <div class="abstraction-map">
+  <div
+    class="abstraction-map"
+    :class="{ 'abstraction-map--is-acive': mapIsActive }"
+  >
     <mgl-map
       mapStyle="mapbox://styles/mapbox/streets-v11"
       :accessToken="mapBoxToken"
@@ -7,10 +10,23 @@
       :zoom="mapZoom"
       @load="onMapCreated"
     >
-      <!-- controls -->
-      <mgl-navigation-control position="bottom-right" />
+      <map-legend v-if="legendSource" v-bind="legendSource"/>
 
-      <map-layer-info v-if="mapIsActive" />
+      <!-- Controls -->
+      <map-search position="top-right" />
+      <mgl-navigation-control position="bottom-right" />
+      <map-raster-opacity-control v-if="wmsLayers.length" :layers="wmsLayers" />
+
+      <!-- Show calculation layers when available -->
+      <template v-if="wmsLayers.length">
+        <raster-layer
+          v-for="wmsLayer in wmsLayers"
+          :key="wmsLayer.id"
+          :layer="wmsLayer"
+        />
+      </template>
+
+      <map-layer-info />
     </mgl-map>
   </div>
 </template>
@@ -20,13 +36,23 @@
   import { MglMap, MglNavigationControl } from 'vue-mapbox';
   import Mapbox from 'mapbox-gl';
 
+  // Shared map components
+  import MapLegend from '../map-legend';
+  import MapRasterOpacityControl from '../map-raster-opacity-control';
+  import MapSearch from '../map-search';
+  import RasterLayer from '../raster-layer';
+
   import MapLayerInfo from './map-layer-info';
 
   export default {
     components: {
       MapLayerInfo,
+      MapLegend,
+      MapRasterOpacityControl,
+      MapSearch,
       MglMap,
       MglNavigationControl,
+      RasterLayer,
     },
     data() {
       return {
@@ -35,7 +61,14 @@
       };
     },
     computed: {
-      ...mapGetters('mapbox', [ 'mapIsActive' ]),
+      ...mapGetters('mapbox', [ 'mapIsActive', 'wmsLayers' ]),
+      legendSource() {
+        return this.wmsLayers.length
+          ? {
+            url: this.wmsLayers[0].baseUrl,
+            layer: this.wmsLayers[0].id,
+          } : null;
+      },
       mapBoxToken() {
         return process.env.VUE_APP_MAPBOX_TOKEN;
       },
@@ -56,6 +89,11 @@
   .abstraction-map {
     height: 100%;
     width: 100%;
+    pointer-events: none;
+  }
+
+  .abstraction-map--is-acive {
+    pointer-events: all;
   }
 
   .brl-map__map {

@@ -33,9 +33,9 @@ export default {
       }
     },
     async cb(event) {
+      const { x, y } = event.point;
       const bounds = this.map.getBounds();
       const canvas = this.map.getCanvas();
-      const { x, y } = event.point;
       const { width, height } = canvas;
 
       this.removeActivePopup();

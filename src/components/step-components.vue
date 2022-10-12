@@ -11,16 +11,18 @@
 <script>
   import { mapGetters } from 'vuex';
 
+  import LayersGraph from '@/components/layers-graph/layers-graph';
+  import MarkerConfiguration from '@/components/marker-configuration/marker-configuration';
   import MarkerList from '@/components/marker-list/marker-list';
-  import AbstractionStep2 from '@/components/abstraction-step-2/abstraction-step-2';
-  import SelectionList from '@/components/selection-list/selection-list';
   import SelectionConfiguration from '@/components/selection-configuration';
+  import SelectionList from '@/components/selection-list/selection-list';
 
   const COMPONENT_MAP = {
-    'abstraction-step-2': AbstractionStep2,
+    'layers-graph': LayersGraph,
+    'marker-configuration': MarkerConfiguration,
     'marker-list': MarkerList,
-    'selection-list': SelectionList,
     'selection-configuration': SelectionConfiguration,
+    'selection-list': SelectionList,
   };
 
   export default {

@@ -7,13 +7,15 @@
     {
       "title": "Selecteren",
       "components": [
-        "marker-list"
+        "marker-list",
+        "layers-graph"
       ]
     },
     {
-      "title": "Step 2",
+      "title": "Configureren",
       "components": [
-        "abstraction-step-2"
+        "marker-list",
+        "marker-configuration"
       ]
     }
   ],

@@ -7,7 +7,7 @@
       label="Grootte van het model (m)"
       :rules="[rules.required, rules.minExtent]"
       @update:error="setExtentValidity"
-    ></v-text-field>
+    />
 
     <configuration-card
       v-for="(selection, index) in selections"
@@ -17,48 +17,46 @@
       @mouseenter="handleMouseEnter(selection.id)"
       @mouseleave="handleMouseLeave(selection.id)"
     >
-      <div class="selection-configuration__table">
-        <v-row no-gutters>
-          <v-col cols="12" sm="6">
-            <v-card
-              class="pa-2"
-              outlined
-              tile
-            >
-              Maatregel
-            </v-card>
-          </v-col>
-          <v-col cols="12" sm="3">
-            <v-card
-              class="pa-2"
-              outlined
-              tile
-            >
-              Verschil
-            </v-card>
-          </v-col>
-          <v-col cols="12" sm="3">
-            <v-card
-              class="pa-2"
-              outlined
-              tile
-            >
-              Berekening
-            </v-card>
-          </v-col>
-        </v-row>
+      <v-row no-gutters>
+        <v-col cols="12" sm="6">
+          <v-card
+            class="pa-2"
+            outlined
+            tile
+          >
+            Maatregel
+          </v-card>
+        </v-col>
+        <v-col cols="12" sm="3">
+          <v-card
+            class="pa-2"
+            outlined
+            tile
+          >
+            Verschil
+          </v-card>
+        </v-col>
+        <v-col cols="12" sm="3">
+          <v-card
+            class="pa-2"
+            outlined
+            tile
+          >
+            Berekening
+          </v-card>
+        </v-col>
+      </v-row>
 
-        <configuration-form
-          v-for="(form, index) in selection.configuration"
-          v-model="form.data"
-          :key="form.id"
-          :id="form.id"
-          :disabled="disabled"
-          :deletable="index !== 0"
-          @delete="handleDeleteForm(selection.id, $event)"
-          @validated="setFormValidity(selection, $event)"
-        />
-      </div>
+      <configuration-form
+        v-for="(form, index) in selection.configuration"
+        v-model="form.data"
+        :key="form.id"
+        :id="form.id"
+        :disabled="disabled"
+        :deletable="index !== 0"
+        @delete="handleDeleteForm(selection.id, $event)"
+        @validated="setFormValidity(selection, $event)"
+      />
 
       <v-btn
         icon-start
@@ -82,7 +80,7 @@
         :loading="loadingWmsLayers"
         depressed
       >
-        Bereken
+        Berekenen
       </v-btn>
     </div>
 

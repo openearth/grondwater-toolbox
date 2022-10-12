@@ -18,27 +18,28 @@ export default {
     ...mapGetters('mapbox', [ 'activeMarker' ]),
   },
   created() {
-    this.addListener();
-
     this.marker = new Mapbox.Marker({
       color: '#FF0000',
       draggable: true,
     });
 
-    this.marker.on('dragend', this.getCoordinates);
+    this.addListeners();
   },
   destroyed() {
-    this.removeListener();
+    this.removeListeners();
     this.removeActiveMarker();
   },
   methods: {
     ...mapActions('mapbox', [ 'setActiveMarker' ]),
+    ...mapActions('abstraction', [ 'addProfile' ]),
     async getCoordinates(event) {
       const { lng, lat } = event.lngLat || event.target._lngLat;
-      const info = await getProfileData({ lng, lat });
+      const canvas = this.map.getCanvas();
+      const { width, height } = canvas;
+      const profile = await getProfileData({ height, lng, lat, width });
 
-      if (info) {
-        console.log(info);
+      if (!profile) {
+        return;
       }
 
       this.marker
@@ -46,17 +47,20 @@ export default {
         .addTo(this.map);
 
       this.setActiveMarker({ marker: this.marker });
+      this.addProfile({ profile });
     },
-    addListener() {
+    addListeners() {
       this.map.on('click', this.getCoordinates);
+      this.marker.on('dragend', this.getCoordinates);
     },
     removeActiveMarker() {
+      this.marker.remove();
+
       if (this.activeMarker) {
-        this.activeMarker.remove();
         this.setActiveMarker({ marker: null });
       }
     },
-    removeListener() {
+    removeListeners() {
       this.map.off('click', this.getCoordinates);
       this.marker.off('dragend', this.getCoordinates);
     },
