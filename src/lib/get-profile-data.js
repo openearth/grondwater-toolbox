@@ -46,7 +46,11 @@ export default async function getProfileData ({ height, lng, lat, width }) {
       const element = document.getElementsByTagName('wps:ComplexData');
       const value = JSON.parse(element[0].childNodes[0].nodeValue);
 
+      if (value.errMsg) {
+        return Promise.reject(value.errMsg);
+      }
+
       return value ? JSON.parse(value, null, 2) : null;
     })
-    .catch(err => console.log(err));
+    .catch(err => Promise.reject(err));
 }

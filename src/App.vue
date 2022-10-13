@@ -51,6 +51,8 @@
     </v-main>
 
     <welcome-dialog />
+
+    <toast-message :show="Boolean(toastMessage)" :message="toastMessage" />
   </v-app>
 </template>
 
@@ -62,6 +64,7 @@
   import ResetButton from '@/components/reset-button';
   import SaveButton from '@/components/save-button';
   import WelcomeDialog from '@/components/welcome-dialog';
+  import ToastMessage from '@/components/toast-message/toast-message';
 
   export default {
     components: {
@@ -71,8 +74,10 @@
       ResetButton,
       SaveButton,
       WelcomeDialog,
+      ToastMessage,
     },
     computed: {
+      ...mapGetters('app', [ 'toastMessage' ]),
       isNotHome() {
         return this.$route.name !== 'home';
       },

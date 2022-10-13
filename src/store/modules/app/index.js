@@ -1,6 +1,7 @@
 import cookie from '@/lib/cookie';
 
 const initialState = () => ({
+  toastMessage: null,
   viewerConfig: '',
   viewerIntroduction: '',
   viewerMap: null,
@@ -20,6 +21,7 @@ export default {
   },
 
   getters: {
+    toastMessage: state => state.toastMessage,
     termsAndConditionsAccepted: state => state.termsAndConditionsAccepted,
     viewerConfig: state => state.viewerConfig,
     viewerCurrentStep: state => state.viewerSteps[state.viewerCurrentStepNumber - 1],
@@ -63,6 +65,12 @@ export default {
     SET_VIEWER_MAP(state, { map }) {
       state.viewerMap = map;
     },
+    SET_TOAST_MESSAGE(state, { type, text }) {
+      state.toastMessage = { type, text };
+    },
+    RESET_TOAST_MESSAGE(state) {
+      state.toastMessage = null;
+    },
   },
 
   actions: {
@@ -97,6 +105,12 @@ export default {
     setTermsAndConditionsAccepted({ commit }, { accepted }) {
       cookie('gtb_tac_accepted', accepted, 1);
       commit('SET_TERMS_AND_CONDITIONS_ACCEPTED', { accepted });
+    },
+    setToastMessage({ commit }, { type, text }) {
+      commit('SET_TOAST_MESSAGE', { type, text });
+    },
+    resetToastMessage({ commit }) {
+      commit('RESET_TOAST_MESSAGE');
     },
   },
 };
