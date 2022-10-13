@@ -8,7 +8,7 @@
       "title": "Selecteren",
       "components": [
         "marker-list",
-        "bar-chart-stacked"
+        "layers-graph"
       ]
     },
     {
