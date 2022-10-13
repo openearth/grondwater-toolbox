@@ -45,14 +45,17 @@ export default {
         .setHTML('Loading...')
         .addTo(this.map);
 
-      const info = await getFeatureInfo({
+      const properties = {
         layer: this.layer.id,
         bounds,
         x,
         y,
         width,
         height,
-      });
+      };
+
+      const info = await getFeatureInfo(properties)
+        .catch(err => this.setToastMessage({ text: err, type: 'error' }));
 
       loadingPopup.remove();
 

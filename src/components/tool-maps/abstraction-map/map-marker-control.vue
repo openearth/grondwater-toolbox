@@ -47,6 +47,7 @@
       this.removeActiveMarker();
     },
     methods: {
+      ...mapActions('app', [ 'setToastMessage' ]),
       ...mapActions('mapbox', [ 'setActiveMarker', 'resetWmsLayers' ]),
       ...mapActions('abstraction', [ 'addProfile' ]),
       async getCoordinates(event) {
@@ -54,7 +55,8 @@
         const { lng, lat } = event.lngLat || event.target._lngLat;
         const canvas = this.map.getCanvas();
         const { width, height } = canvas;
-        const profile = await getProfileData({ height, lng, lat, width });
+        const profile = await getProfileData({ height, lng, lat, width })
+          .catch(err => this.setToastMessage({ text: err, type: 'error' }));
 
         if (!profile) {
           return;

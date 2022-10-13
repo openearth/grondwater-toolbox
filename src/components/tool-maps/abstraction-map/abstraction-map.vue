@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="abstraction-map"
-    :class="{ 'abstraction-map--is-acive': mapIsActive }"
-  >
+  <div class="abstraction-map">
     <mgl-map
       mapStyle="mapbox://styles/mapbox/streets-v11"
       :accessToken="mapBoxToken"
@@ -43,10 +40,10 @@
   import Mapbox from 'mapbox-gl';
 
   // Shared map components
-  import MapLegend from '../map-legend';
-  import MapRasterOpacityControl from '../map-raster-opacity-control';
-  import MapSearch from '../map-search';
-  import RasterLayer from '../raster-layer';
+  import MapLegend from '@/components/map-components/map-legend';
+  import MapRasterOpacityControl from '@/components/map-components/map-raster-opacity-control';
+  import MapSearch from '@/components/map-components/map-search';
+  import RasterLayer from '@/components/map-components/raster-layer';
 
   import MapMarkerControl from './map-marker-control';
 
@@ -68,7 +65,7 @@
       };
     },
     computed: {
-      ...mapGetters('mapbox', [ 'activeMarker', 'mapIsActive', 'wmsLayers' ]),
+      ...mapGetters('mapbox', [ 'activeMarker', 'wmsLayers' ]),
       activeMarkerCoordinates() {
         return this.activeMarker._lngLat && Object.values(this.activeMarker._lngLat);
       },
@@ -99,14 +96,9 @@
   .abstraction-map {
     height: 100%;
     width: 100%;
-    pointer-events: none;
   }
 
-  .abstraction-map--is-acive {
-    pointer-events: all;
-  }
-
-  .brl-map__map {
+  .abstraction-map__map {
     width: 100%;
     height: 100%;
   }

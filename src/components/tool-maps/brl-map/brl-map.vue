@@ -54,10 +54,10 @@
   import Mapbox from 'mapbox-gl';
 
   // Shared map components
-  import MapLegend from '../map-legend';
-  import MapRasterOpacityControl from '../map-raster-opacity-control';
-  import MapSearch from '../map-search';
-  import RasterLayer from '../raster-layer';
+  import MapLegend from '@/components/map-components/map-legend';
+  import MapRasterOpacityControl from '@/components/map-components/map-raster-opacity-control';
+  import MapSearch from '@/components/map-components/map-search';
+  import RasterLayer from '@/components/map-components/raster-layer';
 
   import MapDrawControl from './map-draw-control';
   import MapLayerInfo from './map-layer-info';

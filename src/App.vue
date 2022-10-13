@@ -47,7 +47,7 @@
     </v-app-bar>
 
     <v-main>
-      <map-components />
+      <tool-maps />
     </v-main>
 
     <welcome-dialog />
@@ -57,7 +57,7 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex';
+  import { mapActions, mapGetters } from 'vuex';
 
   import AppSidebar from '@/components/app-sidebar';
   import LoadButton from '@/components/load-button';
@@ -70,7 +70,7 @@
     components: {
       AppSidebar,
       LoadButton,
-      MapComponents: () => import('@/components/map-components/map-components'),
+      ToolMaps: () => import('@/components/tool-maps/tool-maps'),
       ResetButton,
       SaveButton,
       WelcomeDialog,

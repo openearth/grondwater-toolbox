@@ -1,12 +1,16 @@
 <template>
-  <div class="map-components" v-if="showMap">
+  <div
+    v-if="showMap"
+    class="tool-maps"
+    :class="{ 'tool-maps--acive': mapIsActive }"
+  >
     <component
       v-for="(component, index) in renderComponents"
       :key="index"
       :is="component"
     />
   </div>
-  <div v-else class="map-components map-components--empty">
+  <div v-else class="tool-maps tool-maps--empty">
     <h3 class="text-h5">Map nog niet beschikbaar.</h3>
   </div>
 </template>
@@ -14,8 +18,8 @@
 <script>
   import { mapGetters } from 'vuex';
 
-  import AbstractionMap from '@/components/map-components/abstraction-map/abstraction-map';
-  import AppMap from '@/components/map-components/brl-map/brl-map';
+  import AbstractionMap from '@/components/tool-maps/abstraction-map/abstraction-map';
+  import AppMap from '@/components/tool-maps/brl-map/brl-map';
 
   const COMPONENT_MAP = {
     'abstraction-map': AbstractionMap,
@@ -28,6 +32,7 @@
       AppMap,
     },
     computed: {
+      ...mapGetters('mapbox', [ 'activeMarker', 'mapIsActive', 'wmsLayers' ]),
       ...mapGetters('app', [ 'viewerMap' ]),
       renderComponents() {
         return this.viewerMap.components
@@ -40,20 +45,4 @@
   };
 </script>
 
-<style>
-  .map-components {
-    height: 100%;
-    width: 100%;
-  }
-
-  .map-components--empty {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  /* overwrite MapBox styles */
-  .mapboxgl-ctrl-group:not(:empty) {
-    box-shadow: 0 0 5px 2px rgba(0, 0, 0, .12);
-  }
-</style>
+<style src="./tool-maps.css"></style>
