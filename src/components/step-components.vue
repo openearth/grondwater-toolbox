@@ -11,14 +11,14 @@
 <script>
   import { mapGetters } from 'vuex';
 
-  import LayersGraph from '@/components/layers-graph/layers-graph';
+  import BarChartStacked from '@/components/charts/bar-chart/bar-chart-stacked';
   import MarkerConfiguration from '@/components/marker-configuration/marker-configuration';
   import MarkerList from '@/components/marker-list/marker-list';
   import SelectionConfiguration from '@/components/selection-configuration';
   import SelectionList from '@/components/selection-list/selection-list';
 
   const COMPONENT_MAP = {
-    'layers-graph': LayersGraph,
+    'bar-chart-stacked': BarChartStacked,
     'marker-configuration': MarkerConfiguration,
     'marker-list': MarkerList,
     'selection-configuration': SelectionConfiguration,

@@ -1,0 +1,63 @@
+<template>
+  <div class="app-chart">
+    <div v-if="isLoading" class="app-chart__loader">
+      <v-progress-circular
+        :size="50"
+        color="primary"
+        indeterminate
+      />
+    </div>
+    <div v-else class="app-chart__canvas">
+      <bar-chart-stacked
+        v-if="isBarChartStacked"
+        :title="title"
+        :chart-data="chartData"
+      />
+    </div>
+  </div>
+</template>
+
+<script>
+  import BarChartStacked from '@/components/charts/bar-chart/bar-chart-stacked';
+
+  const TIMEOUT_DURATION = 1000; // 1 second
+
+  export default {
+    components: {
+      BarChartStacked,
+    },
+    props: {
+      title: {
+        type: String,
+        default: '',
+      },
+      type: {
+        type: String,
+        default: '',
+        validator(value) {
+          return [ 'barStacked' ].indexOf(value) !== -1;
+        },
+      },
+    },
+    data() {
+      return {
+        isLoading: true,
+        chartData: null,
+      };
+    },
+    computed: {
+      isBarChartStacked() {
+        return this.type === 'barStacked';
+      },
+    },
+    created() {
+      this.chartData = {};
+
+      setTimeout(() => {
+        this.isLoading = false;
+      }, TIMEOUT_DURATION);
+    },
+  };
+</script>
+
+<style src="./app-chart.css"></style>
