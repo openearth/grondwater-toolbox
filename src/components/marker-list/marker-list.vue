@@ -34,7 +34,7 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
+  import { mapActions, mapGetters } from 'vuex';
 
   export default {
     computed: {
@@ -47,6 +47,21 @@
       },
       longitude() {
         return this.hasCoordinates && this.activeMarker._lngLat.lng;
+      },
+    },
+    methods: {
+      ...mapActions('abstraction', [ 'removeProfile' ]),
+      ...mapActions('app', [ 'addLockedViewerStep' ]),
+      ...mapActions('mapbox', [ 'resetWmsLayers', 'setActiveMarker' ]),
+      onDelete() {
+        this.removeProfile();
+        this.resetWmsLayers();
+        this.setActiveMarker({ marker: null });
+        this.addLockedViewerStep({ step: 3 });
+
+        if (this.$route.name !== 'tool-step-1') {
+          this.$router.push({ name: 'tool-step-1' });
+        }
       },
     },
   };

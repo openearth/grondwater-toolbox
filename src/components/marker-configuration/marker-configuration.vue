@@ -35,13 +35,23 @@
       </v-row>
     </v-form>
 
-    <div class="d-flex justify-end">
+    <div class="d-flex justify-space-between align-center">
+      <v-alert
+        v-if="loadingWmsLayers"
+        class="mb-0 py-1"
+        type="info"
+        dense
+        outlined
+      >
+        Let op! Dit kan even duren.
+      </v-alert>
       <v-btn
-        @click="calculate"
+        class="ml-auto"
         color="primary"
         :disabled="!valid || loadingWmsLayers"
         :loading="loadingWmsLayers"
         depressed
+        @click="calculate"
       >
         Berekenen
       </v-btn>
@@ -71,16 +81,45 @@
       };
     },
     created() {
+      this.resetWmsLayers();
+
       if (!this.activeMarker) {
         this.$router.push({ name: 'tool-introduction' });
       }
     },
+    updated() {
+      if (this.wmsLayers.length) {
+        this.removeLockedViewerStep({ step: 3 });
+      } else {
+        this.addLockedViewerStep({ step: 3 });
+      }
+    },
     computed: {
       ...mapGetters('mapbox', [ 'activeMarker', 'loadingWmsLayers', 'wmsLayers' ]),
+      zoomLevel() {
+        const area = parseInt(this.area, 10);
+        // zoom level is based on the area size.
+        switch (true) {
+        case (area <= 1000):
+          return 13;
+        case (area <= 5000):
+          return 12;
+        case (area <= 10000):
+          return 11;
+        case (area <= 50000):
+          return 10;
+        default: {
+          return 10;
+        }
+        }
+      },
     },
     methods: {
+      ...mapActions('app', [ 'addLockedViewerStep', 'removeLockedViewerStep' ]),
       ...mapActions('abstraction', [ 'calculateResult' ]),
+      ...mapActions('mapbox', [ 'resetWmsLayers' ]),
       async calculate() {
+        this.resetWmsLayers();
         const { lng, lat } = this.activeMarker._lngLat;
 
         const properties = {
@@ -91,6 +130,13 @@
         };
 
         this.calculateResult(properties);
+        this.zoomToSelection({ lng, lat });
+      },
+      zoomToSelection({ lng, lat }) {
+        this.$root.map.flyTo({
+          center: [ lng, lat ],
+          zoom: this.zoomLevel,
+        });
       },
     },
   };

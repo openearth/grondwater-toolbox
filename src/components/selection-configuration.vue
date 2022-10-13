@@ -72,13 +72,23 @@
       <v-divider v-if="index !== selections.length - 1" class="mt-6" />
     </configuration-card>
 
-    <div class="d-flex justify-end">
+    <div class="d-flex justify-space-between align-center">
+      <v-alert
+        v-if="loadingWmsLayers"
+        class="mb-0 py-1"
+        type="info"
+        dense
+        outlined
+      >
+        Let op! Dit kan even duren.
+      </v-alert>
       <v-btn
-        @click="calculate"
+        class="ml-auto"
         color="primary"
         :disabled="!valid || loadingWmsLayers"
         :loading="loadingWmsLayers"
         depressed
+        @click="calculate"
       >
         Berekenen
       </v-btn>

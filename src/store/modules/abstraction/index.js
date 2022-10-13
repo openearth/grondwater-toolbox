@@ -46,8 +46,8 @@ export default {
 
       dispatch('mapbox/setWmsLayersLoading', { isLoading: false }, { root: true });
     },
-    removeProfile({ commit }, { profile }) {
-      commit('REMOVE_PROFILE', { profile });
+    removeProfile({ commit }) {
+      commit('REMOVE_PROFILE');
     },
   },
 };

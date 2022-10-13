@@ -13,6 +13,7 @@
       <map-legend v-if="legendSource" v-bind="legendSource"/>
 
       <!-- Controls -->
+      <map-marker-control position="top-left" />
       <map-search position="top-right" />
       <mgl-navigation-control position="bottom-right" />
       <map-raster-opacity-control v-if="wmsLayers.length" :layers="wmsLayers" />
@@ -26,14 +27,19 @@
         />
       </template>
 
-      <map-layer-info />
+      <mgl-marker
+        v-if="activeMarker && activeMarkerCoordinates"
+        :coordinates="activeMarkerCoordinates"
+        :color="activeMarker._color"
+        :offset="[ 0, -18 ]"
+      />
     </mgl-map>
   </div>
 </template>
 
 <script>
   import { mapGetters } from 'vuex';
-  import { MglMap, MglNavigationControl } from 'vue-mapbox';
+  import { MglMap, MglMarker, MglNavigationControl } from 'vue-mapbox';
   import Mapbox from 'mapbox-gl';
 
   // Shared map components
@@ -42,15 +48,16 @@
   import MapSearch from '../map-search';
   import RasterLayer from '../raster-layer';
 
-  import MapLayerInfo from './map-layer-info';
+  import MapMarkerControl from './map-marker-control';
 
   export default {
     components: {
-      MapLayerInfo,
       MapLegend,
+      MapMarkerControl,
       MapRasterOpacityControl,
       MapSearch,
       MglMap,
+      MglMarker,
       MglNavigationControl,
       RasterLayer,
     },
@@ -61,7 +68,10 @@
       };
     },
     computed: {
-      ...mapGetters('mapbox', [ 'mapIsActive', 'wmsLayers' ]),
+      ...mapGetters('mapbox', [ 'activeMarker', 'mapIsActive', 'wmsLayers' ]),
+      activeMarkerCoordinates() {
+        return this.activeMarker._lngLat && Object.values(this.activeMarker._lngLat);
+      },
       legendSource() {
         return this.wmsLayers.length
           ? {
