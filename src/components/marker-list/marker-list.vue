@@ -57,7 +57,7 @@
         this.removeProfile();
         this.resetWmsLayers();
         this.setActiveMarker({ marker: null });
-        this.addLockedViewerStep({ step: 3 });
+        this.addLockedViewerStep({ step: 2 });
 
         if (this.$route.name !== 'tool-step-1') {
           this.$router.push({ name: 'tool-step-1' });
