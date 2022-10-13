@@ -66,5 +66,3 @@
     },
   };
 </script>
-
-<style src="./marker-list.css" lang="css"></style>

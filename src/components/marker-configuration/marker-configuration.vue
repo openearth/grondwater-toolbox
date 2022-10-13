@@ -28,7 +28,7 @@
           <v-select
             label="Laag van berekening"
             v-model="selectedLayer"
-            :items="layers.map((layer) => ({ text: `Layer ${layer}`, value: layer }))"
+            :items="layers.map((layer) => ({ text: `Laag ${layer}`, value: layer }))"
             :rules="[rules.required]"
           />
         </v-col>

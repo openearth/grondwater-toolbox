@@ -72,13 +72,12 @@
     computed: {
       ...mapGetters('app', [ 'viewerStepsLocked' ]),
       ...mapGetters('mapbox', [ 'features', 'wmsLayers' ]),
-      ...mapGetters('selections', [ 'selections' ]),
       previousIsDisabled() {
         return this.viewerStepsLocked.includes(2);
       },
     },
     created() {
-      if (!this.selections.length) {
+      if (!this.wmsLayers.length) {
         this.$router.push({ name: 'tool-introduction' });
       }
 
