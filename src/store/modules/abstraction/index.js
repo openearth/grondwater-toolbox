@@ -1,7 +1,9 @@
 import getAbstractionData from '@/lib/get-abstraction-data';
 import { generateWmsLayer } from '@/lib/project-layers';
+import mapStackedBarChartData from '@/lib/map-stacked-bar-chart-data';
 
 const initialState = () => ({
+  chartData: [],
   profile: null,
 });
 
@@ -11,10 +13,14 @@ export default {
   state: () => initialState(),
 
   getters: {
+    chartData: (state) => state.chartData,
     profile: state => state.profile,
   },
 
   mutations: {
+    ADD_CHART_DATA(state, { data }) {
+      state.chartData = data;
+    },
     ADD_PROFILE(state, { profile }) {
       state.profile = profile;
     },
@@ -25,7 +31,10 @@ export default {
 
   actions: {
     addProfile({ commit }, { profile }) {
+      const data = mapStackedBarChartData(profile);
+
       commit('ADD_PROFILE', { profile });
+      commit('ADD_CHART_DATA', { data });
     },
     async calculateResult({ dispatch }, { area, coordinates, layer, abstraction }) {
       dispatch('mapbox/setWmsLayersLoading', { isLoading: true }, { root: true });

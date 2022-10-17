@@ -1,6 +1,8 @@
 <template>
-  <div class="layers-graph" v-if="hasProfile">
-    <app-chart type="barStacked" />
+  <div class="layers-graph">
+    <template v-if="profile">
+      <app-chart type="barStacked" />
+    </template>
   </div>
 </template>
 
@@ -19,9 +21,6 @@
     },
     computed: {
       ...mapGetters('abstraction', [ 'profile' ]),
-      hasProfile() {
-        return this.profile !== null;
-      },
     },
     methods: {
       ...mapActions('app', [ 'removeLockedViewerStep' ]),

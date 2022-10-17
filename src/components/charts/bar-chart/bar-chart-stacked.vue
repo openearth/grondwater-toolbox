@@ -3,36 +3,39 @@
     class="scatter-chart"
     :init-options="initOptions"
     :option="options"
-    autoresize
   />
 </template>
 
 <script>
-  import { mapState } from 'vuex';
+  import { mapGetters } from 'vuex';
   import { use } from 'echarts/core';
   import { CanvasRenderer } from 'echarts/renderers';
   import { BarChart } from 'echarts/charts';
   import VChart from 'vue-echarts';
 
-  import { GridComponent, LegendComponent, TooltipComponent } from 'echarts/components';
+  import { GridComponent, TooltipComponent } from 'echarts/components';
 
   use([
     CanvasRenderer,
     GridComponent,
     BarChart,
-    LegendComponent,
     TooltipComponent,
   ]);
+
+  // Layer color pallette.
+  const COLORS = [
+    '#577590',
+    '#43aa8b',
+    '#90be6d',
+    '#f9c74f',
+    '#f8961e',
+    '#f3722c',
+    '#f94144',
+  ];
 
   export default {
     components: {
       VChart,
-    },
-    props: {
-      chartData: {
-        type: Object,
-        default: null,
-      },
     },
     data() {
       return {
@@ -40,7 +43,7 @@
       };
     },
     computed: {
-      ...mapState('layers', [ 'legend' ]),
+      ...mapGetters('abstraction', [ 'chartData' ]),
       baseOptions() {
         return {
           tooltip: {
@@ -50,18 +53,10 @@
           grid: {
             top: '10px',
             right: '10px',
-            bottom: '8px',
+            bottom: '10px',
             left: '10px',
             containLabel: true,
             backgroundColor: '#fff',
-          },
-          legend: {
-            orient: 'vertical',
-            top: '20px',
-            right: '20px',
-            itemGap: 7,
-            itemWidth: 10,
-            itemHeight: 10,
           },
         };
       },
@@ -82,57 +77,39 @@
         };
       },
       series() {
-        return [
-          {
-            name: 'Laag 1',
-            type: 'bar',
-            stack: 'depth',
-            data: [ 5 ],
-            barWidth: '50%',
+        return this.chartData.map((item, index) => ({
+          ...item,
+          barWidth: '50%',
+          tooltip: {
+            show: true,
+            formatter: this.tooltipFormatter,
           },
-          {
-            name: 'Laag 2',
-            type: 'bar',
-            stack: 'depth',
-            data: [ -10 ],
-            barWidth: '50%',
-          },
-          {
-            name: 'Laag 3',
-            type: 'bar',
-            stack: 'depth',
-            data: [ -15 ],
-            barWidth: '50%',
-          },
-          {
-            name: 'Laag 4',
-            type: 'bar',
-            stack: 'depth',
-            data: [ -20 ],
-            barWidth: '50%',
-          },
-          {
-            name: 'Laag 5',
-            type: 'bar',
-            stack: 'depth',
-            data: [ -25 ],
-            barWidth: '50%',
-          },
-          {
-            name: 'Laag 6',
-            type: 'bar',
-            stack: 'depth',
-            data: [ -30 ],
-            barWidth: '50%',
-          },
-          {
-            name: 'Laag 7',
-            type: 'bar',
-            stack: 'depth',
-            data: [ -35 ],
-            barWidth: '50%',
-          },
-        ];
+          itemStyle: { color: COLORS[index] },
+        }));
+      },
+    },
+    methods: {
+      tooltipFormatter(params) {
+        const { componentIndex, seriesName } = params;
+        const startValue = this.chartData[componentIndex - 1]
+          ? this.sumLayerValues(componentIndex)
+          : 0;
+        const layerHeight = this.chartData[componentIndex].data[0] * -1; // Convert to positive value
+        const endValue = startValue + this.chartData[componentIndex].data[0];
+
+        return `
+          <strong>${ seriesName }</strong><br />
+          Hoogte: ${ layerHeight }m<br />
+          Top: ${ startValue }m<br />
+          Bodem: ${ endValue }m
+        `;
+      },
+      sumLayerValues(index) {
+        const numbers = this.chartData.map(item => item.data[0]);
+        const slicedNumbers = numbers.slice(0, index);
+
+        // Sum remaining numbers in array.
+        return slicedNumbers.reduce((acc, value) => acc + value, 0);
       },
     },
   };

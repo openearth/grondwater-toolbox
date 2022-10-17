@@ -8,11 +8,7 @@
       />
     </div>
     <div v-else class="app-chart__canvas">
-      <bar-chart-stacked
-        v-if="isBarChartStacked"
-        :title="title"
-        :chart-data="chartData"
-      />
+      <bar-chart-stacked v-if="isBarChartStacked" />
     </div>
   </div>
 </template>
@@ -42,7 +38,6 @@
     data() {
       return {
         isLoading: true,
-        chartData: null,
       };
     },
     computed: {
@@ -51,8 +46,6 @@
       },
     },
     created() {
-      this.chartData = {};
-
       setTimeout(() => {
         this.isLoading = false;
       }, TIMEOUT_DURATION);
