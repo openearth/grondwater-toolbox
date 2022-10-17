@@ -25,6 +25,7 @@ export default {
     this.removeActivePopup();
   },
   methods: {
+    ...mapActions('app', [ 'setToastMessage' ]),
     ...mapActions('mapbox', [ 'setActivePopup' ]),
     removeActivePopup() {
       if (this.activePopup) {

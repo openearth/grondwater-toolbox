@@ -18,7 +18,7 @@
       @mouseleave="handleMouseLeave(selection.id)"
     >
       <v-row no-gutters>
-        <v-col cols="12" sm="6">
+        <v-col cols="12" sm="5">
           <v-card
             class="pa-2"
             outlined

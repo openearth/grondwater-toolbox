@@ -62,7 +62,7 @@ export default {
       const selection = state.selections.find(s => s.id === id);
       Vue.set(selection, 'loading', value);
     },
-    ADD_SELECTION_CONFIGURATION(state, id) {
+    ADD_SELECTION_CONFIGURATION(state, { id }) {
       const selection = state.selections.find((selection) => selection.id === id);
       selection.configuration.push(createForm());
     },
