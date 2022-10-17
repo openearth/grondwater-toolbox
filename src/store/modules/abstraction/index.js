@@ -24,6 +24,9 @@ export default {
     ADD_PROFILE(state, { profile }) {
       state.profile = profile;
     },
+    REMOVE_CHART_DATA(state) {
+      state.chartData = [];
+    },
     REMOVE_PROFILE(state) {
       state.profile = null;
     },
@@ -57,6 +60,7 @@ export default {
     },
     removeProfile({ commit }) {
       commit('REMOVE_PROFILE');
+      commit('REMOVE_CHART_DATA');
     },
   },
 };

@@ -55,6 +55,7 @@
       ...mapActions('mapbox', [ 'resetWmsLayers', 'setActiveMarker' ]),
       onDelete() {
         this.removeProfile();
+        this.removeProfile();
         this.resetWmsLayers();
         this.setActiveMarker({ marker: null });
         this.addLockedViewerStep({ step: 2 });
