@@ -31,9 +31,9 @@ export default (object) => {
   });
 
   return layersThickness.map((layer, index) => ({
-      name: `Laag ${ index + 1 }`,
-      type: 'bar',
-      stack: 'depth',
-      data: [ layer ],
-    }));
+    name: `Laag ${ index + 1 }`,
+    type: 'bar',
+    stack: 'depth',
+    data: [ layer ],
+  }));
 };
