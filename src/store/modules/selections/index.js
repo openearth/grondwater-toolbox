@@ -2,17 +2,15 @@ import Vue from 'vue';
 import { v4 as uuid } from 'uuid';
 let selectionIndex = 1;
 
-function createForm() {
-  return {
-    id: uuid(),
-    valid: true,
-    data: {
-      difference: '1',
-      calculationLayer: 1,
-      measure: 'riverbedDifference',
-    },
-  };
-}
+const DEFAULT_FORM = {
+  id: uuid(),
+  valid: true,
+  data: {
+    difference: '1',
+    calculationLayer: 1,
+    measure: 'riverbedDifference',
+  },
+};
 
 const initialState = () => ({
   selections: [],
@@ -33,7 +31,7 @@ export default {
       state.selections.push({
         ...selection,
         name: selection.name || `Selectie #${ selectionIndex }`,
-        configuration: selection.configuration || [ createForm() ],
+        configuration: selection.configuration || [ DEFAULT_FORM ],
       });
 
       selectionIndex++;
@@ -64,7 +62,7 @@ export default {
     },
     ADD_SELECTION_CONFIGURATION(state, { id }) {
       const selection = state.selections.find((selection) => selection.id === id);
-      selection.configuration.push(createForm());
+      selection.configuration.push(DEFAULT_FORM);
     },
     REMOVE_SELECTION_CONFIGURATION(state, { selectionId, formId }) {
       const selection = state.selections.find((selection) => selection.id === selectionId);
