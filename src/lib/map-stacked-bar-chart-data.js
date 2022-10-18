@@ -73,7 +73,7 @@ export default (object) => {
     stack: 'depth',
     data: [ layer ],
     itemStyle: {
-      color: combinedPairs[index].gap ? '#ffffca': '#5ba75b',
+      color: combinedPairs[index].gap ? '#dcf0f8': '#1aa0d1',
     },
   }));
 };
