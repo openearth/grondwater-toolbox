@@ -49,8 +49,9 @@ export default (object) => {
   // Calculate the height of each layer pair.
   const layers = combinedPairs.map((pair) => {
     if (!pair) {
- return; 
-}
+      return;
+    }
+
     const values = Object.values(pair);
     const top = values[0];
     const bottom = values[1];
