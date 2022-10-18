@@ -11,12 +11,6 @@ const DATA_TEMPLATE = (coordinates) =>
     features: [
       {
         type: 'Feature',
-        properties: {
-          fid: 1,
-          layer: 3,
-          area: 5000,
-          modelprofile: 10000,
-        },
         geometry: {
           type: 'Point',
           coordinates,
