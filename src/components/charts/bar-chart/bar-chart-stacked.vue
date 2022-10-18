@@ -83,9 +83,9 @@
         };
       },
       series() {
-        return this.chartData.map((item, index) => ({
+        return this.chartData.map((item) => ({
           ...item,
-          barWidth: '40%',
+          barWidth: '60%',
         }));
       },
     },

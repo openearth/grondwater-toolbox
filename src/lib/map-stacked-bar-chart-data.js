@@ -48,7 +48,9 @@ export default (object) => {
 
   // Calculate the height of each layer pair.
   const layers = combinedPairs.map((pair) => {
-    if (!pair) { return; }
+    if (!pair) {
+ return; 
+}
     const values = Object.values(pair);
     const top = values[0];
     const bottom = values[1];
@@ -65,7 +67,7 @@ export default (object) => {
   }).filter(item => item !== undefined);
 
   return layers.map((layer, index) => ({
-    name: `Laag #${ index + 1 }: ${combinedPairs[index].gap ? 'Aquifer' : 'Aquitard'}`,
+    name: `Laag #${ index + 1 }: ${ combinedPairs[index].gap ? 'Aquifer' : 'Aquitard' }`,
     type: 'bar',
     stack: 'depth',
     data: [ layer ],
