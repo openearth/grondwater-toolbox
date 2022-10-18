@@ -13,25 +13,15 @@
   import { BarChart } from 'echarts/charts';
   import VChart from 'vue-echarts';
 
-  import { GridComponent, TooltipComponent } from 'echarts/components';
+  import { GridComponent, LegendComponent, TooltipComponent } from 'echarts/components';
 
   use([
     CanvasRenderer,
     GridComponent,
     BarChart,
+    LegendComponent,
     TooltipComponent,
   ]);
-
-  // Layer color pallette.
-  const COLORS = [
-    '#577590',
-    '#43aa8b',
-    '#90be6d',
-    '#f9c74f',
-    '#f8961e',
-    '#f3722c',
-    '#f94144',
-  ];
 
   export default {
     components: {
@@ -47,12 +37,21 @@
       baseOptions() {
         return {
           tooltip: {
-            // Format tooltip to show bottom / top of layer.
-            trigger: 'item',
+            borderColor: '#bbb',
+            show: true,
+            formatter: this.tooltipFormatter,
+          },
+          legend: {
+            orient: 'vertical',
+            top: '10px',
+            right: '10px',
+            itemGap: 8,
+            itemWidth: 13,
+            itemHeight: 13,
           },
           grid: {
             top: '10px',
-            right: '10px',
+            right: '150px',
             bottom: '10px',
             left: '10px',
             containLabel: true,
@@ -69,7 +68,14 @@
         };
       },
       yAxis() {
-        return {};
+        return {
+          type: 'value',
+          name: 'Diepte (m)',
+          maxInterval: 20,
+          axisLabel: {
+            formatter: '{value}m',
+          },
+        };
       },
       xAxis() {
         return {
@@ -79,34 +85,23 @@
       series() {
         return this.chartData.map((item, index) => ({
           ...item,
-          barWidth: '50%',
-          tooltip: {
-            show: true,
-            formatter: this.tooltipFormatter,
-          },
-          itemStyle: { color: COLORS[index] },
+          barWidth: '40%',
         }));
       },
     },
     methods: {
       tooltipFormatter(params) {
         const { componentIndex, seriesName } = params;
-        const startValue = this.chartData[componentIndex - 1]
-          ? this.sumLayerValues(componentIndex)
-          : 0;
-        const layerHeight = this.chartData[componentIndex].data[0] * -1; // Convert to positive value
-        const endValue = startValue + this.chartData[componentIndex].data[0];
+        const layerHeight = Math.abs(this.chartData[componentIndex].data[0]); // Convert to positive value
 
         return `
           <strong>${ seriesName }</strong><br />
-          Hoogte: ${ layerHeight }m<br />
-          Top: ${ startValue }m<br />
-          Bodem: ${ endValue }m
+          Hoogte: ± ${ layerHeight }m<br />
         `;
       },
       sumLayerValues(index) {
         const numbers = this.chartData.map(item => item.data[0]);
-        const slicedNumbers = numbers.slice(0, index);
+        const slicedNumbers = index > 1 ? numbers.slice(0, index) : numbers.slice(0, 1);
 
         // Sum remaining numbers in array.
         return slicedNumbers.reduce((acc, value) => acc + value, 0);
