@@ -4,9 +4,9 @@ export default function({
   url,
   service,
   request,
-  encode=true,
-  width=256,
-  height=256,
+  encode = true,
+  width = 256,
+  height = 256,
   ...rest
 }) {
   if (!request) {
@@ -16,8 +16,8 @@ export default function({
   const params = stringify({
     service,
     request,
-    width,
-    height,
+    ...(width && { width: width }),
+    ...(height && { height: height }),
     ...rest,
   }, { encode, sort: false });
 

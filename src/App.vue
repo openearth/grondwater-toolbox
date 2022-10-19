@@ -9,12 +9,14 @@
       dark
     >
       <v-toolbar-title>
-        <router-link
-          :to="{ name: 'home' }"
-          class="white--text text-decoration-none"
+        <v-btn
+          v-if="isNotHome"
+          color="primary"
+          @click="onHomeClick"
         >
           Grondwater Toolbox
-        </router-link>
+        </v-btn>
+        <h1 v-else class="text-button">Grondwater Toolbox</h1>
       </v-toolbar-title>
 
       <v-spacer />
@@ -45,28 +47,47 @@
     </v-app-bar>
 
     <v-main>
-      <app-map />
+      <tool-maps />
     </v-main>
 
     <welcome-dialog />
+
+    <toast-message :show="Boolean(toastMessage)" :message="toastMessage" />
   </v-app>
 </template>
 
 <script>
+  import { mapActions, mapGetters } from 'vuex';
+
   import AppSidebar from '@/components/app-sidebar';
   import LoadButton from '@/components/load-button';
   import ResetButton from '@/components/reset-button';
   import SaveButton from '@/components/save-button';
   import WelcomeDialog from '@/components/welcome-dialog';
+  import ToastMessage from '@/components/toast-message/toast-message';
 
   export default {
     components: {
-      AppMap: () => import('@/components/app-map'),
       AppSidebar,
       LoadButton,
+      ToolMaps: () => import('@/components/tool-maps/tool-maps'),
       ResetButton,
       SaveButton,
       WelcomeDialog,
+      ToastMessage,
+    },
+    computed: {
+      ...mapGetters('app', [ 'toastMessage' ]),
+      isNotHome() {
+        return this.$route.name !== 'home';
+      },
+    },
+    methods: {
+      ...mapActions('data', [ 'reset' ]),
+      onHomeClick() {
+        this.$router.push({ name: 'home' });
+        this.reset();
+      },
     },
   };
 </script>

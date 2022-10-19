@@ -1,5 +1,5 @@
 <template>
-  <div class="app-map">
+  <div class="brl-map">
     <mgl-map
       mapStyle="mapbox://styles/mapbox/streets-v11"
       :accessToken="mapBoxToken"
@@ -9,7 +9,7 @@
     >
       <map-legend v-if="legendSource" v-bind="legendSource"/>
 
-      <!-- controls -->
+      <!-- Controls -->
       <map-draw-control
         position="top-left"
         @create="onSelection"
@@ -17,15 +17,12 @@
       />
       <map-search position="top-right" />
       <mgl-navigation-control position="bottom-right" />
-      <map-raster-opacity-control
-        v-if="wmsLayers.length"
-        :layers="wmsLayers"
-      />
+      <map-raster-opacity-control v-if="wmsLayers.length" :layers="wmsLayers" />
 
-      <!-- base layer -->
+      <!-- Base layer -->
       <raster-layer :layer="waterWaysLayer"/>
 
-      <!-- Show Selection Layers Before Calculation -->
+      <!-- Show selection layers before calculation -->
       <template v-if="!wmsLayers.length">
         <raster-layer
           v-for="feature in features"
@@ -33,7 +30,7 @@
           :layer="feature"
         />
       </template>
-      <!-- Show Calculation Layers when available-->
+      <!-- Show calculation layers when available -->
       <template v-else>
         <raster-layer
           v-for="wmsLayer in wmsLayers"
@@ -53,15 +50,17 @@
 
 <script>
   import { mapActions, mapGetters } from 'vuex';
-  import Mapbox from 'mapbox-gl';
   import { MglMap, MglNavigationControl } from 'vue-mapbox';
+  import Mapbox from 'mapbox-gl';
+
+  // Shared map components
+  import MapLegend from '@/components/map-components/map-legend';
+  import MapRasterOpacityControl from '@/components/map-components/map-raster-opacity-control';
+  import MapSearch from '@/components/map-components/map-search';
+  import RasterLayer from '@/components/map-components/raster-layer';
 
   import MapDrawControl from './map-draw-control';
   import MapLayerInfo from './map-layer-info';
-  import MapLegend from './map-legend';
-  import MapRasterOpacityControl from './map-raster-opacity-control';
-  import MapSearch from './map-search';
-  import RasterLayer from './raster-layer';
 
   import wms from '@/lib/mapbox/layers/wms';
   import { generateWmsLayer } from '@/lib/project-layers';
@@ -142,34 +141,34 @@
 </script>
 
 <style>
-.app-map {
-  width: 100%;
-  height: 100%;
-}
+  .brl-map {
+    width: 100%;
+    height: 100%;
+  }
 
-.app-map__map {
-  width: 100%;
-  height: 100%;
-}
+  .brl-map__map {
+    width: 100%;
+    height: 100%;
+  }
 
-.mapboxgl-popup-content {
-  box-shadow: 0 0 5px 2px rgba(0, 0, 0, .3);
-}
+  .mapboxgl-popup-content {
+    box-shadow: 0 0 5px 2px rgba(0, 0, 0, .3);
+  }
 
-.mapboxgl-popup-close-button {
-  position: absolute;
-  top: -12px;
-  right: -12px;
-  width: 24px;
-  height: 24px;
-  padding-bottom: 2px;
-  border-radius: 50%;
-  background-color: #ededed;
-  font-size: 1.25rem;
-  line-height: 0;
-}
+  .mapboxgl-popup-close-button {
+    position: absolute;
+    top: -12px;
+    right: -12px;
+    width: 24px;
+    height: 24px;
+    padding-bottom: 2px;
+    border-radius: 50%;
+    background-color: #ededed;
+    font-size: 1.25rem;
+    line-height: 0;
+  }
 
-.mapboxgl-popup-close-button:hover {
-  background-color: #d5d5d5;
-}
+  .mapboxgl-popup-close-button:hover {
+    background-color: #d5d5d5;
+  }
 </style>

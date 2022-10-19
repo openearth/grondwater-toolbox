@@ -8,7 +8,7 @@
     Selecteer waterwegen op de kaart waar u uw berekeningen op wilt uitvoeren.
   </v-alert>
   <v-list v-else>
-    <selections-list-item
+    <selection-list-item
       v-for="selection in selections"
       :key="selection.id"
       :selection="selection"
@@ -20,10 +20,10 @@
   import { mapActions, mapGetters } from 'vuex';
   import { mdiVectorSquare } from '@mdi/js';
 
-  import SelectionsListItem from '@/components/selections-list-item';
+  import SelectionListItem from './selection-list-item';
 
   export default {
-    components: { SelectionsListItem },
+    components: { SelectionListItem },
     data() {
       return {
         icons: {
@@ -70,10 +70,4 @@
   };
 </script>
 
-<style>
-  .selections-list__empty-state {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-</style>
+<style src="./selection-list.css"></style>

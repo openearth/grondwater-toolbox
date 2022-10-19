@@ -1,25 +1,27 @@
 {
-  "id": "brl",
-  "name": "BasisRivierbodemLigging (BRL)",
-  "description": "Met de BRL is het mogelijk om de beschikbare ruimte die de rivierbodem voor de verschillende rivierfuncties biedt, te verbeelden in kaarten en te kwantificeren in statistieken.",
+  "id": "abstraction",
+  "name": "Abstraction tool",
+  "description": "Deze functie maakt het mogelijk om op een willekeurige plaats in Nederland de laag opbouw te visualiseren waarmee LHM3.3 is geschematiseerd.",
   "introduction": "<p>Vestibulum imperdiet augue in magna mattis, a lobortis risus pharetra. Mauris euismod venenatis lectus et accumsan. Aenean ac urna nunc. Suspendisse consequat nulla eu sapien cursus fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet neque ut nisl ultricies feugiat.</p><p>Mauris in ante vitae enim porta mollis. Maecenas sit amet dolor condimentum, vehicula urna nec, ultricies quam. Duis pharetra odio sed condimentum viverra. Proin laoreet tellus eu nibh ultricies, in cursus ex varius. Aenean sagittis orci vel ex ornare commodo. Donec sit amet vestibulum sem. Curabitur tortor erat, scelerisque ac ligula non, vulputate eleifend metus. Vivamus accumsan dictum hendrerit. Pellentesque aliquet in libero nec pulvinar. Duis imperdiet eros in elit consequat vestibulum. Cras ac quam sit amet tortor porttitor imperdiet eu ac turpis. Integer a venenatis enim, eu tincidunt dolor. Vivamus nibh diam, mattis at efficitur a, vestibulum id neque. Nulla ut posuere velit.</p>",
   "steps": [
     {
-      "title": "Selecties",
+      "title": "Selecteren",
       "components": [
-        "selection-list"
+        "marker-list",
+        "layers-graph"
       ]
     },
     {
-      "title": "Configuratie",
+      "title": "Configureren",
       "components": [
-        "selection-configuration"
+        "marker-list",
+        "marker-configuration"
       ]
     }
   ],
   "map": {
     "components": [
-      "brl-map"
+      "abstraction-map"
     ]
   }
 }

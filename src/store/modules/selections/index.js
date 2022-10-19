@@ -1,17 +1,15 @@
 import Vue from 'vue';
 import { v4 as uuid } from 'uuid';
 
-function createForm() {
-  return {
-    id: uuid(),
-    valid: true,
-    data: {
-      difference: '1',
-      calculationLayer: 1,
-      measure: 'riverbedDifference',
-    },
-  };
-}
+const DEFAULT_FORM = {
+  id: uuid(),
+  valid: true,
+  data: {
+    difference: '1',
+    calculationLayer: 1,
+    measure: 'riverbedDifference',
+  },
+};
 
 const initialState = () => ({
   selections: [],
@@ -32,7 +30,7 @@ export default {
       const totalSelections = state.selections.length;
       state.selections.push({
         ...selection,
-        configuration: selection.configuration || [ createForm() ],
+        configuration: selection.configuration || [ DEFAULT_FORM ],
         name: selection.name || `Selectie #${totalSelections + 1}`,
       });
     },
@@ -59,9 +57,9 @@ export default {
       const selection = state.selections.find(s => s.id === id);
       Vue.set(selection, 'loading', value);
     },
-    ADD_SELECTION_CONFIGURATION(state, id) {
+    ADD_SELECTION_CONFIGURATION(state, { id }) {
       const selection = state.selections.find((selection) => selection.id === id);
-      selection.configuration.push(createForm());
+      selection.configuration.push(DEFAULT_FORM);
     },
     REMOVE_SELECTION_CONFIGURATION(state, { selectionId, formId }) {
       const selection = state.selections.find((selection) => selection.id === selectionId);

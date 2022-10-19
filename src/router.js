@@ -60,19 +60,33 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (!to.name.includes('tool-')) {
-    next();
-    return;
-  }
-
+  const isToolRoute = to.name.includes('tool-');
+  const isToolIntro = to.name.includes('tool-introduction');
+  const isToolStep = to.name.includes('tool-step-');
   const isValidConfig = VALID_TOOL_CONFIGS.includes(to.params.config);
+  const hasActiveViewer = Boolean(store.state.app.viewerConfig);
   const config = isValidConfig
     ? to.params.config
     : VALID_TOOL_CONFIGS[0];
 
+  if (!isToolRoute) {
+    next();
+    return;
+  }
+
+  if (isToolIntro) {
+    store.dispatch('mapbox/setMapIsActive', { isActive: false });
+  }
+
+  if (isToolStep) {
+    store.dispatch('mapbox/setMapIsActive', { isActive: true });
+  }
+
   if (!isValidConfig) {
     return next({ ...to, path: `/tools/${ config }`, params: { config } });
-  } else {
+  }
+
+  if (!hasActiveViewer) {
     store.dispatch('app/setViewerConfig', { config });
     store.dispatch('data/getAppData', to);
   }

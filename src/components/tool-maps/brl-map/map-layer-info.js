@@ -25,6 +25,7 @@ export default {
     this.removeActivePopup();
   },
   methods: {
+    ...mapActions('app', [ 'setToastMessage' ]),
     ...mapActions('mapbox', [ 'setActivePopup' ]),
     removeActivePopup() {
       if (this.activePopup) {
@@ -33,26 +34,29 @@ export default {
       }
     },
     async cb(event) {
+      const { x, y } = event.point;
       const bounds = this.map.getBounds();
       const canvas = this.map.getCanvas();
-      const { x, y } = event.point;
       const { width, height } = canvas;
 
       this.removeActivePopup();
 
       const loadingPopup = new Mapbox.Popup()
         .setLngLat(event.lngLat)
-        .setHTML('loading...')
+        .setHTML('Loading...')
         .addTo(this.map);
 
-      const info = await getFeatureInfo({
+      const properties = {
         layer: this.layer.id,
         bounds,
         x,
         y,
         width,
         height,
-      });
+      };
+
+      const info = await getFeatureInfo(properties)
+        .catch(err => this.setToastMessage({ text: err, type: 'error' }));
 
       loadingPopup.remove();
 

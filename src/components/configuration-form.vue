@@ -1,7 +1,7 @@
 <template>
   <v-form v-model="valid" class="configuration-form border">
     <v-row no-gutters>
-      <v-col cols="12" sm="6">
+      <v-col cols="12" sm="5">
         <v-card
           class="pa-2 full-height d-flex"
           outlined
@@ -42,9 +42,7 @@
             v-model="formData.calculationLayer"
             class="hide-label"
             label="Laag van berekening"
-            :items="
-              calculationLayers.map((l) => ({ text: `Layer ${l}`, value: l }))
-            "
+            :items="calculationLayers.map((l) => ({ text: `Layer ${l}`, value: l }))"
             :disabled="disabled"
           />
         </v-card>

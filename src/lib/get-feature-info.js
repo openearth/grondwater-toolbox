@@ -30,5 +30,5 @@ export default async function getFeatureInfo ({ bounds, x, y, width, height, lay
       ...feature,
       id: String(feature.properties.id),
     }))
-    .catch(() => undefined);
+    .catch(err => Promise.reject(err));
 }
