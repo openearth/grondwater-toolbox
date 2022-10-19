@@ -10,11 +10,11 @@ export default (object) => {
   const gapPairs = [];
 
   // Push the first layer pair.
-  layerPairs.push({
-    [keys[0]]: values[0],
-    [keys[1]]: values[1],
-    gap: false,
-  });
+  // layerPairs.push({
+  //   [keys[0]]: values[0],
+  //   [keys[1]]: values[1],
+  //   gap: false,
+  // });
 
   // Push the rest of the layer pairs.
   values.map((n, i) => {
@@ -29,14 +29,19 @@ export default (object) => {
     }
   });
 
+  // Push the last layer pair.
+  // layerPairs.push({
+  //   [keys.slice(-2)[0]]: values.slice(-2)[0],
+  //   [keys.slice(-1)[0]]: values.slice(-1)[0],
+  //   gap: false,
+  // });
+
   // Calculate and collect the gap layer pairs.
   layerPairs.map((pair, index) => {
-    if (index === 6) {
-      return;
-    }
-
     const values = Object.values(pair);
-    const nextValues = Object.values(layerPairs[index + 1]);
+    const nextValues = layerPairs[index + 1]
+      ? Object.values(layerPairs[index + 1])
+      : values.slice(-1)[0];
     const topEdgeKey = 'top_gap_' + (index + 1) + '_m';
     const bottomEdgeKey = 'bot_gap_' + (index + 1) + '_m';
 
@@ -67,13 +72,25 @@ export default (object) => {
     }
   }).filter(item => item !== undefined);
 
-  return layers.map((layer, index) => ({
-    name: `Laag #${ index + 1 }: ${ combinedPairs[index].gap ? 'Aquifer' : 'Aquitard' }`,
-    type: 'bar',
-    stack: 'depth',
-    data: [ layer ],
-    itemStyle: {
-      color: combinedPairs[index].gap ? '#ffffca': '#5ba75b',
-    },
-  }));
+  let customIndex = 0;
+
+  return layers.map((layer, index) => {
+    if (index % 2 === 0) {
+      customIndex++;
+    }
+
+    const nameSuffix = index % 2 === 0
+      ? 'aquifer'
+      : 'aquitard';
+
+    return {
+      name: `Laag #${ customIndex }: ${ nameSuffix }`,
+      type: 'bar',
+      stack: 'depth',
+      data: [ layer ],
+      itemStyle: {
+        color: index % 2 ? '#5ba75b' : '#ffffca',
+      },
+    };
+  });
 };
