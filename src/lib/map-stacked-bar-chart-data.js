@@ -9,47 +9,44 @@ export default (object) => {
   const layerPairs = [];
   const gapPairs = [];
 
-  // Push the first layer pair.
-  // layerPairs.push({
-  //   [keys[0]]: values[0],
-  //   [keys[1]]: values[1],
-  //   gap: false,
-  // });
-
   // Push the rest of the layer pairs.
   values.map((n, i) => {
-    const evenKey = slicedKeys[2 * i];
-    const evenValue = slicedValues[2 * i];
-    const oddKey = slicedKeys[2 * i + 1];
-    const oddValue = slicedValues[2 * i + 1];
-    const hasEvenAndOdd = evenKey && evenValue && oddKey && oddValue;
-
-    if (hasEvenAndOdd) {
-      return layerPairs.push({ [evenKey]: evenValue, [oddKey]: oddValue, gap: false });
+    if (
+      !(slicedKeys[2 * i] &&
+      slicedValues[2 * i] &&
+      slicedKeys[2 * i + 1] &&
+      slicedValues[2 * i + 1])
+    ) {
+      return;
     }
+
+    layerPairs.push({
+      [slicedKeys[2 * i]]: slicedValues[2 * i],
+      [slicedKeys[2 * i + 1]]: slicedValues[2 * i + 1],
+      gap: false,
+    });
   });
 
-  // Push the last layer pair.
-  // layerPairs.push({
-  //   [keys.slice(-2)[0]]: values.slice(-2)[0],
-  //   [keys.slice(-1)[0]]: values.slice(-1)[0],
-  //   gap: false,
-  // });
-
   // Calculate and collect the gap layer pairs.
-  layerPairs.map((pair, index) => {
-    const values = Object.values(pair);
-    const nextValues = layerPairs[index + 1]
-      ? Object.values(layerPairs[index + 1])
-      : values.slice(-1)[0];
-    const topEdgeKey = 'top_gap_' + (index + 1) + '_m';
-    const bottomEdgeKey = 'bot_gap_' + (index + 1) + '_m';
+  let gapIndex = 1;
+  keys.map((key, index) => {
+    if (key.includes('bot_') || key.includes('ahn_')) {
+      return;
+    }
 
-    return gapPairs.push({ [topEdgeKey]: values[1], [bottomEdgeKey]: nextValues[0], gap: true });
+    gapIndex++;
+
+    return gapPairs.push({
+      ['top_gap' + gapIndex + '_m']: values[index - 1],
+      ['bot_gap' + gapIndex + '_m']: values[index],
+      gap: true,
+    });
   });
 
   // Combine the layer and gap pairs into a single array.
-  const combinedPairs = layerPairs.reduce((arr, v, i) => arr.concat(v, gapPairs[i]), []);
+  const combinedPairs = gapPairs
+    .reduce((arr, v, i) => arr.concat(v, layerPairs[i]), [])
+    .filter(item => item !== undefined);
 
   // Calculate the height of each layer pair.
   const layers = combinedPairs.map((pair) => {
@@ -57,37 +54,35 @@ export default (object) => {
       return;
     }
 
+    const layerIndex = Object.keys(pair)[0].substring(7, 8);
     const values = Object.values(pair);
     const top = values[0];
     const bottom = values[1];
     const topIsPositive = Math.sign(top) === 1;
     const bottomIsPositive = Math.sign(bottom) === 1;
+    let height = 0;
 
     if (topIsPositive && bottomIsPositive) {
-      return Math.round(top - bottom);
+      height = Math.round(top - bottom);
     } else if (topIsPositive && !bottomIsPositive) {
-      return Math.round(bottom + top);
+      height = Math.round(bottom + top);
     } else {
-      return Math.round(bottom - top);
+      height = Math.round(bottom - top);
     }
-  }).filter(item => item !== undefined);
 
-  let customIndex = 0;
+    return { index: layerIndex, value: height };
+  });
 
   return layers.map((layer, index) => {
-    if (index % 2 === 0) {
-      customIndex++;
-    }
-
     const nameSuffix = index % 2 === 0
       ? 'aquifer'
       : 'aquitard';
 
     return {
-      name: `Laag #${ customIndex }: ${ nameSuffix }`,
+      name: `Laag #${ layer.index }: ${ nameSuffix }`,
       type: 'bar',
       stack: 'depth',
-      data: [ layer ],
+      data: [ layer.value ],
       itemStyle: {
         color: index % 2 ? '#5ba75b' : '#ffffca',
       },
