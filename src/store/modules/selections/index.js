@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import { v4 as uuid } from 'uuid';
-let selectionIndex = 1;
 
 function createForm() {
   return {
@@ -30,13 +29,12 @@ export default {
 
   mutations: {
     ADD_SELECTION(state, { selection }) {
+      const totalSelections = state.selections.length;
       state.selections.push({
         ...selection,
-        name: selection.name || `Selectie #${ selectionIndex }`,
         configuration: selection.configuration || [ createForm() ],
+        name: selection.name || `Selectie #${totalSelections + 1}`,
       });
-
-      selectionIndex++;
     },
     REMOVE_SELECTION(state, { id }) {
       state.selections = state.selections.filter(selection => selection.id !== id);
@@ -55,7 +53,6 @@ export default {
       });
     },
     RESET_STATE(state) {
-      selectionIndex = 1;
       Object.assign(state, initialState());
     },
     SET_SELECTION_LOADING(state, { id, value }) {
