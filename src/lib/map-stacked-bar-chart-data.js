@@ -34,13 +34,13 @@ export default (object) => {
       return;
     }
 
-    gapIndex++;
-
-    return gapPairs.push({
+    gapPairs.push({
       ['top_gap' + gapIndex + '_m']: values[index - 1],
       ['bot_gap' + gapIndex + '_m']: values[index],
       gap: true,
     });
+
+    gapIndex++;
   });
 
   // Combine the layer and gap pairs into a single array.
