@@ -2,12 +2,14 @@ import sortObjectByKeys from './sort-object-by-keys';
 
 export default (object) => {
   const sortedObject = JSON.parse(sortObjectByKeys(object));
-  const keys = Object.keys(sortedObject);
+  const keys = Object.keys(sortedObject)
+    .map(key => key.substring(0, 8)); // shorten layer keys.
   const slicedKeys = keys.slice(1, -1);
   const values = Object.values(sortedObject);
   const slicedValues = values.slice(1, -1);
   const layerPairs = [];
   const gapPairs = [];
+  const layers = [];
 
   // Push the rest of the layer pairs.
   values.map((n, i) => {
@@ -35,8 +37,8 @@ export default (object) => {
     }
 
     gapPairs.push({
-      ['top_gap' + gapIndex + '_m']: values[index - 1],
-      ['bot_gap' + gapIndex + '_m']: values[index],
+      ['top_gap' + gapIndex]: values[index - 1],
+      ['bot_gap' + gapIndex]: values[index],
       gap: true,
     });
 
@@ -49,7 +51,7 @@ export default (object) => {
     .filter(item => item !== undefined);
 
   // Calculate the height of each layer pair.
-  const layers = combinedPairs.map((pair) => {
+  combinedPairs.map((pair) => {
     if (!pair) {
       return;
     }
@@ -62,15 +64,13 @@ export default (object) => {
     const bottomIsPositive = Math.sign(bottom) === 1;
     let height = 0;
 
-    if (topIsPositive && bottomIsPositive) {
+    if ((topIsPositive && bottomIsPositive) || (topIsPositive && !bottomIsPositive)) {
       height = Math.round(top - bottom);
-    } else if (topIsPositive && !bottomIsPositive) {
-      height = Math.round(bottom + top);
     } else {
       height = Math.round(bottom - top);
     }
 
-    return { index: layerIndex, value: height };
+    layers.push({ index: layerIndex, value: height });
   });
 
   return layers.map((layer, index) => {

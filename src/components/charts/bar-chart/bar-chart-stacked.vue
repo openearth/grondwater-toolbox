@@ -83,28 +83,19 @@
         };
       },
       series() {
-        return this.chartData.map((item) => ({
-          ...item,
-          barWidth: '60%',
-        }));
+        return this.chartData;
       },
     },
     methods: {
       tooltipFormatter(params) {
         const { componentIndex, seriesName } = params;
-        const layerHeight = Math.abs(this.chartData[componentIndex].data[0]); // Convert to positive value
+        // Convert to positive value
+        const layerHeight = Math.abs(this.chartData[componentIndex].data[0]);
 
         return `
           <strong>${ seriesName }</strong><br />
           Hoogte: ± ${ layerHeight }m<br />
         `;
-      },
-      sumLayerValues(index) {
-        const numbers = this.chartData.map(item => item.data[0]);
-        const slicedNumbers = index > 1 ? numbers.slice(0, index) : numbers.slice(0, 1);
-
-        // Sum remaining numbers in array.
-        return slicedNumbers.reduce((acc, value) => acc + value, 0);
       },
     },
   };
