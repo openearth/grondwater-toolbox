@@ -49,7 +49,7 @@ export default {
 
       // Show the user we're loading data.
       this.popup.setLngLat([ lng, lat ]);
-      this.setActivePopup({ popup: { ...this.popup, content: 'Loading...' }});
+      this.setActivePopup({ popup: { ...this.popup, content: 'Loading...' } });
 
       const properties = {
         layer: this.layer.id,
@@ -70,7 +70,7 @@ export default {
 
       // Set popup coordinates.
       this.popup.setLngLat([ lng, lat ]);
-      this.setActivePopup({ popup: { ...this.popup, content: text }});
+      this.setActivePopup({ popup: { ...this.popup, content: text } });
     },
     removeListener() {
       this.map.off('click', this.getDepth);
