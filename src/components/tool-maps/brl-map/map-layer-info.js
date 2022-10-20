@@ -44,6 +44,13 @@ export default {
       const canvas = this.map.getCanvas();
       const { width, height } = canvas;
 
+      this.removeActivePopup();
+      this.setActivePopup({ popup: null });
+
+      // Show the user we're loading data.
+      this.popup.setLngLat([ lng, lat ]);
+      this.setActivePopup({ popup: { ...this.popup, content: 'Loading...' }});
+
       const properties = {
         layer: this.layer.id,
         bounds,
@@ -63,8 +70,7 @@ export default {
 
       // Set popup coordinates.
       this.popup.setLngLat([ lng, lat ]);
-      // Save active popup to store.
-      this.setActivePopup({ popup: this.popup });
+      this.setActivePopup({ popup: { ...this.popup, content: text }});
     },
     removeListener() {
       this.map.off('click', this.getDepth);
