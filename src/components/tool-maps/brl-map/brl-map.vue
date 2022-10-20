@@ -44,22 +44,21 @@
         />
       </template>
 
-      <mgl-popup
+      <mgl-marker
         v-if="activePopup && activePopupCoordinates"
         :coordinates="activePopupCoordinates"
-        showed
-        only-text
       >
-        Hello, I'm popup!
-      </mgl-popup>
-
+        <mgl-popup showed>
+          <div>Hello, I'm popup!</div>
+        </mgl-popup>
+      </mgl-marker>
     </mgl-map>
   </div>
 </template>
 
 <script>
   import { mapActions, mapGetters } from 'vuex';
-  import { MglMap, MglNavigationControl, MglPopup } from 'vue-mapbox';
+  import { MglMap, MglNavigationControl, MglMarker, MglPopup } from 'vue-mapbox';
   import Mapbox from 'mapbox-gl';
 
   // Shared map components
@@ -82,6 +81,7 @@
       MapRasterOpacityControl,
       MapSearch,
       MglMap,
+      MglMarker,
       MglNavigationControl,
       MglPopup,
       RasterLayer,
