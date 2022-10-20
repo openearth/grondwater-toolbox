@@ -45,7 +45,7 @@ export default {
       state.loadingWmsLayers = isLoading;
     },
     SET_ACTIVE_POPUP(state, { popup }) {
-      state.activePopup = popup;
+      state.activePopup = { ...popup };
     },
     SET_ACTIVE_MARKER(state, { marker }) {
       state.activeMarker = { ...marker };

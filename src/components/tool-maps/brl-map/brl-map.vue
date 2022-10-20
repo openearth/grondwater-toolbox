@@ -44,13 +44,22 @@
         />
       </template>
 
+      <mgl-popup
+        v-if="activePopup && activePopupCoordinates"
+        :coordinates="activePopupCoordinates"
+        showed
+        only-text
+      >
+        Hello, I'm popup!
+      </mgl-popup>
+
     </mgl-map>
   </div>
 </template>
 
 <script>
   import { mapActions, mapGetters } from 'vuex';
-  import { MglMap, MglNavigationControl } from 'vue-mapbox';
+  import { MglMap, MglNavigationControl, MglPopup } from 'vue-mapbox';
   import Mapbox from 'mapbox-gl';
 
   // Shared map components
@@ -74,10 +83,12 @@
       MapSearch,
       MglMap,
       MglNavigationControl,
+      MglPopup,
       RasterLayer,
     },
     data() {
       return {
+        coordinates: [ 4.95985498012098, 52.14619791227378 ],
         mapZoom: 6.5,
         mapCenter: [ 5.2913, 52.1326 ],
         waterWaysUrl: `${ process.env.VUE_APP_GEO_SERVER }/geoserver/vaarwegvakken/wms`,
@@ -85,7 +96,11 @@
       };
     },
     computed: {
-      ...mapGetters('mapbox', [ 'features', 'wmsLayers' ]),
+      ...mapGetters('mapbox', [ 'activePopup', 'features', 'wmsLayers' ]),
+      activePopupCoordinates() {
+        console.log(this.activePopup._lngLat && Object.values(this.activePopup._lngLat));
+        return this.activePopup._lngLat && Object.values(this.activePopup._lngLat);
+      },
       mapBoxToken() {
         return process.env.VUE_APP_MAPBOX_TOKEN;
       },
