@@ -16,19 +16,18 @@
       >
         Vanwege de schaal van de y-as, worden lagen met een hoogte van ± 0m worden niet getoond.
       </v-alert>
-      <bar-chart-stacked v-if="isBarChartStacked" />
+      <line-chart-areas v-if="isBarChartStacked" />
     </div>
   </div>
 </template>
 
 <script>
-  import BarChartStacked from '@/components/charts/bar-chart/bar-chart-stacked';
-
+  import LineChartAreas from '@/components/charts/line-chart/line-chart-areas';
   const TIMEOUT_DURATION = 1000; // 1 second
 
   export default {
     components: {
-      BarChartStacked,
+      LineChartAreas,
     },
     props: {
       title: {
