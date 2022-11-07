@@ -1,6 +1,5 @@
 <template>
   <div style="display: none">
-    <!-- @slot Slot for popup content -->
     <slot />
   </div>
 </template>
@@ -35,28 +34,14 @@
     },
 
     props: {
-      /**
-       * If `true`, a close button will appear in the top right corner of the popup.
-       * Mapbox GL popup option.
-       */
       closeButton: {
         type: Boolean,
         default: true,
       },
-      /**
-       * Mapbox GL popup option.
-       * If `true`, the popup will closed when the map is clicked. .
-       */
       closeOnClick: {
         type: Boolean,
         default: true,
       },
-      /**
-       * Mapbox GL popup option.
-       * A string indicating the popup's location relative to the coordinate set.
-       * If unset the anchor will be dynamically set to ensure the popup falls within the map container with a preference for 'bottom' .
-       *  'top', 'bottom', 'left', 'right', 'top-left', 'top-right', 'bottom-left', 'bottom-right'
-       */
       anchor: {
         validator(value) {
           let allowedValues = [
@@ -73,13 +58,6 @@
         },
         default: undefined,
       },
-      /**
-       * Mapbox GL popup option.
-       * A pixel offset applied to the popup's location
-       * a single number specifying a distance from the popup's location
-       * a PointLike specifying a constant offset
-       * an object of Points specifing an offset for each anchor position Negative offsets indicate left and up.
-       */
       offset: {
         type: [ Number, Object, Array ],
         default: () => [ 0, 0 ],
@@ -87,16 +65,10 @@
       coordinates: {
         type: Array,
       },
-
-      /**
-       * Component option.
-       * If `true`, popup treats data in deafult slot as plain text
-       */
       onlyText: {
         type: Boolean,
         default: false,
       },
-
       showed: {
         type: Boolean,
         default: false,
