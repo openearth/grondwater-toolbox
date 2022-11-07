@@ -1,7 +1,7 @@
 {
   "id": "abstraction",
   "name": "Abstraction tool",
-  "title": "Abstraction tool",
+  "title": "Krijg inzicht in de effecten van onttrekking van water uit de bodem",
   "description": "Deze functie maakt het mogelijk om op een willekeurige plaats in Nederland de laag opbouw te visualiseren waarmee LHM3.3 is geschematiseerd.",
   "introduction": "<p>Dit onderdeel van de grondwatertoolbox maakt het mogelijk om het effect van een onttrekking te visualiseren op een willekeurige plaats binnen het modeldomein van LHM.</p><p>Dit gereedschap geeft de gebruiker de gelegenheid eerst de ondergrond te verkennen doordat in de eerste stap het profiel van de (model)ondergrond beschikbaar wordt gemaakt in de vorm van een grafiek met de opbouw van de ondergrond. Met deze informatie kan de gebruiker beter inschatten wat de meest van toepassing zijnde laag is om de voorgenomen simulatie uit te voeren. Let op! Modellagen zijn afgeleid van REGIS ondergrond model en zijn in sommige gevallen samengevoegd tot 1 modellaag. Zie voor meer informatie NHI.NU.</p><p>Van een gebruiker wordt verwacht dat de beoogde onttrekking wordt opgegeven en daarnaast modellaagnummer en de grootte van het effect gebied. De uitkomst bestaat uit 7 kaartlagen met het verschil tussen grondwaterstand voor en na het plaatsen van de onttrekking. </p>",
   "steps": [
