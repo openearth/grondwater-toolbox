@@ -60,7 +60,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const isToolRoute = to.name.includes('tool-');
+  const isHomeRoute = to.name === 'home';
   const isToolIntro = to.name.includes('tool-introduction');
   const isToolStep = to.name.includes('tool-step-');
   const isValidConfig = VALID_TOOL_CONFIGS.includes(to.params.config);
@@ -69,7 +69,8 @@ router.beforeEach((to, from, next) => {
     ? to.params.config
     : VALID_TOOL_CONFIGS[0];
 
-  if (!isToolRoute) {
+  if (isHomeRoute) {
+    store.dispatch('data/reset');
     next();
     return;
   }
