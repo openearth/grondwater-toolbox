@@ -1,9 +1,20 @@
 <template>
-  <v-chart
-    class="scatter-chart"
-    :init-options="initOptions"
-    :option="options"
-  />
+  <div>
+    <v-alert
+      class="py-1 text-body-2"
+      type="info"
+      dense
+      outlined
+      >
+      Vanwege de schaal van de y-as, worden kleine lagen (bijna) niet zichtbaar en
+      om informatie over een laag te zien, moet je de muis over de 'bolletjes' bewegen.
+    </v-alert>
+    <v-chart
+      class="scatter-chart"
+      :init-options="initOptions"
+      :option="options"
+    />
+  </div>
 </template>
 
 <script>

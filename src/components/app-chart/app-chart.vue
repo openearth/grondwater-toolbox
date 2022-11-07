@@ -8,14 +8,6 @@
       />
     </div>
     <div v-else class="app-chart__canvas">
-      <v-alert
-        class="py-1"
-        type="info"
-        dense
-        outlined
-      >
-        Vanwege de schaal van de y-as, worden lagen met een hoogte van ± 0m worden niet getoond.
-      </v-alert>
       <line-chart-areas v-if="isBarChartStacked" />
     </div>
   </div>
