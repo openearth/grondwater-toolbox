@@ -5,6 +5,7 @@
     :option="options"
   />
 </template>
+
 <script>
   import { mapGetters } from 'vuex';
   import { use } from 'echarts/core';
@@ -89,27 +90,32 @@
         };
       },
       series() {
-        return this.chartData;
+        return this.chartData.map((item, index) => {
+          const seriesColor = index % 2 ? '#5ba75b' : '#ffffca';
+          return {
+            ...item,
+            color: seriesColor,
+            lineStyle: { color: seriesColor },
+            areaStyle: { ...item.areaStyle, color: seriesColor, opacity: .5 },
+            symbolSize: 7,
+            symbol: 'circle',
+          };
+        });
       },
     },
     methods: {
       tooltipFormatter(params) {
-        /*         console.log('params', params);
-        const { seriesIndex, seriesName } = params;
-        console.log('componentIndex', seriesName);
-        // Convert to positive value
-        let layerHeight;
-        if (seriesIndex === this.chartData.length - 1) {
-          layerHeight = 0;
-        } else {
-          layerHeight = Math.abs(this.chartData[seriesIndex].data[0] -  this.chartData[seriesIndex + 1].data[0]);
-        } */
-       
-        return 'test';
-        /*       return `
+        const { componentIndex, seriesName } = params;
+        const top = Math.floor(this.chartData[componentIndex].data[0]);
+        const bottom = Math.floor(this.chartData[componentIndex].areaStyle.origin);
+        const layerHeight = Math.floor(Math.abs(top - bottom));
+
+        return `
           <strong>${ seriesName }</strong><br />
-          Hoogte: ± ${ seriesIndex }m<br />
-        `; */
+          <span>Van: ${ top }m</span><br />
+          <span>Tot: ${ bottom }m</span><br />
+          Hoogte: ± ${ layerHeight }m<br />
+        `;
       },
     },
   };
