@@ -31,7 +31,7 @@ export default {
       state.selections.push({
         ...selection,
         configuration: selection.configuration || [ DEFAULT_FORM ],
-        name: selection.name || `Selectie #${totalSelections + 1}`,
+        name: selection.name || `Selectie #${ totalSelections + 1 }`,
       });
     },
     REMOVE_SELECTION(state, { id }) {

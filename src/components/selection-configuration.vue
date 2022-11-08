@@ -163,8 +163,8 @@
       }
     },
     computed: {
-      ...mapGetters('selections', [ 'selections' ]),
       ...mapGetters('mapbox', [ 'features', 'loadingWmsLayers', 'wmsLayers' ]),
+      ...mapGetters('selections', [ 'selections' ]),
       // iterates through all forms and checks if every one of them is valid
       valid() {
         return (

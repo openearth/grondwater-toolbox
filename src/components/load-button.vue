@@ -59,8 +59,8 @@
     methods: {
       ...mapActions('app', { resetApp: 'reset' }),
       ...mapActions('data', [ 'loadProject' ]),
-      ...mapActions('mapbox', ['getFeature', { mapboxReset: 'reset' }]),
-      ...mapActions('selections', ['addSelection', { selectionsReset: 'reset' }]),
+      ...mapActions('mapbox', [ 'getFeature', { mapboxReset: 'reset' } ]),
+      ...mapActions('selections', [ 'addSelection', { selectionsReset: 'reset' } ]),
       onClick() {
         this.$refs.uploader.click();
       },

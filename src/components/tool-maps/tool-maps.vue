@@ -32,8 +32,8 @@
       AppMap,
     },
     computed: {
-      ...mapGetters('mapbox', [ 'mapIsActive' ]),
       ...mapGetters('app', [ 'viewerMap' ]),
+      ...mapGetters('mapbox', [ 'mapIsActive' ]),
       renderComponents() {
         return this.viewerMap.components
           .map((component) => COMPONENT_MAP[component] || 'div');
