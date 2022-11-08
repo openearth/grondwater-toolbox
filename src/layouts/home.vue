@@ -18,7 +18,7 @@
     </v-app-bar>
     <v-main>
       <section>
-        <v-parallax src="@/assets/img/cq5dam.web.1280.1280.jpeg" height="500" />
+        <v-parallax src="@/assets/img/header.jpg" height="500" />
       </section>
       <section>
         <v-container class="py-16">
