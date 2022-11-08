@@ -21,6 +21,7 @@ export default {
     activePopup: state => state.activePopup,
     activeMarker: state => state.activeMarker,
     features: state => state.features,
+    hiddenWmsLayers: state => state.hiddenWmsLayers,
     loadingWmsLayers: state => state.loadingWmsLayers,
     mapIsActive: state => state.mapIsActive,
     wmsLayers: state => state.wmsLayers,
@@ -30,11 +31,20 @@ export default {
     ADD_FEATURE(state, { feature }) {
       state.features.push(feature);
     },
+    ADD_HIDDEN_WMS_LAYER(state, { layer }) {
+      state.hiddenWmsLayers.push(layer);
+    },
     ADD_WMS_LAYER(state, { layer }) {
       state.wmsLayers.push(layer);
     },
     REMOVE_FEATURE(state, { id }) {
       state.features = state.features.filter(feature => feature.id !== id);
+    },
+    REMOVE_HIDDEN_WMS_LAYER(state, { id }) {
+      state.hiddenWmsLayers = state.hiddenWmsLayers.filter(layer => layer.id !== id);
+    },
+    RESET_HIDDEN_WMS_LAYERS(state) {
+      state.hiddenWmsLayers = [];
     },
     RESET_WMS_LAYERS(state) {
       state.wmsLayers = [];
