@@ -13,12 +13,12 @@
       <map-marker-control position="top-left" />
       <map-search position="top-right" />
       <mgl-navigation-control position="bottom-right" />
-      <map-raster-opacity-control v-if="wmsLayers.length" :layers="wmsLayers" />
+      <map-raster-opacity-control v-if="activeLayers.length" :layers="activeLayers" />
 
       <!-- Show calculation layers when available -->
-      <template v-if="wmsLayers.length">
+      <template v-if="activeLayers.length">
         <raster-layer
-          v-for="wmsLayer in wmsLayers"
+          v-for="wmsLayer in activeLayers"
           :key="wmsLayer.id"
           :layer="wmsLayer"
         />
@@ -65,15 +65,18 @@
       };
     },
     computed: {
-      ...mapGetters('mapbox', [ 'activeMarker', 'wmsLayers' ]),
+      ...mapGetters('mapbox', [ 'activeMarker', 'wmsLayers', 'hiddenWmsLayers' ]),
+      activeLayers() {
+        return this.wmsLayers.filter(layer => !this.hiddenWmsLayers.some(({ id }) => layer.id === id));
+      },
       activeMarkerCoordinates() {
         return this.activeMarker._lngLat && Object.values(this.activeMarker._lngLat);
       },
       legendSource() {
-        return this.wmsLayers.length
+        return this.activeLayers.length
           ? {
-            url: this.wmsLayers[0].baseUrl,
-            layer: this.wmsLayers[0].id,
+            url: this.activeLayers[0].baseUrl,
+            layer: this.activeLayers[0].id,
           } : null;
       },
       mapBoxToken() {

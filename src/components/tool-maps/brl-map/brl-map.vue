@@ -17,13 +17,13 @@
       />
       <map-search position="top-right" />
       <mgl-navigation-control position="bottom-right" />
-      <map-raster-opacity-control v-if="wmsLayers.length" :layers="wmsLayers" />
+      <map-raster-opacity-control v-if="activeLayers.length" :layers="activeLayers" />
 
       <!-- Base layer -->
       <raster-layer :layer="waterWaysLayer"/>
 
       <!-- Show selection layers before calculation -->
-      <template v-if="!wmsLayers.length">
+      <template v-if="!activeLayers.length">
         <raster-layer
           v-for="feature in features"
           :key="feature.watersIdentifier"
@@ -33,12 +33,12 @@
       <!-- Show calculation layers when available -->
       <template v-else>
         <raster-layer
-          v-for="wmsLayer in wmsLayers"
+          v-for="wmsLayer in activeLayers"
           :key="wmsLayer.id"
           :layer="wmsLayer"
         />
         <map-layer-info
-          v-for="wmsLayer in wmsLayers"
+          v-for="wmsLayer in activeLayers"
           :key="`${wmsLayer.id}-info`"
           :layer="wmsLayer"
         />
@@ -89,7 +89,6 @@
     },
     data() {
       return {
-        coordinates: [ 4.95985498012098, 52.14619791227378 ],
         mapZoom: 6.5,
         mapCenter: [ 5.2913, 52.1326 ],
         waterWaysUrl: `${ process.env.VUE_APP_GEO_SERVER }/geoserver/vaarwegvakken/wms`,
@@ -97,7 +96,11 @@
       };
     },
     computed: {
-      ...mapGetters('mapbox', [ 'activePopup', 'features', 'wmsLayers' ]),
+      ...mapGetters('mapbox', [ 'activePopup', 'features', 'wmsLayers', 'hiddenWmsLayers' ]),
+      ...mapGetters('selections', [ 'selections' ]),
+      activeLayers() {
+        return this.wmsLayers.filter(layer => !this.hiddenWmsLayers.some(({ id }) => layer.id === id));
+      },
       activePopupCoordinates() {
         return this.activePopup._lngLat && Object.values(this.activePopup._lngLat);
       },
@@ -152,7 +155,13 @@
       },
       onUpdateSelection(event) {
         const feature = event.features[0];
-        this.updateSelection({ selection: feature });
+
+        if (!this.selections.length) {
+          this.addSelection({ selection: feature });
+        } else {
+          this.updateSelection({ selection: feature });
+        }
+
         this.removeFeature({ id: feature.id });
         this.getFeature({ feature });
       },

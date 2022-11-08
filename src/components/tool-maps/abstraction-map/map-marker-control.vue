@@ -24,6 +24,7 @@
       };
     },
     computed: {
+      ...mapGetters('app', [ 'viewerCurrentStepNumber' ]),
       ...mapGetters('mapbox', [ 'activeMarker' ]),
     },
     created() {
@@ -47,11 +48,17 @@
       this.removeActiveMarker();
     },
     methods: {
+      ...mapActions('abstraction', [ 'addProfile', 'removeProfile' ]),
       ...mapActions('app', [ 'setToastMessage' ]),
       ...mapActions('mapbox', [ 'setActiveMarker', 'resetWmsLayers' ]),
-      ...mapActions('abstraction', [ 'addProfile' ]),
       async getCoordinates(event) {
+        this.removeProfile();
         this.resetWmsLayers();
+
+        if (this.viewerCurrentStepNumber === 3) {
+          this.$router.push({ name: 'tool-step-2' });
+        }
+
         const { lng, lat } = event.lngLat || event.target._lngLat;
         const canvas = this.map.getCanvas();
         const { width, height } = canvas;

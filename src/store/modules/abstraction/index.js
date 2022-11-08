@@ -30,6 +30,9 @@ export default {
     REMOVE_PROFILE(state) {
       state.profile = null;
     },
+    RESET_STATE(state) {
+      Object.assign(state, initialState());
+    },
   },
 
   actions: {
@@ -50,7 +53,13 @@ export default {
           baseUrl: url,
         }));
 
-        wmsLayers.forEach((layer) => dispatch('mapbox/addWmsLayer', { layer }, { root: true }));
+        wmsLayers.forEach((layer, index) => {
+          if (index !== 0) {
+            dispatch('mapbox/addHiddenWmsLayer', { layer }, { root: true });
+          }
+
+          dispatch('mapbox/addWmsLayer', { layer }, { root: true });
+        });
       } catch (err) {
         console.log(err);
       }
@@ -60,6 +69,9 @@ export default {
     removeProfile({ commit }) {
       commit('REMOVE_PROFILE');
       commit('REMOVE_CHART_DATA');
+    },
+    reset({ commit }) {
+      commit('RESET_STATE');
     },
   },
 };

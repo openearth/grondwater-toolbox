@@ -75,7 +75,9 @@ router.beforeEach((to, from, next) => {
   }
 
   if (isToolIntro) {
-    store.dispatch('mapbox/setMapIsActive', { isActive: false });
+    store.dispatch('abstraction/reset');
+    store.dispatch('mapbox/reset');
+    store.dispatch('selections/reset');
   }
 
   if (isToolStep) {

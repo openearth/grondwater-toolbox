@@ -22,11 +22,6 @@ export default {
 
       dispatch('mapbox/setMapboxData', { data: data.mapbox }, { root: true });
     },
-    reset({ dispatch }) {
-      dispatch('app/resetViewer', null, { root: true });
-      dispatch('mapbox/resetMapbox', null, { root: true });
-      dispatch('selections/resetSelections', null, { root: true });
-    },
     saveProject({ state }) {
       const project = {
         selections: state.selections,
