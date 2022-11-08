@@ -32,7 +32,7 @@
       AppMap,
     },
     computed: {
-      ...mapGetters('mapbox', [ 'activeMarker', 'mapIsActive', 'wmsLayers' ]),
+      ...mapGetters('mapbox', [ 'mapIsActive' ]),
       ...mapGetters('app', [ 'viewerMap' ]),
       renderComponents() {
         return this.viewerMap.components

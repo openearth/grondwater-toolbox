@@ -83,10 +83,15 @@
       },
     },
     methods: {
-      ...mapActions('data', [ 'reset' ]),
+      ...mapActions('app', { resetApp: 'reset' }),
+      ...mapActions('mapbox', { mapboxReset: 'reset' }),
+      ...mapActions('selections', { selectionsReset: 'reset' }),
       onHomeClick() {
         this.$router.push({ name: 'home' });
-        this.reset();
+
+        this.resetApp();
+        this.mapboxReset();
+        this.selectionsReset();
       },
     },
   };

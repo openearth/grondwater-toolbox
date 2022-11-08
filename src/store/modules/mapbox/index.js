@@ -62,6 +62,9 @@ export default {
     addFeature({ commit }, { feature }) {
       commit('ADD_FEATURE', { feature });
     },
+    addHiddenWmsLayer({ commit }, { layer }) {
+      commit('ADD_HIDDEN_WMS_LAYER', { layer });
+    },
     addWmsLayer({ commit }, { layer }) {
       commit('ADD_WMS_LAYER', { layer });
     },
@@ -88,15 +91,25 @@ export default {
           };
         });
 
-        wmsLayers.forEach((layer) => dispatch('addWmsLayer', { layer }));
+        wmsLayers.forEach((layer, index) => {
+          if (index !== 0) {
+            dispatch('mapbox/addHiddenWmsLayer', { layer }, { root: true });
+          }
+
+          dispatch('mapbox/addWmsLayer', { layer }, { root: true });
+        });
       } catch (err) {
         console.log(err);
       }
 
       dispatch('setWmsLayersLoading', { isLoading: false });
     },
-    getFeature({ dispatch }, { feature }) {
-      dispatch('selections/setSelectionLoading', { id: feature.id, value: true }, { root: true });
+    getFeature({ dispatch, rootState }, { feature }) {
+      const { selections } = rootState;
+
+      if (selections.selections.length) {
+        dispatch('selections/setSelectionLoading', { id: feature.id, value: true }, { root: true });
+      }
 
       wps({
         'functionId': 'brl_watercourses',

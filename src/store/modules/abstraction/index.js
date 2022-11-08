@@ -30,6 +30,9 @@ export default {
     REMOVE_PROFILE(state) {
       state.profile = null;
     },
+    RESET_STATE(state) {
+      Object.assign(state, initialState());
+    },
   },
 
   actions: {
@@ -61,6 +64,9 @@ export default {
     removeProfile({ commit }) {
       commit('REMOVE_PROFILE');
       commit('REMOVE_CHART_DATA');
+    },
+    reset({ commit }) {
+      commit('RESET_STATE');
     },
   },
 };

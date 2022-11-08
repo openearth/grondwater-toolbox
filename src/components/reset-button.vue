@@ -22,7 +22,9 @@
       },
     },
     methods: {
-      ...mapActions('data', [ 'reset' ]),
+      ...mapActions('app', { resetApp: 'reset' }),
+      ...mapActions('mapbox', { mapboxReset: 'reset' }),
+      ...mapActions('selections', { selectionsReset: 'reset' }),
       onClick() {
         const accepted = confirm('Weet u zeker dat u opnieuw wilt beginnen?');
 
@@ -30,7 +32,9 @@
           const { map } = this.$root;
           const { __draw } = map;
 
-          this.reset();
+          this.resetApp();
+          this.mapboxReset();
+          this.selectionsReset();
 
           if (__draw) {
             __draw.deleteAll();
