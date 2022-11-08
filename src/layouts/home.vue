@@ -143,3 +143,9 @@
     },
   };
 </script>
+
+<style>
+  .v-card.v-sheet.v-sheet--outlined.theme--light {
+    border-color: #BBDEFB; /* equal to 'blue lighten-4' modifier classes */
+  }
+</style>
