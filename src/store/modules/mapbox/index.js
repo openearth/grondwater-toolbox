@@ -6,6 +6,7 @@ const initialState = () => ({
   activePopup: null,
   activeMarker: null,
   features: [],
+  hiddenWmsLayers: [],
   loadingWmsLayers: false,
   mapIsActive: false,
   wmsLayers: [],
@@ -136,7 +137,10 @@ export default {
         };
 
         dispatch('addFeature', { feature: newFeature });
-        dispatch('selections/setSelectionLoading', { id: feature.id, value: false }, { root: true });
+
+        if (selections.selections.length) {
+          dispatch('selections/setSelectionLoading', { id: feature.id, value: false }, { root: true });
+        }
       })
       .catch(err => {
         // @TODO :: Have proper error handling here!
@@ -146,10 +150,16 @@ export default {
     removeFeature({ commit }, { id }) {
       commit('REMOVE_FEATURE', { id });
     },
+    removeHiddenWmsLayer({ commit }, { id }) {
+      commit('REMOVE_HIDDEN_WMS_LAYER', { id });
+    },
+    resetHiddenWmsLayers({ commit }) {
+      commit('RESET_HIDDEN_WMS_LAYERS');
+    },
     resetWmsLayers({ commit }) {
       commit('RESET_WMS_LAYERS');
     },
-    resetMapbox({ commit }) {
+    reset({ commit }) {
       commit('RESET_STATE');
     },
     setActivePopup({ commit }, { popup }) {

@@ -54,7 +54,13 @@ export default {
           baseUrl: url,
         }));
 
-        wmsLayers.forEach((layer) => dispatch('mapbox/addWmsLayer', { layer }, { root: true }));
+        wmsLayers.forEach((layer, index) => {
+          if (index !== 0) {
+            dispatch('mapbox/addHiddenWmsLayer', { layer }, { root: true });
+          }
+
+          dispatch('mapbox/addWmsLayer', { layer }, { root: true });
+        });
       } catch (err) {
         console.log(err);
       }

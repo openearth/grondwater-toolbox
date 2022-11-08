@@ -17,13 +17,13 @@
       />
       <map-search position="top-right" />
       <mgl-navigation-control position="bottom-right" />
-      <map-raster-opacity-control v-if="wmsLayers.length" :layers="wmsLayers" />
+      <map-raster-opacity-control v-if="activeLayers.length" :layers="activeLayers" />
 
       <!-- Base layer -->
       <raster-layer :layer="waterWaysLayer"/>
 
       <!-- Show selection layers before calculation -->
-      <template v-if="!wmsLayers.length">
+      <template v-if="!activeLayers.length">
         <raster-layer
           v-for="feature in features"
           :key="feature.watersIdentifier"
@@ -33,12 +33,12 @@
       <!-- Show calculation layers when available -->
       <template v-else>
         <raster-layer
-          v-for="wmsLayer in wmsLayers"
+          v-for="wmsLayer in activeLayers"
           :key="wmsLayer.id"
           :layer="wmsLayer"
         />
         <map-layer-info
-          v-for="wmsLayer in wmsLayers"
+          v-for="wmsLayer in activeLayers"
           :key="`${wmsLayer.id}-info`"
           :layer="wmsLayer"
         />
@@ -85,7 +85,11 @@
       };
     },
     computed: {
-      ...mapGetters('mapbox', [ 'features', 'wmsLayers' ]),
+      ...mapGetters('mapbox', [ 'features', 'wmsLayers', 'hiddenWmsLayers' ]),
+      ...mapGetters('selections', [ 'selections' ]),
+      activeLayers() {
+        return this.wmsLayers.filter(layer => !this.hiddenWmsLayers.some(({ id }) => layer.id === id));
+      },
       mapBoxToken() {
         return process.env.VUE_APP_MAPBOX_TOKEN;
       },
@@ -132,7 +136,13 @@
       },
       onUpdateSelection(event) {
         const feature = event.features[0];
-        this.updateSelection({ selection: feature });
+
+        if (!this.selections.length) {
+          this.addSelection({ selection: feature });
+        } else {
+          this.updateSelection({ selection: feature });
+        }
+
         this.removeFeature({ id: feature.id });
         this.getFeature({ feature });
       },

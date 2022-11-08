@@ -203,13 +203,14 @@
     },
     methods: {
       ...mapActions('app', [ 'addLockedViewerStep', 'removeLockedViewerStep' ]),
-      ...mapActions('mapbox', [ 'calculateResult', 'resetWmsLayers' ]),
+      ...mapActions('mapbox', [ 'calculateResult', 'resetHiddenWmsLayers', 'resetWmsLayers' ]),
       ...mapActions('selections', [ 'addSelectionConfiguration', 'removeSelectionConfiguration' ]),
       addForm(id) {
         this.addSelectionConfiguration({ id });
       },
       async calculate() {
         this.resetWmsLayers();
+        this.resetHiddenWmsLayers();
         await this.calculateResult(this.formattedForms);
 
         if (this.valid) {
