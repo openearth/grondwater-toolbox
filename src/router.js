@@ -17,34 +17,52 @@ const routes = [
     path: '/',
     component: Home,
     name: 'home',
+    meta: {
+      title: 'Home',
+    },
   },
   {
     path: '/about',
     component: About,
     name: 'about',
+    meta: {
+      title: 'Over',
+    },
   },
   {
     path: '/tools/:config',
     component: Introduction,
     name: 'tool-introduction',
+    meta: {
+      title: 'Introductie',
+    },
   },
   {
     path: '/tools/:config/step-1',
     component: StepOne,
     name: 'tool-step-1',
-    meta: { step: 1 },
+    meta: {
+      step: 1,
+      title: 'Stap 1',
+    },
   },
   {
     path: '/tools/:config/step-2',
     component: StepTwo,
     name: 'tool-step-2',
-    meta: { step: 2 },
+    meta: {
+      step: 2,
+      title: 'Stap 2',
+    },
   },
   {
     path: '/tools/:config/step-3',
     component: StepThree,
     name: 'tool-step-3',
-    meta: { step: 3 },
+    meta: {
+      step: 3,
+      title: 'Stap 3',
+    },
   },
   {
     path: '*',
@@ -91,6 +109,8 @@ router.beforeEach((to, from, next) => {
     store.dispatch('app/setViewerConfig', { config });
     store.dispatch('data/getAppData', to);
   }
+
+  document.title = `${ to.meta.title } | Grondwater Toolbox`;
 
   next();
 });
