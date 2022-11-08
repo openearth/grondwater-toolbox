@@ -163,8 +163,8 @@
       }
     },
     computed: {
-      ...mapGetters('selections', [ 'selections' ]),
       ...mapGetters('mapbox', [ 'features', 'loadingWmsLayers', 'wmsLayers' ]),
+      ...mapGetters('selections', [ 'selections' ]),
       // iterates through all forms and checks if every one of them is valid
       valid() {
         return (
@@ -203,13 +203,14 @@
     },
     methods: {
       ...mapActions('app', [ 'addLockedViewerStep', 'removeLockedViewerStep' ]),
-      ...mapActions('mapbox', [ 'calculateResult', 'resetWmsLayers' ]),
+      ...mapActions('mapbox', [ 'calculateResult', 'resetHiddenWmsLayers', 'resetWmsLayers' ]),
       ...mapActions('selections', [ 'addSelectionConfiguration', 'removeSelectionConfiguration' ]),
       addForm(id) {
         this.addSelectionConfiguration({ id });
       },
       async calculate() {
         this.resetWmsLayers();
+        this.resetHiddenWmsLayers();
         await this.calculateResult(this.formattedForms);
 
         if (this.valid) {

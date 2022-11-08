@@ -80,7 +80,7 @@ export default {
     updateSelection({ commit }, { selection }) {
       commit('UPDATE_SELECTION', { selection });
     },
-    resetSelections({ commit }) {
+    reset({ commit }) {
       commit('RESET_STATE');
     },
     setSelectionLoading({ commit }, { id, value }) {

@@ -17,13 +17,13 @@
       />
       <map-search position="top-right" />
       <mgl-navigation-control position="bottom-right" />
-      <map-raster-opacity-control v-if="wmsLayers.length" :layers="wmsLayers" />
+      <map-raster-opacity-control v-if="activeLayers.length" :layers="activeLayers" />
 
       <!-- Base layer -->
       <raster-layer :layer="waterWaysLayer"/>
 
       <!-- Show selection layers before calculation -->
-      <template v-if="!wmsLayers.length">
+      <template v-if="!activeLayers.length">
         <raster-layer
           v-for="feature in features"
           :key="feature.watersIdentifier"
@@ -33,17 +33,26 @@
       <!-- Show calculation layers when available -->
       <template v-else>
         <raster-layer
-          v-for="wmsLayer in wmsLayers"
+          v-for="wmsLayer in activeLayers"
           :key="wmsLayer.id"
           :layer="wmsLayer"
         />
         <map-layer-info
-          v-for="wmsLayer in wmsLayers"
+          v-for="wmsLayer in activeLayers"
           :key="`${wmsLayer.id}-info`"
           :layer="wmsLayer"
         />
       </template>
 
+      <map-popup
+        v-if="activePopup && activePopupCoordinates"
+        :coordinates="activePopupCoordinates"
+        showed
+        :close-button="true"
+        @close="onClosePopup"
+      >
+        {{ activePopup.content }}
+      </map-popup>
     </mgl-map>
   </div>
 </template>
@@ -55,6 +64,7 @@
 
   // Shared map components
   import MapLegend from '@/components/map-components/map-legend';
+  import MapPopup from '@/components/map-components/map-popup';
   import MapRasterOpacityControl from '@/components/map-components/map-raster-opacity-control';
   import MapSearch from '@/components/map-components/map-search';
   import RasterLayer from '@/components/map-components/raster-layer';
@@ -70,6 +80,7 @@
       MapDrawControl,
       MapLayerInfo,
       MapLegend,
+      MapPopup,
       MapRasterOpacityControl,
       MapSearch,
       MglMap,
@@ -85,7 +96,14 @@
       };
     },
     computed: {
-      ...mapGetters('mapbox', [ 'features', 'wmsLayers' ]),
+      ...mapGetters('mapbox', [ 'activePopup', 'features', 'wmsLayers', 'hiddenWmsLayers' ]),
+      ...mapGetters('selections', [ 'selections' ]),
+      activeLayers() {
+        return this.wmsLayers.filter(layer => !this.hiddenWmsLayers.some(({ id }) => layer.id === id));
+      },
+      activePopupCoordinates() {
+        return this.activePopup._lngLat && Object.values(this.activePopup._lngLat);
+      },
       mapBoxToken() {
         return process.env.VUE_APP_MAPBOX_TOKEN;
       },
@@ -120,8 +138,13 @@
       this.mapbox = Mapbox;
     },
     methods: {
-      ...mapActions('mapbox', [ 'getFeature', 'removeFeature' ]),
+      ...mapActions('mapbox', [ 'getFeature', 'removeFeature', 'setActivePopup' ]),
       ...mapActions('selections', [ 'addSelection', 'updateSelection' ]),
+      onClosePopup() {
+        if (this.activePopup) {
+          this.setActivePopup({ popup: null });
+        }
+      },
       onMapCreated({ map }) {
         this.$root.map = map;
       },
@@ -132,7 +155,13 @@
       },
       onUpdateSelection(event) {
         const feature = event.features[0];
-        this.updateSelection({ selection: feature });
+
+        if (!this.selections.length) {
+          this.addSelection({ selection: feature });
+        } else {
+          this.updateSelection({ selection: feature });
+        }
+
         this.removeFeature({ id: feature.id });
         this.getFeature({ feature });
       },

@@ -80,8 +80,8 @@
       this.name = this.selection.name;
     },
     methods: {
-      ...mapActions('selections', [ 'removeSelection', 'editSelectionName' ]),
       ...mapActions('mapbox', [ 'removeFeature' ]),
+      ...mapActions('selections', [ 'removeSelection', 'editSelectionName' ]),
       onDelete() {
         const { __draw } = this.$root.map;
         const { id } = this.selection;

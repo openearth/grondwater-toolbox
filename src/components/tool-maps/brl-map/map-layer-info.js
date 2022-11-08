@@ -14,11 +14,18 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {
+      popup: null,
+    };
+  },
   computed: {
     ...mapGetters('mapbox', [ 'activePopup' ]),
   },
   created() {
     this.addListener();
+
+    this.popup = new Mapbox.Popup({ anchor: 'bottom' });
   },
   destroyed() {
     this.removeListener();
@@ -27,57 +34,53 @@ export default {
   methods: {
     ...mapActions('app', [ 'setToastMessage' ]),
     ...mapActions('mapbox', [ 'setActivePopup' ]),
-    removeActivePopup() {
-      if (this.activePopup) {
-        this.activePopup.remove();
-        this.setActivePopup({ popup: null });
-      }
+    addListener() {
+      this.map.on('click', this.getDepth);
     },
-    async cb(event) {
+    async getDepth(event) {
+      const { lng, lat } = event.lngLat || event.target._lngLat;
       const { x, y } = event.point;
       const bounds = this.map.getBounds();
       const canvas = this.map.getCanvas();
       const { width, height } = canvas;
 
       this.removeActivePopup();
+      this.setActivePopup({ popup: null });
 
-      const loadingPopup = new Mapbox.Popup()
-        .setLngLat(event.lngLat)
-        .setHTML('Loading...')
-        .addTo(this.map);
+      // Show the user we're loading data.
+      this.popup.setLngLat([ lng, lat ]);
+      this.setActivePopup({ popup: { ...this.popup, content: 'Loading...' } });
 
       const properties = {
         layer: this.layer.id,
         bounds,
-        x,
-        y,
-        width,
-        height,
+        x, y,
+        width, height,
       };
 
       const info = await getFeatureInfo(properties)
         .catch(err => this.setToastMessage({ text: err, type: 'error' }));
 
-      loadingPopup.remove();
-
-      if (info) {
-        const { properties } = info;
-        const { GRAY_INDEX } = properties;
-        const text = GRAY_INDEX.toFixed(2);
-
-        const popup = new Mapbox.Popup()
-          .setLngLat(event.lngLat)
-          .setHTML(text)
-          .addTo(this.map);
-
-        this.setActivePopup({ popup });
+      if (!info) {
+        return;
       }
-    },
-    addListener() {
-      this.map.on('click', this.cb);
+
+      const { GRAY_INDEX } = info.properties;
+      const text = GRAY_INDEX.toFixed(2);
+
+      // Set popup coordinates.
+      this.popup.setLngLat([ lng, lat ]);
+      this.setActivePopup({ popup: { ...this.popup, content: text } });
     },
     removeListener() {
-      this.map.off('click', this.cb);
+      this.map.off('click', this.getDepth);
+    },
+    removeActivePopup() {
+      this.popup.remove();
+
+      if (this.activePopup) {
+        this.setActivePopup({ popup: null });
+      }
     },
   },
 };

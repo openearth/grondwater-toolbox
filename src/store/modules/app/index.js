@@ -80,7 +80,7 @@ export default {
     removeLockedViewerStep({ commit }, { step }) {
       commit('REMOVE_LOCKED_VIEWER_STEP', { step });
     },
-    resetViewer({ commit }) {
+    reset({ commit }) {
       commit('RESET_STATE');
     },
     setViewerConfig({ commit }, { config }) {

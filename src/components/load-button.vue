@@ -57,9 +57,10 @@
       },
     },
     methods: {
-      ...mapActions('data', [ 'loadProject', 'reset' ]),
-      ...mapActions('mapbox', [ 'getFeature' ]),
-      ...mapActions('selections', [ 'addSelection' ]),
+      ...mapActions('app', { resetApp: 'reset' }),
+      ...mapActions('data', [ 'loadProject' ]),
+      ...mapActions('mapbox', [ 'getFeature', { mapboxReset: 'reset' } ]),
+      ...mapActions('selections', [ 'addSelection', { selectionsReset: 'reset' } ]),
       onClick() {
         this.$refs.uploader.click();
       },
