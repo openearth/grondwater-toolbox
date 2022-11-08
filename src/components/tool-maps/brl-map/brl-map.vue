@@ -44,6 +44,15 @@
         />
       </template>
 
+      <map-popup
+        v-if="activePopup && activePopupCoordinates"
+        :coordinates="activePopupCoordinates"
+        showed
+        :close-button="true"
+        @close="onClosePopup"
+      >
+        {{ activePopup.content }}
+      </map-popup>
     </mgl-map>
   </div>
 </template>
@@ -55,6 +64,7 @@
 
   // Shared map components
   import MapLegend from '@/components/map-components/map-legend';
+  import MapPopup from '@/components/map-components/map-popup';
   import MapRasterOpacityControl from '@/components/map-components/map-raster-opacity-control';
   import MapSearch from '@/components/map-components/map-search';
   import RasterLayer from '@/components/map-components/raster-layer';
@@ -70,6 +80,7 @@
       MapDrawControl,
       MapLayerInfo,
       MapLegend,
+      MapPopup,
       MapRasterOpacityControl,
       MapSearch,
       MglMap,
@@ -85,10 +96,13 @@
       };
     },
     computed: {
-      ...mapGetters('mapbox', [ 'features', 'wmsLayers', 'hiddenWmsLayers' ]),
+      ...mapGetters('mapbox', [ 'activePopup', 'features', 'wmsLayers', 'hiddenWmsLayers' ]),
       ...mapGetters('selections', [ 'selections' ]),
       activeLayers() {
         return this.wmsLayers.filter(layer => !this.hiddenWmsLayers.some(({ id }) => layer.id === id));
+      },
+      activePopupCoordinates() {
+        return this.activePopup._lngLat && Object.values(this.activePopup._lngLat);
       },
       mapBoxToken() {
         return process.env.VUE_APP_MAPBOX_TOKEN;
@@ -124,8 +138,13 @@
       this.mapbox = Mapbox;
     },
     methods: {
-      ...mapActions('mapbox', [ 'getFeature', 'removeFeature' ]),
+      ...mapActions('mapbox', [ 'getFeature', 'removeFeature', 'setActivePopup' ]),
       ...mapActions('selections', [ 'addSelection', 'updateSelection' ]),
+      onClosePopup() {
+        if (this.activePopup) {
+          this.setActivePopup({ popup: null });
+        }
+      },
       onMapCreated({ map }) {
         this.$root.map = map;
       },

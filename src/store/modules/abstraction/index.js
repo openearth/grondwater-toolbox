@@ -1,6 +1,6 @@
 import getAbstractionData from '@/lib/get-abstraction-data';
 import { generateWmsLayer } from '@/lib/project-layers';
-import mapStackedBarChartData from '@/lib/map-stacked-bar-chart-data';
+import mapChartData from '@/lib/map-chart-data';
 
 const initialState = () => ({
   chartData: [],
@@ -37,8 +37,7 @@ export default {
 
   actions: {
     addProfile({ commit }, { profile }) {
-      const data = mapStackedBarChartData(profile);
-
+      const data = mapChartData(profile);
       commit('ADD_PROFILE', { profile });
       commit('ADD_CHART_DATA', { data });
     },
