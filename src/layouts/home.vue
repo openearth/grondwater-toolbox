@@ -48,13 +48,16 @@
           </v-row>
           <v-row dense justify="center">
             <v-col
-              v-for="(tool, index) in tools"
-              :key="index"
-              sm="6"
-              md="5"
-              xl="3"
+              sm="12"
+              md="10"
+              xl="6"
             >
-              <v-card outlined>
+              <v-card
+                v-for="(tool, index) in tools"
+                :key="index"
+                class="mb-6"
+                outlined
+              >
                 <v-card-title class="text-h5">
                   {{ tool.name }}
                 </v-card-title>
