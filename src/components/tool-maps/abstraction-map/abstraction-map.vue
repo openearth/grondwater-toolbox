@@ -22,6 +22,11 @@
           :key="wmsLayer.id"
           :layer="wmsLayer"
         />
+        <map-layer-info
+          v-for="wmsLayer in activeLayers"
+          :key="`${wmsLayer.id}-info`"
+          :layer="wmsLayer"
+        />
       </template>
 
       <mgl-marker
@@ -30,27 +35,41 @@
         :color="activeMarker._color"
         :offset="[ 0, -18 ]"
       />
+
+      <map-popup
+        v-if="activePopup && activePopupCoordinates"
+        :coordinates="activePopupCoordinates"
+        showed
+        :close-button="true"
+        @close="onClosePopup"
+      >
+        {{ activePopup.content }}
+      </map-popup>
     </mgl-map>
   </div>
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
+  import { mapActions, mapGetters } from 'vuex';
   import { MglMap, MglMarker, MglNavigationControl } from 'vue-mapbox';
   import Mapbox from 'mapbox-gl';
 
   // Shared map components
   import MapLegend from '@/components/map-components/map-legend';
+  import MapPopup from '@/components/map-components/map-popup';
   import MapRasterOpacityControl from '@/components/map-components/map-raster-opacity-control';
   import MapSearch from '@/components/map-components/map-search';
   import RasterLayer from '@/components/map-components/raster-layer';
 
   import MapMarkerControl from './map-marker-control';
+  import MapLayerInfo from './map-layer-info';
 
   export default {
     components: {
+      MapLayerInfo,
       MapLegend,
       MapMarkerControl,
+      MapPopup,
       MapRasterOpacityControl,
       MapSearch,
       MglMap,
@@ -65,9 +84,12 @@
       };
     },
     computed: {
-      ...mapGetters('mapbox', [ 'activeMarker', 'wmsLayers', 'hiddenWmsLayers' ]),
+      ...mapGetters('mapbox', [ 'activeMarker', 'activePopup', 'wmsLayers', 'hiddenWmsLayers' ]),
       activeLayers() {
         return this.wmsLayers.filter(layer => !this.hiddenWmsLayers.some(({ id }) => layer.id === id));
+      },
+      activePopupCoordinates() {
+        return this.activePopup._lngLat && Object.values(this.activePopup._lngLat);
       },
       activeMarkerCoordinates() {
         return this.activeMarker._lngLat && Object.values(this.activeMarker._lngLat);
@@ -87,6 +109,12 @@
       this.mapbox = Mapbox;
     },
     methods: {
+      ...mapActions('mapbox', [ 'setActivePopup' ]),
+      onClosePopup() {
+        if (this.activePopup) {
+          this.setActivePopup({ popup: null });
+        }
+      },
       onMapCreated({ map }) {
         this.$root.map = map;
       },
