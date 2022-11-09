@@ -74,6 +74,8 @@
         this.marker.setLngLat([ lng, lat ]);
         // Save active marker to store.
         this.setActiveMarker({ marker: this.marker });
+        // Disable control.
+        this.toggleMarker();
       },
       enableControl() {
         this.map.on('click', this.getCoordinates);
