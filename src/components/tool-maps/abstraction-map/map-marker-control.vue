@@ -50,14 +50,15 @@
     methods: {
       ...mapActions('abstraction', [ 'addProfile', 'removeProfile' ]),
       ...mapActions('app', [ 'setToastMessage' ]),
-      ...mapActions('mapbox', [ 'setActiveMarker', 'resetWmsLayers' ]),
+      ...mapActions('mapbox', [ 'setActiveMarker', 'setActivePopup', 'resetWmsLayers' ]),
       async getCoordinates(event) {
-        this.removeProfile();
-        this.resetWmsLayers();
-
-        if (this.viewerCurrentStepNumber === 3) {
-          this.$router.push({ name: 'tool-step-2' });
+        if (this.viewerCurrentStepNumber !== 1) {
+          this.$router.push({ name: 'tool-step-1' });
         }
+
+        this.setActivePopup({ popup: null });
+        this.resetWmsLayers();
+        this.removeProfile();
 
         const { lng, lat } = event.lngLat || event.target._lngLat;
         const canvas = this.map.getCanvas();
@@ -74,8 +75,6 @@
         this.marker.setLngLat([ lng, lat ]);
         // Save active marker to store.
         this.setActiveMarker({ marker: this.marker });
-        // Disable control.
-        this.toggleMarker();
       },
       enableControl() {
         this.map.on('click', this.getCoordinates);
@@ -102,6 +101,12 @@
         this.enabled = !this.enabled;
       },
     },
+    watch: {
+      '$route'(to, from) {
+        this.disableControl();
+        this.enabled = false;
+      },
+    }
   };
 </script>
 

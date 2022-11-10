@@ -22,11 +22,13 @@
           :key="wmsLayer.id"
           :layer="wmsLayer"
         />
-        <map-layer-info
-          v-for="wmsLayer in activeLayers"
-          :key="`${wmsLayer.id}-info`"
-          :layer="wmsLayer"
-        />
+        <template v-if="viewerCurrentStepNumber === 3">
+          <map-layer-info
+            v-for="wmsLayer in activeLayers"
+            :key="`${wmsLayer.id}-info`"
+            :layer="wmsLayer"
+          />
+        </template>
       </template>
 
       <mgl-marker
@@ -84,6 +86,7 @@
       };
     },
     computed: {
+      ...mapGetters('app', [ 'viewerCurrentStepNumber' ]),
       ...mapGetters('mapbox', [ 'activeMarker', 'activePopup', 'wmsLayers', 'hiddenWmsLayers' ]),
       activeLayers() {
         return this.wmsLayers.filter(layer => !this.hiddenWmsLayers.some(({ id }) => layer.id === id));
