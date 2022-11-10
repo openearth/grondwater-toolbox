@@ -19,8 +19,7 @@
         "marker-configuration"
       ],
       "buttons": [
-        "reset-button",
-        "save-button"
+        "reset-button"
       ]
     },
     {

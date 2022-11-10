@@ -21,8 +21,7 @@
       ],
       "buttons": [
         "load-button",
-        "reset-button",
-        "save-button"
+        "reset-button"
       ]
     },
     {
