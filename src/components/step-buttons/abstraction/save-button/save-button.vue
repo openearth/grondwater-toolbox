@@ -3,6 +3,7 @@
     v-if="isToolStepRoute"
     icon
     title="Selectie opslaan"
+    :disabled="!hasProfile"
     @click="save"
   >
     <v-icon>mdi-content-save</v-icon>
@@ -14,7 +15,10 @@
 
   export default {
     computed: {
-      ...mapGetters('selections', [ 'selections' ]),
+      ...mapGetters('abstraction', [ 'profile' ]),
+      hasProfile() {
+        return this.profile !== null;
+      },
       isToolStepRoute() {
         return this.$route.name.includes('tool-step');
       },
