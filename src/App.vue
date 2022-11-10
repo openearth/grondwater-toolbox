@@ -21,9 +21,7 @@
 
       <v-spacer />
 
-      <load-button />
-      <save-button />
-      <reset-button />
+      <step-buttons />
 
       <v-spacer />
 
@@ -60,21 +58,17 @@
   import { mapActions, mapGetters } from 'vuex';
 
   import AppSidebar from '@/components/app-sidebar';
-  import LoadButton from '@/components/load-button';
-  import ResetButton from '@/components/reset-button';
-  import SaveButton from '@/components/save-button';
-  import WelcomeDialog from '@/components/welcome-dialog';
+  import StepButtons from '@/components/step-buttons/step-buttons';
   import ToastMessage from '@/components/toast-message/toast-message';
+  import WelcomeDialog from '@/components/welcome-dialog';
 
   export default {
     components: {
       AppSidebar,
-      LoadButton,
-      ToolMaps: () => import('@/components/tool-maps/tool-maps'),
-      ResetButton,
-      SaveButton,
-      WelcomeDialog,
+      StepButtons,
       ToastMessage,
+      ToolMaps: () => import('@/components/tool-maps/tool-maps'),
+      WelcomeDialog,
     },
     computed: {
       ...mapGetters('app', [ 'toastMessage' ]),
@@ -83,13 +77,15 @@
       },
     },
     methods: {
-      ...mapActions('app', { resetApp: 'reset' }),
+      ...mapActions('abstraction', { abstractionReset: 'reset' }),
+      ...mapActions('app', { appReset: 'reset' }),
       ...mapActions('mapbox', { mapboxReset: 'reset' }),
       ...mapActions('selections', { selectionsReset: 'reset' }),
       onHomeClick() {
         this.$router.push({ name: 'home' });
 
-        this.resetApp();
+        this.abstractionReset();
+        this.appReset();
         this.mapboxReset();
         this.selectionsReset();
       },

@@ -9,13 +9,24 @@
       "components": [
         "marker-list",
         "layers-graph"
-      ]
+      ],
+      "buttons": []
     },
     {
       "title": "Configureren",
       "components": [
         "marker-list",
         "marker-configuration"
+      ],
+      "buttons": [
+        "reset-button",
+        "save-button"
+      ]
+    },
+    {
+      "buttons": [
+        "reset-button",
+        "save-button"
       ]
     }
   ],

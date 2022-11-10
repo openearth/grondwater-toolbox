@@ -1,6 +1,6 @@
 
 <template>
-  <div v-if="isToolStepRoute" class="export-button">
+  <div v-if="isToolStepRoute" class="load-button">
     <v-btn
       icon
       @click="onClick"
@@ -10,7 +10,7 @@
     </v-btn>
     <input
       ref="uploader"
-      class="page-index__input-file"
+      class="load-button__input"
       type="file"
       accept="application/json"
       @change="onFileInput"
@@ -57,7 +57,7 @@
       },
     },
     methods: {
-      ...mapActions('app', { resetApp: 'reset' }),
+      ...mapActions('app', { appReset: 'reset' }),
       ...mapActions('data', [ 'loadProject' ]),
       ...mapActions('mapbox', [ 'getFeature', { mapboxReset: 'reset' } ]),
       ...mapActions('selections', [ 'addSelection', { selectionsReset: 'reset' } ]),
@@ -66,6 +66,9 @@
       },
       async onFileInput(event) {
         this.isSelecting = true;
+        this.appReset();
+        this.mapboxReset();
+        this.selectionsReset();
 
         const { __draw } = this.$root.map;
         const data = await getLoadedFileContents(event);
@@ -81,7 +84,6 @@
           this.getFeature({ feature: selection });
         });
 
-        this.reset();
         this.loadProject(data);
         this.selectionsCount = data.selections.selections.length;
 
@@ -96,19 +98,4 @@
   };
 </script>
 
-<style>
-.export-button {
-  position: relative;
-  cursor: pointer;
-  display: flex;
-}
-
-.export-button .md-button {
-  flex: 1;
-  z-index: 0;
-}
-
-.page-index__input-file {
-  display: none;
-}
-</style>
+<style src="./load-button.css"></style>

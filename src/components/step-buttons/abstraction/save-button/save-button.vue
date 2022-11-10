@@ -3,6 +3,7 @@
     v-if="isToolStepRoute"
     icon
     title="Selectie opslaan"
+    :disabled="!selections.length"
     @click="save"
   >
     <v-icon>mdi-content-save</v-icon>
@@ -10,10 +11,11 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex';
+  import { mapActions, mapGetters } from 'vuex';
 
   export default {
     computed: {
+      ...mapGetters('selections', [ 'selections' ]),
       isToolStepRoute() {
         return this.$route.name.includes('tool-step');
       },

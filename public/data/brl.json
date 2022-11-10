@@ -8,12 +8,28 @@
       "title": "Selecties",
       "components": [
         "selection-list"
+      ],
+      "buttons": [
+        "load-button",
+        "reset-button"
       ]
     },
     {
       "title": "Configuratie",
       "components": [
         "selection-configuration"
+      ],
+      "buttons": [
+        "load-button",
+        "reset-button",
+        "save-button"
+      ]
+    },
+    {
+      "buttons": [
+        "load-button",
+        "reset-button",
+        "save-button"
       ]
     }
   ],
