@@ -26,6 +26,7 @@ const DATA_TEMPLATE = ({ area, coordinates, layer, abstraction }) =>
   }, 0, false);
 
 export default async function getAbstractionData ({ area, coordinates, layer, abstraction }) {
+  console.log('getAbstractionData', { area, coordinates, layer, abstraction });
   const data = DATA_TEMPLATE({ area, coordinates, layer, abstraction });
   const url = await geoServerUrl({
     url: process.env.VUE_APP_GEO_SERVER + '/wps',
@@ -37,9 +38,12 @@ export default async function getAbstractionData ({ area, coordinates, layer, ab
     DataInputs: 'geojson_point=' + data,
   });
 
+  console.log('getAbstractionData - geoServerUrl', url);
+
   return fetch(url)
     .then(response => response.text())
     .then(string => {
+      console.log('getAbstractionData - response', string);
       const document = new window.DOMParser().parseFromString(string, 'text/xml');
       const element = document.getElementsByTagName('wps:ComplexData');
       const value = JSON.parse(element[0].childNodes[0].nodeValue);

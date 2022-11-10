@@ -52,6 +52,7 @@
       ...mapActions('app', [ 'setToastMessage' ]),
       ...mapActions('mapbox', [ 'setActiveMarker', 'setActivePopup', 'resetWmsLayers' ]),
       async getCoordinates(event) {
+        console.log('getCoordinates', event);
         if (this.viewerCurrentStepNumber !== 1) {
           this.$router.push({ name: 'tool-step-1' });
         }

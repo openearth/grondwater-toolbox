@@ -1,6 +1,7 @@
 import geoServerUrl from './geoserver-url';
 
 export default async function getFeatureInfo ({ bounds, x, y, width, height, layer }) {
+  console.log('getFeatureInfo', { bounds, x, y, width, height, layer });
   const bbox = [
     bounds._sw.lng,
     bounds._sw.lat,
@@ -23,9 +24,14 @@ export default async function getFeatureInfo ({ bounds, x, y, width, height, lay
     bbox,
   });
 
+  console.log('getFeatureInfo - geoServerUrl', url);
+
   return fetch(url)
     .then(response => response.json())
-    .then(({ features }) => features[0])
+    .then((data) => {
+      console.log('getFeatureInfo - response', data);
+      return data.features[0];
+    })
     .then((feature) => ({
       ...feature,
       id: String(feature.properties.id),
