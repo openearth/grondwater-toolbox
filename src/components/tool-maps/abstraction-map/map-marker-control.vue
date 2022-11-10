@@ -103,11 +103,11 @@
       },
     },
     watch: {
-      '$route'(to, from) {
+      '$route'() {
         this.disableControl();
         this.enabled = false;
       },
-    }
+    },
   };
 </script>
 
