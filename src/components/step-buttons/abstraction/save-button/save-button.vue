@@ -3,7 +3,6 @@
     v-if="isToolStepRoute"
     icon
     title="Selectie opslaan"
-    :disabled="!selections.length"
     @click="save"
   >
     <v-icon>mdi-content-save</v-icon>
@@ -21,7 +20,7 @@
       },
     },
     methods: {
-      ...mapActions('data', [ 'saveProject' ]),
+      ...mapActions('abstraction', [ 'saveProject' ]),
       save() {
         this.saveProject();
       },

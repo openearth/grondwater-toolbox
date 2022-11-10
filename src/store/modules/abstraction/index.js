@@ -1,6 +1,7 @@
 import getAbstractionData from '@/lib/get-abstraction-data';
 import { generateWmsLayer } from '@/lib/project-layers';
 import mapChartData from '@/lib/map-chart-data';
+import saveDataToJson from '@/lib/save-data-to-json';
 
 const initialState = () => ({
   chartData: [],
@@ -72,6 +73,12 @@ export default {
     },
     reset({ commit }) {
       commit('RESET_STATE');
+    },
+    saveProject({ rootState, state }) {
+      const { mapbox } = rootState;
+      const { profile } = state;
+
+      saveDataToJson({ mapbox, profile });
     },
   },
 };

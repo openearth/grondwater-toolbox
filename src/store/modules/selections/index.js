@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import { v4 as uuid } from 'uuid';
-import FileSaver from 'file-saver';
+import saveDataToJson from '@/lib/save-data-to-json';
 
 const DEFAULT_FORM = {
   id: uuid(),
@@ -93,14 +93,8 @@ export default {
     saveProject({ rootState, state }) {
       const { mapbox } = rootState;
       const { selections } = state;
-      const project = { mapbox, selections };
-      const title = 'brl_project';
-      const timestamp = new Date().toLocaleString().replace(' ', '_').replace(/:/g, '.');
-      const blob = new Blob([ JSON.stringify(project, null, 2) ], {
-        type: 'application/json',
-      });
 
-      FileSaver.saveAs(blob, `${ title }_${ timestamp }.json`);
+      saveDataToJson({ mapbox, selections });
     },
     updateSelection({ commit }, { selection }) {
       commit('UPDATE_SELECTION', { selection });
