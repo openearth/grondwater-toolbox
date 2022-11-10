@@ -17,6 +17,6 @@ export default async function exportLayerData (urls) {
   }))
   .then(() => zip.generateAsync({ type: 'blob' }))
   .then(content => {
-    FileSaver.saveAs(content, 'test.zip');
+    FileSaver.saveAs(content, `${ FILE_TITLE_PREFIX }.zip`);
   });
 }
