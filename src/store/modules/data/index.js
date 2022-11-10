@@ -1,4 +1,6 @@
 import configRepo from '@/repo/configRepo.js';
+import exportLayersData from '@/lib/export-layers-data';
+import geoServerUrl from '@/lib/geoserver-url';
 
 export default {
   namespaced: true,
@@ -19,6 +21,20 @@ export default {
       });
 
       dispatch('mapbox/setMapboxData', { data: data.mapbox }, { root: true });
+    },
+    async exportLayerData({ rootState }) {
+      const { mapbox } = rootState;
+      const urls = mapbox.wmsLayers.map(layer => geoServerUrl({
+        url: process.env.VUE_APP_GEO_SERVER + '/geoserver/ows',
+        service: 'WCS',
+        version: '2.0.1',
+        request: 'GetCoverage',
+        coverageId: layer.id,
+        encode: false,
+        format: 'image/tiff',
+      }));
+
+      exportLayersData(urls);
     },
   },
 };

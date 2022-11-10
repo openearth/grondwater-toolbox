@@ -38,6 +38,14 @@
         <v-icon left>mdi-chevron-left</v-icon>
         Vorige
       </v-btn>
+      <v-btn
+        slot="end"
+        color="primary"
+        depressed
+        @click="onClickExport"
+      >
+        Lagen exporteren
+      </v-btn>
     </sidebar-footer>
   </div>
 </template>
@@ -65,6 +73,7 @@
     },
     methods: {
       ...mapActions('app', [ 'setViewerCurrentStepNumber' ]),
+      ...mapActions('data', [ 'exportLayerData' ]),
       ...mapActions('mapbox', [ 'addHiddenWmsLayer', 'removeHiddenWmsLayer' ]),
       onLayerVisibilityClick(id) {
         const isHiddenLayer = this.hiddenWmsLayers.some(layer => layer.id === id);
@@ -77,6 +86,9 @@
       onPrevious() {
         this.$router.push({ name: 'tool-step-2' });
         this.setViewerCurrentStepNumber({ step: 2 });
+      },
+      onClickExport() {
+        this.exportLayerData();
       },
     },
   };
