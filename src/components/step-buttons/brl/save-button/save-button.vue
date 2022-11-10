@@ -21,7 +21,7 @@
       },
     },
     methods: {
-      ...mapActions('data', [ 'saveProject' ]),
+      ...mapActions('selections', [ 'saveProject' ]),
       save() {
         this.saveProject();
       },

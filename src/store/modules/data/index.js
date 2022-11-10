@@ -1,5 +1,3 @@
-import FileSaver from 'file-saver';
-
 import configRepo from '@/repo/configRepo.js';
 
 export default {
@@ -21,18 +19,6 @@ export default {
       });
 
       dispatch('mapbox/setMapboxData', { data: data.mapbox }, { root: true });
-    },
-    saveProject({ state }) {
-      const project = {
-        selections: state.selections,
-        mapbox: state.mapbox,
-      };
-      const title = 'brl_project';
-      const blob = new Blob([ JSON.stringify(project, null, 2) ], {
-        type: 'application/json',
-      });
-
-      FileSaver.saveAs(blob, `${ title }.json`);
     },
   },
 };

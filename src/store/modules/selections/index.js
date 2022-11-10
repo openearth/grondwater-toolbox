@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import { v4 as uuid } from 'uuid';
+import FileSaver from 'file-saver';
 
 const DEFAULT_FORM = {
   id: uuid(),
@@ -71,14 +72,17 @@ export default {
     addSelection({ commit }, { selection }) {
       commit('ADD_SELECTION', { selection });
     },
-    removeSelection({ commit }, { id }) {
-      commit('REMOVE_SELECTION', { id });
+    addSelectionConfiguration({ commit }, { id }) {
+      commit('ADD_SELECTION_CONFIGURATION', { id });
     },
     editSelectionName({ commit }, { id, name }) {
       commit('EDIT_SELECTION_NAME', { id, name });
     },
-    updateSelection({ commit }, { selection }) {
-      commit('UPDATE_SELECTION', { selection });
+    removeSelection({ commit }, { id }) {
+      commit('REMOVE_SELECTION', { id });
+    },
+    removeSelectionConfiguration({ commit }, { selectionId, formId }) {
+      commit('REMOVE_SELECTION_CONFIGURATION', { selectionId, formId });
     },
     reset({ commit }) {
       commit('RESET_STATE');
@@ -86,11 +90,20 @@ export default {
     setSelectionLoading({ commit }, { id, value }) {
       commit('SET_SELECTION_LOADING', { id, value });
     },
-    addSelectionConfiguration({ commit }, { id }) {
-      commit('ADD_SELECTION_CONFIGURATION', { id });
+    saveProject({ rootState, state }) {
+      const { mapbox } = rootState;
+      const { selections } = state;
+      const project = { mapbox, selections };
+      const title = 'brl_project';
+      const timestamp = new Date().toLocaleString().replace(' ', '_').replace(/:/g, '.');
+      const blob = new Blob([ JSON.stringify(project, null, 2) ], {
+        type: 'application/json',
+      });
+
+      FileSaver.saveAs(blob, `${ title }_${ timestamp }.json`);
     },
-    removeSelectionConfiguration({ commit }, { selectionId, formId }) {
-      commit('REMOVE_SELECTION_CONFIGURATION', { selectionId, formId });
+    updateSelection({ commit }, { selection }) {
+      commit('UPDATE_SELECTION', { selection });
     },
   },
 };
