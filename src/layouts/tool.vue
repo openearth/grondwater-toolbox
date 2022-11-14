@@ -55,7 +55,7 @@
 </template>
 
 <script>
-  import { mapActions, mapGetters } from 'vuex';
+  import { mapGetters } from 'vuex';
 
   import AppSidebar from '@/components/app-sidebar';
   import LoadButton from '@/components/load-button';
@@ -76,9 +76,6 @@
     },
     computed: {
       ...mapGetters('app', [ 'toastMessage' ]),
-    },
-    methods: {
-      ...mapActions('data', [ 'reset' ]),
     },
   };
 </script>

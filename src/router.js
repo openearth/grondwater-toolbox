@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-import Home from '@/views/home';
 import Introduction from '@/views/introduction';
 import About from '@/views/about';
 import StepOne from '@/views/step-1';
@@ -15,7 +14,6 @@ import { VALID_TOOL_CONFIGS } from '@/lib/constants';
 const routes = [
   {
     path: '/',
-    component: Home,
     name: 'home',
     meta: {
       title: 'Home',
@@ -78,7 +76,6 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const isHomeRoute = to.name === 'home';
   const isToolIntro = to.name.includes('tool-introduction');
   const isToolStep = to.name.includes('tool-step-');
   const isValidConfig = VALID_TOOL_CONFIGS.includes(to.params.config);
@@ -86,12 +83,6 @@ router.beforeEach((to, from, next) => {
   const config = isValidConfig
     ? to.params.config
     : VALID_TOOL_CONFIGS[0];
-
-  if (isHomeRoute) {
-    store.dispatch('data/reset');
-    next();
-    return;
-  }
 
   if (isToolIntro) {
     store.dispatch('abstraction/reset');
