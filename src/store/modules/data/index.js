@@ -24,17 +24,22 @@ export default {
     },
     async exportLayerData({ rootState }) {
       const { mapbox } = rootState;
-      const urls = mapbox.wmsLayers.map(layer => geoServerUrl({
-        url: process.env.VUE_APP_GEO_SERVER + '/geoserver/ows',
-        service: 'WCS',
-        version: '2.0.1',
-        request: 'GetCoverage',
-        coverageId: layer.id,
-        encode: false,
-        format: 'image/tiff',
-      }));
+      const layers = mapbox.wmsLayers.map(layer => {
+        const name = layer.id.split(':')[1];
+        const url = geoServerUrl({
+          url: process.env.VUE_APP_GEO_SERVER + '/geoserver/ows',
+          service: 'WCS',
+          version: '2.0.1',
+          request: 'GetCoverage',
+          coverageId: layer.id,
+          encode: false,
+          format: 'image/tiff',
+        });
 
-      exportLayersData(urls);
+        return { name, url };
+    });
+
+      exportLayersData(layers);
     },
   },
 };
