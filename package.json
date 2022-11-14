@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "start": "npm run serve",
+    "start": "yarn serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "format": "vue-cli-service lint --fix"
