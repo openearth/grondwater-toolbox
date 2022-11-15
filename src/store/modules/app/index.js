@@ -87,7 +87,6 @@ export default {
       commit('SET_VIEWER_CONFIG', { config });
     },
     setViewerName({ commit }, { name }) {
-      document.title = name;
       commit('SET_VIEWER_NAME', { name });
     },
     setViewerIntroduction({ commit }, { introduction }) {
