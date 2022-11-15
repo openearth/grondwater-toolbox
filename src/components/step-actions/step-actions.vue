@@ -11,22 +11,22 @@
 <script>
   import { mapGetters } from 'vuex';
 
-  import AbstractionResetButton from '@/components/step-actions/abstraction/reset-button/reset-button';
-  import AbstractionSaveButton from '@/components/step-actions/abstraction/save-button/save-button';
+  import AbstractionReset from '@/components/step-actions/abstraction/reset/reset';
+  import AbstractionSave from '@/components/step-actions/abstraction/save/save';
 
-  import BrlLoadButton from '@/components/step-actions/brl/load-button/load-button';
-  import BrlResetButton from '@/components/step-actions/brl/reset-button/reset-button';
-  import BrlSaveButton from '@/components/step-actions/brl/save-button/save-button';
+  import BrlLoad from '@/components/step-actions/brl/load/load';
+  import BrlReset from '@/components/step-actions/brl/reset/reset';
+  import BrlSave from '@/components/step-actions/brl/save/save';
 
   const COMPONENT_MAP = {
     abstraction: {
-      'reset-button': AbstractionResetButton,
-      'save-button': AbstractionSaveButton,
+      'reset': AbstractionReset,
+      'save': AbstractionSave,
     },
     brl: {
-      'load-button': BrlLoadButton,
-      'reset-button': BrlResetButton,
-      'save-button': BrlSaveButton,
+      'load': BrlLoad,
+      'reset': BrlReset,
+      'save': BrlSave,
     },
   };
 

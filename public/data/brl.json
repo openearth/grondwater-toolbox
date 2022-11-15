@@ -10,8 +10,8 @@
         "selection-list"
       ],
       "actions": [
-        "load-button",
-        "reset-button"
+        "load",
+        "reset"
       ]
     },
     {
@@ -20,15 +20,15 @@
         "selection-configuration"
       ],
       "actions": [
-        "load-button",
-        "reset-button"
+        "load",
+        "reset"
       ]
     },
     {
       "actions": [
-        "load-button",
-        "reset-button",
-        "save-button"
+        "load",
+        "reset",
+        "save"
       ]
     }
   ],

@@ -19,13 +19,13 @@
         "marker-configuration"
       ],
       "actions": [
-        "reset-button"
+        "reset"
       ]
     },
     {
       "actions": [
-        "reset-button",
-        "save-button"
+        "reset",
+        "save"
       ]
     }
   ],
