@@ -1,37 +1,50 @@
 import geoServerUrl from './geoserver-url';
 
-export default async function getFeatureInfo ({ bounds, x, y, width, height, layer }) {
-  console.log('getFeatureInfo', { bounds, x, y, width, height, layer });
-  const bbox = [
-    bounds._sw.lng,
-    bounds._sw.lat,
-    bounds._ne.lng,
-    bounds._ne.lat,
-  ].join();
+export default async function getFeatureInfo ({ bounds, lng, lat, x, y, width, height, layer }) {
+  let bbox = null;
+
+  // Bounding box used with area selection.
+  if (bounds) {
+    bbox = [
+      bounds._sw.lng,
+      bounds._sw.lat,
+      bounds._ne.lng,
+      bounds._ne.lat,
+    ].join();
+  }
+
+  // Bounding box used with single point selection.
+  if (lng && lat) {
+    bbox = [
+      (lng - 0.1),
+      (lat - 0.1),
+      (lng + 0.1),
+      (lat + 0.1),
+    ].join(',');
+  }
 
   const url = await geoServerUrl({
     url: process.env.VUE_APP_GEOSERVER_BASE_URL,
     request: 'GetFeatureInfo',
     service: 'WMS',
+    version: '1.1.1',
+    format: 'image/png',
     info_format: 'application/json',
-    srs: 'EPSG:4326',
+    crs: 'EPSG:4326',
+    transparent: 'true',
+    feature_count: '1',
     layers: layer,
     query_layers: layer,
-    width: width,
-    height: height,
-    x: Math.round(x),
-    y: Math.round(y),
+    width: bounds ? width : '101',
+    height: bounds ? height : '101',
+    x: bounds ? x : '50',
+    y: bounds ? y : '50',
     bbox,
   });
 
-  console.log('getFeatureInfo - geoServerUrl', url);
-
   return fetch(url)
     .then(response => response.json())
-    .then((data) => {
-      console.log('getFeatureInfo - response', data);
-      return data.features[0];
-    })
+    .then((data) => data.features[0])
     .then((feature) => ({
       ...feature,
       id: String(feature.properties.id),

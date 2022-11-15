@@ -40,7 +40,6 @@ export default {
     async getDepth(event) {
       const { lng, lat } = event.lngLat || event.target._lngLat;
       const { x, y } = event.point;
-      const bounds = this.map.getBounds();
       const canvas = this.map.getCanvas();
       const { width, height } = canvas;
 
@@ -53,7 +52,7 @@ export default {
 
       const properties = {
         layer: this.layer.id,
-        bounds,
+        lng, lat,
         x, y,
         width, height,
       };
