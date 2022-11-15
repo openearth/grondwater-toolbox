@@ -38,7 +38,6 @@ export default {
       this.map.on('click', this.getDepth);
     },
     async getDepth(event) {
-      console.log('getDepth', event);
       const { lng, lat } = event.lngLat || event.target._lngLat;
       const { x, y } = event.point;
       const bounds = this.map.getBounds();

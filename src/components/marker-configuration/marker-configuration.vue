@@ -129,8 +129,6 @@
           abstraction: parseInt(this.subtraction, 10),
         };
 
-        console.log('calculate', properties);
-
         await this.calculateResult(properties);
         this.zoomToSelection({ lng, lat });
       },

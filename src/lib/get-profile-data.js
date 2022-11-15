@@ -20,7 +20,6 @@ const DATA_TEMPLATE = (coordinates) =>
   }, 0, false);
 
 export default async function getProfileData ({ height, lng, lat, width }) {
-  console.log('getProfileData', { height, lng, lat, width });
   const data = DATA_TEMPLATE([ lng, lat ]);
   const url = await geoServerUrl({
     url: process.env.VUE_APP_GEO_SERVER + '/wps',
@@ -34,12 +33,9 @@ export default async function getProfileData ({ height, lng, lat, width }) {
     DataInputs: 'geojson_point=' + data,
   });
 
-  console.log('getProfileData - geoServerUrl', url);
-
   return fetch(url)
     .then(response => response.text())
     .then(string => {
-      console.log('getProfileData - response', string);
       const document = new window.DOMParser().parseFromString(string, 'text/xml');
       const element = document.getElementsByTagName('wps:ComplexData');
       const value = JSON.parse(element[0].childNodes[0].nodeValue);
