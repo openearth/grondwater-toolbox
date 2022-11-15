@@ -50,14 +50,15 @@
     methods: {
       ...mapActions('abstraction', [ 'addProfile', 'removeProfile' ]),
       ...mapActions('app', [ 'setToastMessage' ]),
-      ...mapActions('mapbox', [ 'setActiveMarker', 'resetWmsLayers' ]),
+      ...mapActions('mapbox', [ 'setActiveMarker', 'setActivePopup', 'resetWmsLayers' ]),
       async getCoordinates(event) {
-        this.removeProfile();
-        this.resetWmsLayers();
-
-        if (this.viewerCurrentStepNumber === 3) {
-          this.$router.push({ name: 'tool-step-2' });
+        if (this.viewerCurrentStepNumber !== 1) {
+          this.$router.push({ name: 'tool-step-1' });
         }
+
+        this.setActivePopup({ popup: null });
+        this.resetWmsLayers();
+        this.removeProfile();
 
         const { lng, lat } = event.lngLat || event.target._lngLat;
         const canvas = this.map.getCanvas();
@@ -98,6 +99,12 @@
         }
 
         this.enabled = !this.enabled;
+      },
+    },
+    watch: {
+      '$route'() {
+        this.disableControl();
+        this.enabled = false;
       },
     },
   };
