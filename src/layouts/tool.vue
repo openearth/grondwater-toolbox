@@ -19,9 +19,7 @@
 
       <v-spacer />
 
-      <load-button />
-      <save-button />
-      <reset-button />
+      <step-actions />
 
       <v-spacer />
 
@@ -58,21 +56,17 @@
   import { mapGetters } from 'vuex';
 
   import AppSidebar from '@/components/app-sidebar';
-  import LoadButton from '@/components/load-button';
-  import ResetButton from '@/components/reset-button';
-  import SaveButton from '@/components/save-button';
-  import WelcomeDialog from '@/components/welcome-dialog';
+  import StepActions from '@/components/step-actions/step-actions';
   import ToastMessage from '@/components/toast-message/toast-message';
+  import WelcomeDialog from '@/components/welcome-dialog';
 
   export default {
     components: {
       AppSidebar,
-      LoadButton,
-      ToolMaps: () => import('@/components/tool-maps/tool-maps'),
-      ResetButton,
-      SaveButton,
-      WelcomeDialog,
+      StepActions,
       ToastMessage,
+      ToolMaps: () => import('@/components/tool-maps/tool-maps'),
+      WelcomeDialog,
     },
     computed: {
       ...mapGetters('app', [ 'toastMessage' ]),

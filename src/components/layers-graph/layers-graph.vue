@@ -1,7 +1,7 @@
 <template>
   <div class="layers-graph">
     <template v-if="hasProfile">
-      <app-chart type="barStacked" />
+      <app-chart type="line-chart" />
     </template>
   </div>
 </template>

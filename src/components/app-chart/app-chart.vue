@@ -8,7 +8,7 @@
       />
     </div>
     <div v-else class="app-chart__canvas">
-      <line-chart-areas v-if="isBarChartStacked" />
+      <line-chart-areas v-if="isLineChart" />
     </div>
   </div>
 </template>
@@ -30,7 +30,7 @@
         type: String,
         default: '',
         validator(value) {
-          return [ 'barStacked' ].indexOf(value) !== -1;
+          return [ 'line-chart' ].indexOf(value) !== -1;
         },
       },
     },
@@ -40,8 +40,8 @@
       };
     },
     computed: {
-      isBarChartStacked() {
-        return this.type === 'barStacked';
+      isLineChart() {
+        return this.type === 'line-chart';
       },
     },
     created() {

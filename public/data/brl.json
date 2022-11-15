@@ -9,12 +9,27 @@
       "title": "Selecties",
       "components": [
         "selection-list"
+      ],
+      "actions": [
+        "load",
+        "reset"
       ]
     },
     {
       "title": "Configuratie",
       "components": [
         "selection-configuration"
+      ],
+      "actions": [
+        "load",
+        "reset"
+      ]
+    },
+    {
+      "actions": [
+        "load",
+        "reset",
+        "save"
       ]
     }
   ],

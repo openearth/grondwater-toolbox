@@ -10,13 +10,23 @@
       "components": [
         "marker-list",
         "layers-graph"
-      ]
+      ],
+      "actions": []
     },
     {
       "title": "Configureren",
       "components": [
         "marker-list",
         "marker-configuration"
+      ],
+      "actions": [
+        "reset"
+      ]
+    },
+    {
+      "actions": [
+        "reset",
+        "save"
       ]
     }
   ],

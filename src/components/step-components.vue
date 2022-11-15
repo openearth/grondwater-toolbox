@@ -1,5 +1,5 @@
 <template>
-  <div class="step-components" v-if="stepHasComponents">
+  <div class="step-components" v-if="hasComponents">
     <component
       v-for="(component, index) in renderComponents"
       :key="index"
@@ -30,9 +30,9 @@
       ...mapGetters('app', [ 'viewerCurrentStep' ]),
       renderComponents() {
         return this.viewerCurrentStep.components
-          .map((component) => COMPONENT_MAP[component] || 'div');
+          .map((component) => COMPONENT_MAP[component] || null);
       },
-      stepHasComponents() {
+      hasComponents() {
         return this.viewerCurrentStep && this.viewerCurrentStep.components.length;
       },
     },

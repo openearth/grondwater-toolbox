@@ -3,6 +3,7 @@
     v-if="isToolStepRoute"
     icon
     title="Selectie opslaan"
+    :disabled="!hasProfile"
     @click="save"
   >
     <v-icon>mdi-content-save</v-icon>
@@ -10,16 +11,20 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex';
+  import { mapActions, mapGetters } from 'vuex';
 
   export default {
     computed: {
+      ...mapGetters('abstraction', [ 'profile' ]),
+      hasProfile() {
+        return this.profile !== null;
+      },
       isToolStepRoute() {
         return this.$route.name.includes('tool-step');
       },
     },
     methods: {
-      ...mapActions('data', [ 'saveProject' ]),
+      ...mapActions('abstraction', [ 'saveProject' ]),
       save() {
         this.saveProject();
       },

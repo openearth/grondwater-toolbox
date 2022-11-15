@@ -22,7 +22,7 @@
       },
     },
     methods: {
-      ...mapActions('app', { resetApp: 'reset' }),
+      ...mapActions('app', { appReset: 'reset' }),
       ...mapActions('mapbox', { mapboxReset: 'reset' }),
       ...mapActions('selections', { selectionsReset: 'reset' }),
       onClick() {
@@ -32,7 +32,7 @@
           const { map } = this.$root;
           const { __draw } = map;
 
-          this.resetApp();
+          this.appReset();
           this.mapboxReset();
           this.selectionsReset();
 
