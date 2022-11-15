@@ -10,7 +10,7 @@
         "marker-list",
         "layers-graph"
       ],
-      "buttons": []
+      "actions": []
     },
     {
       "title": "Configureren",
@@ -18,12 +18,12 @@
         "marker-list",
         "marker-configuration"
       ],
-      "buttons": [
+      "actions": [
         "reset-button"
       ]
     },
     {
-      "buttons": [
+      "actions": [
         "reset-button",
         "save-button"
       ]

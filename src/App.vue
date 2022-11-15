@@ -21,7 +21,7 @@
 
       <v-spacer />
 
-      <step-buttons />
+      <step-actions />
 
       <v-spacer />
 
@@ -58,14 +58,14 @@
   import { mapActions, mapGetters } from 'vuex';
 
   import AppSidebar from '@/components/app-sidebar';
-  import StepButtons from '@/components/step-buttons/step-buttons';
+  import StepActions from '@/components/step-actions/step-actions';
   import ToastMessage from '@/components/toast-message/toast-message';
   import WelcomeDialog from '@/components/welcome-dialog';
 
   export default {
     components: {
       AppSidebar,
-      StepButtons,
+      StepActions,
       ToastMessage,
       ToolMaps: () => import('@/components/tool-maps/tool-maps'),
       WelcomeDialog,
