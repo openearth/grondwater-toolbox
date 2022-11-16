@@ -114,6 +114,8 @@
 </template>
 
 <script>
+  import { mapActions } from 'vuex';
+
   import { VALID_TOOL_CONFIGS } from '@/lib/constants';
   import { getToolData } from '@/repo/configRepo';
 
@@ -127,6 +129,12 @@
     mounted() {
       this.getConfigData();
     },
+    created() {
+      this.resetAbstraction();
+      this.resetApp();
+      this.mapboxReset();
+      this.selectionsReset();
+    },
     computed: {
       currentYear() {
         return new Date().getFullYear();
@@ -136,6 +144,11 @@
       },
     },
     methods: {
+      ...mapActions('abstraction', { resetAbstraction: 'reset' }),
+      ...mapActions('app', { resetApp: 'reset' }),
+      ...mapActions('mapbox', { mapboxReset: 'reset' }),
+      ...mapActions('selections', { selectionsReset: 'reset' }),
+
       async getConfigData() {
         return await Promise.all(this.configs.map(config => getToolData(config)))
           .then(data => this.toolData = data);
