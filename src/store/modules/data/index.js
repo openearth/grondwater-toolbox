@@ -16,6 +16,7 @@ export default {
       dispatch('app/setViewerMap', { map }, { root: true });
     },
     loadProject({ dispatch }, data) {
+      console.log('loadProject');
       data.selections.selections.forEach((selection) => {
         dispatch('selections/addSelection', { selection }, { root: true });
       });

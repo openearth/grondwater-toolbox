@@ -6,72 +6,18 @@
       type="number"
       min="0"
       label="Grootte van het model (m)"
-      :rules="[rules.required, rules.minExtent]"
+      :rules="[rules.requiredSizeModel, rules.minExtentSizeModel]"
       @update:error="setExtentValidity"
     />
 
-    <configuration-card
-      v-for="(selection, index) in selections"
-      :key="selection.id"
-      :id="selection.id"
-      :title="selection.name"
-      @mouseenter="handleMouseEnter(selection.id)"
-      @mouseleave="handleMouseLeave(selection.id)"
-    >
-      <v-row no-gutters>
-        <v-col cols="12" sm="5">
-          <v-card
-            class="pa-2"
-            outlined
-            tile
-          >
-            Maatregel
-          </v-card>
-        </v-col>
-        <v-col cols="12" sm="3">
-          <v-card
-            class="pa-2"
-            outlined
-            tile
-          >
-            Verschil
-          </v-card>
-        </v-col>
-        <v-col cols="12" sm="3">
-          <v-card
-            class="pa-2"
-            outlined
-            tile
-          >
-            Berekening
-          </v-card>
-        </v-col>
-      </v-row>
-
-      <configuration-form
-        v-for="(form, index) in selection.configuration"
-        v-model="form.data"
-        :key="form.id"
-        :id="form.id"
-        :disabled="disabled"
-        :deletable="index !== 0"
-        @delete="handleDeleteForm(selection.id, $event)"
-        @validated="setFormValidity(selection, $event)"
-      />
-
-      <v-btn
-        icon-start
-        class="mt-4"
-        title="berekening toevoegen"
-        depressed
-        @click="addForm(selection.id)"
-      >
-        <v-icon left>mdi-plus</v-icon>
-        Berekening
-      </v-btn>
-
-      <v-divider v-if="index !== selections.length - 1" class="mt-6" />
-    </configuration-card>
+    <v-text-field
+      v-model="amount"
+      type="number"
+      min="0"
+      label="Amount to dig away"
+      :rules="[rules.requiredAmountToDig, rules.minExtentAmountToDig]"
+      @update:error="setAmountValidity"
+    />
 
     <div class="d-flex justify-space-between align-center">
       <v-alert
@@ -111,15 +57,12 @@
   import { mapActions, mapGetters } from 'vuex';
   import bbox from '@turf/bbox';
   import { featureCollection } from '@turf/helpers';
+  import createFeatureCollection from '@/lib/create-feature-collection';
+  import wps from '@/lib/wps';
 
-  import ConfigurationCard from '@/components/configuration-card';
-  import ConfigurationForm from '@/components/configuration-form';
+
 
   export default {
-    components: {
-      ConfigurationCard,
-      ConfigurationForm,
-    },
     props: {
       disabled: {
         type: Boolean,
@@ -130,12 +73,18 @@
       return {
         extent: '1000',
         extentValid: true,
+        amount: '',
+        amountValid: true,
         selectedColor: '#f79502',
         originalLineColor: '#000',
         rules: {
-          required: (value) => !!value || 'Benodigd.',
-          minExtent: (value) =>
+          requiredSizeModel: (value) => !!value || 'Benodigd.',
+          minExtentSizeModel: (value) =>
             value >= 500 || 'Een grootte van minimaal 500 meter is vereist.',
+          requiredAmountToDig: (value) => !!value || 'Benodigd.',
+          minExtentAmountToDig: (value) =>
+            value >= 0 || 'Een grootte van minimaal 0 meter is vereist.',
+          
         },
       };
     },
@@ -174,33 +123,8 @@
           }) && this.extentValid
         );
       },
-      // prepares form data to be sent to the 'calculate' action
-      formattedForms() {
-        return this.selections.reduce((acc, selection) => {
-          const { configuration } = selection;
-          const feature = this.features.find(feature => feature.id === selection.id);
+    
 
-          configuration.forEach((form) => {
-            const { data } = form;
-
-            const formattedData = {
-              ...data,
-              [data.measure]: data.difference,
-            };
-
-            delete formattedData.measure;
-            delete formattedData.difference;
-
-            acc.push({
-              id: feature.watersIdentifier,
-              extent: this.extent,
-              ...formattedData,
-            });
-          });
-
-          return acc;
-        }, []);
-      },
     },
     methods: {
       ...mapActions('app', [ 'addLockedViewerStep', 'removeLockedViewerStep' ]),
@@ -212,8 +136,19 @@
       async calculate() {
         this.resetWmsLayers();
         this.resetHiddenWmsLayers();
-        console.log('formattedForms', this.formattedForms);
-        await this.calculateResult(this.formattedForms);
+        console.log('calculate');
+        
+        let selection = this.selections[0]; //TODO: for now only for one selection. Future improvement
+        selection.properties = {
+          area: this.extent,
+          layer: '1',
+          depth: this.amount, 
+        };
+      
+        await wps({
+          functionId: 'brl_wps_digit',
+          featureCollection:createFeatureCollection(selection) 
+        });
 
         if (this.valid) {
           this.removeLockedViewerStep({ step: 3 });
@@ -243,6 +178,9 @@
       },
       setExtentValidity(hasError) {
         this.extentValid = !hasError;
+      },
+      setAmountValidity(hasError) {
+        this.amountValid = !hasError;
       },
       zoomToSelection() {
         if (!this.features.length) {

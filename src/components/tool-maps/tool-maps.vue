@@ -20,10 +20,12 @@
 
   import AbstractionMap from '@/components/tool-maps/abstraction-map/abstraction-map';
   import AppMap from '@/components/tool-maps/brl-map/brl-map';
+  import DigMap from '@/components/tool-maps/dig-map/dig-map';
 
   const COMPONENT_MAP = {
     'abstraction-map': AbstractionMap,
     'brl-map': AppMap,
+    'dig-map': DigMap,
   };
 
   export default {

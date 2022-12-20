@@ -1,11 +1,12 @@
 <template>
+  <!-- TODO: make components more configurable in future developments -->
   <v-alert
     v-if="!selections.length"
     dense
     outlined
     type="info"
   >
-    Selecteer waterwegen op de kaart waar u uw berekeningen op wilt uitvoeren.
+    {{ textAlert }}
   </v-alert>
   <v-list v-else>
     <selection-list-item
@@ -62,6 +63,14 @@
     },
     computed: {
       ...mapGetters('selections', [ 'selections' ]),
+      //TODO: move it to a configuration file in future update
+      textAlert() {
+        if (this.$route.params.config === 'brl') {
+          return 'Selecteer waterwegen op de kaart waar u uw berekeningen op wilt uitvoeren.';
+        } 
+        return 'Draw a polygon';
+        
+      },
     },
     methods: {
       ...mapActions('app', [ 'addLockedViewerStep', 'removeLockedViewerStep' ]),
@@ -69,5 +78,6 @@
     },
   };
 </script>
+
 
 <style src="./selection-list.css"></style>

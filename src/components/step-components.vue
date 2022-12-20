@@ -16,12 +16,15 @@
   import MarkerList from '@/components/marker-list/marker-list';
   import SelectionConfiguration from '@/components/selection-configuration';
   import SelectionList from '@/components/selection-list/selection-list';
+  import PolygonSelectionConfiguration from '@/components/polygon-selection-configuration';
+ 
 
   const COMPONENT_MAP = {
     'layers-graph': LayersGraph,
     'marker-configuration': MarkerConfiguration,
     'marker-list': MarkerList,
     'selection-configuration': SelectionConfiguration,
+    'polygon-selection-configuration': PolygonSelectionConfiguration,
     'selection-list': SelectionList,
   };
 

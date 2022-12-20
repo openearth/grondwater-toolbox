@@ -7,6 +7,7 @@ export const xmlRequestTemplate = ({
   bufferDist,
   segmentLength,
   layersSetup,
+  featureCollection
 }) =>
   `
   <wps:Execute xmlns:wps="http://www.opengis.net/wps/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0.0" service="WPS" xsi:schemaLocation="http://www.opengis.net/wps/1.0.0 http://schemas.opengis.net/wps/1.0.0/wpsAll.xsd">
@@ -31,6 +32,7 @@ export const xmlRequestTemplate = ({
       ${ bufferDist ? wpsInput('buffer_dist', bufferDist) : '' }
       ${ segmentLength ? wpsInput('segment_length', segmentLength) : '' }
       ${ layersSetup ? wpsInput('layers_setup', layersSetup) : '' }
+      ${ featureCollection ? wpsInput('json_inputs', JSON.stringify(featureCollection)) : '' }
 
        
     </wps:DataInputs>
