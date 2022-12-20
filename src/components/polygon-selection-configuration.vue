@@ -73,7 +73,7 @@
       return {
         extent: '1000',
         extentValid: true,
-        amount: '',
+        amount: '10',
         amountValid: true,
         selectedColor: '#f79502',
         originalLineColor: '#000',
@@ -140,9 +140,9 @@
         
         let selection = this.selections[0]; //TODO: for now only for one selection. Future improvement
         selection.properties = {
-          area: this.extent,
+          area: parseFloat(this.extent),
           layer: '1',
-          depth: this.amount, 
+          depth: parseFloat(this.amount), 
         };
       
         await wps({
