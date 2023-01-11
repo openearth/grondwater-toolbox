@@ -137,6 +137,7 @@
           minExtent: (value) =>
             value >= 500 || 'Een grootte van minimaal 500 meter is vereist.',
         },
+        wpsId: 'brl_gwmodel' // This should be configurable based on the tool
       };
     },
     created() {
@@ -212,8 +213,13 @@
       async calculate() {
         this.resetWmsLayers();
         this.resetHiddenWmsLayers();
-        console.log('formattedForms', this.formattedForms);
-        await this.calculateResult(this.formattedForms);
+        //TODO: 
+        const data = {
+          functionId: this.wpsId,
+          requestData: this.formattedForms,
+        };
+
+        await this.calculateResult(data);
 
         if (this.valid) {
           this.removeLockedViewerStep({ step: 3 });

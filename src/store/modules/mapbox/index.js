@@ -79,14 +79,10 @@ export default {
     addWmsLayer({ commit }, { layer }) {
       commit('ADD_WMS_LAYER', { layer });
     },
-    async calculateResult({ dispatch }, requestData) {
+    async calculateResult({ dispatch }, data) {
       dispatch('setWmsLayersLoading', { isLoading: true });
 
       try {
-        const data = {
-          functionId: 'brl_gwmodel',
-          requestData: requestData,
-        };
 
         const layers = await wps(data);
 

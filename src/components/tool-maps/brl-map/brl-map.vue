@@ -135,7 +135,6 @@
       },
     },
     created() {
-      console.log('created');
       this.mapbox = Mapbox;
     },
     methods: {

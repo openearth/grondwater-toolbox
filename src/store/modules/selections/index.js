@@ -70,7 +70,6 @@ export default {
 
   actions: {
     addSelection({ commit }, { selection }) {
-      console.log('addSelection');
       commit('ADD_SELECTION', { selection });
     },
     addSelectionConfiguration({ commit }, { id }) {

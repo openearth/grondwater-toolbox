@@ -58,7 +58,7 @@
   import bbox from '@turf/bbox';
   import { featureCollection } from '@turf/helpers';
   import createFeatureCollection from '@/lib/create-feature-collection';
-  import wps from '@/lib/wps';
+ 
 
 
 
@@ -136,7 +136,6 @@
       async calculate() {
         this.resetWmsLayers();
         this.resetHiddenWmsLayers();
-        console.log('calculate');
         
         let selection = this.selections[0]; //TODO: for now only for one selection. Future improvement
         selection.properties = {
@@ -144,12 +143,13 @@
           layer: '1',
           depth: parseFloat(this.amount), 
         };
-      
-        await wps({
+        
+        const data = {
           functionId: 'brl_wps_digit',
           featureCollection:createFeatureCollection(selection) 
-        });
+        };
 
+        await this.calculateResult(data);
         if (this.valid) {
           this.removeLockedViewerStep({ step: 3 });
         } else {

@@ -14,7 +14,7 @@ export const generateWmsLayer = ({ url, id, layer, style='', paint={} }) => {
     format: 'image/png',
     encode: false,
   });
-
+  
   return layers.wms({
     id,
     tiles: [ tile ],

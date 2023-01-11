@@ -20,7 +20,7 @@
         <map-raster-opacity-control v-if="activeLayers.length" :layers="activeLayers" />
   
         <!-- Show calculation layers when available -->
-        <template v-else>
+        <template v-if="activeLayers.length">
           <raster-layer
             v-for="wmsLayer in activeLayers"
             :key="wmsLayer.id"
