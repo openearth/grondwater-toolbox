@@ -18,7 +18,7 @@
     </v-app-bar>
     <v-main>
       <section>
-        <v-parallax src="@/assets/img/header.jpg" height="500" />
+        <v-parallax src="@/assets/img/header.jpg" height="500"  />
       </section>
       <section>
         <v-container class="py-16">
@@ -28,9 +28,11 @@
               md="10"
               xl="6"
             >
-              <h1 class="text-h4 mb-6">Grondwater Toolbox</h1>
-              <p class="text-body-1">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis vel risus risus. Maecenas ac tincidunt sapien, eget aliquet mauris. Sed eleifend, metus ut maximus laoreet, neque dui volutpat neque, eu suscipit lectus sapien non lacus. Suspendisse vel nisl posuere, porttitor tortor ut, consequat lacus. Vestibulum eleifend egestas mi, eu pharetra nulla fringilla vitae. Vivamus ultricies magna eu eros vehicula pellentesque. Vestibulum elementum orci tempus nunc consequat, ac luctus nisl tristique. Praesent blandit porttitor vulputate. Aliquam vulputate, lectus nec interdum posuere, nunc enim auctor diam, eget elementum augue ex non enim. Vivamus eget interdum est. Proin luctus quis eros et pretium. Morbi ac augue orci.</p>
-              <p class="text-body-1">Aliquam nec feugiat tellus. Duis sit amet nulla est. Nulla at elit elementum, commodo mi et, tempor risus. Aenean risus velit, scelerisque et volutpat et, feugiat et mauris. Praesent quis lectus non sapien laoreet imperdiet. Suspendisse vehicula sapien et elit cursus, vitae fermentum risus tempor. Cras dictum tincidunt nunc, in ultrices dui ultrices quis. Sed nec dolor volutpat tellus sagittis consequat. In hac habitasse platea dictumst. Proin faucibus eros quis diam luctus, quis luctus mi varius. Duis euismod, nisi ac facilisis facilisis, sapien dolor imperdiet velit, in hendrerit lacus elit sit amet diam.</p>
+              <h1 class="text-h4 mb-6">Grondwater toolbox – 3D verkenning van de effecten van ingrepen</h1>
+              <p class="text-body-1">Op deze pagina presenteren wij een verzameling van eenvoudige tools waarmee u geavanceerde drie dimensionale grondwatermodellen kunt aansturen. U kunt met deze tools eenvoudige verkennende berekeningen uitvoeren zonder dat u uitgebreide kennis hoeft te hebben van de achterliggende gecompliceerde modellen en software.</p>
+              <p class="text-body-1">De berekeningen worden gedaan met een stationaire MODFLOW versie waarbij voor de peilen van het hoofd watersysteem gebruik gemaakt wordt van het winterpeil. Daarnaast wordt voor de grondwateraanvulling uitgegaan van een gemiddelde.</p>
+              <p class="text-body-1">De berekende effecten zijn indicatief en kunnen gebruikt worden bij het verkennen van ingrepen. De website is met de grootst mogelijke zorgvuldigheid opgezet. Echter, de website dient slechts voor informatieve doeleinden. Er kunnen geen rechten aan de informatie op de website worden ontleend en het gebruik van de website en de aangeboden informatie is voor uw eigen rekening en risico. Noch Deltares, noch andere partijen bij het NHI, aanvaarden enige vorm van aansprakelijkheid - uit welke hoofde dan ook - voor enige vorm van schade (met inbegrip van zaakschade, vermogensschade als gevolg van materiële schade en zuivere vermogensschade) die op enigerlei wijze voortvloeit uit de werking van en/of het gebruik van (informatie op) de website.</p>
+              <p class="text-body-1">Noch Deltares noch andere partijen betrokken bij het NHI kunnen garanderen dat de website virusvrij is of zonder fouten en/of onderbrekingen zal functioneren. De website kan te allen tijde worden gewijzigd door Deltares. Op de website alsmede op deze voorwaarden is Nederlands recht van toepassing.</p>
             </v-col>
           </v-row>
         </v-container>
@@ -157,8 +159,12 @@
   };
 </script>
 
-<style>
+<style scoped>
   .v-card.v-sheet.v-sheet--outlined.theme--light {
     border-color: #BBDEFB; /* equal to 'blue lighten-4' modifier classes */
+  }
+  .v-parallax__image {
+    object-fit: cover;
+    height: 1000px;
   }
 </style>

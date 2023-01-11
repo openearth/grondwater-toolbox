@@ -26,7 +26,7 @@
       <v-row no-gutters>
         <v-col>
           <v-select
-            label="Laag van berekening"
+            label="Onttrekking toepassen in laag"
             v-model="selectedLayer"
             :items="layers.map((layer) => ({ text: `Laag ${layer}`, value: layer }))"
             :rules="[rules.required]"
