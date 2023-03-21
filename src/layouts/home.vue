@@ -92,7 +92,7 @@
               md="10"
               xl="6">
               <p class="text-body-1">Deze toolbox is mogelijk gemaakt door RWS in samenwerking met Deltares.</p>
-              <p class="text-body-1">De toolbox maakt het mogelijk om diverse ingrepen te simuleren via online interactie met de stationaire schematisatie in iMODFLOW van LHM4.2. Meer weten, neem dan contact op met <a href="mailto:helpdesk.nhi@deltares.nl?bcc=gerrit.hendriksen@deltares.nl&subject=Online modelling feedback&body=Ik heb de online modelling tool gezien en getest en ik wil graag meer weten.">Send Email</a></p>
+              <p class="text-body-1">De toolbox maakt het mogelijk om diverse ingrepen te simuleren via online interactie met de stationaire schematisatie in iMODFLOW van LHM4.2. Meer weten, neem dan contact op met <a href="mailto:helpdesk.nhi@deltares.nl?&subject=Online modelling feedback&body=Ik heb de online modelling tool gezien en getest en ik wil graag meer weten.">Heldesk NHI</a></p>
             </v-col>
           </v-row>
         </v-container>
