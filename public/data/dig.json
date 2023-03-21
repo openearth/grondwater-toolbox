@@ -1,8 +1,9 @@
 {
     "id": "dig",
-    "name": "DIG",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dol.",
-    "introduction": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>",
+    "name": "Waterbodem ontgraving",
+    "title": "Effect van ontgraving in waterbodem" ,
+    "description": "Krijg inzicht in het effect van ontgraving in primaire waterbodem systeem.",
+    "introduction": "<p>Dit onderdeel van de grondwatertoolbox maakt het mogelijk om het effect van een ontgraving in het primaire waterbodem systeeem te visualiseren op een willekeurige plaats binnen het modeldomein van LHM.</p><p>Van een gebruiker wordt verwacht dat een polygoon wordt getekent op de plaats van de maatregel en dat de diepte van de ontgraving wordt opgegeven, samen met de grootte van het effectgebied. De uitkomst bestaat uit 7 kaartlagen met het verschil tussen grondwaterstand voor en na het uitvoeren van de ingreep.</p>",
     "steps": [
       {
         "title": "Selecteren",
