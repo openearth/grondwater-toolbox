@@ -90,8 +90,7 @@
             <v-col
               sm="12"
               md="10"
-              xl="6"
-            >
+              xl="6">
               <p class="text-body-1">Deze toolbox is mogelijk gemaakt door RWS in samenwerking met Deltares.</p>
               <p class="text-body-1">De toolbox maakt het mogelijk om diverse ingrepen te simuleren via online interactie met de stationaire schematisatie in iMODFLOW van LHM4.2.</p>
             </v-col>
@@ -108,6 +107,7 @@
             xl="6"
           >
             <span class="text-body-2">&copy; Deltares - {{ currentYear }}</span>
+            <span class="text-body-2">RWS GPO - {{ currentYear }}</span>
           </v-col>
         </v-row>
       </v-container>
