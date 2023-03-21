@@ -10,7 +10,7 @@
           <v-select
             v-model="formData.measure"
             class="hide-label"
-            label="Laag van berekening"
+            label="Onttrekking toepassen in laag"
             :items="measures"
             :disabled="disabled"
           />
@@ -41,7 +41,7 @@
           <v-select
             v-model="formData.calculationLayer"
             class="hide-label"
-            label="Laag van berekening"
+            label="Onttrekking toepassen in laag"
             :items="calculationLayers.map((l) => ({ text: `Layer ${l}`, value: l }))"
             :disabled="disabled"
           />
