@@ -92,8 +92,8 @@
               md="10"
               xl="6"
             >
-              <p class="text-body-1">Proin rhoncus felis sed lectus interdum consequat. Cras condimentum tellus vel nibh viverra dignissim. Proin a ex non ligula faucibus scelerisque ac eu felis. Donec auctor odio elit. Proin pharetra diam at libero malesuada, vitae fermentum nunc interdum. Nunc egestas mauris velit, eu semper ligula pretium eu. Integer pharetra elit eget tempor ullamcorper. Sed ac dolor eu urna eleifend laoreet. Morbi quis sodales sapien, non scelerisque felis. Integer nisi urna, euismod et odio quis, volutpat accumsan odio. Proin ac volutpat dolor.</p>
-              <p class="text-body-1">Etiam in sapien vitae ex dapibus interdum eu at lorem. Pellentesque vel lorem id velit fringilla egestas eu at augue. Nullam eget metus at sem dictum pretium. Morbi interdum purus ac tempor lacinia. Integer molestie nibh arcu, in rutrum ligula vestibulum eu. Donec sit amet est ornare, malesuada quam eget, ultricies dui. Curabitur sagittis nisl ut justo vestibulum viverra. Cras et facilisis sem.</p>
+              <p class="text-body-1">Deze toolbox is mogelijk gemaakt door RWS in samenwerking met Deltares.</p>
+              <p class="text-body-1">De toolbox maakt het mogelijk om diverse ingrepen te simuleren via online interactie met de stationaire schematisatie in iMODFLOW van LHM4.2.</p>
             </v-col>
           </v-row>
         </v-container>
