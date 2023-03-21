@@ -13,7 +13,7 @@
           :to="{ name: 'home' }"
           class="white--text text-decoration-none"
         >
-          Grondwater Toolbox
+          Grondwater toolbox – 3D verkenning van de effecten van ingrepen
         </router-link>
       </v-toolbar-title>
 
