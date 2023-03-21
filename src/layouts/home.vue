@@ -107,7 +107,7 @@
             xl="6"
           >
             <span class="text-body-2">&copy; Deltares - {{ currentYear }}</span>
-            <span class="text-body-2">RWS GPO - {{ currentYear }}</span>
+            <span class="text-body-2">                                          RWS GPO - {{ currentYear }}</span>
           </v-col>
         </v-row>
       </v-container>
