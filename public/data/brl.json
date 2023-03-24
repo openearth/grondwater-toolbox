@@ -1,20 +1,41 @@
 {
   "id": "brl",
-  "name": "BasisRivierbodemLigging (BRL)",
-  "description": "Praesent quis varius turpis. Vivamus elit ante, gravida eu tristique eu, maximus ut magna. Aliquam vestibulum mattis leo, eget dictum neque aliquam sit amet.",
-  "introduction": "<p>Vestibulum imperdiet augue in magna mattis, a lobortis risus pharetra. Mauris euismod venenatis lectus et accumsan. Aenean ac urna nunc. Suspendisse consequat nulla eu sapien cursus fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet neque ut nisl ultricies feugiat.</p><p>Mauris in ante vitae enim porta mollis. Maecenas sit amet dolor condimentum, vehicula urna nec, ultricies quam. Duis pharetra odio sed condimentum viverra. Proin laoreet tellus eu nibh ultricies, in cursus ex varius. Aenean sagittis orci vel ex ornare commodo. Donec sit amet vestibulum sem. Curabitur tortor erat, scelerisque ac ligula non, vulputate eleifend metus. Vivamus accumsan dictum hendrerit. Pellentesque aliquet in libero nec pulvinar. Duis imperdiet eros in elit consequat vestibulum. Cras ac quam sit amet tortor porttitor imperdiet eu ac turpis. Integer a venenatis enim, eu tincidunt dolor. Vivamus nibh diam, mattis at efficitur a, vestibulum id neque. Nulla ut posuere velit.</p>",
+  "name": "Grondwater effecten Rivierbodem",
+  "title": "Krijg inzicht in de effecten van ingrepen in het grondwatersysteem van de grote rivieren met Landelijk Hydrologisch Model",
+  "description": "Deze tool maakt het mogelijk de effecten op de grondwaterstand middels ingrepen in diverse systemen van het grondwatermodel LHM4.2 te simuleren. Er zijn simulaties mogelijk, waaronder simuleren van ingrepen in de waterbodem (primair systeem), effecten van een onttrekkig en de effecten van een ingreep in de waterbodem van de rivierbodem. Voor deze effectbepaling wordt gebruikt gemaakt van versie 4.2 van het LHM.",
+  "introduction": "<p>Deze tool maakt het mogelijk de effecten op de grondwaterstand middels ingrepen in diverse systemen van het grondwatermodel LHM4.2 te simuleren. Er zijn simulaties mogelijk, waaronder simuleren van ingrepen in de waterbodem (primair systeem), effecten van een onttrekkig en de effecten van een ingreep in de waterbodem van de rivierbodem. Voor deze effectbepaling wordt gebruikt gemaakt van versie 4.2 van het LHM.</p><p>Van een gebruiker wordt verwacht dat deze één of meerdere polygonen rondom een riviervak tekent en per polygoon 1 of meerdere ingrepen opgeeft.</p><p>De opgegeven ingrepen worden allemaal doorgevoerd.</p>",
   "steps": [
     {
       "title": "Selecties",
       "components": [
-        "selections-list"
+        "selection-list"
+      ],
+      "actions": [
+        "load",
+        "reset"
       ]
     },
     {
       "title": "Configuratie",
       "components": [
         "selection-configuration"
+      ],
+      "actions": [
+        "load",
+        "reset"
+      ]
+    },
+    {
+      "actions": [
+        "load",
+        "reset",
+        "save"
       ]
     }
-  ]
+  ],
+  "map": {
+    "components": [
+      "brl-map"
+    ]
+  }
 }

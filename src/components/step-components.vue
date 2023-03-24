@@ -1,5 +1,5 @@
 <template>
-  <div class="step-components" v-if="stepHasComponents">
+  <div class="step-components" v-if="hasComponents">
     <component
       v-for="(component, index) in renderComponents"
       :key="index"
@@ -11,12 +11,21 @@
 <script>
   import { mapGetters } from 'vuex';
 
-  import SelectionsList from '@/components/selections-list';
+  import LayersGraph from '@/components/layers-graph/layers-graph';
+  import MarkerConfiguration from '@/components/marker-configuration/marker-configuration';
+  import MarkerList from '@/components/marker-list/marker-list';
   import SelectionConfiguration from '@/components/selection-configuration';
+  import SelectionList from '@/components/selection-list/selection-list';
+  import PolygonSelectionConfiguration from '@/components/polygon-selection-configuration';
+ 
 
   const COMPONENT_MAP = {
-    'selections-list': SelectionsList,
+    'layers-graph': LayersGraph,
+    'marker-configuration': MarkerConfiguration,
+    'marker-list': MarkerList,
     'selection-configuration': SelectionConfiguration,
+    'polygon-selection-configuration': PolygonSelectionConfiguration,
+    'selection-list': SelectionList,
   };
 
   export default {
@@ -24,9 +33,9 @@
       ...mapGetters('app', [ 'viewerCurrentStep' ]),
       renderComponents() {
         return this.viewerCurrentStep.components
-          .map((component) => COMPONENT_MAP[component] || 'div');
+          .map((component) => COMPONENT_MAP[component] || null);
       },
-      stepHasComponents() {
+      hasComponents() {
         return this.viewerCurrentStep && this.viewerCurrentStep.components.length;
       },
     },

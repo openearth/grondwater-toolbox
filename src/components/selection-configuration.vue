@@ -1,3 +1,4 @@
+<!-- TODO: this component can become configurable from the data/{tool}.json file -->
 <template>
   <div class="selection-configuration">
     <v-text-field
@@ -7,7 +8,7 @@
       label="Grootte van het model (m)"
       :rules="[rules.required, rules.minExtent]"
       @update:error="setExtentValidity"
-    ></v-text-field>
+    />
 
     <configuration-card
       v-for="(selection, index) in selections"
@@ -17,48 +18,46 @@
       @mouseenter="handleMouseEnter(selection.id)"
       @mouseleave="handleMouseLeave(selection.id)"
     >
-      <div class="selection-configuration__table">
-        <v-row no-gutters>
-          <v-col cols="12" sm="6">
-            <v-card
-              class="pa-2"
-              outlined
-              tile
-            >
-              Maatregel
-            </v-card>
-          </v-col>
-          <v-col cols="12" sm="3">
-            <v-card
-              class="pa-2"
-              outlined
-              tile
-            >
-              Verschil
-            </v-card>
-          </v-col>
-          <v-col cols="12" sm="3">
-            <v-card
-              class="pa-2"
-              outlined
-              tile
-            >
-              Berekening
-            </v-card>
-          </v-col>
-        </v-row>
+      <v-row no-gutters>
+        <v-col cols="12" sm="5">
+          <v-card
+            class="pa-2"
+            outlined
+            tile
+          >
+            Maatregel
+          </v-card>
+        </v-col>
+        <v-col cols="12" sm="3">
+          <v-card
+            class="pa-2"
+            outlined
+            tile
+          >
+            Verschil
+          </v-card>
+        </v-col>
+        <v-col cols="12" sm="3">
+          <v-card
+            class="pa-2"
+            outlined
+            tile
+          >
+            Berekening
+          </v-card>
+        </v-col>
+      </v-row>
 
-        <configuration-form
-          v-for="(form, index) in selection.configuration"
-          v-model="form.data"
-          :key="form.id"
-          :id="form.id"
-          :disabled="disabled"
-          :deletable="index !== 0"
-          @delete="handleDeleteForm(selection.id, $event)"
-          @validated="setFormValidity(selection, $event)"
-        />
-      </div>
+      <configuration-form
+        v-for="(form, index) in selection.configuration"
+        v-model="form.data"
+        :key="form.id"
+        :id="form.id"
+        :disabled="disabled"
+        :deletable="index !== 0"
+        @delete="handleDeleteForm(selection.id, $event)"
+        @validated="setFormValidity(selection, $event)"
+      />
 
       <v-btn
         icon-start
@@ -74,15 +73,25 @@
       <v-divider v-if="index !== selections.length - 1" class="mt-6" />
     </configuration-card>
 
-    <div class="d-flex justify-end">
+    <div class="d-flex justify-space-between align-center">
+      <v-alert
+        v-if="loadingWmsLayers"
+        class="mb-0 py-1"
+        type="info"
+        dense
+        outlined
+      >
+        Let op! Dit kan even duren.
+      </v-alert>
       <v-btn
-        @click="calculate"
+        class="ml-auto"
         color="primary"
         :disabled="!valid || loadingWmsLayers"
         :loading="loadingWmsLayers"
         depressed
+        @click="calculate"
       >
-        Bereken
+        Berekenen
       </v-btn>
     </div>
 
@@ -128,6 +137,7 @@
           minExtent: (value) =>
             value >= 500 || 'Een grootte van minimaal 500 meter is vereist.',
         },
+        wpsId: 'brl_gwmodel' // This should be configurable based on the tool
       };
     },
     created() {
@@ -155,8 +165,8 @@
       }
     },
     computed: {
-      ...mapGetters('selections', [ 'selections' ]),
       ...mapGetters('mapbox', [ 'features', 'loadingWmsLayers', 'wmsLayers' ]),
+      ...mapGetters('selections', [ 'selections' ]),
       // iterates through all forms and checks if every one of them is valid
       valid() {
         return (
@@ -195,14 +205,21 @@
     },
     methods: {
       ...mapActions('app', [ 'addLockedViewerStep', 'removeLockedViewerStep' ]),
-      ...mapActions('mapbox', [ 'calculateResult', 'resetWmsLayers' ]),
+      ...mapActions('mapbox', [ 'calculateResult', 'resetHiddenWmsLayers', 'resetWmsLayers' ]),
       ...mapActions('selections', [ 'addSelectionConfiguration', 'removeSelectionConfiguration' ]),
       addForm(id) {
         this.addSelectionConfiguration({ id });
       },
       async calculate() {
         this.resetWmsLayers();
-        await this.calculateResult(this.formattedForms);
+        this.resetHiddenWmsLayers();
+        //TODO: 
+        const data = {
+          functionId: this.wpsId,
+          requestData: this.formattedForms,
+        };
+
+        await this.calculateResult(data);
 
         if (this.valid) {
           this.removeLockedViewerStep({ step: 3 });

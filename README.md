@@ -18,20 +18,20 @@ The projects stack is comprised of:
 
 * Clone the repository.
 * Copy `.env.example` to `.env` and set the environment variables. Copy them from the [Netlify build configuration](https://app.netlify.com/sites/basisrivierbodemligging/settings/deploys#environment-variables) or ask your tech lead.
-* Run app in development mode (`npm start`), see [scripts](#scripts).
+* Run app in development mode (`yarn start`), see [scripts](#scripts).
 * Changes on master trigger a new build and deploy to the [live environment](https://basisrivierbodemligging.netlify.com).
 
 ### Scripts
 
-This project requires [Node.js](http://nodejs.org/) (recommended v12.11.0) and [npm](https://npmjs.org/) (comes with Node).
+This project requires [Node.js](http://nodejs.org/) (recommended v12.11.0) and [yarn](https://yarnpkg.com/).
 
-After installing dependencies using `npm ci` the following scripts are available:
+After installing dependencies using `yarn install` the following scripts are available:
 
-`npm run ...` | Description
+`yarn ...` | Description
 ---|---
 `build` | Builds app for production to `dist/`.
 `serve` | Serves app on [`http://localhost:8080`](http://localhost:8080) with hot reloading.
-`start` | Short for `run dev`
+`start` | Short for `yarn dev`
 
 ## License
 

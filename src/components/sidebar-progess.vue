@@ -27,7 +27,7 @@
       ...mapGetters('app', [ 'viewerSteps' ]),
       steps() {
         const finalStep = 'Resultaat';
-        let customSteps = this.viewerSteps.map(step => (step.title));
+        let customSteps = this.viewerSteps.filter(step => (step.title)).map(step => (step.title));
 
         return [ ...customSteps, finalStep ];
       },

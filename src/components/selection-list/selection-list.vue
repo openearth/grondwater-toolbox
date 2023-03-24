@@ -1,14 +1,15 @@
 <template>
+  <!-- TODO: make components more configurable in future developments -->
   <v-alert
     v-if="!selections.length"
     dense
     outlined
     type="info"
   >
-    Selecteer waterwegen op de kaart waar u uw berekeningen op wilt uitvoeren.
+    {{ textAlert }}
   </v-alert>
   <v-list v-else>
-    <selections-list-item
+    <selection-list-item
       v-for="selection in selections"
       :key="selection.id"
       :selection="selection"
@@ -20,10 +21,10 @@
   import { mapActions, mapGetters } from 'vuex';
   import { mdiVectorSquare } from '@mdi/js';
 
-  import SelectionsListItem from '@/components/selections-list-item';
+  import SelectionListItem from './selection-list-item';
 
   export default {
-    components: { SelectionsListItem },
+    components: { SelectionListItem },
     data() {
       return {
         icons: {
@@ -62,6 +63,14 @@
     },
     computed: {
       ...mapGetters('selections', [ 'selections' ]),
+      //TODO: move it to a configuration file in future update
+      textAlert() {
+        if (this.$route.params.config === 'brl') {
+          return 'Selecteer waterwegen op de kaart waar u uw berekeningen op wilt uitvoeren.';
+        } 
+        return 'Draw a polygon';
+        
+      },
     },
     methods: {
       ...mapActions('app', [ 'addLockedViewerStep', 'removeLockedViewerStep' ]),
@@ -70,10 +79,5 @@
   };
 </script>
 
-<style>
-  .selections-list__empty-state {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-</style>
+
+<style src="./selection-list.css"></style>

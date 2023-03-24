@@ -22,7 +22,9 @@
       },
     },
     methods: {
-      ...mapActions('data', [ 'reset' ]),
+      ...mapActions('app', { appReset: 'reset' }),
+      ...mapActions('mapbox', { mapboxReset: 'reset' }),
+      ...mapActions('selections', { selectionsReset: 'reset' }),
       onClick() {
         const accepted = confirm('Weet u zeker dat u opnieuw wilt beginnen?');
 
@@ -30,9 +32,13 @@
           const { map } = this.$root;
           const { __draw } = map;
 
-          this.reset();
+          this.appReset();
+          this.mapboxReset();
+          this.selectionsReset();
 
-          __draw.deleteAll();
+          if (__draw) {
+            __draw.deleteAll();
+          }
 
           map.flyTo({ center: [ 5.2913, 52.1326 ], zoom: 6.5 });
 

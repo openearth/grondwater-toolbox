@@ -1,7 +1,7 @@
 <template>
   <v-form v-model="valid" class="configuration-form border">
     <v-row no-gutters>
-      <v-col cols="12" sm="6">
+      <v-col cols="12" sm="5">
         <v-card
           class="pa-2 full-height d-flex"
           outlined
@@ -10,7 +10,7 @@
           <v-select
             v-model="formData.measure"
             class="hide-label"
-            label="Laag van berekening"
+            label="Onttrekking toepassen in laag"
             :items="measures"
             :disabled="disabled"
           />
@@ -41,10 +41,8 @@
           <v-select
             v-model="formData.calculationLayer"
             class="hide-label"
-            label="Laag van berekening"
-            :items="
-              calculationLayers.map((l) => ({ text: `Layer ${l}`, value: l }))
-            "
+            label="Onttrekking toepassen in laag"
+            :items="calculationLayers.map((l) => ({ text: `Layer ${l}`, value: l }))"
             :disabled="disabled"
           />
         </v-card>

@@ -1,18 +1,16 @@
 import Vue from 'vue';
 import { v4 as uuid } from 'uuid';
-let selectionIndex = 1;
+import saveDataToJson from '@/lib/save-data-to-json';
 
-function createForm() {
-  return {
-    id: uuid(),
-    valid: true,
-    data: {
-      difference: '1',
-      calculationLayer: 1,
-      measure: 'riverbedDifference',
-    },
-  };
-}
+const DEFAULT_FORM = {
+  id: uuid(),
+  valid: true,
+  data: {
+    difference: '1',
+    calculationLayer: 1,
+    measure: 'riverbedDifference',
+  },
+};
 
 const initialState = () => ({
   selections: [],
@@ -30,13 +28,12 @@ export default {
 
   mutations: {
     ADD_SELECTION(state, { selection }) {
+      const totalSelections = state.selections.length;
       state.selections.push({
         ...selection,
-        name: selection.name || `Selectie #${ selectionIndex }`,
-        configuration: selection.configuration || [ createForm() ],
+        configuration: selection.configuration || [ DEFAULT_FORM ],
+        name: selection.name || `Selectie #${ totalSelections + 1 }`,
       });
-
-      selectionIndex++;
     },
     REMOVE_SELECTION(state, { id }) {
       state.selections = state.selections.filter(selection => selection.id !== id);
@@ -55,16 +52,15 @@ export default {
       });
     },
     RESET_STATE(state) {
-      selectionIndex = 1;
       Object.assign(state, initialState());
     },
     SET_SELECTION_LOADING(state, { id, value }) {
       const selection = state.selections.find(s => s.id === id);
       Vue.set(selection, 'loading', value);
     },
-    ADD_SELECTION_CONFIGURATION(state, id) {
+    ADD_SELECTION_CONFIGURATION(state, { id }) {
       const selection = state.selections.find((selection) => selection.id === id);
-      selection.configuration.push(createForm());
+      selection.configuration.push(DEFAULT_FORM);
     },
     REMOVE_SELECTION_CONFIGURATION(state, { selectionId, formId }) {
       const selection = state.selections.find((selection) => selection.id === selectionId);
@@ -76,26 +72,32 @@ export default {
     addSelection({ commit }, { selection }) {
       commit('ADD_SELECTION', { selection });
     },
-    removeSelection({ commit }, { id }) {
-      commit('REMOVE_SELECTION', { id });
+    addSelectionConfiguration({ commit }, { id }) {
+      commit('ADD_SELECTION_CONFIGURATION', { id });
     },
     editSelectionName({ commit }, { id, name }) {
       commit('EDIT_SELECTION_NAME', { id, name });
     },
-    updateSelection({ commit }, { selection }) {
-      commit('UPDATE_SELECTION', { selection });
+    removeSelection({ commit }, { id }) {
+      commit('REMOVE_SELECTION', { id });
     },
-    resetSelections({ commit }) {
+    removeSelectionConfiguration({ commit }, { selectionId, formId }) {
+      commit('REMOVE_SELECTION_CONFIGURATION', { selectionId, formId });
+    },
+    reset({ commit }) {
       commit('RESET_STATE');
     },
     setSelectionLoading({ commit }, { id, value }) {
       commit('SET_SELECTION_LOADING', { id, value });
     },
-    addSelectionConfiguration({ commit }, { id }) {
-      commit('ADD_SELECTION_CONFIGURATION', { id });
+    saveProject({ rootState, state }) {
+      const { mapbox } = rootState;
+      const { selections } = state;
+
+      saveDataToJson({ mapbox, selections });
     },
-    removeSelectionConfiguration({ commit }, { selectionId, formId }) {
-      commit('REMOVE_SELECTION_CONFIGURATION', { selectionId, formId });
+    updateSelection({ commit }, { selection }) {
+      commit('UPDATE_SELECTION', { selection });
     },
   },
 };

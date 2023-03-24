@@ -1,0 +1,38 @@
+{
+  "id": "abstraction",
+  "name": "Effect van een onttrekking",
+  "title": "Krijg inzicht in het effect van een onttrekking",
+  "description": "Deze tool maakt het mogelijk om op een gekozen plaats in Nederland inzicht te krijgen in het effect van een onttrekking. Via een aantal stappen krijgt de gebruiker de inzicht in de laagopbouw van een locatie om daarmee te bepalen in welke modellaag de onttrekking geplaatst kan worden.  Voor deze effect bepaling wordt gebruikt gemaakt van versie 4.2 van het LHM.",
+  "introduction": "<p>Dit onderdeel van de grondwatertoolbox maakt het mogelijk om het effect van een onttrekking te visualiseren op een willekeurige plaats binnen het modeldomein van LHM.</p><p>Dit gereedschap geeft de gebruiker de gelegenheid eerst de ondergrond te verkennen doordat in de eerste stap het profiel van de (model)ondergrond beschikbaar wordt gemaakt in de vorm van een grafiek met de opbouw van de ondergrond. Met deze informatie kan de gebruiker beter inschatten wat de meest van toepassing zijnde laag is om de voorgenomen simulatie uit te voeren. Let op! Modellagen zijn afgeleid van REGIS ondergrond model en zijn in sommige gevallen samengevoegd tot 1 modellaag. Zie voor meer informatie <a href=\"https://nhi.nu/\" target=\"_blank\" rel=\"noreferrer noopener\">NHI Data Portaal</a>.</p><p>Van een gebruiker wordt verwacht dat de beoogde onttrekking wordt opgegeven en daarnaast modellaagnummer en de grootte van het effectgebied. De uitkomst bestaat uit 7 kaartlagen met het verschil tussen grondwaterstand voor en na het plaatsen van de onttrekking.</p>",
+  "steps": [
+    {
+      "title": "Selecteren",
+      "components": [
+        "marker-list",
+        "layers-graph"
+      ],
+      "actions": []
+    },
+    {
+      "title": "Configureren",
+      "components": [
+        "marker-list",
+        "marker-configuration"
+      ],
+      "actions": [
+        "reset"
+      ]
+    },
+    {
+      "actions": [
+        "reset",
+        "save"
+      ]
+    }
+  ],
+  "map": {
+    "components": [
+      "abstraction-map"
+    ]
+  }
+}

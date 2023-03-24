@@ -1,0 +1,35 @@
+.tool-maps {
+  width: 100%;
+  height: 100%;
+  transition: opacity .3s ease-in-out, filter .3s ease-in-out;
+  opacity: .5;
+  pointer-events: none;
+  filter: blur(2px);
+}
+
+.tool-maps--acive {
+  opacity: 1;
+  pointer-events: all;
+  filter: none;
+}
+
+.tool-maps .mapboxgl-control-container .mapboxgl-ctrl {
+  pointer-events: none;
+}
+
+.tool-maps--acive .mapboxgl-control-container .mapboxgl-ctrl {
+  pointer-events: all;
+}
+
+.tool-maps--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  filter: none;
+}
+
+/* overwrite MapBox styles */
+.mapboxgl-ctrl-group:not(:empty) {
+  box-shadow: 0 0 5px 2px rgba(0, 0, 0, .12);
+}
