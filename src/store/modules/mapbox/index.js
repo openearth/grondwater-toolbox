@@ -84,8 +84,9 @@ export default {
 
       try {
 
-        const layers = await wps(data);
-
+        const response = await wps(data);
+        const layers = response.layers || JSON.parse(response.layerName);
+        console.log(layers);
         const wmsLayers = layers.map(({ url, layer, name }) => {
           return {
             ...generateWmsLayer({
