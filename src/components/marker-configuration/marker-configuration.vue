@@ -115,9 +115,13 @@
       },
     },
     methods: {
-      ...mapActions('app', [ 'addLockedViewerStep', 'removeLockedViewerStep' ]),
+      ...mapActions('app', [ 'addLockedViewerStep', 'removeLockedViewerStep', 'setViewerCurrentStepNumber' ]),
       ...mapActions('abstraction', [ 'calculateResult' ]),
       ...mapActions('mapbox', [ 'resetWmsLayers' ]),
+      async onNext() {
+        this.$router.push({ name: 'tool-step-3' });
+        this.setViewerCurrentStepNumber({ step: 3 });
+      },
       async calculate() {
         this.resetWmsLayers();
         const { lng, lat } = this.activeMarker._lngLat;
@@ -131,6 +135,10 @@
 
         await this.calculateResult(properties);
         this.zoomToSelection({ lng, lat });
+        
+        setTimeout(() => {
+          this.onNext();
+        }, 0);
       },
       zoomToSelection({ lng, lat }) {
         this.$root.map.flyTo({

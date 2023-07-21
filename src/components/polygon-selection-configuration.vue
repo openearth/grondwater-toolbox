@@ -127,9 +127,13 @@
 
     },
     methods: {
-      ...mapActions('app', [ 'addLockedViewerStep', 'removeLockedViewerStep' ]),
+      ...mapActions('app', [ 'addLockedViewerStep', 'removeLockedViewerStep', 'setViewerCurrentStepNumber' ]),
       ...mapActions('mapbox', [ 'calculateResult', 'resetHiddenWmsLayers', 'resetWmsLayers' ]),
       ...mapActions('selections', [ 'addSelectionConfiguration', 'removeSelectionConfiguration' ]),
+      async onNext() {
+        this.$router.push({ name: 'tool-step-3' });
+        this.setViewerCurrentStepNumber({ step: 3 });
+      },
       addForm(id) {
         this.addSelectionConfiguration({ id });
       },
@@ -146,7 +150,7 @@
         
         const data = {
           functionId: 'brl_wps_digit',
-          featureCollection:createFeatureCollection(selection) 
+          featureCollection:createFeatureCollection(selection),
         };
 
         await this.calculateResult(data);
@@ -155,6 +159,9 @@
         } else {
           this.addLockedViewerStep({ step: 3 });
         }
+        setTimeout(() => {
+          this.onNext();
+        }, 0);
       },
       handleMouseLeave(id) {
         this.$root.map.setPaintProperty(id, 'line-color', this.originalLineColor);
