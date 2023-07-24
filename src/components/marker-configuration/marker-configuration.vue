@@ -5,7 +5,7 @@
         <v-col>
           <v-text-field
             type="number"
-            label="Hoeveelheid onttrekking (m3 jaar)"
+            label="Hoeveelheid onttrekking (m³/dag)"
             v-model="subtraction"
             min="500"
             :rules="[rules.required]"

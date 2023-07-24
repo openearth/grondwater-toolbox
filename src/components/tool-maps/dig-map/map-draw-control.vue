@@ -35,7 +35,7 @@
 
       this.map.addControl(draw, this.position);
       const $drawButton = document.querySelector('.mapbox-gl-draw_ctrl-draw-btn');
-      const drawLabel = 'Draw an area around your infrastructure';
+      const drawLabel = 'Teken een polygoon';
 
       $drawButton.setAttribute('title', drawLabel);
       $drawButton.classList.add('map-control-tooltip', 'map-control-tooltip--right');

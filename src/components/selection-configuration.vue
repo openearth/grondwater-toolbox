@@ -5,7 +5,7 @@
       v-model="extent"
       type="number"
       min="0"
-      label="Grootte van het model (m)"
+      label="Grootte modelgebied (in m rondom de getekende polygoon)"
       :rules="[rules.required, rules.minExtent]"
       @update:error="setExtentValidity"
     />

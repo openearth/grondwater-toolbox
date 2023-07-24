@@ -5,7 +5,7 @@
       v-model="extent"
       type="number"
       min="0"
-      label="Grootte van het model (m)"
+      label="Grootte modelgebied (in m rondom de getekende polygoon)"
       :rules="[rules.requiredSizeModel, rules.minExtentSizeModel]"
       @update:error="setExtentValidity"
     />
@@ -14,7 +14,7 @@
       v-model="amount"
       type="number"
       min="0"
-      label="Amount to dig away"
+      label="Geef een weg te graven diepte aan (m)"
       :rules="[rules.requiredAmountToDig, rules.minExtentAmountToDig]"
       @update:error="setAmountValidity"
     />

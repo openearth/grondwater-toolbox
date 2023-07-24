@@ -68,7 +68,7 @@
         if (this.$route.params.config === 'brl') {
           return 'Selecteer waterwegen op de kaart waar u uw berekeningen op wilt uitvoeren.';
         } 
-        return 'Draw a polygon';
+        return 'Teken een polygoon';
         
       },
     },
