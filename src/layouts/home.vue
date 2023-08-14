@@ -144,7 +144,7 @@
       this.getConfigData();
     },
     created() {
-      this.resetAbstraction();
+      this.resetProfile();
       this.resetApp();
       this.mapboxReset();
       this.selectionsReset();
@@ -158,7 +158,7 @@
       },
     },
     methods: {
-      ...mapActions('abstraction', { resetAbstraction: 'reset' }),
+      ...mapActions('profile', { resetProfile: 'reset' }),
       ...mapActions('app', { resetApp: 'reset' }),
       ...mapActions('mapbox', { mapboxReset: 'reset' }),
       ...mapActions('selections', { selectionsReset: 'reset' }),

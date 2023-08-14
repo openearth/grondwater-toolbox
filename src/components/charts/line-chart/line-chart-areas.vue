@@ -44,7 +44,7 @@
       };
     },
     computed: {
-      ...mapGetters('abstraction', [ 'chartData' ]),
+      ...mapGetters('profile', [ 'chartData' ]),
       baseOptions() {
         return {
           tooltip: {

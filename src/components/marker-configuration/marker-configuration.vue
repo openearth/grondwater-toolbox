@@ -116,7 +116,7 @@
     },
     methods: {
       ...mapActions('app', [ 'addLockedViewerStep', 'removeLockedViewerStep', 'setViewerCurrentStepNumber' ]),
-      ...mapActions('abstraction', [ 'calculateResult' ]),
+      ...mapActions('profile', [ 'calculateResult' ]),
       ...mapActions('mapbox', [ 'resetWmsLayers' ]),
       async onNext() {
         this.$router.push({ name: 'tool-step-3' });

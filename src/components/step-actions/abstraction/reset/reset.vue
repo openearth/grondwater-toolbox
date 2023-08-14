@@ -24,14 +24,14 @@
     methods: {
       ...mapActions('app', { appReset: 'reset' }),
       ...mapActions('mapbox', { mapboxReset: 'reset' }),
-      ...mapActions('abstraction', { abstractionReset: 'reset' }),
+      ...mapActions('profile', { profileReset: 'reset' }),
       onClick() {
         const accepted = confirm('Weet u zeker dat u opnieuw wilt beginnen?');
 
         if (accepted) {
           this.appReset();
           this.mapboxReset();
-          this.abstractionReset();
+          this.profileReset();
 
           this.$root.map.flyTo({ center: [ 5.2913, 52.1326 ], zoom: 6.5 });
 

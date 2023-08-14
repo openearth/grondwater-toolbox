@@ -85,7 +85,7 @@ router.beforeEach((to, from, next) => {
     : VALID_TOOL_CONFIGS[0];
 
   if (isToolIntro) {
-    store.dispatch('abstraction/reset');
+    store.dispatch('profile/reset');
     store.dispatch('mapbox/reset');
     store.dispatch('selections/reset');
   }

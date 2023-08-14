@@ -48,7 +48,7 @@
       this.removeActiveMarker();
     },
     methods: {
-      ...mapActions('abstraction', [ 'addProfile', 'removeProfile' ]),
+      ...mapActions('profile', [ 'addProfile', 'removeProfile' ]),
       ...mapActions('app', [ 'setToastMessage' ]),
       ...mapActions('mapbox', [ 'setActiveMarker', 'setActivePopup', 'resetWmsLayers' ]),
       async getCoordinates(event) {

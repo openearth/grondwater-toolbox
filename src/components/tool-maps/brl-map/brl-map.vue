@@ -73,6 +73,7 @@
   import MapLayerInfo from './map-layer-info';
 
   import wms from '@/lib/mapbox/layers/wms';
+  import getProfileData from '@/lib/get-profile-data';
   import { generateWmsLayer } from '@/lib/project-layers';
 
   export default {
@@ -148,10 +149,28 @@
       onMapCreated({ map }) {
         this.$root.map = map;
       },
-      onSelection(event) {
+      async onSelection(event) {
+        console.log(event);
+
         const feature = event.features[0];
         this.addSelection({ selection: feature });
         this.getFeature({ feature });
+
+        const canvas = this.$root.map.getCanvas();
+        const { width, height } = canvas;
+
+        // 1. get the center of the polygon
+        // 2. pass the lng/lat to the function below
+
+        // const profile = await getProfileData({
+        //   height,
+        //   lng,
+        //   lat,
+        //   width,
+        // })
+        //   .catch(err => this.setToastMessage({ text: err, type: 'error' }));
+
+        // 3. add the profile data to the 'profile' store using the 'addProfile' action
       },
       onUpdateSelection(event) {
         const feature = event.features[0];

@@ -7,35 +7,19 @@
   "steps": [
     {
       "title": "Selecties",
-      "components": [
-        "selection-list"
-      ],
-      "actions": [
-        "load",
-        "reset"
-      ]
+      "components": ["selection-list", "layers-graph"],
+      "actions": ["load", "reset"]
     },
     {
       "title": "Configuratie",
-      "components": [
-        "selection-configuration"
-      ],
-      "actions": [
-        "load",
-        "reset"
-      ]
+      "components": ["selection-configuration"],
+      "actions": ["load", "reset"]
     },
     {
-      "actions": [
-        "load",
-        "reset",
-        "save"
-      ]
+      "actions": ["load", "reset", "save"]
     }
   ],
   "map": {
-    "components": [
-      "brl-map"
-    ]
+    "components": ["brl-map"]
   }
 }

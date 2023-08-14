@@ -50,7 +50,7 @@
       },
     },
     methods: {
-      ...mapActions('abstraction', [ 'removeProfile' ]),
+      ...mapActions('profile', [ 'removeProfile' ]),
       ...mapActions('app', [ 'addLockedViewerStep' ]),
       ...mapActions('mapbox', [ 'resetWmsLayers', 'setActiveMarker' ]),
       onDelete() {

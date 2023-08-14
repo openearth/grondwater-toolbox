@@ -15,7 +15,7 @@
 
   export default {
     computed: {
-      ...mapGetters('abstraction', [ 'profile' ]),
+      ...mapGetters('profile', [ 'profile' ]),
       hasProfile() {
         return this.profile !== null;
       },
