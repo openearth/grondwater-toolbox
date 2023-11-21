@@ -8,7 +8,8 @@
     {
       "title": "Selecties",
       "components": [
-        "selection-list"
+        "selection-list",
+        "layers-graph"
       ],
       "actions": [
         "load",
@@ -18,7 +19,8 @@
     {
       "title": "Configuratie",
       "components": [
-        "selection-configuration"
+        "selection-configuration",
+        "layers-graph"
       ],
       "actions": [
         "load",

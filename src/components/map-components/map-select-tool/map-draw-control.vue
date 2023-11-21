@@ -5,6 +5,7 @@
   import drawStyle from './draw-style';
 
   import StaticMode from '@/lib/static-mode';
+  import { mapActions } from 'vuex';
 
   export default {
     inject: [ 'map' ],
@@ -20,6 +21,9 @@
         type: Object,
         required: false,
       },
+      active: {
+        type: Boolean,
+      },
     },
     created() {
       const draw = new MapboxDraw({
@@ -27,6 +31,7 @@
         controls: {
           polygon: true,
         },
+        defaultMode: 'simple_select',
         modes: { ...MapboxDraw.modes, static: StaticMode },
         styles: drawStyle,
       });
@@ -40,20 +45,33 @@
       $drawButton.setAttribute('title', drawLabel);
       $drawButton.classList.add('map-control-tooltip', 'map-control-tooltip--right');
 
-      // This is to make sure the draw button is disabled by default.
-      draw.changeMode('static');
-
-      this.map.on('load', () => {
-        draw.changeMode('static');
+      this.map.on('draw.modechange', () => {
+        this.$emit('toggle', true);
       });
 
-      this.map.on('draw.create', event => {
-        this.$emit('create', event);
-      });
+      this.map.on('draw.create', this.onSelection);
+      this.map.on('draw.update', this.updateSelection);
+    },
+    methods: {
+      ...mapActions('selections', [ 'addSelection', 'updateSelection' ]),
+      ...mapActions('mapbox', [ 'getFeature', 'removeFeature' ]),
+      onSelection(event) {
+        const feature = event.features[0];
+        this.addSelection({ selection: feature });
+        this.getFeature({ feature });
+      },
+      onUpdateSelection(event) {
+        const feature = event.features[0];
 
-      this.map.on('draw.update', event => {
-        this.$emit('update', event);
-      });
+        if (!this.selections.length) {
+          this.addSelection({ selection: feature });
+        } else {
+          this.updateSelection({ selection: feature });
+        }
+
+        this.removeFeature({ id: feature.id });
+        this.getFeature({ feature });
+      },
     },
   };
 </script>

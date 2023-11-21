@@ -21,15 +21,6 @@
         </v-btn>
       </v-list-item>
     </v-list>
-    <v-alert
-      v-else
-      dense
-      outlined
-      type="info"
-    >
-      Selecteer een punt op de kaart waar u uw berekeningen op wilt uitvoeren.
-    </v-alert>
-    <v-divider v-if="hasCoordinates" class="my-6" />
   </div>
 </template>
 

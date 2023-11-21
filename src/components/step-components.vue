@@ -1,10 +1,15 @@
 <template>
   <div class="step-components" v-if="hasComponents">
-    <component
-      v-for="(component, index) in renderComponents"
-      :key="index"
-      :is="component"
-    />
+    <template v-for="(component, index) in renderComponents">
+      <v-divider
+        :key="`${index}-divider`"
+        v-if="index > 0"
+        class="my-6 step-components__divider" />
+      <component
+        :key="`${index}-component`"
+        :is="component"
+      />
+    </template>
   </div>
 </template>
 
@@ -13,6 +18,7 @@
 
   import LayersGraph from '@/components/layers-graph/layers-graph';
   import MarkerConfiguration from '@/components/marker-configuration/marker-configuration';
+  import MarkerNotification from '@/components/marker-notification/marker-notification';
   import MarkerList from '@/components/marker-list/marker-list';
   import SelectionConfiguration from '@/components/selection-configuration';
   import SelectionList from '@/components/selection-list/selection-list';
@@ -23,6 +29,7 @@
     'layers-graph': LayersGraph,
     'marker-configuration': MarkerConfiguration,
     'marker-list': MarkerList,
+    'marker-notification': MarkerNotification,
     'selection-configuration': SelectionConfiguration,
     'polygon-selection-configuration': PolygonSelectionConfiguration,
     'selection-list': SelectionList,
@@ -41,3 +48,11 @@
     },
   };
 </script>
+
+<style>
+  .step-components__divider:last-child,
+  .step-components__divider:first-child,
+  .step-components__divider + .step-components__divider {
+    display: none;
+  }
+</style>

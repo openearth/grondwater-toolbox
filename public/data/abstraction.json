@@ -8,7 +8,7 @@
     {
       "title": "Selecteren",
       "components": [
-        "marker-list",
+        "marker-notification",
         "layers-graph"
       ],
       "actions": []
