@@ -103,6 +103,7 @@
     },
     methods: {
       ...mapActions('mapbox', [ 'setActivePopup' ]),
+      ...mapActions('app', [ 'removeLockedViewerStep', 'addLockedViewerStep' ]),
       onClosePopup() {
         if (this.activePopup) {
           this.setActivePopup({ popup: null });
@@ -110,6 +111,15 @@
       },
       onMapCreated({ map }) {
         this.$root.map = map;
+      },
+    },
+    watch: {
+      activeMarker(newValue) {
+        if (newValue) {
+          this.removeLockedViewerStep({ step: 2 });
+        } else {
+          this.addLockedViewerStep({ step: 2 });
+        }
       },
     },
   };
