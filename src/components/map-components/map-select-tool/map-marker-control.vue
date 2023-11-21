@@ -86,12 +86,11 @@
         this.addProfile({ profile });
         // Set marker coordinates.
         this.marker.setLngLat([ lng, lat ]);
-        console.log(this.marker);
+
         // Save active marker to store.
         this.setActiveMarker({ marker: this.marker });
       },
       enableControl() {
-        console.log('enable marker add');
         this.map.on('click', this.getCoordinates);
         this.map.getCanvas().style.cursor = 'crosshair';
       },
@@ -107,7 +106,6 @@
         }
       },
       toggleMarker() {
-        console.log('toggleMarker');
         this.$emit('toggle', !this.active);
       },
     },
@@ -117,7 +115,6 @@
         this.enabled = false;
       },
       active(value) {
-        console.log('Marker draw mode', value);
         if (value) {
           this.enableControl();
         } else {
