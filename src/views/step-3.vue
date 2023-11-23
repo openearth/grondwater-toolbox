@@ -4,26 +4,38 @@
 
     <v-divider class="my-6" />
 
-    <v-list>
-      <v-list-item v-for="({ id, name }) in wmsLayers" :key="id">
-        <v-list-item-icon>
-          <v-btn
-            text
-            icon
-            @click="onLayerVisibilityClick(id)"
-          >
-            <v-icon>
-              {{ hiddenWmsLayers.some(layer => layer.id === id) ? 'mdi-eye-off' : 'mdi-eye' }}
-            </v-icon>
-          </v-btn>
-        </v-list-item-icon>
-        <v-list-item-content>
-          <span class="text-body-1">
-            {{ name.charAt(0).toUpperCase() + name.slice(1) }}
-          </span>
-        </v-list-item-content>
-      </v-list-item>
-    </v-list>
+    <v-treeview
+      expand-icon="mdi-chevron-down"
+      v-model="tree"
+      :items="items"
+      open-on-click
+    >
+      <template #prepend="{selected, open, item, indeterminate}">
+        <v-icon v-if="item.group">
+          {{ open
+            ? `mdi-folder-open-outline`
+            : `mdi-folder-outline`
+          }}
+        </v-icon>
+
+        <v-btn
+          v-else
+          text
+          icon
+          @click="onLayerVisibilityClick(item.id)"
+        >
+          <v-icon>
+            {{ hiddenWmsLayers.some(layer => layer.id === item.id) ? 'mdi-eye-off' : 'mdi-eye' }}
+          </v-icon>
+        </v-btn>
+      </template>
+
+      <template #label="{ item }">
+        <span class="text-body-1">
+          {{ item.name.charAt(0).toUpperCase() + item.name.slice(1) }}
+        </span>
+      </template>
+    </v-treeview>
 
     <v-divider class="my-6" />
 
@@ -57,9 +69,30 @@
 
   export default {
     components: { SidebarFooter },
+    data() {
+      return {
+        tree: [],
+      };
+    },
     computed: {
       ...mapGetters('app', [ 'viewerStepsLocked' ]),
       ...mapGetters('mapbox', [ 'features', 'wmsLayers', 'hiddenWmsLayers' ]),
+      items() {
+        const labels = {
+          head: 'Head',
+          bdgflf: 'Kwelfluxen',
+        };
+
+        return Object.keys(labels).map(group => {
+          return {
+            id: group,
+            name: labels[group],
+            group,
+            children: this.wmsLayers
+              .filter(layer => layer.parentGroup === group),
+          };
+        });
+      },
       previousIsDisabled() {
         return this.viewerStepsLocked.includes(2);
       },
@@ -76,6 +109,7 @@
       ...mapActions('data', [ 'exportLayerData' ]),
       ...mapActions('mapbox', [ 'addHiddenWmsLayer', 'removeHiddenWmsLayer' ]),
       onLayerVisibilityClick(id) {
+        // console.log(id);
         const isHiddenLayer = this.hiddenWmsLayers.some(layer => layer.id === id);
         const layer = this.wmsLayers.find(layer => layer.id === id);
 

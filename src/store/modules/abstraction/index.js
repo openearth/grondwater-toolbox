@@ -46,10 +46,21 @@ export default {
       dispatch('mapbox/setWmsLayersLoading', { isLoading: true }, { root: true });
 
       try {
-        const layers = await getAbstractionData({ area, coordinates, layer, abstraction });
+        const layersGrouped = await getAbstractionData({ area, coordinates, layer, abstraction });
 
-        const wmsLayers = layers.map(({ url, layer, name }) => ({
+        let layerList = [];
+        Object.entries(layersGrouped).forEach(([ parentGroup, layers ]) => {
+          layerList = [
+            ...layerList,
+            ...layers.map(layer => {
+              return { ...layer, parentGroup };
+            }),
+          ];
+        });
+
+        const wmsLayers = layerList.map(({ url, layer, parentGroup, name }) => ({
           ...generateWmsLayer({ url, layer, id: layer }),
+          parentGroup,
           name: name,
           baseUrl: url,
         }));
