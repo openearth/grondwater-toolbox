@@ -28,6 +28,9 @@
       active: {
         type: Boolean,
       },
+      highlighted: {
+        type: Boolean,
+      },
     },
     data() {
       return {
@@ -52,7 +55,7 @@
       });
 
       const control = new MapboxButtonControl({
-        className: 'mapbox-gl-marker-control',
+        className: `mapbox-gl-marker-control ${ this.highlighted ? 'mapbox-gl-marker-control--highlighted' : '' }`,
         icon: 'mdi-map-marker',
         eventHandler: this.toggleMarker,
         title: 'Plaats een speld op de kaart',
@@ -132,5 +135,14 @@
 
   .mapbox-gl-marker-control i::before {
     color: #000;
+  }
+
+  .mapbox-gl-marker-control--highlighted {
+    background: #008fc5 !important;
+    border-radius: 4px;
+  }
+
+  .mapbox-gl-marker-control--highlighted i::before {
+    color: #fff;
   }
 </style>

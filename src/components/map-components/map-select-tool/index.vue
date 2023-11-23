@@ -8,6 +8,7 @@
       @error="onError"
       :active="activeTool === tool"
       :position="position"
+      :highlighted="highlightedTool === tool"
     />
   </div>
 </template>
@@ -18,8 +19,8 @@
   import { mapActions } from 'vuex';
 
   const tools = {
-    marker: MapMarkerControl,
     draw: MapDrawControl,
+    marker: MapMarkerControl,
   };
 
   export default {
@@ -34,6 +35,9 @@
         default() {
           return Object.keys(tools);
         },
+      },
+      highlightedTool: {
+        type: String,
       },
     },
     created() {

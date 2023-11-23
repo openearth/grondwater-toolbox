@@ -10,7 +10,10 @@
       <map-legend v-if="legendSource" v-bind="legendSource"/>
 
       <!-- Controls -->
-      <map-select-tool position="top-left" :active-tools="['marker']" />
+      <map-select-tool
+        position="top-left"
+        :active-tools="['marker']"
+        highlighted-tool="marker" />
       <map-search position="top-right" />
       <mgl-navigation-control position="bottom-right" />
       <map-raster-opacity-control v-if="activeLayers.length" :layers="activeLayers" />
