@@ -16,19 +16,19 @@
 <script>
   import { mapGetters } from 'vuex';
 
-  import LayersGraph from '@/components/layers-graph/layers-graph';
+  import SurfaceProfile from '@/components/surface-profile/surface-profile';
   import MarkerConfiguration from '@/components/marker-configuration/marker-configuration';
   import MarkerNotification from '@/components/marker-notification/marker-notification';
-  import MarkerList from '@/components/marker-list/marker-list';
+  import MarkerPlaced from '@/components/marker-placed/marker-placed';
   import SelectionConfiguration from '@/components/selection-configuration';
   import SelectionList from '@/components/selection-list/selection-list';
   import PolygonSelectionConfiguration from '@/components/polygon-selection-configuration';
  
 
   const COMPONENT_MAP = {
-    'layers-graph': LayersGraph,
+    'surface-profile': SurfaceProfile,
     'marker-configuration': MarkerConfiguration,
-    'marker-list': MarkerList,
+    'marker-placed': MarkerPlaced,
     'marker-notification': MarkerNotification,
     'selection-configuration': SelectionConfiguration,
     'polygon-selection-configuration': PolygonSelectionConfiguration,

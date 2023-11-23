@@ -1,9 +1,9 @@
 <template>
     <v-alert
-        v-if="!hasCoordinates"
-        dense
-        outlined
-        type="info"
+    v-if="!hasCoordinates"
+    dense
+    outlined
+    type="info"
     >
         Selecteer een punt op de kaart waar u uw berekeningen op wilt uitvoeren.
     </v-alert>

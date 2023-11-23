@@ -9,7 +9,7 @@
       "title": "Selecties",
       "components": [
         "selection-list",
-        "layers-graph"
+        "surface-profile"
       ],
       "actions": [
         "load",
@@ -20,7 +20,7 @@
       "title": "Configuratie",
       "components": [
         "selection-configuration",
-        "layers-graph"
+        "surface-profile"
       ],
       "actions": [
         "load",

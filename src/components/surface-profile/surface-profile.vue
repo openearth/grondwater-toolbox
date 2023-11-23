@@ -1,6 +1,6 @@
 <template>
-  <div class="layers-graph" v-if="hasProfile">
-    <marker-list />
+  <div class="surface-profile" v-if="hasProfile">
+    <marker-placed />
     <v-divider class="mb-6" />
     <app-chart  type="line-chart" />
   </div>
@@ -9,7 +9,7 @@
 <script>
   import { mapActions, mapGetters } from 'vuex';
   import AppChart from '@/components/app-chart/app-chart';
-  import MarkerList from '@/components/marker-list/marker-list';
+  import MarkerList from '@/components/marker-placed/marker-placed';
 
   export default {
     components: {

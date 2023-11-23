@@ -9,14 +9,14 @@
       "title": "Selecteren",
       "components": [
         "marker-notification",
-        "layers-graph"
+        "surface-profile"
       ],
       "actions": []
     },
     {
       "title": "Configureren",
       "components": [
-        "marker-list",
+        "marker-placed",
         "marker-configuration"
       ],
       "actions": [

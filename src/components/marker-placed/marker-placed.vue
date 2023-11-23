@@ -1,5 +1,5 @@
 <template>
-  <div class="marker-list">
+  <div class="marker-placed">
     <v-list v-if="hasCoordinates">
       <v-list-item class="px-0">
         <v-list-item-icon>
