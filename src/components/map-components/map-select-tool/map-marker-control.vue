@@ -129,4 +129,8 @@
   .mapboxgl-ctrl-icon.mapbox-gl-marker-control.map-control-tooltip.map-control-tooltip--right.active {
     box-shadow: 0 0 2px 2px rgba(0, 150, 255, 1), inset 0 0 0 3px rgba(0, 150, 255, 1);
   }
+
+  .mapbox-gl-marker-control i::before {
+    color: #000;
+  }
 </style>
