@@ -134,8 +134,7 @@
       this.mapbox = Mapbox;
     },
     methods: {
-      ...mapActions('mapbox', [ 'getFeature', 'removeFeature', 'setActivePopup' ]),
-      ...mapActions('selections', [ 'addSelection', 'updateSelection' ]),
+      ...mapActions('mapbox', [ 'setActivePopup' ]),
       onClosePopup() {
         if (this.activePopup) {
           this.setActivePopup({ popup: null });
@@ -143,23 +142,6 @@
       },
       onMapCreated({ map }) {
         this.$root.map = map;
-      },
-      onSelection(event) {
-        const feature = event.features[0];
-        this.addSelection({ selection: feature });
-        this.getFeature({ feature });
-      },
-      onUpdateSelection(event) {
-        const feature = event.features[0];
-
-        if (!this.selections.length) {
-          this.addSelection({ selection: feature });
-        } else {
-          this.updateSelection({ selection: feature });
-        }
-
-        this.removeFeature({ id: feature.id });
-        this.getFeature({ feature });
       },
     },
   };

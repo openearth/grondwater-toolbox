@@ -34,10 +34,10 @@
         return this.activeMarker && this.activeMarker._lngLat;
       },
       latitute() {
-        return this.hasCoordinates && this.activeMarker._lngLat.lat;
+        return this.hasCoordinates && this.activeMarker._lngLat.lat.toFixed(5);
       },
       longitude() {
-        return this.hasCoordinates && this.activeMarker._lngLat.lng;
+        return this.hasCoordinates && this.activeMarker._lngLat.lng.toFixed(5);
       },
     },
     methods: {
@@ -48,11 +48,6 @@
         this.removeProfile();
         this.resetWmsLayers();
         this.setActiveMarker({ marker: null });
-        this.addLockedViewerStep({ step: 2 });
-
-        if (this.$route.name !== 'tool-step-1') {
-          this.$router.push({ name: 'tool-step-1' });
-        }
       },
     },
   };
