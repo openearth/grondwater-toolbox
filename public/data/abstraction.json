@@ -9,7 +9,12 @@
       "title": "Selecteren",
       "components": [
         "marker-notification",
-        "surface-profile"
+        {
+          "name": "surface-profile",
+          "props": {
+            "hideTitle": true
+          }
+        }
       ],
       "actions": []
     },

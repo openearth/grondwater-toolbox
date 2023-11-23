@@ -7,7 +7,8 @@
         class="my-6 step-components__divider" />
       <component
         :key="`${index}-component`"
-        :is="component"
+        v-bind="component.props"
+        :is="component.component"
       />
     </template>
   </div>
@@ -40,7 +41,19 @@
       ...mapGetters('app', [ 'viewerCurrentStep' ]),
       renderComponents() {
         return this.viewerCurrentStep.components
-          .map((component) => COMPONENT_MAP[component] || null);
+          .map((component) => {
+            if (typeof component === 'string') {
+              return {
+                component: COMPONENT_MAP[component],
+                props: {},
+              };
+            } else if (typeof component === 'object') {
+              return {
+                component: COMPONENT_MAP[component.name],
+                props: component.props,
+              };
+            }
+          });
       },
       hasComponents() {
         return this.viewerCurrentStep && this.viewerCurrentStep.components.length;
