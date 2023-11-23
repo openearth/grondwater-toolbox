@@ -109,7 +109,6 @@
       ...mapActions('data', [ 'exportLayerData' ]),
       ...mapActions('mapbox', [ 'addHiddenWmsLayer', 'removeHiddenWmsLayer' ]),
       onLayerVisibilityClick(id) {
-        // console.log(id);
         const isHiddenLayer = this.hiddenWmsLayers.some(layer => layer.id === id);
         const layer = this.wmsLayers.find(layer => layer.id === id);
 
