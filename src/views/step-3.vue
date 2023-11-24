@@ -79,7 +79,7 @@
       ...mapGetters('mapbox', [ 'features', 'wmsLayers', 'hiddenWmsLayers' ]),
       items() {
         const labels = {
-          head: 'Head',
+          head: 'Grondwaterstanden',
           bdgflf: 'Kwelfluxen',
         };
 
