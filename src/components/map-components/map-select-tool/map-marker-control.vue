@@ -1,19 +1,35 @@
+<template>
+  <mgl-marker
+    v-if="activeMarker && activeMarkerCoordinates"
+    :coordinates="activeMarkerCoordinates"
+    :color="activeMarker._color"
+    :offset="[ 0, -18 ]"
+  />
+</template>
+
 <script>
   import { mapActions, mapGetters } from 'vuex';
   import Mapbox from 'mapbox-gl';
+  import { MglMarker } from 'vue-mapbox';
 
   import getProfileData from '@/lib/get-profile-data';
   import MapboxButtonControl from '@/lib/mapbox-button-control';
 
   export default {
     inject: [ 'map' ],
-    render() {
-      return null;
+    components: {
+      MglMarker,
     },
     props: {
       position: {
         type: String,
         required: false,
+      },
+      active: {
+        type: Boolean,
+      },
+      highlighted: {
+        type: Boolean,
       },
     },
     data() {
@@ -26,6 +42,10 @@
     computed: {
       ...mapGetters('app', [ 'viewerCurrentStepNumber' ]),
       ...mapGetters('mapbox', [ 'activeMarker' ]),
+
+      activeMarkerCoordinates() {
+        return this.activeMarker._lngLat && Object.values(this.activeMarker._lngLat);
+      },
     },
     created() {
       this.resetWmsLayers();
@@ -35,7 +55,7 @@
       });
 
       const control = new MapboxButtonControl({
-        className: 'mapbox-gl-marker-control',
+        className: `mapbox-gl-marker-control ${ this.highlighted ? 'mapbox-gl-marker-control--highlighted' : '' }`,
         icon: 'mdi-map-marker',
         eventHandler: this.toggleMarker,
         title: 'Plaats een speld op de kaart',
@@ -52,10 +72,6 @@
       ...mapActions('app', [ 'setToastMessage' ]),
       ...mapActions('mapbox', [ 'setActiveMarker', 'setActivePopup', 'resetWmsLayers' ]),
       async getCoordinates(event) {
-        if (this.viewerCurrentStepNumber !== 1) {
-          this.$router.push({ name: 'tool-step-1' });
-        }
-
         this.setActivePopup({ popup: null });
         this.resetWmsLayers();
         this.removeProfile();
@@ -64,7 +80,7 @@
         const canvas = this.map.getCanvas();
         const { width, height } = canvas;
         const profile = await getProfileData({ height, lng, lat, width })
-          .catch(err => this.setToastMessage({ text: err, type: 'error' }));
+          .catch(err => this.$emit('error', err));
 
         if (!profile) {
           return;
@@ -73,6 +89,7 @@
         this.addProfile({ profile });
         // Set marker coordinates.
         this.marker.setLngLat([ lng, lat ]);
+
         // Save active marker to store.
         this.setActiveMarker({ marker: this.marker });
       },
@@ -92,19 +109,20 @@
         }
       },
       toggleMarker() {
-        if (this.enabled) {
-          this.disableControl();
-        } else {
-          this.enableControl();
-        }
-
-        this.enabled = !this.enabled;
+        this.$emit('toggle', !this.active);
       },
     },
     watch: {
       '$route'() {
         this.disableControl();
         this.enabled = false;
+      },
+      active(value) {
+        if (value) {
+          this.enableControl();
+        } else {
+          this.disableControl();
+        }
       },
     },
   };
@@ -113,5 +131,18 @@
 <style>
   .mapboxgl-ctrl-icon.mapbox-gl-marker-control.map-control-tooltip.map-control-tooltip--right.active {
     box-shadow: 0 0 2px 2px rgba(0, 150, 255, 1), inset 0 0 0 3px rgba(0, 150, 255, 1);
+  }
+
+  .mapbox-gl-marker-control i::before {
+    color: #000;
+  }
+
+  .mapbox-gl-marker-control--highlighted {
+    background: #008fc5 !important;
+    border-radius: 4px;
+  }
+
+  .mapbox-gl-marker-control--highlighted i::before {
+    color: #fff;
   }
 </style>

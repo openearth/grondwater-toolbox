@@ -9,12 +9,8 @@
     >
       <map-legend v-if="legendSource" v-bind="legendSource"/>
 
-      <!-- Controls -->
-      <map-draw-control
-        position="top-left"
-        @create="onSelection"
-        @update="onUpdateSelection"
-      />
+      <map-select-tool position="top-left" highlighted-tool="draw" />
+
       <map-search position="top-right" />
       <mgl-navigation-control position="bottom-right" />
       <map-raster-opacity-control v-if="activeLayers.length" :layers="activeLayers" />
@@ -67,9 +63,9 @@
   import MapPopup from '@/components/map-components/map-popup';
   import MapRasterOpacityControl from '@/components/map-components/map-raster-opacity-control';
   import MapSearch from '@/components/map-components/map-search';
+  import MapSelectTool from '@/components/map-components/map-select-tool';
   import RasterLayer from '@/components/map-components/raster-layer';
 
-  import MapDrawControl from './map-draw-control';
   import MapLayerInfo from './map-layer-info';
 
   import wms from '@/lib/mapbox/layers/wms';
@@ -77,7 +73,7 @@
 
   export default {
     components: {
-      MapDrawControl,
+      MapSelectTool,
       MapLayerInfo,
       MapLegend,
       MapPopup,
@@ -138,8 +134,7 @@
       this.mapbox = Mapbox;
     },
     methods: {
-      ...mapActions('mapbox', [ 'getFeature', 'removeFeature', 'setActivePopup' ]),
-      ...mapActions('selections', [ 'addSelection', 'updateSelection' ]),
+      ...mapActions('mapbox', [ 'setActivePopup' ]),
       onClosePopup() {
         if (this.activePopup) {
           this.setActivePopup({ popup: null });
@@ -147,23 +142,6 @@
       },
       onMapCreated({ map }) {
         this.$root.map = map;
-      },
-      onSelection(event) {
-        const feature = event.features[0];
-        this.addSelection({ selection: feature });
-        this.getFeature({ feature });
-      },
-      onUpdateSelection(event) {
-        const feature = event.features[0];
-
-        if (!this.selections.length) {
-          this.addSelection({ selection: feature });
-        } else {
-          this.updateSelection({ selection: feature });
-        }
-
-        this.removeFeature({ id: feature.id });
-        this.getFeature({ feature });
       },
     },
   };

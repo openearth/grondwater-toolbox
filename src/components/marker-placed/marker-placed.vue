@@ -1,5 +1,5 @@
 <template>
-  <div class="marker-list">
+  <div class="marker-placed">
     <v-list v-if="hasCoordinates">
       <v-list-item class="px-0">
         <v-list-item-icon>
@@ -21,15 +21,6 @@
         </v-btn>
       </v-list-item>
     </v-list>
-    <v-alert
-      v-else
-      dense
-      outlined
-      type="info"
-    >
-      Selecteer een punt op de kaart waar u uw berekeningen op wilt uitvoeren.
-    </v-alert>
-    <v-divider v-if="hasCoordinates" class="my-6" />
   </div>
 </template>
 
@@ -43,10 +34,10 @@
         return this.activeMarker && this.activeMarker._lngLat;
       },
       latitute() {
-        return this.hasCoordinates && this.activeMarker._lngLat.lat;
+        return this.hasCoordinates && this.activeMarker._lngLat.lat.toFixed(5);
       },
       longitude() {
-        return this.hasCoordinates && this.activeMarker._lngLat.lng;
+        return this.hasCoordinates && this.activeMarker._lngLat.lng.toFixed(5);
       },
     },
     methods: {
@@ -57,11 +48,6 @@
         this.removeProfile();
         this.resetWmsLayers();
         this.setActiveMarker({ marker: null });
-        this.addLockedViewerStep({ step: 2 });
-
-        if (this.$route.name !== 'tool-step-1') {
-          this.$router.push({ name: 'tool-step-1' });
-        }
       },
     },
   };

@@ -8,15 +8,20 @@
     {
       "title": "Selecteren",
       "components": [
-        "marker-list",
-        "layers-graph"
+        "marker-notification",
+        {
+          "name": "surface-profile",
+          "props": {
+            "hideTitle": true
+          }
+        }
       ],
       "actions": []
     },
     {
       "title": "Configureren",
       "components": [
-        "marker-list",
+        "marker-placed",
         "marker-configuration"
       ],
       "actions": [
