@@ -79,35 +79,39 @@ export default {
     addWmsLayer({ commit }, { layer }) {
       commit('ADD_WMS_LAYER', { layer });
     },
+    setLayers({ dispatch }, layers) {
+
+      // Flatten the layer dictionary in an array where each item in the array contains a parentGroup
+      let layerList = [];
+      Object.entries(layers).forEach(([ parentGroup, layers ]) => {
+        layerList = [
+          ...layerList,
+          ...layers.map(layer => {
+            return { ...layer, parentGroup };
+          }),
+        ];
+      });
+
+      const wmsLayers = layerList.map(({ url, layer, parentGroup, name }) => ({
+        ...generateWmsLayer({ url, layer, id: layer }),
+        parentGroup,
+        name: name,
+        baseUrl: url,
+      }));
+
+      wmsLayers.forEach((layer, index) => {
+        if (index !== 0) {
+          dispatch('addHiddenWmsLayer', { layer });
+        }
+
+        dispatch('addWmsLayer', { layer });
+      });
+    },
     async calculateResult({ dispatch }, data) {
       dispatch('setWmsLayersLoading', { isLoading: true });
 
-      try {
-
-        const layers = await wps(data);
-
-        const wmsLayers = layers.map(({ url, layer, name }) => {
-          return {
-            ...generateWmsLayer({
-              url,
-              layer,
-              id: layer,
-            }),
-            name: name,
-            baseUrl: url,
-          };
-        });
-
-        wmsLayers.forEach((layer, index) => {
-          if (index !== 0) {
-            dispatch('mapbox/addHiddenWmsLayer', { layer }, { root: true });
-          }
-
-          dispatch('mapbox/addWmsLayer', { layer }, { root: true });
-        });
-      } catch (err) {
-        console.log(err);
-      }
+      const layersGrouped = await wps(data);
+      dispatch('setLayers', layersGrouped);
 
       dispatch('setWmsLayersLoading', { isLoading: false });
     },

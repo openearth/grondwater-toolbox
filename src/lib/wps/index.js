@@ -2,7 +2,6 @@ import axios from 'axios';
 import { xmlRequestTemplate } from './template';
 
 export default function({ functionId, requestData, polygon, watersIdentifier, filterData, cswUrls, bufferDist, segmentLength, layersSetup, featureCollection }) {
-  console.log('featureCollection', featureCollection);
   const template = xmlRequestTemplate({ functionId, requestData, polygon, watersIdentifier, filterData, cswUrls, bufferDist, segmentLength, layersSetup, featureCollection });
 
   return axios({

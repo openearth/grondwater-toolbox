@@ -45,36 +45,8 @@ export default {
     async calculateResult({ dispatch }, { area, coordinates, layer, abstraction }) {
       dispatch('mapbox/setWmsLayersLoading', { isLoading: true }, { root: true });
 
-      try {
-        const layersGrouped = await getAbstractionData({ area, coordinates, layer, abstraction });
-
-        let layerList = [];
-        Object.entries(layersGrouped).forEach(([ parentGroup, layers ]) => {
-          layerList = [
-            ...layerList,
-            ...layers.map(layer => {
-              return { ...layer, parentGroup };
-            }),
-          ];
-        });
-
-        const wmsLayers = layerList.map(({ url, layer, parentGroup, name }) => ({
-          ...generateWmsLayer({ url, layer, id: layer }),
-          parentGroup,
-          name: name,
-          baseUrl: url,
-        }));
-
-        wmsLayers.forEach((layer, index) => {
-          if (index !== 0) {
-            dispatch('mapbox/addHiddenWmsLayer', { layer }, { root: true });
-          }
-
-          dispatch('mapbox/addWmsLayer', { layer }, { root: true });
-        });
-      } catch (err) {
-        console.log(err);
-      }
+      const layersGrouped = await getAbstractionData({ area, coordinates, layer, abstraction });
+      dispatch('mapbox/setLayers', layersGrouped);
 
       dispatch('mapbox/setWmsLayersLoading', { isLoading: false }, { root: true });
     },
