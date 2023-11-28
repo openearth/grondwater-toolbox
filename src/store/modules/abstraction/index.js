@@ -46,7 +46,7 @@ export default {
       dispatch('mapbox/setWmsLayersLoading', { isLoading: true }, { root: true });
 
       const layersGrouped = await getAbstractionData({ area, coordinates, layer, abstraction });
-      dispatch('mapbox/setLayers', layersGrouped);
+      dispatch('mapbox/setLayers', layersGrouped, { root: true });
 
       dispatch('mapbox/setWmsLayersLoading', { isLoading: false }, { root: true });
     },
