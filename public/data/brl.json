@@ -2,11 +2,11 @@
   "id": "brl",
   "name": "Grondwater effecten Rivierbodem",
   "title": "Krijg inzicht in de effecten van ingrepen in het grondwatersysteem van de grote rivieren met Landelijk Hydrologisch Model",
-  "description": "Deze tool maakt het mogelijk de effecten op de grondwaterstand middels ingrepen in diverse systemen van het grondwatermodel LHM4.2 te simuleren. Er zijn simulaties mogelijk, waaronder simuleren van ingrepen in de waterbodem (primair systeem), effecten van een onttrekkig en de effecten van een ingreep in de waterbodem van de rivierbodem. Voor deze effectbepaling wordt gebruikt gemaakt van versie 4.2 van het LHM.",
-  "introduction": "<p>Deze tool maakt het mogelijk de effecten op de grondwaterstand middels ingrepen in diverse systemen van het grondwatermodel LHM4.2 te simuleren. Er zijn simulaties mogelijk, waaronder simuleren van ingrepen in de waterbodem (primair systeem), effecten van een onttrekkig en de effecten van een ingreep in de waterbodem van de rivierbodem. Voor deze effectbepaling wordt gebruikt gemaakt van versie 4.2 van het LHM.</p><p>Van een gebruiker wordt verwacht dat deze één of meerdere polygonen rondom een riviervak tekent en per polygoon 1 of meerdere ingrepen opgeeft.</p><p>De opgegeven ingrepen worden allemaal doorgevoerd.</p>",
+  "description": "Deze tool maakt het mogelijk de effecten op de grondwaterstand middels ingrepen in diverse systemen van het grondwatermodel LHM4.2 te simuleren. Er zijn simulaties mogelijk, waaronder simuleren van ingrepen in de waterbodem (hoofdwater), effecten van een onttrekkig en de effecten van een ingreep in de waterbodem van de rivierbodem. Voor deze effectbepaling wordt gebruikt gemaakt van versie 4.2 van het LHM.",
+  "introduction": "<p>Deze tool maakt het mogelijk de effecten op de grondwaterstand middels ingrepen in diverse systemen van het grondwatermodel LHM4.2 te simuleren. Er zijn simulaties mogelijk, waaronder simuleren van ingrepen in de waterbodem (hoofdwater), effecten van een onttrekkig en de effecten van een ingreep in de waterbodem van de rivierbodem. Voor deze effectbepaling wordt gebruikt gemaakt van versie 4.2 van het LHM.</p><p>Van een gebruiker wordt verwacht dat deze één of meerdere polygonen rondom een riviervak tekent en per polygoon 1 of meerdere ingrepen opgeeft.</p><p>De opgegeven ingrepen worden allemaal doorgevoerd.</p>",
   "steps": [
     {
-      "title": "Selecties",
+      "title": "Selecteren",
       "components": [
         "selection-list",
         "surface-profile"
@@ -17,7 +17,7 @@
       ]
     },
     {
-      "title": "Configuratie",
+      "title": "Configureren",
       "components": [
         "selection-configuration",
         "surface-profile"

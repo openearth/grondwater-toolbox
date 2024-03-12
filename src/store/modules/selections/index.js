@@ -32,8 +32,8 @@ export default {
       };
       state.selections.push({
         ...selection,
-        configuration: selection.configuration || [defaultForm],
-        name: selection.name || `Selectie #${totalSelections + 1}`,
+        configuration: selection.configuration || [ defaultForm ],
+        name: selection.name || `Selectie #${ totalSelections + 1 }`,
       });
     },
     REMOVE_SELECTION(state, { id }) {
@@ -61,7 +61,6 @@ export default {
     },
     ADD_SELECTION_CONFIGURATION(state, { id }) {
       const selection = state.selections.find((selection) => selection.id === id);
-      console.log('selection to add the form at: ', selection);
       const defaultForm = {
         id: uuid(),
         valid: true,
@@ -84,7 +83,6 @@ export default {
       commit('ADD_SELECTION', { selection });
     },
     addSelectionConfiguration({ commit }, { id }) {
-      console.log('id', id);
       commit('ADD_SELECTION_CONFIGURATION', { id });
     },
     editSelectionName({ commit }, { id, name }) {

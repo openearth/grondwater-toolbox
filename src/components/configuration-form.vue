@@ -17,20 +17,11 @@
         </v-card>
       </v-col>
       <v-col cols="12" sm="3">
-        <v-card
-          class="pa-2 full-height d-flex"
-          outlined
-          tile
-        >
-          <v-text-field
-            v-model="formData.difference"
-            class="hide-label"
-            type="number"
-            label="Verschil in rivierbodemhoogte (m)"
-            :rules="differenceRules"
-            :disabled="disabled"
-          />
-        </v-card>
+        <text-field-measure
+          :key="formData.measure"
+          :differenceRules="differenceRules"
+          :disabled="disabled"
+          @update-difference-value="onUpdateDifferenceValue" />
       </v-col>
       <v-col cols="12" sm="3">
         <v-card
@@ -66,7 +57,13 @@
 </template>
 
 <script>
+  import TextFieldMeasure from '@/components/text-field-measure';
+
   export default {
+    components: { 
+      TextFieldMeasure,
+       
+    },
     props: {
       id: {
         type: String,
@@ -120,14 +117,17 @@
     computed: {
       differenceRules() {
         if (this.formData.measure === 'riverbedDifference') {
-          return [
+          return  [
             this.rules.required,
             this.rules.notZero,
-            this.rules.minMaxDifference,
+            (value) =>
+              (value >= -10 && value <= 10) ||
+              'Waarde moet tussen -10 en 10 meter vallen.',
           ];
         }
 
         if (this.formData.measure === 'stageDifference') {
+         
           return [
             this.rules.required,
             this.rules.notZero,
@@ -154,6 +154,9 @@
     methods: {
       handleDelete() {
         this.$emit('delete', this.id);
+      },
+      onUpdateDifferenceValue(event) {
+        this.formData.difference = event;
       },
     },
   };

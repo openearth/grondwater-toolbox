@@ -1,7 +1,7 @@
 <template>
   <div class="map-raster-opacity-control">
     <label class="map-raster-opacity-control__label text-body-2" for="opacity">
-      Opacity: {{ value }}%
+      Transparantie: {{ value }}%
     </label>
     <input
       class="map-raster-opacity-control__input"
@@ -60,7 +60,7 @@
   position: absolute;
   z-index: 100;
   bottom: 36px;
-  left: 10px;
+  left: 220px;
   flex-direction: column;
   width: 200px;
   padding: 16px;

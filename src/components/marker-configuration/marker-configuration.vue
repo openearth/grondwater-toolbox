@@ -19,7 +19,7 @@
             label="Grootte modelgebied (in m rondom locatie)"
             v-model="area"
             min="0"
-            :rules="[rules.required, rules.notZero]"
+            :rules="[rules.required, rules.notZero, rules.maxExtent]"
           />
         </v-col>
       </v-row>
@@ -75,7 +75,9 @@
           required: (value) => !!value || 'Benodigd.',
           notZero: (value) => value !== '0' || 'Waarde mag niet 0 zijn.',
           minExtent: (value) =>
-            value >= 500 || 'Een grootte van minimaal 500 meter is vereist.',
+            parseFloat(value) >= 500 || 'Een grootte van minimaal 500 meter is vereist.',
+          maxExtent: (value) => 
+            parseFloat(value) <= 25000 || 'De grootte mag niet groter zijn dan 25.000 meter.',
         },
         valid: false,
       };
