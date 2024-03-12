@@ -6,7 +6,7 @@
       type="number"
       min="0"
       label="Grootte modelgebied (in m rondom de getekende polygoon)"
-      :rules="[rules.required, rules.minExtent]"
+      :rules="[rules.required, rules.minExtent, rules.maxExtent]"
       @update:error="setExtentValidity"
     />
 
@@ -136,6 +136,8 @@
           required: (value) => !!value || 'Benodigd.',
           minExtent: (value) =>
             value >= 500 || 'Een grootte van minimaal 500 meter is vereist.',
+          maxExtent: (value) => 
+            parseFloat(value) <= 25000 || 'De grootte mag niet groter zijn dan 25.000 meter.',
         },
         wpsId: 'brl_gwmodel', // This should be configurable based on the tool
       };

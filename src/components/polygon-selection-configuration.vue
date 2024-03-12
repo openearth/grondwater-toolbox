@@ -6,7 +6,7 @@
       type="number"
       min="0"
       label="Grootte modelgebied (in m rondom de getekende polygoon)"
-      :rules="[rules.requiredSizeModel, rules.minExtentSizeModel]"
+      :rules="[rules.requiredSizeModel, rules.minExtentSizeModel, rules.maxExtent]"
       @update:error="setExtentValidity"
     />
 
@@ -84,6 +84,8 @@
           requiredAmountToDig: (value) => !!value || 'Benodigd.',
           minExtentAmountToDig: (value) =>
             value >= 0 || 'Een grootte van minimaal 0 meter is vereist.',
+          maxExtent: (value) => 
+            parseFloat(value) <= 25000 || 'De grootte mag niet groter zijn dan 25.000 meter.',
           
         },
       };
