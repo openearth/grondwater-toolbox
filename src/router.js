@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 
 import Introduction from '@/views/introduction';
+import Disclaimer from '@/views/disclaimer';
 import About from '@/views/about';
 import StepOne from '@/views/step-1';
 import StepThree from '@/views/step-3';
@@ -17,6 +18,14 @@ const routes = [
     name: 'home',
     meta: {
       title: 'Home',
+    },
+  },
+  {
+    path: '/bijsluiter',
+    component: Disclaimer,
+    name: 'disclaimer',
+    meta: {
+      title: 'Bijsluiter',
     },
   },
   {
