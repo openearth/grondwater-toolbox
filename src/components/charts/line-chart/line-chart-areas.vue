@@ -101,17 +101,25 @@
         };
       },
       series() {
+        const seriesPaletteA = [ '#FFFF8A', '#FFFF5C', '#FFFF2E', '#FFFF00', '#D1D100', '#A3A300', '#757500' ];
+        const seriesPaletteB = [ '#8AFF8A', '#5CFF5C', '#2EFF2E', '#00FF00', '#00D100', '#00A300', '#007500' ];
+
+        let incrementEven = 0;
+        let incrementOdd = 0;
+
         return this.chartData.map((item, index) => {
-          const seriesColor = index % 2 ? '#5ba75b' : '#ffffca';
+          const seriesColor = index % 2 === 0 ? seriesPaletteA[incrementOdd++] : seriesPaletteB[incrementEven++];
+    
           return {
             ...item,
             color: seriesColor,
             lineStyle: { color: seriesColor },
-            areaStyle: { ...item.areaStyle, color: seriesColor, opacity: .5 },
+            areaStyle: { ...item.areaStyle, color: seriesColor, opacity: 0.5 },
             symbolSize: 7,
             symbol: 'circle',
           };
         });
+
       },
     },
     methods: {
