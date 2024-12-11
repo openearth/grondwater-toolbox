@@ -1,24 +1,60 @@
 <!-- TODO: this component can become configurable from the data/{tool}.json file -->
 <template>
   <div class="selection-configuration">
-    <v-text-field
-      v-model="extent"
-      type="number"
-      min="0"
-      label="Grootte modelgebied (in m rondom de getekende polygoon)"
-      :rules="[rules.requiredSizeModel, rules.minExtentSizeModel, rules.maxExtent]"
-      @update:error="setExtentValidity"
-    />
-
-    <v-text-field
-      v-model="amount"
-      type="number"
-      min="0"
-      label="Geef een weg te graven diepte aan (m)"
-      :rules="[rules.requiredAmountToDig, rules.minExtentAmountToDig]"
-      @update:error="setAmountValidity"
-    />
-
+    <v-form v-model="formValid">
+      <v-row no-gutters>
+        <v-col>
+          <v-text-field
+            v-model="extent"
+            type="number"
+            min="0"
+            label="Grootte modelgebied (in m rondom de getekende polygoon)"
+            :rules="[
+              rules.requiredSizeModel,
+              rules.minExtentSizeModel,
+              rules.maxExtent
+            ]"
+            @update:error="setExtentValidity"
+          />
+        </v-col>
+      </v-row>
+      <v-row no-gutters>
+        <v-col>
+          <v-text-field
+            v-model="amount"
+            type="number"
+            min="0"
+            :label="amountLabel"
+            :rules="[rules.requiredAmountToDig, rules.minExtentAmountToDig]"
+            @update:error="setAmountValidity"
+          />
+        </v-col>
+      </v-row>
+      <template v-if="viewerConfig === 'drainage'">
+        <v-row no-gutters>
+          <v-col>
+            <v-select
+              label="Horizontale rekenresolutie (meter)"
+              v-model="selectedOutres"
+              :items="outres.map(res => ({ text: `${res}m`, value: res }))"
+              :rules="[rules.required]"
+            />
+          </v-col>
+        </v-row>
+        <v-row no-gutters>
+          <v-col>
+            <v-select
+              label="Drainage toepassen in laag"
+              v-model="selectedLayer"
+              :items="
+                layers.map(layer => ({ text: `Laag ${layer}`, value: layer }))
+              "
+              :rules="[rules.required]"
+            />
+          </v-col>
+        </v-row>
+      </template>
+    </v-form>
     <div class="d-flex justify-space-between align-center">
       <v-alert
         v-if="loadingWmsLayers"
@@ -42,12 +78,11 @@
     </div>
 
     <v-alert
-      v-if="wmsLayers.length"
-      class="mt-5"
-      dense
-      outlined
-      type="info"
-    >
+v-if="wmsLayers.length"
+class="mt-5"
+dense
+outlined
+type="info">
       Klik op een punt op de kaart om de waarde te zien.
     </v-alert>
   </div>
@@ -58,9 +93,6 @@
   import bbox from '@turf/bbox';
   import { featureCollection } from '@turf/helpers';
   import createFeatureCollection from '@/lib/create-feature-collection';
- 
-
-
 
   export default {
     props: {
@@ -75,18 +107,24 @@
         extentValid: true,
         amount: '10',
         amountValid: true,
+        layers: [ 1, 2, 3, 4, 5, 6, 7 ],
+        outres: [ 25, 50, 125, 250 ],
+        selectedOutres: 250,
+        selectedLayer: null,
         selectedColor: '#f79502',
         originalLineColor: '#000',
+        formValid: false,
         rules: {
-          requiredSizeModel: (value) => !!value || 'Benodigd.',
-          minExtentSizeModel: (value) =>
+          required: (value) => !!value || 'Benodigd.',
+          requiredSizeModel: value => !!value || 'Benodigd.',
+          minExtentSizeModel: value =>
             value >= 500 || 'Een grootte van minimaal 500 meter is vereist.',
-          requiredAmountToDig: (value) => !!value || 'Benodigd.',
-          minExtentAmountToDig: (value) =>
+          requiredAmountToDig: value => !!value || 'Benodigd.',
+          minExtentAmountToDig: value =>
             value >= 0 || 'Een grootte van minimaal 0 meter is vereist.',
-          maxExtent: (value) => 
-            parseFloat(value) <= 25000 || 'De grootte mag niet groter zijn dan 25.000 meter.',
-          
+          maxExtent: value =>
+            parseFloat(value) <= 25000 ||
+            'De grootte mag niet groter zijn dan 25.000 meter.',
         },
       };
     },
@@ -117,21 +155,42 @@
     computed: {
       ...mapGetters('mapbox', [ 'features', 'loadingWmsLayers', 'wmsLayers' ]),
       ...mapGetters('selections', [ 'selections' ]),
+      ...mapGetters('app', [ 'viewerConfig' ]),
       // iterates through all forms and checks if every one of them is valid
+      amountLabel() {
+        switch (this.viewerConfig) {
+        case 'drainage':
+          return 'Geef wijziging van drainage niveau aan (m)';
+        case 'dig':
+          return 'Geef een weg te graven diepte aan (m)';
+        default:
+          return 'Geef een weg te graven diepte aan (m)';
+        }
+      },
       valid() {
         return (
-          this.selections.every((selection) => {
-            return selection.configuration.every((form) => form.valid);
+          this.selections.every(selection => {
+            console.log({ selection, configuration: selection.configuration });
+            return selection.configuration.every(form => form.valid);
           }) && this.extentValid
         );
       },
-    
-
     },
     methods: {
-      ...mapActions('app', [ 'addLockedViewerStep', 'removeLockedViewerStep', 'setViewerCurrentStepNumber' ]),
-      ...mapActions('mapbox', [ 'calculateResult', 'resetHiddenWmsLayers', 'resetWmsLayers' ]),
-      ...mapActions('selections', [ 'addSelectionConfiguration', 'removeSelectionConfiguration' ]),
+      ...mapActions('app', [
+        'addLockedViewerStep',
+        'removeLockedViewerStep',
+        'setViewerCurrentStepNumber',
+      ]),
+      ...mapActions('mapbox', [
+        'calculateResult',
+        'resetHiddenWmsLayers',
+        'resetWmsLayers',
+      ]),
+      ...mapActions('selections', [
+        'addSelectionConfiguration',
+        'removeSelectionConfiguration',
+      ]),
       async onNext() {
         this.$router.push({ name: 'tool-step-3' });
         this.setViewerCurrentStepNumber({ step: 3 });
@@ -142,17 +201,21 @@
       async calculate() {
         this.resetWmsLayers();
         this.resetHiddenWmsLayers();
-        
+
         let selection = this.selections[0]; //TODO: for now only for one selection. Future improvement
         selection.properties = {
           area: parseFloat(this.extent),
           layer: '1',
-          depth: parseFloat(this.amount), 
+          depth: parseFloat(this.amount),
+          ...(this.viewerConfig === 'drainage' && {
+            outres: parseInt(this.selectedOutres, 10),
+            layer: parseInt(this.selectedLayer, 10),
+          }),
         };
-        
+
         const data = {
           functionId: 'brl_wps_digit',
-          featureCollection:createFeatureCollection(selection),
+          featureCollection: createFeatureCollection(selection),
         };
 
         await this.calculateResult(data);
@@ -181,7 +244,7 @@
         this.removeSelectionConfiguration({ selectionId, formId });
       },
       setFormValidity(selection, { id, valid }) {
-        const form = selection.configuration.find((form => form.id === id));
+        const form = selection.configuration.find(form => form.id === id);
 
         form.valid = valid;
       },
@@ -195,10 +258,10 @@
         if (!this.features.length) {
           return;
         }
-
+        console.log(this.features, this.viewerConfig);
         const bounds = bbox(
           featureCollection(
-            this.features.map((feature) => ({
+            this.features.map(feature => ({
               geometry: feature.source.data,
               type: 'Feature',
             }))
