@@ -1,52 +1,98 @@
 <template>
   <v-form v-model="valid" class="configuration-form border">
     <v-row no-gutters>
-      <v-col cols="12" sm="5">
+      <v-col cols="12" sm="3">
         <v-card
-          class="pa-2 full-height d-flex"
-          outlined
-          tile
+            class="pa-2 full-height d-flex"
+            outlined
+            tile
         >
           <v-select
-            v-model="formData.measure"
-            class="hide-label"
-            label="Onttrekking toepassen in laag"
-            :items="measures"
-            :disabled="disabled"
+              v-model="formData.level"
+              class="hide-label"
+              label="Niveau"
+              :items="levels"
+              :disabled="disabled"
           />
         </v-card>
       </v-col>
-      <v-col cols="12" sm="3">
-        <text-field-measure
-          :key="formData.measure"
-          :differenceRules="differenceRules"
-          :disabled="disabled"
-          @update-difference-value="onUpdateDifferenceValue" />
-      </v-col>
-      <v-col cols="12" sm="3">
+      <v-col
+          v-if="type === 'default'"
+          cols="12"
+          sm="4"
+      >
         <v-card
-          class="pa-2 full-height d-flex"
-          outlined
-          tile
+            class="pa-2 full-height d-flex"
+            outlined
+            tile
         >
           <v-select
-            v-model="formData.calculationLayer"
-            class="hide-label"
-            label="Onttrekking toepassen in laag"
-            :items="calculationLayers.map((l) => ({ text: `Layer ${l}`, value: l }))"
+              v-model="formData.measure"
+              class="hide-label"
+              label="Onttrekking toepassen in laag"
+              :items="measures"
+              :disabled="disabled"
+          />
+        </v-card>
+      </v-col>
+      <v-col
+          v-if="type === 'default'"
+          cols="12"
+          sm="2"
+      >
+        <text-field-measure
+            :key="formData.measure"
+            :differenceRules="differenceRules"
             :disabled="disabled"
+            @update-difference-value="onUpdateDifferenceValue" />
+      </v-col>
+      <v-col
+          v-if="type === 'default'"
+          cols="12"
+          sm="2"
+      >
+        <v-card
+            class="pa-2 full-height d-flex"
+            outlined
+            tile
+        >
+          <v-select
+              v-model="formData.calculationLayer"
+              class="hide-label"
+              label="Onttrekking toepassen in laag"
+              :items="calculationLayers.map((l) => ({ text: l, value: l }))"
+              :disabled="disabled"
+          />
+        </v-card>
+      </v-col>
+      <v-col
+          v-if="type === 'system'"
+          cols="12"
+          sm="8"
+      >
+        <v-card
+            class="pa-2 full-height d-flex"
+            outlined
+            tile
+        >
+          <v-select
+              v-model="formData.placement"
+              class="hide-label"
+              label="Ligging"
+              :items="placements"
+              :disabled="disabled"
           />
         </v-card>
       </v-col>
       <v-col cols="12" sm="1">
         <div
-          v-if="deletable"
-          class="d-flex justify-end align-center full-height"
+            v-if="deletable"
+            class="d-flex justify-end align-center full-height"
         >
           <v-btn
-            icon
-            @click="handleDelete"
-            title="delete form"
+              icon
+              @click="handleDelete"
+              title="delete form"
           >
             <v-icon>mdi-delete</v-icon>
           </v-btn>
@@ -60,9 +106,9 @@
   import TextFieldMeasure from '@/components/text-field-measure';
 
   export default {
-    components: { 
+    components: {
       TextFieldMeasure,
-       
+
     },
     props: {
       id: {
@@ -77,6 +123,11 @@
         type: Object,
         required: true,
       },
+      type: {
+        type: String,
+        required: false,
+        default: 'default',
+      },
       deletable: {
         type: Boolean,
         default: false,
@@ -85,11 +136,38 @@
     data() {
       return {
         formData: {
-          difference: '1',
-          calculationLayer: 1,
-          measure: 'riverbedDifference',
+          default: {
+            difference: '1',
+            calculationLayer: 1,
+            measure: 'riverbedDifference',
+            level: 0,
+          },
+          system: {
+            level: 0,
+            placement: 0,
+          },
         },
         calculationLayers: [ 1, 2 ],
+        levels: [
+          { text: 'Hoofd', value: 0 },
+          { text: 'Primair', value: 1 },
+          { text: 'Secundair', value: 2 },
+          { text: 'Tertiair', value: 3 },
+        ],
+        placements: [
+          {
+            text: 0,
+            value: 0,
+          },
+          {
+            text: 1,
+            value: 1,
+          },
+          {
+            text: 2,
+            value: 2,
+          },
+        ],
         measures: [
           {
             text: 'Rivierbodem (unit m)',
@@ -117,7 +195,7 @@
     computed: {
       differenceRules() {
         if (this.formData.measure === 'riverbedDifference') {
-          return  [
+          return [
             this.rules.required,
             this.rules.notZero,
             (value) =>
@@ -127,7 +205,7 @@
         }
 
         if (this.formData.measure === 'stageDifference') {
-         
+
           return [
             this.rules.required,
             this.rules.notZero,

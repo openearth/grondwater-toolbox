@@ -16,7 +16,7 @@
       <map-raster-opacity-control v-if="activeLayers.length" :layers="activeLayers" />
 
       <!-- Base layer -->
-      <raster-layer :layer="waterWaysLayer"/>
+<!--      <raster-layer :layer="waterWaysLayer"/>-->
 
       <!-- Show selection layers before calculation -->
       <template v-if="!activeLayers.length">

@@ -19,7 +19,57 @@
       @mouseleave="handleMouseLeave(selection.id)"
     >
       <v-row no-gutters>
-        <v-col cols="12" sm="5">
+        <v-col cols="12" sm="3">
+          <v-card
+              class="pa-2"
+              outlined
+              tile
+          >
+            Niveau
+          </v-card>
+        </v-col>
+        <v-col cols="12" sm="8">
+          <v-card
+              class="pa-2"
+              outlined
+              tile
+          >
+            Ligging
+          </v-card>
+        </v-col>
+      </v-row>
+      <configuration-form
+          v-for="(form, index) in selection.configuration.filter(({type}) => type === 'system')"
+          v-model="form.data"
+          type="system"
+          :key="form.id"
+          :id="form.id"
+          :disabled="disabled"
+          :deletable="index !== 0"
+          @delete="handleDeleteForm(selection.id, $event)"
+          @validated="setFormValidity(selection, $event)"
+      />
+      <v-btn
+          icon-start
+          class="mt-4 mb-6"
+          title="watersysteem toevoegen"
+          depressed
+          @click="addForm(selection.id, 'system')"
+      >
+        <v-icon left>mdi-plus</v-icon>
+        Watersysteem
+      </v-btn>
+      <v-row no-gutters>
+        <v-col cols="12" sm="3">
+          <v-card
+            class="pa-2"
+            outlined
+            tile
+          >
+            Niveau
+          </v-card>
+        </v-col>
+        <v-col cols="12" sm="4">
           <v-card
             class="pa-2"
             outlined
@@ -28,7 +78,7 @@
             Maatregel
           </v-card>
         </v-col>
-        <v-col cols="12" sm="3">
+        <v-col cols="12" sm="2">
           <v-card
             class="pa-2"
             outlined
@@ -37,19 +87,21 @@
             Verschil
           </v-card>
         </v-col>
-        <v-col cols="12" sm="3">
+        <v-col cols="12" sm="2">
           <v-card
             class="pa-2"
             outlined
             tile
           >
-            Berekening
+            Laag
           </v-card>
         </v-col>
       </v-row>
 
+
+
       <configuration-form
-        v-for="(form, index) in selection.configuration"
+        v-for="(form, index) in selection.configuration.filter(({type}) => type === 'default')"
         v-model="form.data"
         :key="form.id"
         :id="form.id"
@@ -167,6 +219,7 @@
       }
     },
     computed: {
+      ...mapGetters('app', [ 'viewerConfig' ]),
       ...mapGetters('mapbox', [ 'features', 'loadingWmsLayers', 'wmsLayers' ]),
       ...mapGetters('selections', [ 'selections' ]),
       // iterates through all forms and checks if every one of them is valid
@@ -205,16 +258,27 @@
         }, []);
       },
     },
+    mounted() {
+      if (this.viewerConfig !== 'brl') {
+        return;
+      }
+      this.selections.forEach(selection => {
+        const hasSystem = selection.configuration.some(({ type }) => type === 'system');
+        if (!hasSystem) {
+          this.addForm(selection.id, 'system');
+        }
+      });
+    },
     methods: {
       ...mapActions('app', [ 'addLockedViewerStep', 'removeLockedViewerStep', 'setViewerCurrentStepNumber' ]),
       ...mapActions('mapbox', [ 'calculateResult', 'resetHiddenWmsLayers', 'resetWmsLayers' ]),
-      ...mapActions('selections', [ 'addSelectionConfiguration', 'removeSelectionConfiguration' ]),
+      ...mapActions('selections', [ 'addSelectionConfiguration', 'addSelectionWaterSystemConfiguration', 'removeSelectionConfiguration' ]),
       async onNext() {
         this.$router.push({ name: 'tool-step-3' });
         this.setViewerCurrentStepNumber({ step: 3 });
       },
-      addForm(id) {
-        this.addSelectionConfiguration({ id });
+      addForm(id, type = 'default') {
+        this.addSelectionConfiguration({ id, type });
       },
       async calculate() {
         this.resetWmsLayers();
