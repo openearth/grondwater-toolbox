@@ -26,7 +26,7 @@
       <v-row no-gutters>
         <v-col>
           <v-select
-              label="Resolutie van berekend resultaat (celgrootte)"
+              label="Horizontale rekenresolutie"
               v-model="selectedOutres"
               :items="outres.map((res) => ({ text: `${res}m`, value: res }))"
               :rules="[rules.required]"
