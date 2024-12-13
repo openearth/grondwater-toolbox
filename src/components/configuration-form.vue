@@ -3,17 +3,22 @@
     <v-row no-gutters>
       <v-col cols="12" sm="3">
         <v-card
-            class="pa-2 full-height d-flex"
+            class=" full-height d-flex align-center"
             outlined
             tile
         >
+          <span class="pl-2" v-if="type === 'system'">
+            {{ levelLabel }}
+          </span>
           <v-select
+              v-else
               v-model="formData.level"
-              class="hide-label"
+              class="hide-label pa-2"
               label="Niveau"
               :items="levels"
               :disabled="disabled"
           />
+
         </v-card>
       </v-col>
       <v-col
@@ -68,23 +73,26 @@
       <v-col
           v-if="type === 'system'"
           cols="12"
-          sm="8"
+          sm="5"
       >
         <v-card
-            class="pa-2 full-height d-flex"
+            class="d-flex align-center pl-2"
             outlined
             tile
         >
-          <v-select
+          <v-checkbox
               v-model="formData.placement"
-              class="hide-label"
-              label="Ligging"
+              :label="formData.placement ? 'Actief' : 'Activeren'"
               :items="placements"
               :disabled="disabled"
           />
         </v-card>
       </v-col>
-      <v-col cols="12" sm="1">
+      <v-col
+          cols="12"
+          sm="1"
+          v-if="type !== 'system'"
+      >
         <div
             v-if="deletable"
             class="d-flex justify-end align-center full-height"
@@ -144,7 +152,7 @@
           },
           system: {
             level: 0,
-            placement: 0,
+            placement: false,
           },
         },
         calculationLayers: [ 1, 2 ],
@@ -193,6 +201,9 @@
       };
     },
     computed: {
+      levelLabel() {
+        return this.levels.find((l) => l.value === this.formData.level).text;
+      },
       differenceRules() {
         if (this.formData.measure === 'riverbedDifference') {
           return [

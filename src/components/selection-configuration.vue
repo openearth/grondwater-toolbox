@@ -28,7 +28,7 @@
             Niveau
           </v-card>
         </v-col>
-        <v-col cols="12" sm="8">
+        <v-col cols="12" sm="5">
           <v-card
               class="pa-2"
               outlined
@@ -49,17 +49,17 @@
           @delete="handleDeleteForm(selection.id, $event)"
           @validated="setFormValidity(selection, $event)"
       />
-      <v-btn
-          icon-start
-          class="mt-4 mb-6"
-          title="watersysteem toevoegen"
-          depressed
-          @click="addForm(selection.id, 'system')"
-      >
-        <v-icon left>mdi-plus</v-icon>
-        Watersysteem
-      </v-btn>
-      <v-row no-gutters>
+<!--      <v-btn-->
+<!--          icon-start-->
+<!--          class="mt-4 mb-6"-->
+<!--          title="watersysteem toevoegen"-->
+<!--          depressed-->
+<!--          @click="addForm(selection.id, 'system')"-->
+<!--      >-->
+<!--        <v-icon left>mdi-plus</v-icon>-->
+<!--        Watersysteem-->
+<!--      </v-btn>-->
+      <v-row no-gutters class="mt-6">
         <v-col cols="12" sm="3">
           <v-card
             class="pa-2"
@@ -265,6 +265,9 @@
       this.selections.forEach(selection => {
         const hasSystem = selection.configuration.some(({ type }) => type === 'system');
         if (!hasSystem) {
+          this.addForm(selection.id, 'system');
+          this.addForm(selection.id, 'system');
+          this.addForm(selection.id, 'system');
           this.addForm(selection.id, 'system');
         }
       });

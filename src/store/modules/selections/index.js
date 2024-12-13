@@ -31,7 +31,7 @@ export default {
         },
         system: {
           level: 0,
-          placement: 0,
+          placement: false,
         },
       };
       state.selections.push({
@@ -93,7 +93,7 @@ export default {
         system: {
           data: {
             level,
-            placement: 0,
+            placement: false,
           },
         },
       };
