@@ -25,7 +25,7 @@
               type="number"
               min="0"
               label="Geef wijziging van drainage niveau aan (m)"
-              :rules="[rules.requiredAmountToDig, rules.minExtentAmountToDig]"
+              :rules="[rules.requiredAmount, rules.minExtentAmount]"
               @update:error="setAmountValidity"
           />
         </v-col>
@@ -117,8 +117,8 @@
           requiredSizeModel: value => !!value || 'Benodigd.',
           minExtentSizeModel: value =>
             value >= 500 || 'Een grootte van minimaal 500 meter is vereist.',
-          requiredAmountToDig: value => !!value || 'Benodigd.',
-          minExtentAmountToDig: value =>
+          requiredAmount: value => !!value || 'Benodigd.',
+          minExtentAmount: value =>
             value >= 0 || 'Een grootte van minimaal 0 meter is vereist.',
           maxExtent: value =>
             parseFloat(value) <= 25000 ||
@@ -197,7 +197,7 @@
         };
 
         const data = {
-          functionId: 'brl_wps_digit',
+          functionId: 'brl_wps_digit', //@TODO: Update to the correct functionId
           featureCollection: createFeatureCollection(selection),
         };
 

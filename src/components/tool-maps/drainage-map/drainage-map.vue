@@ -1,5 +1,5 @@
 <template>
-    <div class="dig-map">
+    <div class="drainage-map">
       <mgl-map
         mapStyle="mapbox://styles/mapbox/streets-v11"
         :accessToken="mapBoxToken"
@@ -129,12 +129,12 @@
   </script>
   
   <style>
-    .dig-map {
+    .drainage-map {
       width: 100%;
       height: 100%;
     }
   
-    .dig-map__map {
+    .drainage-map__map {
       width: 100%;
       height: 100%;
     }
