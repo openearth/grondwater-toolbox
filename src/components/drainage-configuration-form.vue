@@ -19,18 +19,18 @@
       <v-row no-gutters>
         <v-col>
 <!--          <v-text-field-->
-<!--              v-model="formData.drn_cond"-->
+<!--              v-model="formData.drn_res"-->
 <!--              type="number"-->
 <!--              min="0"-->
 <!--              label="Geef wijziging van drainage niveau aan (m)"-->
 <!--              :rules="[rules.requiredAmount, rules.minBufferAmount]"-->
 <!--          />-->
           <v-text-field
-              v-model="formData.drn_cond"
+              v-model="formData.drn_res"
               type="number"
               min="0"
-              label="drn_cond"
-              :rules="[rules.requiredAmount, rules.minBufferAmount]"
+              label="Geef drainage weerstand aan (in dagen)"
+              :rules="[rules.requiredAmount, rules.minResAmount]"
           />
         </v-col>
       </v-row>
@@ -40,19 +40,8 @@
               v-model="formData.drn_bodh"
               type="number"
               min="0"
-              label="drn_bodh"
-              :rules="[rules.requiredAmount, rules.minBufferAmount]"
-          />
-        </v-col>
-      </v-row>
-      <v-row no-gutters>
-        <v-col>
-          <v-text-field
-              v-model="formData.drn_conc"
-              type="number"
-              min="0"
-              label="drn_conc"
-              :rules="[rules.requiredAmount, rules.minBufferAmount]"
+              label="Geef drainage bodemhoogte aan (in m-NAP)"
+              :rules="[rules.requiredAmount, rules.minBodhAmount]"
           />
         </v-col>
       </v-row>
@@ -108,9 +97,8 @@
         formData: {
           buffer: '1000',
           layer: null,
-          drn_cond: 10,
+          drn_res: 10,
           drn_bodh: 2.5,
-          drn_conc: 10,
           outres: 250,
         },
         layers: [ 1, 2, 3, 4, 5, 6, 7 ],
@@ -118,7 +106,7 @@
         selectedColor: '#f79502',
         originalLineColor: '#000',
         bufferValid: true,
-        drn_condValid: true,
+        drn_resValid: true,
         valid: false,
         rules: {
           required: (value) => !!value || 'Benodigd.',
@@ -126,8 +114,10 @@
           minBufferSizeModel: value =>
             value >= 500 || 'Een grootte van minimaal 500 meter is vereist.',
           requiredAmount: value => !!value || 'Benodigd.',
-          minBufferAmount: value =>
-            value >= 0 || 'Een grootte van minimaal 0 meter is vereist.',
+          minBodhAmount: value =>
+            value > 0 || 'Een hoogte groter dan 0 meter is vereist.',
+          minResAmount: value =>
+            value > 0 || 'Een minimum van 1 dag is vereist.',
           maxBuffer: value =>
             parseFloat(value) <= 25000 ||
             'De grootte mag niet groter zijn dan 25.000 meter.',
@@ -144,14 +134,6 @@
     },
     beforeMount() {
       this.formData = this.value;
-    },
-    methods: {
-      setBufferValidity(hasError) {
-        this.bufferValid = !hasError;
-      },
-      setAmountValidity(hasError) {
-        this.drn_condValid = !hasError;
-      },
     },
   };
 </script>

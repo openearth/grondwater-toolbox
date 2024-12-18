@@ -104,6 +104,9 @@
       ...mapGetters('mapbox', [ 'features', 'loadingWmsLayers', 'wmsLayers' ]),
       ...mapGetters('selections', [ 'selections' ]),
       ...mapGetters('drainage', [ 'drainageConfigurations' ]),
+      valid() {
+        return this.drainageConfigurations.every((config) => config.valid);
+      },
     },
     methods: {
       ...mapActions('app', [
@@ -133,10 +136,9 @@
           functionId: 'brl_wps_drainage',
           featureCollection: createFeatureCollection('drainage', selections),
         };
-        console.log(data);
 
         await this.calculateResult(data);
-        if (this.drainageConfigurations.each((config) => config.valid)) {
+        if (this.valid) {
           this.removeLockedViewerStep({ step: 3 });
         } else {
           this.addLockedViewerStep({ step: 3 });

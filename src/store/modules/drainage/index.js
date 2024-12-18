@@ -33,9 +33,8 @@ export default {
         data: {
           buffer: '1000',
           layer: null,
-          drn_cond: 10,
+          drn_res: 10,
           drn_bodh: 2.5,
-          drn_conc: 10,
           outres: 250,
         },
       };
@@ -65,7 +64,6 @@ export default {
       // const layersGrouped = await wps(data);
 
       const layersGrouped = await getDrainageData(featureCollection);
-      console.log(layersGrouped);
       await commit('ADD_DRAINAGE_DATA', { sum: 12345 });
       dispatch('mapbox/setLayers', layersGrouped, { root: true });
       dispatch('mapbox/setWmsLayersLoading', { isLoading: false }, { root: true });
