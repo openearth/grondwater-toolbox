@@ -59,9 +59,6 @@
   import { featureCollection } from '@turf/helpers';
   import createFeatureCollection from '@/lib/create-feature-collection';
 
-
-
-
   export default {
     props: {
       disabled: {
@@ -149,10 +146,9 @@
           layer: '1',
           depth: parseFloat(this.amount),
         };
-
         const data = {
           functionId: 'brl_wps_digit',
-          featureCollection:createFeatureCollection(selection),
+          featureCollection: createFeatureCollection(selection.name, [ selection ]),
         };
 
         await this.calculateResult(data);

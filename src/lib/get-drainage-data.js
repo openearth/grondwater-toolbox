@@ -1,41 +1,34 @@
 import geoServerUrl from './geoserver-url';
 
-const DATA_TEMPLATE = ({ area, coordinates, layer, drainage }) =>
+const DATA_TEMPLATE = ({ name, features }) =>
   JSON.stringify({
     type: 'FeatureCollection',
-    name: 'point',
+    name,
     crs: {
       type: 'name',
       properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' },
     },
-    features: [
-      {
+    features: features.map(({  properties, geometry } ) => ({
         type: 'Feature',
-        properties: {
-          fid: 1,
-          layer,
-          area,
-          drainage,
-        },
-        geometry: {
-          type: 'Point',
-          coordinates,
-        },
-      },
-    ],
+        properties,
+        geometry,
+      })),
   }, 0, false);
 
-export default async function getDrainageData ({ area, coordinates, layer, drainage }) {
-  const data = DATA_TEMPLATE({ area, coordinates, layer, drainage });
+export default async function getDrainageData (featureCollection) {
+  const data = DATA_TEMPLATE(featureCollection);
   const url = await geoServerUrl({
     url: process.env.VUE_APP_GEO_SERVER + '/wps',
+    width: 0,
+    height: 0,
     request: 'Execute',
     service: 'WPS',
     identifier: 'brl_wps_drainage',
     version: '1.0.0',
     encode: false,
-    DataInputs: 'geojson_point=' + data,
+    DataInputs: 'json_inputs=' + data,
   });
+  console.info(url);
 
   return fetch(url)
     .then(response => response.text())

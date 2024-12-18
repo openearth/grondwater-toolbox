@@ -1,58 +1,20 @@
-<!-- TODO: this component can become configurable from the data/{tool}.json file -->
 <template>
   <div class="selection-configuration">
-    <v-form v-model="formValid">
-      <v-row no-gutters>
-        <v-col>
-          <v-text-field
-              v-model="extent"
-              type="number"
-              min="0"
-              label="Grootte modelgebied (in m rondom de getekende polygoon)"
-              :rules="[
-              rules.requiredSizeModel,
-              rules.minExtentSizeModel,
-              rules.maxExtent
-            ]"
-              @update:error="setExtentValidity"
-          />
-        </v-col>
-      </v-row>
-      <v-row no-gutters>
-        <v-col>
-          <v-text-field
-              v-model="amount"
-              type="number"
-              min="0"
-              label="Geef wijziging van drainage niveau aan (m)"
-              :rules="[rules.requiredAmount, rules.minExtentAmount]"
-              @update:error="setAmountValidity"
-          />
-        </v-col>
-      </v-row>
-      <v-row no-gutters>
-        <v-col>
-          <v-select
-              label="Horizontale rekenresolutie (meter)"
-              v-model="selectedOutres"
-              :items="outres.map(res => ({ text: `${res}m`, value: res }))"
-              :rules="[rules.required]"
-          />
-        </v-col>
-      </v-row>
-      <v-row no-gutters>
-        <v-col>
-          <v-select
-              label="Drainage toepassen in laag"
-              v-model="selectedLayer"
-              :items="
-                layers.map(layer => ({ text: `Laag ${layer}`, value: layer }))
-              "
-              :rules="[rules.required]"
-          />
-        </v-col>
-      </v-row>
-    </v-form>
+    <configuration-card
+        v-for="(form) in drainageConfigurations"
+        :key="form.id"
+        :id="form.id"
+        :title="form.name"
+        @mouseenter="handleMouseEnter(form.id)"
+        @mouseleave="handleMouseLeave(form.id)"
+    >
+      <drainage-configuration-form
+          v-model="form.data"
+          :id="form.id"
+          :disabled="disabled"
+          @validated="setFormValidity(form, $event)"
+      />
+    </configuration-card>
     <div class="d-flex justify-space-between align-center">
       <v-alert
           v-if="loadingWmsLayers"
@@ -91,8 +53,11 @@
   import bbox from '@turf/bbox';
   import { featureCollection } from '@turf/helpers';
   import createFeatureCollection from '@/lib/create-feature-collection';
+  import ConfigurationCard from '@/components/configuration-card.vue';
+  import DrainageConfigurationForm from '@/components/drainage-configuration-form.vue';
 
   export default {
+    components: { DrainageConfigurationForm, ConfigurationCard },
     props: {
       disabled: {
         type: Boolean,
@@ -101,30 +66,15 @@
     },
     data() {
       return {
-        extent: '1000',
-        extentValid: true,
-        amount: '10',
-        amountValid: true,
-        layers: [ 1, 2, 3, 4, 5, 6, 7 ],
-        outres: [ 25, 50, 125, 250 ],
-        selectedOutres: 250,
         selectedLayer: null,
         selectedColor: '#f79502',
         originalLineColor: '#000',
-        formValid: false,
-        rules: {
-          required: (value) => !!value || 'Benodigd.',
-          requiredSizeModel: value => !!value || 'Benodigd.',
-          minExtentSizeModel: value =>
-            value >= 500 || 'Een grootte van minimaal 500 meter is vereist.',
-          requiredAmount: value => !!value || 'Benodigd.',
-          minExtentAmount: value =>
-            value >= 0 || 'Een grootte van minimaal 0 meter is vereist.',
-          maxExtent: value =>
-            parseFloat(value) <= 25000 ||
-            'De grootte mag niet groter zijn dan 25.000 meter.',
-        },
       };
+    },
+    mounted() {
+      this.selections.forEach(selection => {
+        this.addDrainageConfiguration(selection);
+      });
     },
     created() {
       this.resetWmsLayers();
@@ -153,14 +103,7 @@
     computed: {
       ...mapGetters('mapbox', [ 'features', 'loadingWmsLayers', 'wmsLayers' ]),
       ...mapGetters('selections', [ 'selections' ]),
-      // iterates through all forms and checks if every one of them is valid
-      valid() {
-        return (
-          this.selections.every(selection => {
-            return selection.configuration.every(form => form.valid);
-          }) && this.extentValid
-        );
-      },
+      ...mapGetters('drainage', [ 'drainageConfigurations' ]),
     },
     methods: {
       ...mapActions('app', [
@@ -172,37 +115,28 @@
         'resetHiddenWmsLayers',
         'resetWmsLayers',
       ]),
-      ...mapActions('drainage', [ 'calculateResult' ]),
-      ...mapActions('selections', [
-        'addSelectionConfiguration',
-        'removeSelectionConfiguration',
-      ]),
+      ...mapActions('drainage', [ 'calculateResult', 'addDrainageConfiguration', 'updateDrainageConfiguration' ]),
       async onNext() {
         this.$router.push({ name: 'tool-step-3' });
         this.setViewerCurrentStepNumber({ step: 3 });
-      },
-      addForm(id) {
-        this.addSelectionConfiguration({ id });
       },
       async calculate() {
         this.resetWmsLayers();
         this.resetHiddenWmsLayers();
 
-        let selection = this.selections[0]; //TODO: for now only for one selection. Future improvement
-        selection.properties = {
-          area: parseFloat(this.extent),
-          depth: parseFloat(this.amount),
-          outres: parseInt(this.selectedOutres, 10),
-          layer: parseInt(this.selectedLayer, 10),
-        };
+        const selections = this.selections.map(selection => ({
+          ...selection,
+          properties: this.drainageConfigurations.find((config) => config.selection === selection.id).data,
+        }));
 
         const data = {
-          functionId: 'brl_wps_digit', //@TODO: Update to the correct functionId
-          featureCollection: createFeatureCollection(selection),
+          functionId: 'brl_wps_drainage',
+          featureCollection: createFeatureCollection('drainage', selections),
         };
+        console.log(data);
 
         await this.calculateResult(data);
-        if (this.valid) {
+        if (this.drainageConfigurations.each((config) => config.valid)) {
           this.removeLockedViewerStep({ step: 3 });
         } else {
           this.addLockedViewerStep({ step: 3 });
@@ -217,25 +151,8 @@
       handleMouseEnter(id) {
         this.$root.map.setPaintProperty(id, 'line-color', this.selectedColor);
       },
-      handleInput({ id, formId, data }) {
-        const feature = this.forms.find({ id } === id);
-        const form = feature && feature.forms.find(({ id }) => id === formId);
-
-        form.data = data;
-      },
-      handleDeleteForm(selectionId, formId) {
-        this.removeSelectionConfiguration({ selectionId, formId });
-      },
-      setFormValidity(selection, { id, valid }) {
-        const form = selection.configuration.find(form => form.id === id);
-
-        form.valid = valid;
-      },
-      setExtentValidity(hasError) {
-        this.extentValid = !hasError;
-      },
-      setAmountValidity(hasError) {
-        this.amountValid = !hasError;
+      setFormValidity(configuration, { id, valid }) {
+        this.updateDrainageConfiguration({ id, valid });
       },
       zoomToSelection() {
         if (!this.features.length) {
