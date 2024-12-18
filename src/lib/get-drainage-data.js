@@ -18,7 +18,7 @@ const DATA_TEMPLATE = ({ name, features }) =>
 export default async function getDrainageData (featureCollection) {
   const data = DATA_TEMPLATE(featureCollection);
   const url = await geoServerUrl({
-    url: process.env.VUE_APP_GEO_SERVER + '/wps',
+    url: 'https://openearth-basis-rivierbodem-ligging-test.avi.directory.intra/wps', //@TODO: Remove TEST URL
     width: 0,
     height: 0,
     request: 'Execute',
