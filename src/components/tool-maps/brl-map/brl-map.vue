@@ -1,13 +1,14 @@
 <template>
   <div class="brl-map">
     <mgl-map
-      mapStyle="mapbox://styles/mapbox/streets-v11"
-      :accessToken="mapBoxToken"
-      :center="mapCenter"
-      :zoom="mapZoom"
-      @load="onMapCreated"
+        mapStyle="mapbox://styles/mapbox/streets-v11"
+        :accessToken="mapBoxToken"
+        :center="mapCenter"
+        :zoom="mapZoom"
+        @load="onMapCreated"
     >
-      <map-legend v-if="legendSource" v-bind="legendSource"/>
+      <map-legend v-if="legendSource" v-bind="legendSource" />
+      <map-levels v-model="systemLayers" />
 
       <map-select-tool position="top-left" highlighted-tool="draw" />
 
@@ -15,37 +16,41 @@
       <mgl-navigation-control position="bottom-right" />
       <map-raster-opacity-control v-if="activeLayers.length" :layers="activeLayers" />
 
-      <!-- Base layer -->
-<!--      <raster-layer :layer="waterWaysLayer"/>-->
+      <!-- System layers -->
+        <raster-layer
+            v-for="layer in activeSystemLayers"
+            :key="layer.id"
+            :layer="layer"
+        />
 
       <!-- Show selection layers before calculation -->
       <template v-if="!activeLayers.length">
         <raster-layer
-          v-for="feature in features"
-          :key="feature.watersIdentifier"
-          :layer="feature"
+            v-for="feature in features"
+            :key="feature.watersIdentifier"
+            :layer="feature"
         />
       </template>
       <!-- Show calculation layers when available -->
       <template v-else>
         <raster-layer
-          v-for="wmsLayer in activeLayers"
-          :key="wmsLayer.id"
-          :layer="wmsLayer"
+            v-for="wmsLayer in activeLayers"
+            :key="wmsLayer.id"
+            :layer="wmsLayer"
         />
         <map-layer-info
-          v-for="wmsLayer in activeLayers"
-          :key="`${wmsLayer.id}-info`"
-          :layer="wmsLayer"
+            v-for="wmsLayer in activeLayers"
+            :key="`${wmsLayer.id}-info`"
+            :layer="wmsLayer"
         />
       </template>
 
       <map-popup
-        v-if="activePopup && activePopupCoordinates"
-        :coordinates="activePopupCoordinates"
-        showed
-        :close-button="true"
-        @close="onClosePopup"
+          v-if="activePopup && activePopupCoordinates"
+          :coordinates="activePopupCoordinates"
+          showed
+          :close-button="true"
+          @close="onClosePopup"
       >
         {{ activePopup.content }}
       </map-popup>
@@ -65,6 +70,7 @@
   import MapSearch from '@/components/map-components/map-search';
   import MapSelectTool from '@/components/map-components/map-select-tool';
   import RasterLayer from '@/components/map-components/raster-layer';
+  import MapLevels from '@/components/map-components/map-levels.vue';
 
   import MapLayerInfo from './map-layer-info';
 
@@ -73,6 +79,7 @@
 
   export default {
     components: {
+      MapLevels,
       MapSelectTool,
       MapLayerInfo,
       MapLegend,
@@ -88,7 +95,30 @@
         mapZoom: 6.5,
         mapCenter: [ 5.2913, 52.1326 ],
         waterWaysUrl: `${ process.env.VUE_APP_GEO_SERVER }/geoserver/vaarwegvakken/wms`,
+        waterSystemsUrl: `${ process.env.VUE_APP_GEO_SERVER }/geoserver/basisdata/wms`,
         waterWaysLayerId: 'nwb_vaarwegen:vaarwegvakken',
+        systemLayers: {
+          main: {
+            label: 'Hoofd',
+            layer: 'basisdata:ligging_hoofd_watersysteem',
+            active: false,
+          },
+          primary: {
+            label: 'Primair',
+            layer: 'basisdata:ligging_primair_watersysteem',
+            active: false,
+          },
+          secondary: {
+            label: 'Secundair',
+            layer: 'basisdata:ligging_secundair_watersysteem',
+            active: false,
+          },
+          tertiary: {
+            label: 'Tertiair',
+            layer: 'basisdata:ligging_tertiair_watersysteem',
+            active: false,
+          },
+        },
       };
     },
     computed: {
@@ -129,7 +159,20 @@
           id: 'water-ways',
         });
       },
+      activeSystemLayers() {
+        return Object.values(this.systemLayers)
+          .filter(({ active }) => active)
+          .map(({ layer }) => wms({
+            ...generateWmsLayer({
+              url: this.waterSystemsUrl,
+              id: `water-systems-${ layer }`,
+              layer,
+            }).source,
+            id: `water-systems-${ layer }`,
+          }));
+      },
     },
+
     created() {
       this.mapbox = Mapbox;
     },
@@ -148,34 +191,34 @@
 </script>
 
 <style>
-  .brl-map {
-    width: 100%;
-    height: 100%;
-  }
+.brl-map {
+  width: 100%;
+  height: 100%;
+}
 
-  .brl-map__map {
-    width: 100%;
-    height: 100%;
-  }
+.brl-map__map {
+  width: 100%;
+  height: 100%;
+}
 
-  .mapboxgl-popup-content {
-    box-shadow: 0 0 5px 2px rgba(0, 0, 0, .3);
-  }
+.mapboxgl-popup-content {
+  box-shadow: 0 0 5px 2px rgba(0, 0, 0, .3);
+}
 
-  .mapboxgl-popup-close-button {
-    position: absolute;
-    top: -12px;
-    right: -12px;
-    width: 24px;
-    height: 24px;
-    padding-bottom: 2px;
-    border-radius: 50%;
-    background-color: #ededed;
-    font-size: 1.25rem;
-    line-height: 0;
-  }
+.mapboxgl-popup-close-button {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  width: 24px;
+  height: 24px;
+  padding-bottom: 2px;
+  border-radius: 50%;
+  background-color: #ededed;
+  font-size: 1.25rem;
+  line-height: 0;
+}
 
-  .mapboxgl-popup-close-button:hover {
-    background-color: #d5d5d5;
-  }
+.mapboxgl-popup-close-button:hover {
+  background-color: #d5d5d5;
+}
 </style>

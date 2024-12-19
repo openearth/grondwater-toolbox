@@ -7,6 +7,13 @@ const initialState = () => ({
   selections: [],
 });
 
+const defaultConfiguration = JSON.stringify({
+  enabled: false,
+  difference: '1',
+  calculationLayer: 1,
+  measure: 'riverbedDifference',
+});
+
 export default {
   namespaced: true,
 
@@ -18,36 +25,21 @@ export default {
   },
 
   mutations: {
-    ADD_SELECTION(state, { selection, type }) {
+    ADD_SELECTION(state, { selection }) {
       const totalSelections = state.selections.length;
-      const defaultFormData = {
-        default: {
-          data: {
-            level: 0,
-            difference: '1',
-            calculationLayer: 1,
-            measure: 'riverbedDifference',
-          },
-        },
-        system: {
-          level: 0,
-          placement: false,
-        },
-      };
       state.selections.push({
         ...selection,
+        name: selection.name || `Selectie #${ totalSelections + 1 }`,
         configuration: selection.configuration || [ {
           id: uuid(),
           valid: true,
-          type,
-          ...defaultFormData[type],
-        },
-          ...(type !== 'default' ? [ {
-            id: uuid(),
-            valid: true,
-            type, ...defaultFormData.default,
-          } ] : []) ],
-        name: selection.name || `Selectie #${ totalSelections + 1 }`,
+          data: {
+            main: { ...JSON.parse(defaultConfiguration), enabled: true },
+            primary: JSON.parse(defaultConfiguration),
+            secondary: JSON.parse(defaultConfiguration),
+            tertiary: JSON.parse(defaultConfiguration),
+          },
+          } ],
       });
     },
     REMOVE_SELECTION(state, { id }) {
@@ -73,31 +65,14 @@ export default {
       const selection = state.selections.find(s => s.id === id);
       Vue.set(selection, 'loading', value);
     },
-    ADD_SELECTION_CONFIGURATION(state, { id, type }) {
+    ADD_SELECTION_CONFIGURATION(state, { id }) {
       const selection = state.selections.find((selection) => selection.id === id);
       const defaultForm = {
         id: uuid(),
         valid: true,
-        type,
+        data: JSON.parse(defaultConfiguration),
       };
-      const level = Math.min(selection.configuration.filter((config) => config.type === type).length, 3);
-      const formdata = {
-        default: {
-          data: {
-            level,
-            difference: '1',
-            calculationLayer: 1,
-            measure: 'riverbedDifference',
-          },
-        },
-        system: {
-          data: {
-            level,
-            placement: false,
-          },
-        },
-      };
-      selection.configuration.push({ ...defaultForm, ...formdata[type] });
+      selection.configuration.push(defaultForm);
     },
     REMOVE_SELECTION_CONFIGURATION(state, { selectionId, formId }) {
       const selection = state.selections.find((selection) => selection.id === selectionId);
@@ -109,8 +84,8 @@ export default {
     addSelection({ commit }, { selection, type = 'default' }) {
       commit('ADD_SELECTION', { selection, type });
     },
-    addSelectionConfiguration({ commit }, { id, type = 'default' }) {
-      commit('ADD_SELECTION_CONFIGURATION', { id, type });
+    addSelectionConfiguration({ commit }, { id }) {
+      commit('ADD_SELECTION_CONFIGURATION', { id });
     },
     editSelectionName({ commit }, { id, name }) {
       commit('EDIT_SELECTION_NAME', { id, name });

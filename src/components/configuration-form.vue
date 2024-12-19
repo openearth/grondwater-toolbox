@@ -1,28 +1,38 @@
 <template>
   <v-form v-model="valid" class="configuration-form border">
-    <v-row no-gutters>
+    <v-row
+        no-gutters
+        v-for="level in Object.keys(formData)"
+        :key="level"
+        :class="formData[level].enabled ? 'active' : 'inactive'"
+    >
+      <v-col cols="12" sm="1">
+        <v-card
+            class="full-height d-flex align-center justify-center"
+            outlined
+            tile
+        >
+          <v-checkbox
+              v-model="formData[level].enabled"
+              hide-details
+              class="hide-label checkbox align-center"
+              label="Plaatsing"
+              :disabled="disabled"
+          />
+        </v-card>
+      </v-col>
       <v-col cols="12" sm="3">
         <v-card
             class=" full-height d-flex align-center"
             outlined
             tile
         >
-          <span class="pl-2" v-if="type === 'system'">
-            {{ levelLabel }}
+          <span class="pl-2">
+            {{ levels[level] }}
           </span>
-          <v-select
-              v-else
-              v-model="formData.level"
-              class="hide-label pa-2"
-              label="Niveau"
-              :items="levels"
-              :disabled="disabled"
-          />
-
         </v-card>
       </v-col>
       <v-col
-          v-if="type === 'default'"
           cols="12"
           sm="4"
       >
@@ -32,7 +42,7 @@
             tile
         >
           <v-select
-              v-model="formData.measure"
+              v-model="formData[level].measure"
               class="hide-label"
               label="Onttrekking toepassen in laag"
               :items="measures"
@@ -41,18 +51,16 @@
         </v-card>
       </v-col>
       <v-col
-          v-if="type === 'default'"
           cols="12"
           sm="2"
       >
         <text-field-measure
-            :key="formData.measure"
+            v-model="formData[level].difference"
             :differenceRules="differenceRules"
             :disabled="disabled"
-            @update-difference-value="onUpdateDifferenceValue" />
+        />
       </v-col>
       <v-col
-          v-if="type === 'default'"
           cols="12"
           sm="2"
       >
@@ -62,49 +70,13 @@
             tile
         >
           <v-select
-              v-model="formData.calculationLayer"
+              v-model="formData[level].calculationLayer"
               class="hide-label"
               label="Onttrekking toepassen in laag"
               :items="calculationLayers.map((l) => ({ text: l, value: l }))"
               :disabled="disabled"
           />
         </v-card>
-      </v-col>
-      <v-col
-          v-if="type === 'system'"
-          cols="12"
-          sm="5"
-      >
-        <v-card
-            class="d-flex align-center pl-2"
-            outlined
-            tile
-        >
-          <v-checkbox
-              v-model="formData.placement"
-              :label="formData.placement ? 'Actief' : 'Activeren'"
-              :items="placements"
-              :disabled="disabled"
-          />
-        </v-card>
-      </v-col>
-      <v-col
-          cols="12"
-          sm="1"
-          v-if="type !== 'system'"
-      >
-        <div
-            v-if="deletable"
-            class="d-flex justify-end align-center full-height"
-        >
-          <v-btn
-              icon
-              @click="handleDelete"
-              title="delete form"
-          >
-            <v-icon>mdi-delete</v-icon>
-          </v-btn>
-        </div>
       </v-col>
     </v-row>
   </v-form>
@@ -145,10 +117,30 @@
       return {
         formData: {
           default: {
-            difference: '1',
-            calculationLayer: 1,
-            measure: 'riverbedDifference',
-            level: 0,
+            main: {
+              enabled: true,
+              difference: '1',
+              calculationLayer: 1,
+              measure: 'riverbedDifference',
+            },
+            primary: {
+              enabled: true,
+              difference: '1',
+              calculationLayer: 1,
+              measure: 'riverbedDifference',
+            },
+            secondary: {
+              enabled: true,
+              difference: '1',
+              calculationLayer: 1,
+              measure: 'riverbedDifference',
+            },
+            tertiary: {
+              enabled: true,
+              difference: '1',
+              calculationLayer: 1,
+              measure: 'riverbedDifference',
+            },
           },
           system: {
             level: 0,
@@ -156,26 +148,12 @@
           },
         },
         calculationLayers: [ 1, 2 ],
-        levels: [
-          { text: 'Hoofd', value: 0 },
-          { text: 'Primair', value: 1 },
-          { text: 'Secundair', value: 2 },
-          { text: 'Tertiair', value: 3 },
-        ],
-        placements: [
-          {
-            text: 0,
-            value: 0,
-          },
-          {
-            text: 1,
-            value: 1,
-          },
-          {
-            text: 2,
-            value: 2,
-          },
-        ],
+        levels: {
+          main: 'Hoofd',
+          primary: 'Primair',
+          secondary: 'Secundair',
+          tertiary: 'Tertiair',
+        },
         measures: [
           {
             text: 'Rivierbodem (unit m)',
@@ -201,9 +179,6 @@
       };
     },
     computed: {
-      levelLabel() {
-        return this.levels.find((l) => l.value === this.formData.level).text;
-      },
       differenceRules() {
         if (this.formData.measure === 'riverbedDifference') {
           return [
@@ -226,7 +201,7 @@
           ];
         }
 
-        return null;
+        return [];
       },
     },
     watch: {
@@ -252,6 +227,14 @@
 </script>
 
 <style>
+.inactive * {
+  color: rgba(0, 0, 0, 0.4) !important;
+  fill: rgba(0, 0, 0, 0.4) !important;
+}
+.checkbox {
+  aspect-ratio: 1/1;
+}
+
 .hide-label {
   padding-top: 0;
   margin-top: 0;
