@@ -21,11 +21,13 @@
   import AbstractionMap from '@/components/tool-maps/abstraction-map/abstraction-map';
   import AppMap from '@/components/tool-maps/brl-map/brl-map';
   import DigMap from '@/components/tool-maps/dig-map/dig-map';
+  import DrainageMap from '@/components/tool-maps/drainage-map/drainage-map';
 
   const COMPONENT_MAP = {
     'abstraction-map': AbstractionMap,
     'brl-map': AppMap,
     'dig-map': DigMap,
+    'drainage-map': DrainageMap,
   };
 
   export default {

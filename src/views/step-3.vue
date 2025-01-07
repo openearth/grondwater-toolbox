@@ -5,24 +5,25 @@
     <v-divider class="my-6" />
 
     <v-treeview
-      expand-icon="mdi-chevron-down"
-      v-model="tree"
-      :items="items"
-      open-on-click
+        expand-icon="mdi-chevron-down"
+        v-model="tree"
+        :items="items"
+        open-on-click
     >
       <template #prepend="{selected, open, item, indeterminate}">
         <v-icon v-if="item.group">
-          {{ open
-            ? `mdi-folder-open-outline`
-            : `mdi-folder-outline`
+          {{
+            open
+                ? `mdi-folder-open-outline`
+                : `mdi-folder-outline`
           }}
         </v-icon>
 
         <v-btn
-          v-else
-          text
-          icon
-          @click="onLayerVisibilityClick(item.id)"
+            v-else
+            text
+            icon
+            @click="onLayerVisibilityClick(item.id)"
         >
           <v-icon>
             {{ hiddenWmsLayers.some(layer => layer.id === item.id) ? 'mdi-eye-off' : 'mdi-eye' }}
@@ -36,25 +37,28 @@
         </span>
       </template>
     </v-treeview>
-
+    <template v-if="drainageSum">
+    <v-divider class="my-6" />
+      <p class="text-h6">Totaal drainage veranderingen: <code>{{ drainageSum }}</code></p>
+    </template>
     <v-divider class="my-6" />
 
     <sidebar-footer>
       <v-btn
-        slot="start"
-        color="primary"
-        :disabled="previousIsDisabled"
-        depressed
-        @click="onPrevious"
+          slot="start"
+          color="primary"
+          :disabled="previousIsDisabled"
+          depressed
+          @click="onPrevious"
       >
         <v-icon left>mdi-chevron-left</v-icon>
         Vorige
       </v-btn>
       <v-btn
-        slot="end"
-        color="primary"
-        depressed
-        @click="onClickExport"
+          slot="end"
+          color="primary"
+          depressed
+          @click="onClickExport"
       >
         Lagen exporteren
       </v-btn>
@@ -77,6 +81,7 @@
     computed: {
       ...mapGetters('app', [ 'viewerStepsLocked' ]),
       ...mapGetters('mapbox', [ 'features', 'wmsLayers', 'hiddenWmsLayers' ]),
+      ...mapGetters('drainage', [ 'drainageSum' ]),
       items() {
         const labels = {
           head: 'Grondwaterstanden',

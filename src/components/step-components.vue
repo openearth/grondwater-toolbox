@@ -24,6 +24,7 @@
   import SelectionConfiguration from '@/components/selection-configuration';
   import SelectionList from '@/components/selection-list/selection-list';
   import PolygonSelectionConfiguration from '@/components/polygon-selection-configuration';
+  import PolygonDrainageSelectionConfiguration from '@/components/polygon-drainage-selection-configuration.vue';
  
 
   const COMPONENT_MAP = {
@@ -33,6 +34,7 @@
     'marker-notification': MarkerNotification,
     'selection-configuration': SelectionConfiguration,
     'polygon-selection-configuration': PolygonSelectionConfiguration,
+    'polygon-drainage-selection-configuration': PolygonDrainageSelectionConfiguration,
     'selection-list': SelectionList,
   };
 
