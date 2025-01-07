@@ -18,13 +18,6 @@
       </v-row>
       <v-row no-gutters>
         <v-col>
-<!--          <v-text-field-->
-<!--              v-model="formData.drn_res"-->
-<!--              type="number"-->
-<!--              min="0"-->
-<!--              label="Geef wijziging van drainage niveau aan (m)"-->
-<!--              :rules="[rules.requiredAmount, rules.minBufferAmount]"-->
-<!--          />-->
           <v-text-field
               v-model="formData.drn_res"
               type="number"
