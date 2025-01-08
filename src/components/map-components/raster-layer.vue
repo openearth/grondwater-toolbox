@@ -4,6 +4,7 @@
     :source-id="`${layer.id}-source`"
     :layer-id="`${layer.id}-layer`"
     :layer="layer"
+    before="gl-draw-polygon-fill-inactive.cold"
     v-bind="$attrs"
   />
 </template>

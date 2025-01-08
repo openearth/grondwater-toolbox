@@ -5,7 +5,7 @@
     tile
     >
         <v-text-field
-            v-model="difference"
+            v-model="_value"
             class="hide-label"
             type="number"
             label="Verschil in rivierbodemhoogte (m)"
@@ -19,15 +19,17 @@
     props: {
       differenceRules: Array,
       disabled: Boolean,
+      value: String,
     },
-    data() { 
-      return {
-        difference: 1,
-      };
-    },
-    watch: {
-      difference(value) {
-        this.$emit('update-difference-value', value);
+    emits: [ 'input' ],
+    computed: {
+      _value: {
+        get() {
+          return this.value;
+        },
+        set(value) {
+          this.$emit('input', value);
+        },
       },
     },
   };
