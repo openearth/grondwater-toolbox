@@ -121,30 +121,26 @@
               enabled: true,
               difference: '1',
               calculationLayer: 1,
-              measure: 'riverbedDifference',
+              measure: 'stageDiff',
             },
             primary: {
-              enabled: true,
+              enabled: false,
               difference: '1',
               calculationLayer: 1,
-              measure: 'riverbedDifference',
+              measure: 'stageDiff',
             },
             secondary: {
-              enabled: true,
+              enabled: false,
               difference: '1',
               calculationLayer: 1,
-              measure: 'riverbedDifference',
+              measure: 'stageDiff',
             },
             tertiary: {
-              enabled: true,
+              enabled: false,
               difference: '1',
               calculationLayer: 1,
-              measure: 'riverbedDifference',
+              measure: 'stageDiff',
             },
-          },
-          system: {
-            level: 0,
-            placement: false,
           },
         },
         calculationLayers: [ 1, 2 ],
@@ -157,15 +153,15 @@
         measures: [
           {
             text: 'Rivierbodem (unit m)',
-            value: 'riverbedDifference',
+            value: 'stageDiff',
           },
           {
             text: 'Weerstand (unit m/d)',
-            value: 'conductance',
+            value: 'condDiff',
           },
           {
             text: 'Waterpeil (unit m)',
-            value: 'stageDifference',
+            value: 'rbotDiff',
           },
         ],
         rules: {
@@ -214,14 +210,6 @@
     },
     beforeMount() {
       this.formData = this.value;
-    },
-    methods: {
-      handleDelete() {
-        this.$emit('delete', this.id);
-      },
-      onUpdateDifferenceValue(event) {
-        this.formData.difference = event;
-      },
     },
   };
 </script>

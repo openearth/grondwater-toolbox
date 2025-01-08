@@ -9,9 +9,9 @@ const initialState = () => ({
 
 const defaultConfiguration = JSON.stringify({
   enabled: false,
-  difference: '1',
+  difference: '0',
   calculationLayer: 1,
-  measure: 'riverbedDifference',
+  measure: 'stageDiff',
 });
 
 export default {
