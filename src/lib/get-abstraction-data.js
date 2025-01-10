@@ -30,7 +30,7 @@ export default async function getAbstractionData ({ area, coordinates, layer, ou
   const data = DATA_TEMPLATE({ area, coordinates, layer, outres, abstraction });
   const url = await geoServerUrl({
     // url: process.env.VUE_APP_GEO_SERVER + '/wps',
-    url: 'https://openearth-basis-rivierbodem-ligging-test.avi.directory.intra/wps',
+    url: 'https://basisrivierbodemligging-test.avi.deltares.nl/wps',
     request: 'Execute',
     service: 'WPS',
     identifier: 'brl_wps_abstraction',
