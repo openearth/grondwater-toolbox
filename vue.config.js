@@ -11,4 +11,9 @@ module.exports = {
       .loader('markdown-loader')
       .end();
   },
+  configureWebpack:(config) => {
+    if (process.env.NODE_ENV === 'development') {
+      config.devtool = 'cheap-module-source-map';
+    }
+  },
 };
