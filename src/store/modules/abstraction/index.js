@@ -1,4 +1,5 @@
 import getAbstractionData from '@/lib/get-abstraction-data';
+import { generateWmsLayer } from '@/lib/project-layers';
 import mapChartData from '@/lib/map-chart-data';
 import saveDataToJson from '@/lib/save-data-to-json';
 
