@@ -33,6 +33,7 @@ After installing dependencies using `yarn install` the following scripts are ava
 `serve` | Serves app on [`http://localhost:8080`](http://localhost:8080) with hot reloading.
 `start` | Short for `yarn dev`
 
+
 ## License
 
 [GNU General Public License v3.0](license) (GNU GPLv3) © [Deltares](https://www.deltares.nl) and [De Voorhoede](https://www.voorhoede.nl)
