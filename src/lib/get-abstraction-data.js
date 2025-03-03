@@ -1,6 +1,6 @@
 import geoServerUrl from './geoserver-url';
 
-const DATA_TEMPLATE = ({ area, coordinates, layer, abstraction }) =>
+const DATA_TEMPLATE = ({ area, coordinates, layer, outres, abstraction }) =>
   JSON.stringify({
     type: 'FeatureCollection',
     name: 'point',
@@ -13,6 +13,7 @@ const DATA_TEMPLATE = ({ area, coordinates, layer, abstraction }) =>
         type: 'Feature',
         properties: {
           fid: 1,
+          outres,
           layer,
           area,
           abstraction,
@@ -25,10 +26,11 @@ const DATA_TEMPLATE = ({ area, coordinates, layer, abstraction }) =>
     ],
   }, 0, false);
 
-export default async function getAbstractionData ({ area, coordinates, layer, abstraction }) {
-  const data = DATA_TEMPLATE({ area, coordinates, layer, abstraction });
+export default async function getAbstractionData ({ area, coordinates, layer, outres, abstraction }) {
+  const data = DATA_TEMPLATE({ area, coordinates, layer, outres, abstraction });
   const url = await geoServerUrl({
-    url: process.env.VUE_APP_GEO_SERVER + '/wps',
+    // url: process.env.VUE_APP_GEO_SERVER + '/wps',
+    url: 'https://basisrivierbodemligging-test.avi.deltares.nl/wps',
     request: 'Execute',
     service: 'WPS',
     identifier: 'brl_wps_abstraction',
@@ -37,7 +39,7 @@ export default async function getAbstractionData ({ area, coordinates, layer, ab
     DataInputs: 'geojson_point=' + data,
   });
 
-  return fetch(url)
+  return fetch(url, { mode: 'no-cors' })
     .then(response => response.text())
     .then(string => {
       const document = new window.DOMParser().parseFromString(string, 'text/xml');
