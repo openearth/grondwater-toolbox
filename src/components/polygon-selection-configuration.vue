@@ -58,6 +58,9 @@
   import bbox from '@turf/bbox';
   import { featureCollection } from '@turf/helpers';
   import createFeatureCollection from '@/lib/create-feature-collection';
+ 
+
+
 
   export default {
     props: {
@@ -81,9 +84,9 @@
           requiredAmountToDig: (value) => !!value || 'Benodigd.',
           minExtentAmountToDig: (value) =>
             value >= 0 || 'Een grootte van minimaal 0 meter is vereist.',
-          maxExtent: (value) =>
+          maxExtent: (value) => 
             parseFloat(value) <= 25000 || 'De grootte mag niet groter zijn dan 25.000 meter.',
-
+          
         },
       };
     },
@@ -122,7 +125,7 @@
           }) && this.extentValid
         );
       },
-
+    
 
     },
     methods: {
@@ -139,16 +142,17 @@
       async calculate() {
         this.resetWmsLayers();
         this.resetHiddenWmsLayers();
-
+        
         let selection = this.selections[0]; //TODO: for now only for one selection. Future improvement
         selection.properties = {
           area: parseFloat(this.extent),
           layer: '1',
-          depth: parseFloat(this.amount),
+          depth: parseFloat(this.amount), 
         };
+        
         const data = {
           functionId: 'brl_wps_digit',
-          featureCollection: createFeatureCollection(selection.name, [ selection ]),
+          featureCollection:createFeatureCollection(selection),
         };
 
         await this.calculateResult(data);

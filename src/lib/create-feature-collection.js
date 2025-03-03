@@ -1,4 +1,4 @@
-export default function (name, selections) {
+export default function ({ properties, name, geometry, type }) {
    
     return {
         'type': 'FeatureCollection',
@@ -9,10 +9,12 @@ export default function (name, selections) {
                 'nreturn ame': 'urn:ogc:def:crs:OGC:1.3:CRS84',
             },
         },
-        'features': selections.map(({ properties, geometry, type }) => ({
+        'features': [
+            {
                 type,
                 properties,
                 geometry,
-            })),
+            },
+        ],
     };
 }
