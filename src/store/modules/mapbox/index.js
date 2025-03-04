@@ -84,16 +84,19 @@ export default {
       commit('ADD_WMS_LAYER', { layer });
     },
     setLayers({ dispatch }, layers) {
-
       // Flatten the layer dictionary in an array where each item in the array contains a parentGroup
       let layerList = [];
       Object.entries(layers).forEach(([ parentGroup, layers ]) => {
+        
+        //check if layers is an array
+        if (Array.isArray(layers)) {
         layerList = [
           ...layerList,
           ...layers.map(layer => {
             return { ...layer, parentGroup };
           }),
         ];
+      }
       });
 
       const wmsLayers = layerList.map(({ url, layer, parentGroup, name }) => ({
