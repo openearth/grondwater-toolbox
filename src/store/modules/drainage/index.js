@@ -3,7 +3,7 @@ import { v4 as uuid } from 'uuid';
 import getDrainageData from '@/lib/get-drainage-data';
 
 const initialState = () => ({
-  data: { sum: 1 },
+  data: { sum: 1 }, 
   drainageConfigurations: [],
 });
 
@@ -61,10 +61,9 @@ export default {
   actions: {
     async calculateResult({ dispatch, commit }, { featureCollection }) {
       dispatch('mapbox/setWmsLayersLoading', { isLoading: true }, { root: true });
-      // const layersGrouped = await wps(data);
-
-      const layersGrouped = await getDrainageData(featureCollection);
-      await commit('ADD_DRAINAGE_DATA', { sum: 12345 });
+ 
+      const { waterstat, ...layersGrouped } = await getDrainageData(featureCollection);
+      await commit('ADD_DRAINAGE_DATA', { sum: waterstat });
       dispatch('mapbox/setLayers', layersGrouped, { root: true });
       dispatch('mapbox/setWmsLayersLoading', { isLoading: false }, { root: true });
     },

@@ -87,16 +87,12 @@ export default {
       // Flatten the layer dictionary in an array where each item in the array contains a parentGroup
       let layerList = [];
       Object.entries(layers).forEach(([ parentGroup, layers ]) => {
-        
-        //check if layers is an array
-        if (Array.isArray(layers)) {
         layerList = [
           ...layerList,
           ...layers.map(layer => {
             return { ...layer, parentGroup };
           }),
         ];
-      }
       });
 
       const wmsLayers = layerList.map(({ url, layer, parentGroup, name }) => ({
