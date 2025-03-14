@@ -22,17 +22,8 @@
             :key="layer.id"
             :layer="layer"
         />
-
-      <!-- Show selection layers before calculation -->
-      <template v-if="!activeLayers.length">
-        <raster-layer
-            v-for="feature in features"
-            :key="feature.watersIdentifier"
-            :layer="feature"
-        />
-      </template>
       <!-- Show calculation layers when available -->
-      <template v-else>
+      <template v-if="activeLayers.length">
         <raster-layer
             v-for="wmsLayer in activeLayers"
             :key="wmsLayer.id"
