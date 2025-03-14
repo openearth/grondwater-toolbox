@@ -160,6 +160,7 @@
         if (!this.features.length) {
           return;
         }
+       
         const bounds = bbox(
           featureCollection(
             this.features.map(feature => ({
@@ -168,6 +169,7 @@
             }))
           )
         );
+       
 
         this.$root.map.fitBounds(bounds, { padding: 50 });
       },
