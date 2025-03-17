@@ -1,56 +1,82 @@
 <template>
   <v-form v-model="valid" class="configuration-form border">
-    <v-row no-gutters>
-      <v-col cols="12" sm="5">
-        <v-card
-          class="pa-2 full-height d-flex"
-          outlined
-          tile
-        >
-          <v-select
-            v-model="formData.measure"
-            class="hide-label"
-            label="Onttrekking toepassen in laag"
-            :items="measures"
-            :disabled="disabled"
-          />
-        </v-card>
-      </v-col>
-      <v-col cols="12" sm="3">
-        <text-field-measure
-          :key="formData.measure"
-          :differenceRules="differenceRules"
-          :disabled="disabled"
-          @update-difference-value="onUpdateDifferenceValue" />
-      </v-col>
-      <v-col cols="12" sm="3">
-        <v-card
-          class="pa-2 full-height d-flex"
-          outlined
-          tile
-        >
-          <v-select
-            v-model="formData.calculationLayer"
-            class="hide-label"
-            label="Onttrekking toepassen in laag"
-            :items="calculationLayers.map((l) => ({ text: `Layer ${l}`, value: l }))"
-            :disabled="disabled"
-          />
-        </v-card>
-      </v-col>
+    <v-row
+        no-gutters
+        v-for="level in Object.keys(formData)"
+        :key="level"
+        :class="formData[level].enabled ? 'active' : 'inactive'"
+    >
       <v-col cols="12" sm="1">
-        <div
-          v-if="deletable"
-          class="d-flex justify-end align-center full-height"
+        <v-card
+            class="full-height d-flex align-center justify-center"
+            outlined
+            tile
         >
-          <v-btn
-            icon
-            @click="handleDelete"
-            title="delete form"
-          >
-            <v-icon>mdi-delete</v-icon>
-          </v-btn>
-        </div>
+          <v-checkbox
+              v-model="formData[level].enabled"
+              hide-details
+              class="hide-label checkbox align-center"
+              label="Plaatsing"
+              :disabled="disabled"
+          />
+        </v-card>
+      </v-col>
+      <v-col cols="12" sm="3">
+        <v-card
+            class=" full-height d-flex align-center"
+            outlined
+            tile
+        >
+          <span class="pl-2">
+            {{ levels[level] }}
+          </span>
+        </v-card>
+      </v-col>
+      <v-col
+          cols="12"
+          sm="4"
+      >
+        <v-card
+            class="pa-2 full-height d-flex"
+            outlined
+            tile
+        >
+          <v-select
+              v-model="formData[level].measure"
+              class="hide-label"
+              label="Onttrekking toepassen in laag"
+              :items="measures"
+              :disabled="disabled"
+          />
+        </v-card>
+      </v-col>
+      <v-col
+          cols="12"
+          sm="2"
+      >
+        <text-field-measure
+            v-model="formData[level].difference"
+            :differenceRules="differenceRules"
+            :disabled="disabled"
+        />
+      </v-col>
+      <v-col
+          cols="12"
+          sm="2"
+      >
+        <v-card
+            class="pa-2 full-height d-flex"
+            outlined
+            tile
+        >
+          <v-select
+              v-model="formData[level].calculationLayer"
+              class="hide-label"
+              label="Onttrekking toepassen in laag"
+              :items="calculationLayers.map((l) => ({ text: l, value: l }))"
+              :disabled="disabled"
+          />
+        </v-card>
       </v-col>
     </v-row>
   </v-form>
@@ -60,9 +86,9 @@
   import TextFieldMeasure from '@/components/text-field-measure';
 
   export default {
-    components: { 
+    components: {
       TextFieldMeasure,
-       
+
     },
     props: {
       id: {
@@ -77,6 +103,11 @@
         type: Object,
         required: true,
       },
+      type: {
+        type: String,
+        required: false,
+        default: 'default',
+      },
       deletable: {
         type: Boolean,
         default: false,
@@ -85,23 +116,52 @@
     data() {
       return {
         formData: {
-          difference: '1',
-          calculationLayer: 1,
-          measure: 'riverbedDifference',
+          default: {
+            main: {
+              enabled: true,
+              difference: '1',
+              calculationLayer: 1,
+              measure: 'stageDiff',
+            },
+            primary: {
+              enabled: false,
+              difference: '1',
+              calculationLayer: 1,
+              measure: 'stageDiff',
+            },
+            secondary: {
+              enabled: false,
+              difference: '1',
+              calculationLayer: 1,
+              measure: 'stageDiff',
+            },
+            tertiary: {
+              enabled: false,
+              difference: '1',
+              calculationLayer: 1,
+              measure: 'stageDiff',
+            },
+          },
         },
         calculationLayers: [ 1, 2 ],
+        levels: {
+          main: 'Hoofd',
+          primary: 'Primair',
+          secondary: 'Secundair',
+          tertiary: 'Tertiair',
+        },
         measures: [
           {
             text: 'Rivierbodem (unit m)',
-            value: 'riverbedDifference',
+            value: 'stageDiff',
           },
           {
             text: 'Weerstand (unit m/d)',
-            value: 'conductance',
+            value: 'condDiff',
           },
           {
             text: 'Waterpeil (unit m)',
-            value: 'stageDifference',
+            value: 'rbotDiff',
           },
         ],
         rules: {
@@ -117,7 +177,7 @@
     computed: {
       differenceRules() {
         if (this.formData.measure === 'riverbedDifference') {
-          return  [
+          return [
             this.rules.required,
             this.rules.notZero,
             (value) =>
@@ -127,7 +187,7 @@
         }
 
         if (this.formData.measure === 'stageDifference') {
-         
+
           return [
             this.rules.required,
             this.rules.notZero,
@@ -137,7 +197,7 @@
           ];
         }
 
-        return null;
+        return [];
       },
     },
     watch: {
@@ -151,18 +211,18 @@
     beforeMount() {
       this.formData = this.value;
     },
-    methods: {
-      handleDelete() {
-        this.$emit('delete', this.id);
-      },
-      onUpdateDifferenceValue(event) {
-        this.formData.difference = event;
-      },
-    },
   };
 </script>
 
 <style>
+.inactive * {
+  color: rgba(0, 0, 0, 0.4) !important;
+  fill: rgba(0, 0, 0, 0.4) !important;
+}
+.checkbox {
+  aspect-ratio: 1/1;
+}
+
 .hide-label {
   padding-top: 0;
   margin-top: 0;
