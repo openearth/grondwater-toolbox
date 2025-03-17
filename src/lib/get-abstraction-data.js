@@ -39,7 +39,7 @@ export default async function getAbstractionData ({ area, coordinates, layer, ou
     DataInputs: 'geojson_point=' + data,
   });
 
-  return fetch(url, { mode: 'no-cors' })
+  return fetch(url)
     .then(response => response.text())
     .then(string => {
       const document = new window.DOMParser().parseFromString(string, 'text/xml');
