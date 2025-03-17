@@ -29,7 +29,7 @@ export default async function getDrainageData (featureCollection) {
     DataInputs: 'json_inputs=' + data,
   });
 
-  return fetch(url, { mode: 'no-cors' }) //@TODO: REMOVE WHEN SWITCHING TO PRODUCTION URL
+  return fetch(url)
     .then(response => response.text())
     .then(string => {
       const document = new window.DOMParser().parseFromString(string, 'text/xml');
