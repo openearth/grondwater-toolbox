@@ -26,6 +26,16 @@
       <v-row no-gutters>
         <v-col>
           <v-select
+              label="Horizontale rekenresolutie"
+              v-model="selectedOutres"
+              :items="outres.map((res) => ({ text: `${res}m`, value: res }))"
+              :rules="[rules.required]"
+          />
+        </v-col>
+      </v-row>
+      <v-row no-gutters>
+        <v-col>
+          <v-select
             label="Onttrekking toepassen in laag"
             v-model="selectedLayer"
             :items="layers.map((layer) => ({ text: `Laag ${layer}`, value: layer }))"
@@ -68,6 +78,8 @@
         area: 0,
         areaValid: true,
         layers: [ 1, 2, 3, 4, 5, 6, 7 ],
+        outres: [ 25, 50, 125, 250 ],
+        selectedOutres: 250,
         selectedLayer: null,
         subtraction: 500,
         subtractionValid: true,
@@ -131,6 +143,7 @@
         const properties = {
           area: parseInt(this.area, 10),
           coordinates: [ lng, lat ],
+          outres: parseInt(this.selectedOutres, 10),
           layer: parseInt(this.selectedLayer, 10),
           abstraction: parseInt(this.subtraction, 10),
         };
