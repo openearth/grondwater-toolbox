@@ -63,8 +63,8 @@ export default {
       dispatch('mapbox/setWmsLayersLoading', { isLoading: true }, { root: true });
       // const layersGrouped = await wps(data);
 
-      const layersGrouped = await getDrainageData(featureCollection);
-      await commit('ADD_DRAINAGE_DATA', { sum: 12345 });
+      const { waterstat, ...layersGrouped } = await getDrainageData(featureCollection);
+      await commit('ADD_DRAINAGE_DATA', { sum: waterstat });
       dispatch('mapbox/setLayers', layersGrouped, { root: true });
       dispatch('mapbox/setWmsLayersLoading', { isLoading: false }, { root: true });
     },
