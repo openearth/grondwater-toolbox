@@ -4,9 +4,10 @@
     :source-id="`${layer.id}-source`"
     :layer-id="`${layer.id}-layer`"
     :layer="layer"
-    before="gl-draw-polygon-fill-inactive.cold"
     v-bind="$attrs"
   />
+  <!--     before="gl-draw-polygon-fill-inactive.cold" TODO: I removed this line. It was preventing the layers of the abstraction to show up. 
+       see why it was there. -->
 </template>
 
 <script>
