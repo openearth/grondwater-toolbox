@@ -3,7 +3,7 @@ import { v4 as uuid } from 'uuid';
 import getDrainageData from '@/lib/get-drainage-data';
 
 const initialState = () => ({
-  data: { sum: 1 },
+  drainageSum: null,
   drainageConfigurations: [],
 });
 
@@ -13,13 +13,13 @@ export default {
   state: () => initialState(),
 
   getters: {
-    drainageSum: (state) => state.data.sum,
+    drainageSum: (state) => state.drainageSum,
     drainageConfigurations: (state) => state.drainageConfigurations,
   },
 
   mutations: {
-    ADD_DRAINAGE_DATA(state, data) {
-      state.data = data;
+    ADD_DRAINAGE_DATA(state, drainage) {
+      state.drainageSum = drainage;
     },
     ADD_DRAINAGE_CONFIGURATION(state, selection) {
       if (state.drainageConfigurations.some((configuration) => configuration.selection === selection.id)) {
@@ -49,9 +49,7 @@ export default {
       });
     },
     REMOVE_DRAINAGE_DATA(state) {
-      state.data = {
-        sum: null,
-      };
+      state.drainageSum = null;
     },
     RESET_STATE(state) {
       Object.assign(state, initialState());
@@ -64,7 +62,8 @@ export default {
       // const layersGrouped = await wps(data);
 
       const { waterstat, ...layersGrouped } = await getDrainageData(featureCollection);
-      await commit('ADD_DRAINAGE_DATA', { sum: waterstat });
+      console.log('waterstat', waterstat);
+      await commit('ADD_DRAINAGE_DATA', waterstat );
       dispatch('mapbox/setLayers', layersGrouped, { root: true });
       dispatch('mapbox/setWmsLayersLoading', { isLoading: false }, { root: true });
     },
