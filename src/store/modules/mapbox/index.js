@@ -1,7 +1,7 @@
 import wps from '@/lib/wps';
 import layers from '@/lib/mapbox/layers';
 import { generateWmsLayer } from '@/lib/project-layers';
-import getSystemData from '@/lib/get-system-data';
+
 
 const initialState = () => ({
   activePopup: null,
@@ -111,14 +111,6 @@ export default {
 
         dispatch('addWmsLayer', { layer });
       });
-    },
-    async calculateResult({ dispatch }, data) {
-      dispatch('setWmsLayersLoading', { isLoading: true });
-
-      const layersGrouped = await getSystemData(data);
-      dispatch('setLayers', layersGrouped);
-
-      dispatch('setWmsLayersLoading', { isLoading: false });
     },
     getFeature({ dispatch, rootState }, { feature }) {
       const { selections } = rootState;

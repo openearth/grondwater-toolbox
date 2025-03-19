@@ -127,8 +127,9 @@
     },
     methods: {
       ...mapActions('app', [ 'addLockedViewerStep', 'removeLockedViewerStep', 'setViewerCurrentStepNumber' ]),
-      ...mapActions('mapbox', [ 'calculateResult', 'resetHiddenWmsLayers', 'resetWmsLayers' ]),
+      ...mapActions('mapbox', [  'resetHiddenWmsLayers', 'resetWmsLayers' ]),
       ...mapActions('selections', [ 'addSelectionConfiguration', 'removeSelectionConfiguration' ]),
+      ...mapActions('dig', [ 'calculateResult' ]),
       async onNext() {
         this.$router.push({ name: 'tool-step-3' });
         this.setViewerCurrentStepNumber({ step: 3 });
