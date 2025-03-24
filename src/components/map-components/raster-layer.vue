@@ -3,11 +3,10 @@
     ref="pathLayer"
     :source-id="`${layer.id}-source`"
     :layer-id="`${layer.id}-layer`"
+    :before="before"	
     :layer="layer"
     v-bind="$attrs"
   />
-  <!--     before="gl-draw-polygon-fill-inactive.cold" TODO: I removed this line. It was preventing the layers of the abstraction to show up. 
-       see why it was there. -->
 </template>
 
 <script>
@@ -22,6 +21,10 @@
       layer: {
         type: Object,
         required: true,
+      },
+      before: {
+        type: String,
+        required: false,
       },
     },
     methods: {

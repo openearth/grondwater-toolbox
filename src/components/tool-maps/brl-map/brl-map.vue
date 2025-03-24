@@ -21,6 +21,7 @@
             v-for="layer in activeSystemLayers"
             :key="layer.id"
             :layer="layer"
+            before="gl-draw-polygon-fill-inactive.cold" 
         />
       <!-- Show calculation layers when available -->
       <template v-if="activeLayers.length">
@@ -28,6 +29,7 @@
             v-for="wmsLayer in activeLayers"
             :key="wmsLayer.id"
             :layer="wmsLayer"
+            before="gl-draw-polygon-fill-inactive.cold"
         />
         <map-layer-info
             v-for="wmsLayer in activeLayers"
