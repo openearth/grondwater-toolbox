@@ -6,7 +6,7 @@ export default function({ functionId, url, requestData, polygon, watersIdentifie
 
   return axios({
     method: 'post',
-    url:  url ? url : `${ process.env.VUE_APP_GEO_SERVER }/wps`,
+    url:  url ? url : `${ process.env.VUE_APP_WPS }`,
     data: template,
     headers: { 'Content-Type': 'application/xml' },
   })

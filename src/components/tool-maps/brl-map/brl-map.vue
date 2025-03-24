@@ -85,8 +85,8 @@
       return {
         mapZoom: 6.5,
         mapCenter: [ 5.2913, 52.1326 ],
-        waterWaysUrl: `${ process.env.VUE_APP_GEO_SERVER }/geoserver/vaarwegvakken/wms`,
-        waterSystemsUrl: `${ process.env.VUE_APP_GEO_SERVER }/geoserver/basisdata/wms`,
+        waterWaysUrl: `${ process.env.VUE_APP_GEOSERVER_BASE_URL }/vaarwegvakken/wms`,
+        waterSystemsUrl: `${ process.env.VUE_APP_GEOSERVER_BASE_URL }/basisdata/wms`,
         waterWaysLayerId: 'nwb_vaarwegen:vaarwegvakken',
         systemLayers: {
           main: {

@@ -115,6 +115,7 @@ export default {
       dispatch('setWmsLayersLoading', { isLoading: true });
 
       const layersGrouped = await getSystemData(data);
+      console.log('layersGrouped', layersGrouped);
       dispatch('setLayers', layersGrouped);
 
       dispatch('setWmsLayersLoading', { isLoading: false });
