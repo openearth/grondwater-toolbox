@@ -18,10 +18,12 @@ const DATA_TEMPLATE = (selections) =>
   }, null, 0);
 
 export default async function getSystemData (selections) {
+  console.log('getSystemData', selections);
+  
   const data = DATA_TEMPLATE(selections);
+  console.log('data', data);
   const url = await geoServerUrl({
-    // url: process.env.VUE_APP_GEO_SERVER + '/wps',
-    url: 'https://basisrivierbodemligging-test.avi.deltares.nl/wps',
+    url: `${ process.env.VUE_APP_WPS_TEST }`,
     request: 'Execute',
     service: 'WPS',
     identifier: 'brl_wps_watersystem',

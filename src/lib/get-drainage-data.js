@@ -18,7 +18,7 @@ const DATA_TEMPLATE = ({ name, features }) =>
 export default async function getDrainageData (featureCollection) {
   const data = DATA_TEMPLATE(featureCollection);
   const url = await geoServerUrl({
-    url: 'https://basisrivierbodemligging-test.avi.deltares.nl/wps', //@TODO: Remove TEST URL
+    url: `${ process.env.VUE_APP_WPS_TEST }`, 
     width: 0,
     height: 0,
     request: 'Execute',

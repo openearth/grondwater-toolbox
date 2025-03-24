@@ -24,7 +24,7 @@ export default async function getFeatureInfo ({ bounds, lng, lat, x, y, width, h
   }
 
   const url = await geoServerUrl({
-    url: process.env.VUE_APP_GEOSERVER_BASE_URL,
+    url: process.env.VUE_APP_GEOSERVER_BASE_URL +'/ows',
     request: 'GetFeatureInfo',
     service: 'WMS',
     version: '1.1.1',

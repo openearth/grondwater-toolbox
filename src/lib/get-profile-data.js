@@ -22,7 +22,7 @@ const DATA_TEMPLATE = (coordinates) =>
 export default async function getProfileData ({ height, lng, lat, width }) {
   const data = DATA_TEMPLATE([ lng, lat ]);
   const url = await geoServerUrl({
-    url: process.env.VUE_APP_GEO_SERVER + '/wps',
+    url: process.env.VUE_APP_WPS,
     request: 'Execute',
     service: 'WPS',
     identifier: 'brl_wps_modelprofile',
