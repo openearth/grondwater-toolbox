@@ -62,7 +62,6 @@ export default {
       // const layersGrouped = await wps(data);
 
       const { waterstat, ...layersGrouped } = await getDrainageData(featureCollection);
-      console.log('waterstat', waterstat);
       await commit('ADD_DRAINAGE_DATA', waterstat );
       dispatch('mapbox/setLayers', layersGrouped, { root: true });
       dispatch('mapbox/setWmsLayersLoading', { isLoading: false }, { root: true });

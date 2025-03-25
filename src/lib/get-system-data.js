@@ -18,10 +18,7 @@ const DATA_TEMPLATE = (selections) =>
   }, null, 0);
 
 export default async function getSystemData (selections) {
-  console.log('getSystemData', selections);
-  
   const data = DATA_TEMPLATE(selections);
-  console.log('data', data);
   const url = await geoServerUrl({
     url: `${ process.env.VUE_APP_WPS_TEST }`,
     request: 'Execute',
