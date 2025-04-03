@@ -97,6 +97,7 @@ router.beforeEach((to, from, next) => {
     store.dispatch('abstraction/reset');
     store.dispatch('mapbox/reset');
     store.dispatch('selections/reset');
+    store.dispatch('drainage/reset');
   }
 
   if (isToolStep) {

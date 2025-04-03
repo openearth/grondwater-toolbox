@@ -5,7 +5,7 @@
   import drawStyle from './draw-style';
 
   import StaticMode from '@/lib/static-mode';
-  import { mapActions } from 'vuex';
+  import { mapActions, mapGetters } from 'vuex';
 
   export default {
     inject: [ 'map' ],
@@ -58,6 +58,16 @@
 
       this.map.on('draw.create', this.onSelection);
       this.map.on('draw.update', this.updateSelection);
+    },
+    computed: {
+      ...mapGetters('selections', [ 'selections' ]),
+    },
+    watch: {
+      selections() {
+        if (!this.selections.length) {
+          this.map.__draw.deleteAll();
+        }
+      },
     },
     methods: {
       ...mapActions('selections', [ 'addSelection', 'updateSelection' ]),
