@@ -78,15 +78,19 @@
     },
     mounted() {
       this.name = this.selection.name;
+      console.log('selection-list');
     },
-    destroyed(){
-      this.deleteSelectionsFromMap();
-    },
+
     methods: {
       ...mapActions('mapbox', [ 'removeFeature' ]),
       ...mapActions('selections', [ 'removeSelection', 'editSelectionName' ]),
       onDelete() {
-        this.deleteSelectionsFromMap();
+        const { __draw } = this.$root.map;
+        const { id } = this.selection;
+
+        __draw.delete(id);
+        this.removeSelection({ id });
+        this.removeFeature({ id });
       },
       onEdit() {
         this.isEditing = true;
@@ -95,14 +99,6 @@
         const { id } = this.selection;
         this.isEditing = false;
         this.editSelectionName({ id, name: this.name });
-      },
-      deleteSelectionsFromMap() {
-        const { __draw } = this.$root.map;
-        const { id } = this.selection;
-
-        __draw.delete(id);
-        this.removeSelection({ id });
-        this.removeFeature({ id });
       },
     },
   };
