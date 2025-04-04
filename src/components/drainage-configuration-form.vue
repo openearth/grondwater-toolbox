@@ -34,7 +34,7 @@
               type="number"
               min="0"
               label="Geef drainage bodemhoogte aan (in m-NAP)"
-              :rules="[rules.requiredAmount, rules.minBodhAmount]"
+              :rules="[rules.requiredAmount]"
           />
         </v-col>
       </v-row>
@@ -107,8 +107,6 @@
           minBufferSizeModel: value =>
             value >= 500 || 'Een grootte van minimaal 500 meter is vereist.',
           requiredAmount: value => !!value || 'Benodigd.',
-          minBodhAmount: value =>
-            value > 0 || 'Een hoogte groter dan 0 meter is vereist.',
           minResAmount: value =>
             value > 0 || 'Een minimum van 1 dag is vereist.',
           maxBuffer: value =>
