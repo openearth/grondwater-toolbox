@@ -78,7 +78,7 @@
     },
     mounted() {
       this.name = this.selection.name;
-      console.log('selection-list');
+
     },
 
     methods: {

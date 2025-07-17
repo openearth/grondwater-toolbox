@@ -41,11 +41,13 @@ export default async function getAbstractionData ({ area, coordinates, layer, ou
   return fetch(url)
     .then(response => response.text())
     .then(string => {
+
       const document = new window.DOMParser().parseFromString(string, 'text/xml');
       const element = document.getElementsByTagName('wps:ComplexData');
+      
       const value = JSON.parse(element[0].childNodes[0].nodeValue);
-
-      return value ? JSON.parse(value, null, 2) : null;
+      
+      return value ? value : null;
     })
     .catch(err => console.log(err));
 }

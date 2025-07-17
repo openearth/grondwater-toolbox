@@ -10,7 +10,8 @@ const initialState = () => ({
   hiddenWmsLayers: [],
   loadingWmsLayers: false,
   mapIsActive: false,
-  wmsLayers: [],
+  wmsLayers: [],//They are flattened layers list
+  layersGrouped: [],
 });
 
 export default {
@@ -26,6 +27,7 @@ export default {
     loadingWmsLayers: state => state.loadingWmsLayers,
     mapIsActive: state => state.mapIsActive,
     wmsLayers: state => state.wmsLayers,
+    layersGrouped: state => state.layersGrouped,
   },
 
   mutations: {
@@ -72,6 +74,9 @@ export default {
     SET_MAP_IS_ACTIVE(state, { isActive }) {
       state.mapIsActive = isActive;
     },
+    SET_LAYERS_GROUPED(state,  layersGrouped ) {
+      state.layersGrouped = layersGrouped;
+    },
   },
 
   actions: {
@@ -84,32 +89,37 @@ export default {
     addWmsLayer({ commit }, { layer }) {
       commit('ADD_WMS_LAYER', { layer });
     },
-    setLayers({ dispatch }, layers) {
+    
+    setLayers({ commit, dispatch }, layers) {
+     const layersGrouped = layers.map((folder, index) => ({
+                  id: `folder-${ index }`,
+                  name: folder.folder,
+                  children: folder.contents.map((item, itemIndex) => ({
+                    id: `${ folder.folder }-${ itemIndex }`,
+                    name: item.name,
+                    layer: item.layer,
+                    url: item.url,
+                  })),
+                }));
+      commit('SET_LAYERS_GROUPED', layersGrouped);
+      const wmsLayers = layersGrouped.flatMap(folder =>
+        folder.children.map(item => ({
+          ...generateWmsLayer({ url: item.url, layer: item.layer, id: item.layer }),
+          name: item.name,
+          baseUrl: item.url,
+          id:item.id,
+          layer:item.layer,
+        }))
 
-      // Flatten the layer dictionary in an array where each item in the array contains a parentGroup
-      let layerList = [];
-      Object.entries(layers).forEach(([ parentGroup, layers ]) => {
-        layerList = [
-          ...layerList,
-          ...layers.map(layer => {
-            return { ...layer, parentGroup };
-          }),
-        ];
-      });
-
-      const wmsLayers = layerList.map(({ url, layer, parentGroup, name }) => ({
-        ...generateWmsLayer({ url, layer, id: layer }),
-        parentGroup,
-        name: name,
-        baseUrl: url,
-      }));
-
+      );
+     
+      //flatten the layersGrouped to a wmsLayers array
       wmsLayers.forEach((layer, index) => {
         if (index !== 0) {
           dispatch('addHiddenWmsLayer', { layer });
         }
 
-        dispatch('addWmsLayer', { layer });
+      dispatch('addWmsLayer', { layer }); 
       });
     },
     getFeature({ dispatch, rootState }, { feature }) {

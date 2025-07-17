@@ -7,28 +7,24 @@
     <v-treeview
         expand-icon="mdi-chevron-down"
         v-model="tree"
-        :items="items"
+        :items="layersGrouped"
         open-on-click
     >
       <template #prepend="{selected, open, item, indeterminate}">
-        <v-icon v-if="item.group">
-          {{
-            open
-                ? `mdi-folder-open-outline`
-                : `mdi-folder-outline`
-          }}
+        <v-icon v-if="item.children">
+        {{ open ? 'mdi-folder-open-outline' : 'mdi-folder-outline' }}
         </v-icon>
 
-        <v-btn
-            v-else
-            text
-            icon
-            @click="onLayerVisibilityClick(item.id)"
-        >
-          <v-icon>
-            {{ hiddenWmsLayers.some(layer => layer.id === item.id) ? 'mdi-eye-off' : 'mdi-eye' }}
-          </v-icon>
-        </v-btn>
+      <v-btn
+        v-else
+        text
+        icon
+        @click="onLayerVisibilityClick(item.id)">
+      <v-icon>
+        {{ hiddenWmsLayers.some(layer => layer.id === item.id) ? 'mdi-eye-off' : 'mdi-eye' }}
+      </v-icon>
+      </v-btn>
+
       </template>
 
       <template #label="{ item }">
@@ -71,6 +67,7 @@
 
   import SidebarFooter from '@/components/sidebar-footer';
 
+
   export default {
     components: { SidebarFooter },
     data() {
@@ -80,24 +77,9 @@
     },
     computed: {
       ...mapGetters('app', [ 'viewerStepsLocked' ]),
-      ...mapGetters('mapbox', [ 'features', 'wmsLayers', 'hiddenWmsLayers' ]),
+      ...mapGetters('mapbox', [ 'features', 'wmsLayers', 'hiddenWmsLayers' , 'layersGrouped' ]),
       ...mapGetters('drainage', [ 'drainageSum' ]),
-      items() {
-        const labels = {
-          head: 'Grondwaterstanden',
-          bdgflf: 'Kwelfluxen',
-        };
-
-        return Object.keys(labels).map(group => {
-          return {
-            id: group,
-            name: labels[group],
-            group,
-            children: this.wmsLayers
-              .filter(layer => layer.parentGroup === group),
-          };
-        });
-      },
+     
       previousIsDisabled() {
         return this.viewerStepsLocked.includes(2);
       },

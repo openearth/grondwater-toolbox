@@ -51,7 +51,7 @@ export default {
       this.setActivePopup({ popup: { ...this.popup, content: 'Loading...' } });
 
       const properties = {
-        layer: this.layer.id,
+        layer: this.layer.layer,
         lng, lat,
         x, y,
         width, height,
