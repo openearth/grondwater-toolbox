@@ -94,8 +94,8 @@ export default {
      const layersGrouped = layers.map((folder, index) => ({
                   id: `folder-${ index }`,
                   name: folder.folder,
-                  children: folder.contents.map((item, itemIndex) => ({
-                    id: `${ folder.folder }-${ itemIndex }`,
+                  children: folder.contents.map(item => ({
+                    id: item.layer,
                     name: item.name,
                     layer: item.layer,
                     url: item.url,

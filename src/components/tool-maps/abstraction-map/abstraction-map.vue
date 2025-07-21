@@ -94,7 +94,7 @@
         return this.activeLayers.length
           ? {
             url: this.activeLayers[0].baseUrl,
-            layer: this.activeLayers[0].layer,
+            layer: this.activeLayers[0].id,
           } : null;
       },
       mapBoxToken() {
