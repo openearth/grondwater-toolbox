@@ -16,10 +16,10 @@ export default async function getFeatureInfo ({ bounds, lng, lat, x, y, width, h
   // Bounding box used with single point selection.
   if (lng && lat) {
     bbox = [
-      (lng - 0.1),
-      (lat - 0.1),
-      (lng + 0.1),
-      (lat + 0.1),
+      (lng - 0.001),
+      (lat - 0.001),
+      (lng + 0.001),
+      (lat + 0.001),
     ].join(',');
   }
 
