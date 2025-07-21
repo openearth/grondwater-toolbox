@@ -87,11 +87,17 @@ export default {
     addSelectionConfiguration({ commit }, { id }) {
       commit('ADD_SELECTION_CONFIGURATION', { id });
     },
-    editSelectionName({ commit }, { id, name }) {
+    editSelectionName({ rootState, commit }, { id, name }) {
       commit('EDIT_SELECTION_NAME', { id, name });
+      if (rootState.app.viewerConfig === 'drainage') {
+        commit('drainage/EDIT_DRAINAGE_CONFIGURATION_NAME', { id, name }, { root: true });
+      }
     },
-    removeSelection({ commit }, { id }) {
+    removeSelection({ commit, rootState }, { id }) {
       commit('REMOVE_SELECTION', { id });
+       if (rootState.app.viewerConfig === 'drainage') {
+        commit('drainage/REMOVE_DRAINAGE_CONFIGURATION', { selection: id }, { root: true });
+      }
     },
     removeSelectionConfiguration({ commit }, { selectionId, formId }) {
       commit('REMOVE_SELECTION_CONFIGURATION', { selectionId, formId });

@@ -48,6 +48,15 @@ export default {
         return configuration;
       });
     },
+    EDIT_DRAINAGE_CONFIGURATION_NAME(state, { selection, name }) {
+      const configuration = state.drainageConfigurations.find(config => config.selection === selection);
+      if (configuration) {
+        configuration.name = name;
+      } 
+    },
+    REMOVE_DRAINAGE_CONFIGURATION(state, { selection }) {
+      state.drainageConfigurations = state.drainageConfigurations.filter(config => config.selection !== selection);
+    },
     REMOVE_DRAINAGE_DATA(state) {
       state.drainageSum = null;
     },
@@ -78,7 +87,6 @@ export default {
     saveProject({ rootState, state }) {
       const { mapbox } = rootState;
       const { drainageSum } = state;
-
       saveDataToJson({ mapbox, drainageSum });
     },
   },
