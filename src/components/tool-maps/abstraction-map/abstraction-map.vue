@@ -59,9 +59,10 @@
   import MapSearch from '@/components/map-components/map-search';
   import MapSelectTool from '@/components/map-components/map-select-tool';
   import RasterLayer from '@/components/map-components/raster-layer';
+  import MapLayerInfo from '@/components/map-components/map-layer-info';
 
 
-  import MapLayerInfo from './map-layer-info';
+  //import MapLayerInfo from './map-layer-info';
 
   export default {
     components: {
