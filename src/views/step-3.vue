@@ -34,9 +34,9 @@
       </template>
     </v-treeview>
     <template v-if="drainageSum">
-    <v-divider class="my-6" />
-      <p class="text-h6">Totaal drainage veranderingen: <code>{{ drainageSum.toFixed(2) }}</code></p>
-    </template>
+      <v-divider class="my-6" />
+        <p class="text-h6">Totaal drainage veranderingen: <code>{{ drainageSum.toFixed(2) }}</code></p>
+      </template>
     <v-divider class="my-6" />
 
     <sidebar-footer>
