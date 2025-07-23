@@ -1,7 +1,7 @@
 import wps from '@/lib/wps';
 import layers from '@/lib/mapbox/layers';
 import { generateWmsLayer } from '@/lib/project-layers';
-
+import parseLayersStructure from '@/lib/parse-layers-structure';
 
 const initialState = () => ({
   activePopup: null,
@@ -91,16 +91,7 @@ export default {
     },
     
     setLayers({ commit, dispatch }, layers) {
-     const layersGrouped = layers.map((folder, index) => ({
-                  id: `folder-${ index }`,
-                  name: folder.folder,
-                  children: folder.contents.map(item => ({
-                    id: item.layer,
-                    name: item.name,
-                    layer: item.layer,
-                    url: item.url,
-                  })),
-                }));
+     const layersGrouped = parseLayersStructure (layers);
       commit('SET_LAYERS_GROUPED', layersGrouped);
       const wmsLayers = layersGrouped.flatMap(folder =>
         folder.children.map(item => ({
