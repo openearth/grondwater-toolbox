@@ -1,5 +1,4 @@
 function parseLayerStructure(folder, parentId = '') {
-    console.log('parseLayerStructure', folder, parentId);
   const id = parentId ? `${ parentId }-${ folder.folder }` : folder.folder;
 
   return {
