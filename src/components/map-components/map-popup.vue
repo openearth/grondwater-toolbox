@@ -1,6 +1,6 @@
 <template>
   <div style="display: none">
-    <slot />
+    {{ content }}
   </div>
 </template>
 
@@ -34,6 +34,10 @@
     },
 
     props: {
+      content: {
+        type: [ String, Object ],
+        default: '',
+      },
       closeButton: {
         type: Boolean,
         default: true,
@@ -109,7 +113,12 @@
         }
         this.popup.setLngLat(lngLat);
       },
-
+      content(){
+        if (this.initial) {
+          return;
+        }
+        this.popup.setHTML(this.content);
+      },
       showed(next, prev) {
         if (next !== prev) {
           this.open = next;
@@ -142,18 +151,8 @@
         if (this.coordinates !== undefined) {
           this.popup.setLngLat(this.coordinates);
         }
-        if (this.$slots.default !== undefined) {
-          if (this.onlyText) {
-            if (this.$slots.default[0].elm.nodeType === 3) {
-              let tmpEl = document.createElement('span');
-              tmpEl.appendChild(this.$slots.default[0].elm);
-              this.popup.setText(tmpEl.innerText);
-            } else {
-              this.popup.setText(this.$slots.default[0].elm.innerText);
-            }
-          } else {
-            this.popup.setDOMContent(this.$slots.default[0].elm);
-          }
+        if (this.content !== '') {
+          this.popup.setHTML(this.content);
         }
 
         this.$_bindSelfEvents(Object.keys(popupEvents), this.popup);

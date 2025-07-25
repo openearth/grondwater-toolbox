@@ -31,21 +31,19 @@
             :layer="wmsLayer"
             before="gl-draw-polygon-fill-inactive.cold"
         />
-        <map-layer-info
-            v-for="wmsLayer in activeLayers"
-            :key="`${wmsLayer.id}-info`"
-            :layer="wmsLayer"
-        />
+       <map-layer-info
+            :layers="activeLayers"
+          />
       </template>
 
       <map-popup
           v-if="activePopup && activePopupCoordinates"
           :coordinates="activePopupCoordinates"
           showed
+          :content="activePopup.content"
           :close-button="true"
           @close="onClosePopup"
       >
-        {{ activePopup.content }}
       </map-popup>
     </mgl-map>
   </div>

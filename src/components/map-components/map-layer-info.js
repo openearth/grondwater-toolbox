@@ -1,6 +1,7 @@
 import { mapActions, mapGetters } from 'vuex';
 import Mapbox from 'mapbox-gl';
 import getFeatureInfo from '@/lib/get-feature-info';
+import htmlTable from '@/lib/html-table';
 
 export default {
   name: 'map-layer-info',
@@ -9,8 +10,8 @@ export default {
   },
   inject: [ 'map' ],
   props: {
-    layer: {
-      type: Object,
+    layers: {
+      type: Array,
       required: true,
     },
   },
@@ -40,7 +41,6 @@ export default {
     async getDepth(event) {
       const { lng, lat } = event.lngLat || event.target._lngLat;
       const { x, y } = event.point;
-      const bounds = this.map.getBounds();
       const canvas = this.map.getCanvas();
       const { width, height } = canvas;
 
@@ -51,26 +51,31 @@ export default {
       this.popup.setLngLat([ lng, lat ]);
       this.setActivePopup({ popup: { ...this.popup, content: 'Loading...' } });
 
-      const properties = {
-        layer: this.layer.id,
-        bounds,
-        x, y,
-        width, height,
-      };
-
-      const info = await getFeatureInfo(properties)
-        .catch(err => this.setToastMessage({ text: err, type: 'error' }));
-
-      if (!info) {
+    
+      if (this.layers.length === 0) {  
+        this.setToastMessage({ text: 'No layers available for feature info.', type: 'warning' });
         return;
       }
+      
+      const featureInfoRequests = this.layers.map(layer =>
+        getFeatureInfo({
+          layer: layer.id, // Pass only the string layer ID
+          lng,
+          lat,
+          x,
+          y,
+          width,
+          height,
+        }).then(value => ({ name: layer.name, value }))
+          .catch(error => ({ name: layer.name, error }))
+      );
 
-      const { GRAY_INDEX } = info.properties;
-      const text = GRAY_INDEX.toFixed(2);
+       const results = await Promise.all(featureInfoRequests);
+      
 
       // Set popup coordinates.
       this.popup.setLngLat([ lng, lat ]);
-      this.setActivePopup({ popup: { ...this.popup, content: text } });
+      this.setActivePopup({ popup: { ...this.popup, content: htmlTable(results) } });
     },
     removeListener() {
       this.map.off('click', this.getDepth);
