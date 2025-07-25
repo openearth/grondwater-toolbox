@@ -27,9 +27,7 @@
         />
         <template v-if="viewerCurrentStepNumber === 3">
           <map-layer-info
-            v-for="wmsLayer in activeLayers"
-            :key="`${wmsLayer.id}-info`"
-            :layer="wmsLayer"
+            :layers="activeLayers"
           />
         </template>
       </template>
@@ -38,10 +36,10 @@
         v-if="activePopup && activePopupCoordinates"
         :coordinates="activePopupCoordinates"
         showed
+        :content="activePopup.content"
         :close-button="true"
         @close="onClosePopup"
       >
-        {{ activePopup.content }}
       </map-popup>
     </mgl-map>
   </div>
@@ -59,9 +57,10 @@
   import MapSearch from '@/components/map-components/map-search';
   import MapSelectTool from '@/components/map-components/map-select-tool';
   import RasterLayer from '@/components/map-components/raster-layer';
+  import MapLayerInfo from '@/components/map-components/map-layer-info';
 
 
-  import MapLayerInfo from './map-layer-info';
+  //import MapLayerInfo from './map-layer-info';
 
   export default {
     components: {
