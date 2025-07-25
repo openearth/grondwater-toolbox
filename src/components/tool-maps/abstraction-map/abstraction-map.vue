@@ -133,6 +133,11 @@
     height: 100%;
     width: 100%;
   }
+  .mapboxgl-popup-content {
+      width: 320px !important; /* or 400px */
+      max-width: none;
+      box-shadow: 0 0 5px 2px rgba(0, 0, 0, .3);
+    }
 
   .abstraction-map__map {
     width: 100%;

@@ -5,8 +5,8 @@ return '';
 
   const headerRow = `
     <tr>
-      <th style="text-align: left; font-weight: bold; width: 50%;">Layer</th>
-      <th style="text-align: left; font-weight: bold; width: 50%;">Value</th>
+      <th style="text-align: left; font-weight: bold; width: 80%;">Layer</th>
+      <th style="text-align: left; font-weight: bold; width: 20%;">Value</th>
     </tr>
   `;
 
@@ -15,7 +15,7 @@ return '';
       return `
         <tr>
           <td style="overflow-wrap: break-word; vertical-align: top;">${ name }</td>
-          <td style="overflow-wrap: break-word; vertical-align: top;">${ value }</td>
+          <td style="overflow-wrap: break-word; vertical-align: top;">${ value.toFixed(2) }</td>
         </tr>
       `;
     })
