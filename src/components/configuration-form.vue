@@ -41,13 +41,51 @@
             outlined
             tile
         >
-          <v-select
-              v-model="formData[level].measure"
+       <v-menu
+          v-model="formData[level].menu"
+          :close-on-content-click="true"
+          offset-y
+          :disabled="disabled"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-text-field
               class="hide-label"
+              v-bind="attrs"
+              v-on="on"
+              :value="getMeasureText(formData[level].measure)"
               label="Onttrekking toepassen in laag"
-              :items="measures"
+              readonly
+              append-icon="mdi-menu-down"
               :disabled="disabled"
-          />
+            />
+          </template>
+
+          <v-list dense>
+            <v-list-item-group
+              v-model="formData[level].measure"
+              color="primary"
+            >
+              <template v-for="(item, i) in measures">
+                <v-tooltip right :key="i">
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-list-item
+                      v-bind="attrs"
+                      v-on="on"
+                      :value="item.value"
+                      @click="selectMeasure(level, item.value)"
+                    >
+                      <v-list-item-content>
+                        <v-list-item-title>{{ item.text }}</v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </template>
+                  <span>{{ showTooltip(item.value, level) }}</span>
+                </v-tooltip>
+              </template>
+            </v-list-item-group>
+          </v-list>
+        </v-menu>
+
         </v-card>
       </v-col>
       <v-col
@@ -122,24 +160,28 @@
               difference: '1',
               calculationLayer: 1,
               measure: 'stageDiff',
+              menu: false,
             },
             primary: {
               enabled: false,
               difference: '1',
               calculationLayer: 1,
               measure: 'stageDiff',
+              menu: false,
             },
             secondary: {
               enabled: false,
               difference: '1',
               calculationLayer: 1,
               measure: 'stageDiff',
+              menu: false,
             },
             tertiary: {
               enabled: false,
               difference: '1',
               calculationLayer: 1,
               measure: 'stageDiff',
+              menu: false,
             },
           },
         },
@@ -172,6 +214,29 @@
             'Waarde moet tussen -10 en 10 meter vallen.',
         },
         valid: false,
+        tooltipMessages: {
+          main: {
+            stageDiff: 'Verandering in bodemhoogte van het hoofd watersysteem. Mogelijk range: (-5 m , 5 m)',
+            condDiff: 'Verandering in weerstand van het hoofd watersysteem. Mogelijk range: (-100 d , 100 d). NB, verandering in weerstand wordt omgerekend naar conductance met het totale celoppervlakte.',
+            rbotDiff: 'Verandering in waterhoogte van het hoofd watersysteem. Mogelijk range: (-5 m , 5 m)',
+          },
+          primary: {
+            stageDiff: 'Verandering in bodemhoogte van het primaire watersysteem. Mogelijk range: (-1 m , 1 m)',
+            condDiff: 'Verandering in weerstand van het primaire watersysteem. Mogelijk range: (-10 d , 10 d). NB, verandering in weerstand wordt omgerekend naar conductance met het totale celoppervlakte.',
+            rbotDiff: 'Verandering in waterhoogte van het primaire watersysteem. Mogelijk range: (-1 m , 1 m)',
+          },
+          secondary: {
+            stageDiff: 'Verandering in bodemhoogte van het secundaire watersysteem. Mogelijk range: (-1 m , 1 m)',
+            condDiff: 'Verandering in weerstand van het secundaire watersysteem. Mogelijk range: (-1 d , 1 d). NB, verandering in weerstand wordt omgerekend naar conductance met het totale celoppervlakte.',
+            rbotDiff: 'Verandering in waterhoogte van het secundaire watersysteem. Mogelijk range: (-1 m , 1 m)',
+          },
+          tertiary: {
+            stageDiff: 'Verandering in bodemhoogte van het tertiaire watersysteem. Mogelijk range: (-0.5 m , 0.5 m)',
+            condDiff: 'Verandering in weerstand van het tertiare watersysteem. Mogelijk range: (-1 d , 1 d). NB, verandering in weerstand wordt omgerekend naar conductance met het totale celoppervlakte.',
+            rbotDiff: 'Verandering in waterhoogte van het tertiare watersysteem. Mogelijk range: (-0.5 m , 0.5 m)',
+          },
+        },
+
       };
     },
     computed: {
@@ -208,6 +273,29 @@
         this.$emit('validated', { id: this.id, valid: this.valid });
       },
     },
+    methods: {
+
+      selectMeasure(level, value) {
+        this.formData[level].measure = value;
+        this.formData[level].menu = false;
+      },
+      getMeasureText(value) {
+        const found = this.measures.find(m => m.value === value);
+        return found ? found.text : '';
+      },
+      showTooltip(measure, level) {
+        if (
+          this.tooltipMessages &&
+          this.tooltipMessages[level] &&
+          this.tooltipMessages[level][measure]
+        ) {
+          return this.tooltipMessages[level][measure];
+        }
+        return 'Geen informatie beschikbaar';
+      },
+
+    },
+
     beforeMount() {
       this.formData = this.value;
     },
