@@ -6,7 +6,7 @@
       dense
       outlined
       >
-      Vanwege de schaal van de y-as, worden kleine lagen (bijna) niet zichtbaar en
+      Vanwege de schaal van de y-as, worden dunne lagen (bijna) niet zichtbaar en
       om informatie over een laag te zien, moet je de muis over de 'bolletjes' bewegen.
     </v-alert>
     <v-chart
