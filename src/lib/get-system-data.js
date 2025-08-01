@@ -1,7 +1,8 @@
-import geoServerUrl from './geoserver-url';
+import sendWpsRequest from '@/lib/wps-template';
 
-const DATA_TEMPLATE = (selections) =>
-  JSON.stringify({
+export default async function getSystemData (selections) {
+  
+const data  = {
     type: 'FeatureCollection',
     name: 'test_watersystem',
     crs: {
@@ -15,28 +16,28 @@ const DATA_TEMPLATE = (selections) =>
         geometry,
       })
     ),
-  }, null, 0);
+  };
+  
 
-export default async function getSystemData (selections) {
-  const data = DATA_TEMPLATE(selections);
-  const url = await geoServerUrl({
-    url: `${ process.env.VUE_APP_WPS_TEST }`,
-    request: 'Execute',
-    service: 'WPS',
-    identifier: 'brl_wps_watersystem',
-    version: '1.0.0',
-    encode: false,
-    DataInputs: 'configuration=' + data,
-  });
+  try {
+    const response = await sendWpsRequest({
+      identifier: 'brl_wps_watersystem',
+      inputs: [ { id: 'configuration', title: 'setup for the modelling process',
+        type: 'ComplexData', mimeType: 'application/json', value: data } ],
+      outputIdentifier: 'output_json',
+      mimeType: 'application/json',
+    });
 
-  return fetch(url)
-    .then(response => response.text())
-    .then(string => {
-      const document = new window.DOMParser().parseFromString(string, 'text/xml');
-      const element = document.getElementsByTagName('wps:ComplexData');
-      const value = JSON.parse(element[0].childNodes[0].nodeValue);
-      return value ? value : null;
-    
-    })
-    .catch(err => console.log(err));
+    if (response.errMsg) {
+      throw new Error(response.errMsg);
+    }
+
+    return response;
+  } catch (error) {
+    console.error('Failed to fetch data:', error);
+    throw error;
+  }
 }
+
+
+
