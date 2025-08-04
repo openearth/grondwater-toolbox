@@ -32,41 +32,45 @@
           </span>
         </v-card>
       </v-col>
-      <v-col
-          cols="12"
-          sm="4"
-      >
+      <v-col cols="12" sm="4">
         <v-card
-            class="pa-2 full-height d-flex"
-            outlined
-            tile
-        >
-       <v-menu
-          v-model="formData[level].menu"
-          :close-on-content-click="true"
-          offset-y
-          :disabled="disabled"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-text-field
-              class="hide-label"
-              v-bind="attrs"
-              v-on="on"
-              :value="getMeasureText(formData[level].measure)"
-              label="Onttrekking toepassen in laag"
-              readonly
-              append-icon="mdi-menu-down"
-              :disabled="disabled"
-            />
-          </template>
+      class="pa-2 full-height d-flex"
+      outlined
+      tile>
+          <v-menu
+            v-model="formData[level].menu"
+            :close-on-content-click="true"
+            offset-y
+            :disabled="disabled"
+          >
+            <template v-slot:activator="{ on: menuOn, attrs: menuAttrs }">
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on: tooltipOn, attrs: tooltipAttrs }">
+                  <v-text-field
+                    class="hide-label"
+                    v-bind="{ ...menuAttrs, ...tooltipAttrs }"
+                    v-on="{ ...menuOn, ...tooltipOn }"
+                    :value="getMeasureText(formData[level].measure)"
+                    label="Onttrekking toepassen in laag"
+                    readonly
+                    append-icon="mdi-menu-down"
+                    :disabled="disabled"
+                  />
+                </template>
+                <span>{{ showTooltip(formData[level].measure, level) }}</span>
+              </v-tooltip>
+            </template>
 
-          <v-list dense>
-            <v-list-item-group
-              v-model="formData[level].measure"
-              color="primary"
-            >
-              <template v-for="(item, i) in measures">
-                <v-tooltip right :key="i">
+            <v-list dense>
+              <v-list-item-group
+                v-model="formData[level].measure"
+                color="primary"
+              >
+                <v-tooltip
+                  v-for="(item, i) in measures"
+                  :key="i"
+                  right
+                >
                   <template v-slot:activator="{ on, attrs }">
                     <v-list-item
                       v-bind="attrs"
@@ -81,20 +85,19 @@
                   </template>
                   <span>{{ showTooltip(item.value, level) }}</span>
                 </v-tooltip>
-              </template>
-            </v-list-item-group>
-          </v-list>
-        </v-menu>
-
+              </v-list-item-group>
+            </v-list>
+          </v-menu>
         </v-card>
       </v-col>
+
       <v-col
           cols="12"
           sm="2"
       >
         <text-field-measure
             v-model="formData[level].difference"
-            :differenceRules="differenceRules"
+            :differenceRules="getDifferenceRules(level, formData[level].measure)"
             :disabled="disabled"
         />
       </v-col>
@@ -122,7 +125,7 @@
 
 <script>
   import TextFieldMeasure from '@/components/text-field-measure';
-
+  import { initialFormData, calculationLayers, levels, measures, formDataInfo } from '@/data/brl-info';
   export default {
     components: {
       TextFieldMeasure,
@@ -153,117 +156,13 @@
     },
     data() {
       return {
-        formData: {
-          default: {
-            main: {
-              enabled: true,
-              difference: '1',
-              calculationLayer: 1,
-              measure: 'stageDiff',
-              menu: false,
-            },
-            primary: {
-              enabled: false,
-              difference: '1',
-              calculationLayer: 1,
-              measure: 'stageDiff',
-              menu: false,
-            },
-            secondary: {
-              enabled: false,
-              difference: '1',
-              calculationLayer: 1,
-              measure: 'stageDiff',
-              menu: false,
-            },
-            tertiary: {
-              enabled: false,
-              difference: '1',
-              calculationLayer: 1,
-              measure: 'stageDiff',
-              menu: false,
-            },
-          },
-        },
-        calculationLayers: [ 1, 2 ],
-        levels: {
-          main: 'Hoofd',
-          primary: 'Primair',
-          secondary: 'Secundair',
-          tertiary: 'Tertiair',
-        },
-        measures: [
-          {
-            text: 'Rivierbodem (unit m)',
-            value: 'stageDiff',
-          },
-          {
-            text: 'Weerstand (unit m/d)',
-            value: 'condDiff',
-          },
-          {
-            text: 'Waterpeil (unit m)',
-            value: 'rbotDiff',
-          },
-        ],
-        rules: {
-          required: (value) => !!value || 'Benodigd.',
-          notZero: (value) => value !== '0' || 'Waarde mag niet 0 zijn.',
-          minMaxDifference: (value) =>
-            (value >= -10 && value <= 10) ||
-            'Waarde moet tussen -10 en 10 meter vallen.',
-        },
+        formData: JSON.parse(JSON.stringify(initialFormData)),
+        calculationLayers,
+        levels,
+        measures,
         valid: false,
-        tooltipMessages: {
-          main: {
-            stageDiff: 'Verandering in bodemhoogte van het hoofd watersysteem. Mogelijk range: (-5 m , 5 m)',
-            condDiff: 'Verandering in weerstand van het hoofd watersysteem. Mogelijk range: (-100 d , 100 d). NB, verandering in weerstand wordt omgerekend naar conductance met het totale celoppervlakte.',
-            rbotDiff: 'Verandering in waterhoogte van het hoofd watersysteem. Mogelijk range: (-5 m , 5 m)',
-          },
-          primary: {
-            stageDiff: 'Verandering in bodemhoogte van het primaire watersysteem. Mogelijk range: (-1 m , 1 m)',
-            condDiff: 'Verandering in weerstand van het primaire watersysteem. Mogelijk range: (-10 d , 10 d). NB, verandering in weerstand wordt omgerekend naar conductance met het totale celoppervlakte.',
-            rbotDiff: 'Verandering in waterhoogte van het primaire watersysteem. Mogelijk range: (-1 m , 1 m)',
-          },
-          secondary: {
-            stageDiff: 'Verandering in bodemhoogte van het secundaire watersysteem. Mogelijk range: (-1 m , 1 m)',
-            condDiff: 'Verandering in weerstand van het secundaire watersysteem. Mogelijk range: (-1 d , 1 d). NB, verandering in weerstand wordt omgerekend naar conductance met het totale celoppervlakte.',
-            rbotDiff: 'Verandering in waterhoogte van het secundaire watersysteem. Mogelijk range: (-1 m , 1 m)',
-          },
-          tertiary: {
-            stageDiff: 'Verandering in bodemhoogte van het tertiaire watersysteem. Mogelijk range: (-0.5 m , 0.5 m)',
-            condDiff: 'Verandering in weerstand van het tertiare watersysteem. Mogelijk range: (-1 d , 1 d). NB, verandering in weerstand wordt omgerekend naar conductance met het totale celoppervlakte.',
-            rbotDiff: 'Verandering in waterhoogte van het tertiare watersysteem. Mogelijk range: (-0.5 m , 0.5 m)',
-          },
-        },
-
+        formDataInfo,
       };
-    },
-    computed: {
-      differenceRules() {
-        if (this.formData.measure === 'riverbedDifference') {
-          return [
-            this.rules.required,
-            this.rules.notZero,
-            (value) =>
-              (value >= -10 && value <= 10) ||
-              'Waarde moet tussen -10 en 10 meter vallen.',
-          ];
-        }
-
-        if (this.formData.measure === 'stageDifference') {
-
-          return [
-            this.rules.required,
-            this.rules.notZero,
-            (value) =>
-              (value >= -20 && value <= 20) ||
-              'Waarde moet tussen -20 en 20 meter vallen.',
-          ];
-        }
-
-        return [];
-      },
     },
     watch: {
       formData() {
@@ -285,19 +184,30 @@
       },
       showTooltip(measure, level) {
         if (
-          this.tooltipMessages &&
-          this.tooltipMessages[level] &&
-          this.tooltipMessages[level][measure]
+          this.formDataInfo &&
+          this.formDataInfo[level] &&
+          this.formDataInfo[level][measure]
         ) {
-          return this.tooltipMessages[level][measure];
+          return this.formDataInfo[level][measure]['tooltipMessage'];
         }
         return 'Geen informatie beschikbaar';
       },
+      getDifferenceRules(level, measure) {
+        const info = this.formDataInfo[level][measure];
+        const [ min, max ] = info.ranges;
+
+        return [
+          (value) => !!value || 'Benodigd.',
+          (value) =>
+            (parseFloat(value) >= min && parseFloat(value) <= max) ||
+            `Waarde moet tussen ${ min } en ${ max } meter vallen.`,
+        ];
+      },      
 
     },
-
     beforeMount() {
       this.formData = this.value;
+      this.rules = this.getDifferenceRules('main', 'stageDiff');
     },
   };
 </script>

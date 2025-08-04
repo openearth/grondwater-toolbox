@@ -4,14 +4,15 @@
     outlined
     tile
     >
-        <v-text-field
-            v-model="_value"
-            class="hide-label"
-            type="number"
-            label="Verschil in rivierbodemhoogte (m)"
-            :rules="differenceRules"
-            :disabled="disabled"
-        />
+      <v-text-field
+         ref="textField"
+          v-model="_value"
+          class="hide-label"
+          type="number"
+          label="Verschil in rivierbodemhoogte (m)"
+          :rules="differenceRules"
+          :disabled="disabled"
+      />
         </v-card>
 </template>
 <script>
@@ -32,6 +33,17 @@
         },
       },
     },
+    watch: {
+      differenceRules: {
+        immediate: true,
+        handler() {
+          this.$nextTick(() => {
+            this.$refs.textField.validate();
+          });
+        },
+      },
+    },
+
   };
 
 </script>
