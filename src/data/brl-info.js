@@ -42,7 +42,7 @@ export const levels = {
 
 export const measures = [
   { text: 'Rivierbodem (unit m)', value: 'stageDiff' },
-  { text: 'Weerstand (unit m/d)', value: 'condDiff' },
+  { text: 'Weerstand (unit d)', value: 'condDiff' },
   { text: 'Waterpeil (unit m)', value: 'rbotDiff' },
 ];
 
