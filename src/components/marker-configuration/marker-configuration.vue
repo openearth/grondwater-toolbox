@@ -58,7 +58,7 @@
       <v-btn
         class="ml-auto"
         color="primary"
-        :disabled="!valid || loadingWmsLayers"
+        :disabled="!valid || loadingWmsLayers || exceededCalculationLimit"
         :loading="loadingWmsLayers"
         depressed
         @click="calculate"
@@ -66,6 +66,14 @@
         Berekenen
       </v-btn>
     </div>
+    <v-alert
+        v-if="exceededCalculationLimit"
+        dense
+        outlined
+        type="error"
+        >
+        De combinatie van de grootte van het modelgebied en de gekozen horizontale rekenresolutie overschreiden het maximaal aantal cellen om een snelle berekening mogelijk te maken. Pas alstublieft een van de variabelen (grootte van het modelgebied of horizontale rekenresolutie) aan zodat u binnen het maximaal aantal cellen van 25 600 blijft.
+    </v-alert>
   </div>
 </template>
 
@@ -92,6 +100,7 @@
             parseFloat(value) <= 25000 || 'De grootte mag niet groter zijn dan 25.000 meter.',
         },
         valid: false,
+        exceededCalculationLimit: false,
       };
     },
     created() {
@@ -125,6 +134,20 @@
         default: {
           return 10;
         }
+        }
+      },
+      calculationLimit() {
+        return (this.area ** 2) / (this.selectedOutres ** 2);
+      },
+    },
+    watch: {
+      calculationLimit() {
+        console.log('calculationLimit', this.calculationLimit);
+        if (this.calculationLimit > 25600) {
+          this.exceededCalculationLimit = true;
+
+        } else {
+          this.exceededCalculationLimit = false;
         }
       },
     },
