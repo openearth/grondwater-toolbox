@@ -127,17 +127,11 @@
         return this.wmsLayers[0];
       },
       legendSource() {
-        if (this.firstWmsLayer) {
-          return {
-            url: this.firstWmsLayer.baseUrl,
-            layer: this.firstWmsLayer.id,
-          };
-        } else {
-          return {
-            url: this.waterWaysUrl,
-            layer: this.waterWaysLayerId,
-          };
-        }
+        return this.activeLayers.length
+          ? {
+            url: this.activeLayers[0].baseUrl,
+            layer: this.activeLayers[0].id,
+          } : null;
       },
       waterWaysLayer() {
         return wms({
