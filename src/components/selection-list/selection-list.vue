@@ -66,7 +66,7 @@
       //TODO: move it to a configuration file in future update
       textAlert() {
         if (this.$route.params.config === 'brl') {
-          return 'Selecteer waterwegen op de kaart waar u uw berekeningen op wilt uitvoeren.';
+          return 'Maak een polygoon over een of meerdere waterwegen op de kaart waar u uw berekeningen op wilt uitvoeren.';
         } 
         return 'Teken een polygoon';
         
