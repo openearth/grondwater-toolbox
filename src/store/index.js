@@ -6,6 +6,9 @@ import app from './modules/app';
 import data from './modules/data';
 import mapbox from './modules/mapbox';
 import selections from './modules/selections';
+import drainage from './modules/drainage';
+import brl from './modules/brl';
+import dig from './modules/dig';
 
 Vue.use(Vuex);
 
@@ -15,6 +18,9 @@ export default new Vuex.Store({
     app,
     data,
     selections,
+    drainage,
     mapbox,
+    brl,
+    dig,
   },
 });

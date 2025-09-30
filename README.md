@@ -31,7 +31,7 @@ After installing dependencies using `yarn install` the following scripts are ava
 ---|---
 `build` | Builds app for production to `dist/`.
 `serve` | Serves app on [`http://localhost:8080`](http://localhost:8080) with hot reloading.
-`start` | Short for `yarn dev`
+`start` | Short for `yarn serve`
 
 
 ## License

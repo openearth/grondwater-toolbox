@@ -26,6 +26,16 @@
       <v-row no-gutters>
         <v-col>
           <v-select
+              label="Horizontale rekenresolutie"
+              v-model="selectedOutres"
+              :items="outres.map((res) => ({ text: `${res}m`, value: res }))"
+              :rules="[rules.required]"
+          />
+        </v-col>
+      </v-row>
+      <v-row no-gutters>
+        <v-col>
+          <v-select
             label="Onttrekking toepassen in laag"
             v-model="selectedLayer"
             :items="layers.map((layer) => ({ text: `Laag ${layer}`, value: layer }))"
@@ -48,7 +58,7 @@
       <v-btn
         class="ml-auto"
         color="primary"
-        :disabled="!valid || loadingWmsLayers"
+        :disabled="!valid || loadingWmsLayers || exceededCalculationLimit"
         :loading="loadingWmsLayers"
         depressed
         @click="calculate"
@@ -56,6 +66,14 @@
         Berekenen
       </v-btn>
     </div>
+    <v-alert
+        v-if="exceededCalculationLimit"
+        dense
+        outlined
+        type="error"
+        >
+        De combinatie van de grootte van het modelgebied en de gekozen horizontale rekenresolutie overschreiden het maximaal aantal cellen om een snelle berekening mogelijk te maken. Pas alstublieft een van de variabelen (grootte van het modelgebied of horizontale rekenresolutie) aan zodat u binnen het maximaal aantal cellen van 25 600 blijft.
+    </v-alert>
   </div>
 </template>
 
@@ -68,6 +86,8 @@
         area: 0,
         areaValid: true,
         layers: [ 1, 2, 3, 4, 5, 6, 7 ],
+        outres: [ 25, 50, 125, 250 ],
+        selectedOutres: 250,
         selectedLayer: null,
         subtraction: 500,
         subtractionValid: true,
@@ -80,6 +100,7 @@
             parseFloat(value) <= 25000 || 'De grootte mag niet groter zijn dan 25.000 meter.',
         },
         valid: false,
+        exceededCalculationLimit: false,
       };
     },
     created() {
@@ -115,6 +136,20 @@
         }
         }
       },
+      calculationLimit() {
+        return (this.area ** 2) / (this.selectedOutres ** 2);
+      },
+    },
+    watch: {
+      calculationLimit() {
+        console.log('calculationLimit', this.calculationLimit);
+        if (this.calculationLimit > 25600) {
+          this.exceededCalculationLimit = true;
+
+        } else {
+          this.exceededCalculationLimit = false;
+        }
+      },
     },
     methods: {
       ...mapActions('app', [ 'addLockedViewerStep', 'removeLockedViewerStep', 'setViewerCurrentStepNumber' ]),
@@ -131,6 +166,7 @@
         const properties = {
           area: parseInt(this.area, 10),
           coordinates: [ lng, lat ],
+          outres: parseInt(this.selectedOutres, 10),
           layer: parseInt(this.selectedLayer, 10),
           abstraction: parseInt(this.subtraction, 10),
         };

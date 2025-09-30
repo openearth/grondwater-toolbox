@@ -1,12 +1,12 @@
 import axios from 'axios';
 import { xmlRequestTemplate } from './template';
 
-export default function({ functionId, requestData, polygon, watersIdentifier, filterData, cswUrls, bufferDist, segmentLength, layersSetup, featureCollection }) {
+export default function({ functionId, url, requestData, polygon, watersIdentifier, filterData, cswUrls, bufferDist, segmentLength, layersSetup, featureCollection }) {
   const template = xmlRequestTemplate({ functionId, requestData, polygon, watersIdentifier, filterData, cswUrls, bufferDist, segmentLength, layersSetup, featureCollection });
 
   return axios({
     method: 'post',
-    url: `${ process.env.VUE_APP_GEO_SERVER }/wps`,
+    url:  url ? url : `${ process.env.VUE_APP_WPS_TEST }`,
     data: template,
     headers: { 'Content-Type': 'application/xml' },
   })

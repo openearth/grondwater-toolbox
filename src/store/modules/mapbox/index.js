@@ -1,6 +1,7 @@
 import wps from '@/lib/wps';
 import layers from '@/lib/mapbox/layers';
-import { generateWmsLayer } from '@/lib/project-layers';
+import parseLayersStructure from '@/lib/parse-layers-structure';
+import flatNestedLayersStructure from '@/lib/flat-nested-layers-structure';
 
 const initialState = () => ({
   activePopup: null,
@@ -9,7 +10,8 @@ const initialState = () => ({
   hiddenWmsLayers: [],
   loadingWmsLayers: false,
   mapIsActive: false,
-  wmsLayers: [],
+  wmsLayers: [],//They are flattened layers list
+  layersGrouped: [],
 });
 
 export default {
@@ -25,6 +27,7 @@ export default {
     loadingWmsLayers: state => state.loadingWmsLayers,
     mapIsActive: state => state.mapIsActive,
     wmsLayers: state => state.wmsLayers,
+    layersGrouped: state => state.layersGrouped,
   },
 
   mutations: {
@@ -71,6 +74,9 @@ export default {
     SET_MAP_IS_ACTIVE(state, { isActive }) {
       state.mapIsActive = isActive;
     },
+    SET_LAYERS_GROUPED(state,  layersGrouped ) {
+      state.layersGrouped = layersGrouped;
+    },
   },
 
   actions: {
@@ -83,41 +89,20 @@ export default {
     addWmsLayer({ commit }, { layer }) {
       commit('ADD_WMS_LAYER', { layer });
     },
-    setLayers({ dispatch }, layers) {
-
-      // Flatten the layer dictionary in an array where each item in the array contains a parentGroup
-      let layerList = [];
-      Object.entries(layers).forEach(([ parentGroup, layers ]) => {
-        layerList = [
-          ...layerList,
-          ...layers.map(layer => {
-            return { ...layer, parentGroup };
-          }),
-        ];
-      });
-
-      const wmsLayers = layerList.map(({ url, layer, parentGroup, name }) => ({
-        ...generateWmsLayer({ url, layer, id: layer }),
-        parentGroup,
-        name: name,
-        baseUrl: url,
-      }));
+    
+    setLayers({ commit, dispatch }, layers) {
+     const layersGrouped = parseLayersStructure (layers);
+      commit('SET_LAYERS_GROUPED', layersGrouped);
+      
+      const wmsLayers = flatNestedLayersStructure(layersGrouped);
 
       wmsLayers.forEach((layer, index) => {
         if (index !== 0) {
           dispatch('addHiddenWmsLayer', { layer });
         }
 
-        dispatch('addWmsLayer', { layer });
+      dispatch('addWmsLayer', { layer }); 
       });
-    },
-    async calculateResult({ dispatch }, data) {
-      dispatch('setWmsLayersLoading', { isLoading: true });
-
-      const layersGrouped = await wps(data);
-      dispatch('setLayers', layersGrouped);
-
-      dispatch('setWmsLayersLoading', { isLoading: false });
     },
     getFeature({ dispatch, rootState }, { feature }) {
       const { selections } = rootState;

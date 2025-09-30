@@ -3,6 +3,7 @@
     ref="pathLayer"
     :source-id="`${layer.id}-source`"
     :layer-id="`${layer.id}-layer`"
+    :before="before"	
     :layer="layer"
     v-bind="$attrs"
   />
@@ -20,6 +21,10 @@
       layer: {
         type: Object,
         required: true,
+      },
+      before: {
+        type: String,
+        required: false,
       },
     },
     methods: {

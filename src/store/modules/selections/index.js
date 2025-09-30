@@ -3,9 +3,15 @@ import { v4 as uuid } from 'uuid';
 import saveDataToJson from '@/lib/save-data-to-json';
 
 
-
 const initialState = () => ({
   selections: [],
+});
+
+const defaultConfiguration = JSON.stringify({
+  enabled: false,
+  difference: '0',
+  calculationLayer: 1,
+  measure: 'stageDiff',
 });
 
 export default {
@@ -21,19 +27,19 @@ export default {
   mutations: {
     ADD_SELECTION(state, { selection }) {
       const totalSelections = state.selections.length;
-      const defaultForm = {
-        id: uuid(),
-        valid: true,
-        data: {
-          difference: '1',
-          calculationLayer: 1,
-          measure: 'riverbedDifference',
-        },
-      };
       state.selections.push({
         ...selection,
-        configuration: selection.configuration || [ defaultForm ],
         name: selection.name || `Selectie #${ totalSelections + 1 }`,
+        configuration: selection.configuration || [ {
+          id: uuid(),
+          valid: true,
+          data: {
+            main: { ...JSON.parse(defaultConfiguration), enabled: true },
+            primary: JSON.parse(defaultConfiguration),
+            secondary: JSON.parse(defaultConfiguration),
+            tertiary: JSON.parse(defaultConfiguration),
+          },
+          } ],
       });
     },
     REMOVE_SELECTION(state, { id }) {
@@ -64,11 +70,7 @@ export default {
       const defaultForm = {
         id: uuid(),
         valid: true,
-        data: {
-          difference: '1',
-          calculationLayer: 1,
-          measure: 'riverbedDifference',
-        },
+        data: JSON.parse(defaultConfiguration),
       };
       selection.configuration.push(defaultForm);
     },
@@ -79,17 +81,23 @@ export default {
   },
 
   actions: {
-    addSelection({ commit }, { selection }) {
-      commit('ADD_SELECTION', { selection });
+    addSelection({ commit }, { selection, type = 'default' }) {
+      commit('ADD_SELECTION', { selection, type });
     },
     addSelectionConfiguration({ commit }, { id }) {
       commit('ADD_SELECTION_CONFIGURATION', { id });
     },
-    editSelectionName({ commit }, { id, name }) {
+    editSelectionName({ rootState, commit }, { id, name }) {
       commit('EDIT_SELECTION_NAME', { id, name });
+      if (rootState.app.viewerConfig === 'drainage') {
+        commit('drainage/EDIT_DRAINAGE_CONFIGURATION_NAME', { id, name }, { root: true });
+      }
     },
-    removeSelection({ commit }, { id }) {
+    removeSelection({ commit, rootState }, { id }) {
       commit('REMOVE_SELECTION', { id });
+       if (rootState.app.viewerConfig === 'drainage') {
+        commit('drainage/REMOVE_DRAINAGE_CONFIGURATION', { selection: id }, { root: true });
+      }
     },
     removeSelectionConfiguration({ commit }, { selectionId, formId }) {
       commit('REMOVE_SELECTION_CONFIGURATION', { selectionId, formId });

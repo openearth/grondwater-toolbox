@@ -2,105 +2,112 @@
 <template>
   <div class="selection-configuration">
     <v-text-field
-      v-model="extent"
-      type="number"
-      min="0"
-      label="Grootte modelgebied (in m rondom de getekende polygoon)"
-      :rules="[rules.required, rules.minExtent, rules.maxExtent]"
-      @update:error="setExtentValidity"
+        v-model="extent"
+        type="number"
+        min="0"
+        label="Grootte modelgebied (in m rondom de getekende polygoon)"
+        :rules="[rules.required, rules.minExtent, rules.maxExtent]"
+        @update:error="setExtentValidity"
     />
 
     <configuration-card
-      v-for="(selection, index) in selections"
-      :key="selection.id"
-      :id="selection.id"
-      :title="selection.name"
-      @mouseenter="handleMouseEnter(selection.id)"
-      @mouseleave="handleMouseLeave(selection.id)"
+        v-for="(selection, index) in selections"
+        :key="selection.id"
+        :id="selection.id"
+        :title="selection.name"
+        @mouseenter="handleMouseEnter(selection.id)"
+        @mouseleave="handleMouseLeave(selection.id)"
     >
-      <v-row no-gutters>
-        <v-col cols="12" sm="5">
+      <v-row no-gutters class="mt-6">
+        <v-col cols="12" sm="1">
           <v-card
-            class="pa-2"
-            outlined
-            tile
+              class="pa-2 full-height"
+              outlined
+              tile
+          >
+          </v-card>
+        </v-col>
+        <v-col cols="12" sm="3">
+          <v-card
+              class="pa-2"
+              outlined
+              tile
+          >
+            Niveau
+          </v-card>
+        </v-col>
+        <v-col cols="12" sm="4">
+          <v-card
+              class="pa-2"
+              outlined
+              tile
           >
             Maatregel
           </v-card>
         </v-col>
-        <v-col cols="12" sm="3">
+        <v-col cols="12" sm="2">
           <v-card
-            class="pa-2"
-            outlined
-            tile
+              class="pa-2"
+              outlined
+              tile
           >
             Verschil
           </v-card>
         </v-col>
-        <v-col cols="12" sm="3">
+        <v-col cols="12" sm="2">
           <v-card
-            class="pa-2"
-            outlined
-            tile
+              class="pa-2"
+              outlined
+              tile
           >
-            Berekening
+            Laag
           </v-card>
         </v-col>
       </v-row>
 
-      <configuration-form
-        v-for="(form, index) in selection.configuration"
-        v-model="form.data"
-        :key="form.id"
-        :id="form.id"
-        :disabled="disabled"
-        :deletable="index !== 0"
-        @delete="handleDeleteForm(selection.id, $event)"
-        @validated="setFormValidity(selection, $event)"
-      />
 
-      <v-btn
-        icon-start
-        class="mt-4"
-        title="berekening toevoegen"
-        depressed
-        @click="addForm(selection.id)"
-      >
-        <v-icon left>mdi-plus</v-icon>
-        Berekening
-      </v-btn>
+      <configuration-form
+          v-for="(form, index) in selection.configuration"
+          v-model="form.data"
+          :key="form.id"
+          :id="form.id"
+          :disabled="disabled"
+          :deletable="index !== 0"
+          @delete="handleDeleteForm(selection.id, $event)"
+          @validated="setFormValidity(selection, $event)"
+      />
 
       <v-divider v-if="index !== selections.length - 1" class="mt-6" />
     </configuration-card>
 
     <div class="d-flex justify-space-between align-center">
       <v-alert
-        v-if="loadingWmsLayers"
-        class="mb-0 py-1"
-        type="info"
-        dense
-        outlined
+          v-if="loadingWmsLayers"
+          class="mb-0 py-1"
+          type="info"
+          dense
+          outlined
       >
         Let op! Dit kan even duren.
       </v-alert>
       <v-btn
-        class="ml-auto"
-        color="primary"
-        :disabled="!valid || loadingWmsLayers"
-        :loading="loadingWmsLayers"
-        depressed
-        @click="calculate"
+          class="ml-auto"
+          color="primary"
+          :disabled="!valid || loadingWmsLayers"
+          :loading="loadingWmsLayers"
+          depressed
+          @click="calculate"
       >
         Berekenen
       </v-btn>
     </div>
 
     <v-alert
-      v-if="wmsLayers.length"
-      class="mt-5"
-      dense
-      outlined
-      type="info"
+        v-if="wmsLayers.length"
+        class="mt-5"
+        dense
+        outlined
+        type="info"
     >
       Klik op een punt op de kaart om de waarde te zien.
     </v-alert>
@@ -132,14 +139,34 @@
         extentValid: true,
         selectedColor: '#f79502',
         originalLineColor: '#000',
+        levels: {
+          main: 'h',
+          primary: 'p',
+          secondary: 's',
+          tertiary: 't',
+        },
+        defaultData: {
+          'h_stageDiff': '0.0',
+          'h_condDiff': '0.0',
+          'h_rbotDiff': '0.0',
+          'p_stageDiff': '0.0',
+          'p_condDiff': '0.0',
+          'p_rbotDiff': '0.0',
+          's_stageDiff': '0.0',
+          's_condDiff': '0.0',
+          's_rbotDiff': '0.0',
+          't_stageDiff': '0.0',
+          't_condDiff': '0.0',
+          't_rbotDiff': '0.0',
+        },
         rules: {
           required: (value) => !!value || 'Benodigd.',
           minExtent: (value) =>
             value >= 500 || 'Een grootte van minimaal 500 meter is vereist.',
-          maxExtent: (value) => 
+          maxExtent: (value) =>
             parseFloat(value) <= 25000 || 'De grootte mag niet groter zijn dan 25.000 meter.',
         },
-        wpsId: 'brl_gwmodel', // This should be configurable based on the tool
+        wpsId: 'brl_wps_watersystem', // This should be configurable based on the tool
       };
     },
     created() {
@@ -167,6 +194,7 @@
       }
     },
     computed: {
+      ...mapGetters('app', [ 'viewerConfig' ]),
       ...mapGetters('mapbox', [ 'features', 'loadingWmsLayers', 'wmsLayers' ]),
       ...mapGetters('selections', [ 'selections' ]),
       // iterates through all forms and checks if every one of them is valid
@@ -182,22 +210,17 @@
         return this.selections.reduce((acc, selection) => {
           const { configuration } = selection;
           const feature = this.features.find(feature => feature.id === selection.id);
-
-          configuration.forEach((form) => {
-            const { data } = form;
-
-            const formattedData = {
-              ...data,
-              [data.measure]: data.difference,
-            };
-
-            delete formattedData.measure;
-            delete formattedData.difference;
-
+          configuration.forEach((form, index) => {
             acc.push({
-              id: feature.watersIdentifier,
+              id: feature.watersIdentifier || index + 1,
               extent: this.extent,
-              ...formattedData,
+              geometry: selection.geometry,
+              ...this.defaultData,
+              ...Object.fromEntries(
+                // maps the form data to the correct format i.e. h_stageDiff: 0.0
+                Object.entries(form.data).map(([ key, value ]) => [ `${ this.levels[key] }_${ value.measure }`, parseFloat(value.difference).toFixed(1) ])
+              ),
+              ...('measure' in form.data ? { [form.data.measure]: form.data.difference } : {}),
             });
           });
 
@@ -207,25 +230,18 @@
     },
     methods: {
       ...mapActions('app', [ 'addLockedViewerStep', 'removeLockedViewerStep', 'setViewerCurrentStepNumber' ]),
-      ...mapActions('mapbox', [ 'calculateResult', 'resetHiddenWmsLayers', 'resetWmsLayers' ]),
+      ...mapActions('mapbox', [ 'resetHiddenWmsLayers', 'resetWmsLayers' ]),
       ...mapActions('selections', [ 'addSelectionConfiguration', 'removeSelectionConfiguration' ]),
+      ...mapActions('brl', [ 'calculateResult' ]),
       async onNext() {
         this.$router.push({ name: 'tool-step-3' });
         this.setViewerCurrentStepNumber({ step: 3 });
       },
-      addForm(id) {
-        this.addSelectionConfiguration({ id });
-      },
       async calculate() {
         this.resetWmsLayers();
         this.resetHiddenWmsLayers();
-        //TODO: 
-        const data = {
-          functionId: this.wpsId,
-          requestData: this.formattedForms,
-        };
 
-        await this.calculateResult(data);
+        await this.calculateResult(this.formattedForms);
 
         if (this.valid) {
           this.removeLockedViewerStep({ step: 3 });
@@ -243,12 +259,6 @@
       handleMouseEnter(id) {
         this.$root.map.setPaintProperty(id, 'line-color', this.selectedColor);
       },
-      handleInput({ id, formId, data }) {
-        const feature = this.forms.find({ id } === id);
-        const form = feature && feature.forms.find(({ id }) => id === formId);
-
-        form.data = data;
-      },
       handleDeleteForm(selectionId, formId) {
         this.removeSelectionConfiguration({ selectionId, formId });
       },
@@ -261,20 +271,14 @@
         this.extentValid = !hasError;
       },
       zoomToSelection() {
-        if (!this.features.length) {
+        if (!this.selections.length || !this.features.length) {
           return;
         }
-
-        const bounds = bbox(
+        this.$root.map.fitBounds(bbox(
           featureCollection(
-            this.features.map((feature) => ({
-              geometry: feature.source.data,
-              type: 'Feature',
-            }))
+            this.selections
           )
-        );
-
-        this.$root.map.fitBounds(bounds, { padding: 50 });
+        ), { padding: 50 });
       },
     },
   };

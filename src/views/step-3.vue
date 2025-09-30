@@ -5,29 +5,26 @@
     <v-divider class="my-6" />
 
     <v-treeview
-      expand-icon="mdi-chevron-down"
-      v-model="tree"
-      :items="items"
-      open-on-click
+        expand-icon="mdi-chevron-down"
+        v-model="tree"
+        :items="layersGrouped"
+        open-on-click
     >
       <template #prepend="{selected, open, item, indeterminate}">
-        <v-icon v-if="item.group">
-          {{ open
-            ? `mdi-folder-open-outline`
-            : `mdi-folder-outline`
-          }}
+        <v-icon v-if="item.children">
+        {{ open ? 'mdi-folder-open-outline' : 'mdi-folder-outline' }}
         </v-icon>
 
-        <v-btn
-          v-else
-          text
-          icon
-          @click="onLayerVisibilityClick(item.id)"
-        >
-          <v-icon>
-            {{ hiddenWmsLayers.some(layer => layer.id === item.id) ? 'mdi-eye-off' : 'mdi-eye' }}
-          </v-icon>
-        </v-btn>
+      <v-btn
+        v-else
+        text
+        icon
+        @click="onLayerVisibilityClick(item.id)">
+      <v-icon>
+        {{ hiddenWmsLayers.some(layer => layer.id === item.id) ? 'mdi-eye-off' : 'mdi-eye' }}
+      </v-icon>
+      </v-btn>
+
       </template>
 
       <template #label="{ item }">
@@ -36,25 +33,28 @@
         </span>
       </template>
     </v-treeview>
-
+    <template v-if="drainageSum">
+      <v-divider class="my-6" />
+        <p class="text-h6">Totaal drainage veranderingen: <code>{{ drainageSum.toFixed(2) }}</code></p>
+      </template>
     <v-divider class="my-6" />
 
     <sidebar-footer>
       <v-btn
-        slot="start"
-        color="primary"
-        :disabled="previousIsDisabled"
-        depressed
-        @click="onPrevious"
+          slot="start"
+          color="primary"
+          :disabled="previousIsDisabled"
+          depressed
+          @click="onPrevious"
       >
         <v-icon left>mdi-chevron-left</v-icon>
         Vorige
       </v-btn>
       <v-btn
-        slot="end"
-        color="primary"
-        depressed
-        @click="onClickExport"
+          slot="end"
+          color="primary"
+          depressed
+          @click="onClickExport"
       >
         Lagen exporteren
       </v-btn>
@@ -67,6 +67,7 @@
 
   import SidebarFooter from '@/components/sidebar-footer';
 
+
   export default {
     components: { SidebarFooter },
     data() {
@@ -76,23 +77,9 @@
     },
     computed: {
       ...mapGetters('app', [ 'viewerStepsLocked' ]),
-      ...mapGetters('mapbox', [ 'features', 'wmsLayers', 'hiddenWmsLayers' ]),
-      items() {
-        const labels = {
-          head: 'Grondwaterstanden',
-          bdgflf: 'Kwelfluxen',
-        };
-
-        return Object.keys(labels).map(group => {
-          return {
-            id: group,
-            name: labels[group],
-            group,
-            children: this.wmsLayers
-              .filter(layer => layer.parentGroup === group),
-          };
-        });
-      },
+      ...mapGetters('mapbox', [ 'features', 'wmsLayers', 'hiddenWmsLayers' , 'layersGrouped' ]),
+      ...mapGetters('drainage', [ 'drainageSum' ]),
+     
       previousIsDisabled() {
         return this.viewerStepsLocked.includes(2);
       },

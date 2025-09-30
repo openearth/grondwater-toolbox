@@ -1,56 +1,123 @@
 <template>
   <v-form v-model="valid" class="configuration-form border">
-    <v-row no-gutters>
-      <v-col cols="12" sm="5">
-        <v-card
-          class="pa-2 full-height d-flex"
-          outlined
-          tile
-        >
-          <v-select
-            v-model="formData.measure"
-            class="hide-label"
-            label="Onttrekking toepassen in laag"
-            :items="measures"
-            :disabled="disabled"
-          />
-        </v-card>
-      </v-col>
-      <v-col cols="12" sm="3">
-        <text-field-measure
-          :key="formData.measure"
-          :differenceRules="differenceRules"
-          :disabled="disabled"
-          @update-difference-value="onUpdateDifferenceValue" />
-      </v-col>
-      <v-col cols="12" sm="3">
-        <v-card
-          class="pa-2 full-height d-flex"
-          outlined
-          tile
-        >
-          <v-select
-            v-model="formData.calculationLayer"
-            class="hide-label"
-            label="Onttrekking toepassen in laag"
-            :items="calculationLayers.map((l) => ({ text: `Layer ${l}`, value: l }))"
-            :disabled="disabled"
-          />
-        </v-card>
-      </v-col>
+    <v-row
+        no-gutters
+        v-for="level in Object.keys(formData)"
+        :key="level"
+        :class="formData[level].enabled ? 'active' : 'inactive'"
+    >
       <v-col cols="12" sm="1">
-        <div
-          v-if="deletable"
-          class="d-flex justify-end align-center full-height"
+        <v-card
+            class="full-height d-flex align-center justify-center"
+            outlined
+            tile
         >
-          <v-btn
-            icon
-            @click="handleDelete"
-            title="delete form"
+          <v-checkbox
+              v-model="formData[level].enabled"
+              hide-details
+              class="hide-label checkbox align-center"
+              label="Plaatsing"
+              :disabled="disabled"
+          />
+        </v-card>
+      </v-col>
+      <v-col cols="12" sm="3">
+        <v-card
+            class=" full-height d-flex align-center"
+            outlined
+            tile
+        >
+          <span class="pl-2">
+            {{ levels[level] }}
+          </span>
+        </v-card>
+      </v-col>
+      <v-col cols="12" sm="4">
+        <v-card
+      class="pa-2 full-height d-flex"
+      outlined
+      tile>
+          <v-menu
+            v-model="formData[level].menu"
+            :close-on-content-click="true"
+            offset-y
+            :disabled="disabled"
           >
-            <v-icon>mdi-delete</v-icon>
-          </v-btn>
-        </div>
+            <template v-slot:activator="{ on: menuOn, attrs: menuAttrs }">
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on: tooltipOn, attrs: tooltipAttrs }">
+                  <v-text-field
+                    class="hide-label"
+                    v-bind="{ ...menuAttrs, ...tooltipAttrs }"
+                    v-on="{ ...menuOn, ...tooltipOn }"
+                    :value="getMeasureText(formData[level].measure)"
+                    label="Onttrekking toepassen in laag"
+                    readonly
+                    append-icon="mdi-menu-down"
+                    :disabled="disabled"
+                  />
+                </template>
+                <span>{{ showTooltip(formData[level].measure, level) }}</span>
+              </v-tooltip>
+            </template>
+
+            <v-list dense>
+              <v-list-item-group
+                v-model="formData[level].measure"
+                color="primary"
+              >
+                <v-tooltip
+                  v-for="(item, i) in measures"
+                  :key="i"
+                  right
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-list-item
+                      v-bind="attrs"
+                      v-on="on"
+                      :value="item.value"
+                      @click="selectMeasure(level, item.value)"
+                    >
+                      <v-list-item-content>
+                        <v-list-item-title>{{ item.text }}</v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </template>
+                  <span>{{ showTooltip(item.value, level) }}</span>
+                </v-tooltip>
+              </v-list-item-group>
+            </v-list>
+          </v-menu>
+        </v-card>
+      </v-col>
+
+      <v-col
+          cols="12"
+          sm="2"
+      >
+        <text-field-measure
+            v-model="formData[level].difference"
+            :differenceRules="getDifferenceRules(level, formData[level].measure)"
+            :disabled="disabled"
+        />
+      </v-col>
+      <v-col
+          cols="12"
+          sm="2"
+      >
+        <v-card
+            class="pa-2 full-height d-flex"
+            outlined
+            tile
+        >
+          <v-select
+              v-model="formData[level].calculationLayer"
+              class="hide-label"
+              label="Onttrekking toepassen in laag"
+              :items="calculationLayers.map((l) => ({ text: l, value: l }))"
+              :disabled="disabled"
+          />
+        </v-card>
       </v-col>
     </v-row>
   </v-form>
@@ -58,11 +125,11 @@
 
 <script>
   import TextFieldMeasure from '@/components/text-field-measure';
-
+  import { initialFormData, calculationLayers, levels, measures, formDataInfo } from '@/data/brl-info';
   export default {
-    components: { 
+    components: {
       TextFieldMeasure,
-       
+
     },
     props: {
       id: {
@@ -77,6 +144,11 @@
         type: Object,
         required: true,
       },
+      type: {
+        type: String,
+        required: false,
+        default: 'default',
+      },
       deletable: {
         type: Boolean,
         default: false,
@@ -84,61 +156,13 @@
     },
     data() {
       return {
-        formData: {
-          difference: '1',
-          calculationLayer: 1,
-          measure: 'riverbedDifference',
-        },
-        calculationLayers: [ 1, 2 ],
-        measures: [
-          {
-            text: 'Rivierbodem (unit m)',
-            value: 'riverbedDifference',
-          },
-          {
-            text: 'Weerstand (unit m/d)',
-            value: 'conductance',
-          },
-          {
-            text: 'Waterpeil (unit m)',
-            value: 'stageDifference',
-          },
-        ],
-        rules: {
-          required: (value) => !!value || 'Benodigd.',
-          notZero: (value) => value !== '0' || 'Waarde mag niet 0 zijn.',
-          minMaxDifference: (value) =>
-            (value >= -10 && value <= 10) ||
-            'Waarde moet tussen -10 en 10 meter vallen.',
-        },
+        formData: JSON.parse(JSON.stringify(initialFormData)),
+        calculationLayers,
+        levels,
+        measures,
         valid: false,
+        formDataInfo,
       };
-    },
-    computed: {
-      differenceRules() {
-        if (this.formData.measure === 'riverbedDifference') {
-          return  [
-            this.rules.required,
-            this.rules.notZero,
-            (value) =>
-              (value >= -10 && value <= 10) ||
-              'Waarde moet tussen -10 en 10 meter vallen.',
-          ];
-        }
-
-        if (this.formData.measure === 'stageDifference') {
-         
-          return [
-            this.rules.required,
-            this.rules.notZero,
-            (value) =>
-              (value >= -20 && value <= 20) ||
-              'Waarde moet tussen -20 en 20 meter vallen.',
-          ];
-        }
-
-        return null;
-      },
     },
     watch: {
       formData() {
@@ -148,21 +172,55 @@
         this.$emit('validated', { id: this.id, valid: this.valid });
       },
     },
+    methods: {
+
+      selectMeasure(level, value) {
+        this.formData[level].measure = value;
+        this.formData[level].menu = false;
+      },
+      getMeasureText(value) {
+        const found = this.measures.find(m => m.value === value);
+        return found ? found.text : '';
+      },
+      showTooltip(measure, level) {
+        if (
+          this.formDataInfo &&
+          this.formDataInfo[level] &&
+          this.formDataInfo[level][measure]
+        ) {
+          return this.formDataInfo[level][measure]['tooltipMessage'];
+        }
+        return 'Geen informatie beschikbaar';
+      },
+      getDifferenceRules(level, measure) {
+        const info = this.formDataInfo[level][measure];
+        const [ min, max ] = info.ranges;
+
+        return [
+          (value) => !!value || 'Benodigd.',
+          (value) =>
+            (parseFloat(value) >= min && parseFloat(value) <= max) ||
+            `Waarde moet tussen ${ min } en ${ max } meter vallen.`,
+        ];
+      },      
+
+    },
     beforeMount() {
       this.formData = this.value;
-    },
-    methods: {
-      handleDelete() {
-        this.$emit('delete', this.id);
-      },
-      onUpdateDifferenceValue(event) {
-        this.formData.difference = event;
-      },
+      this.rules = this.getDifferenceRules('main', 'stageDiff');
     },
   };
 </script>
 
 <style>
+.inactive * {
+  color: rgba(0, 0, 0, 0.4) !important;
+  fill: rgba(0, 0, 0, 0.4) !important;
+}
+.checkbox {
+  aspect-ratio: 1/1;
+}
+
 .hide-label {
   padding-top: 0;
   margin-top: 0;

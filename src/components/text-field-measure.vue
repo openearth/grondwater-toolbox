@@ -4,14 +4,15 @@
     outlined
     tile
     >
-        <v-text-field
-            v-model="difference"
-            class="hide-label"
-            type="number"
-            label="Verschil in rivierbodemhoogte (m)"
-            :rules="differenceRules"
-            :disabled="disabled"
-        />
+      <v-text-field
+         ref="textField"
+          v-model="_value"
+          class="hide-label"
+          type="number"
+          label="Verschil in rivierbodemhoogte (m)"
+          :rules="differenceRules"
+          :disabled="disabled"
+      />
         </v-card>
 </template>
 <script>
@@ -19,17 +20,30 @@
     props: {
       differenceRules: Array,
       disabled: Boolean,
+      value: String,
     },
-    data() { 
-      return {
-        difference: 1,
-      };
-    },
-    watch: {
-      difference(value) {
-        this.$emit('update-difference-value', value);
+    emits: [ 'input' ],
+    computed: {
+      _value: {
+        get() {
+          return this.value;
+        },
+        set(value) {
+          this.$emit('input', value);
+        },
       },
     },
+    watch: {
+      differenceRules: {
+        immediate: true,
+        handler() {
+          this.$nextTick(() => {
+            this.$refs.textField.validate();
+          });
+        },
+      },
+    },
+
   };
 
 </script>

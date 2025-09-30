@@ -78,7 +78,9 @@
     },
     mounted() {
       this.name = this.selection.name;
+
     },
+
     methods: {
       ...mapActions('mapbox', [ 'removeFeature' ]),
       ...mapActions('selections', [ 'removeSelection', 'editSelectionName' ]),
@@ -87,7 +89,6 @@
         const { id } = this.selection;
 
         __draw.delete(id);
-
         this.removeSelection({ id });
         this.removeFeature({ id });
       },

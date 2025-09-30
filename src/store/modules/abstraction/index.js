@@ -1,5 +1,4 @@
 import getAbstractionData from '@/lib/get-abstraction-data';
-import { generateWmsLayer } from '@/lib/project-layers';
 import mapChartData from '@/lib/map-chart-data';
 import saveDataToJson from '@/lib/save-data-to-json';
 
@@ -42,10 +41,11 @@ export default {
       commit('ADD_PROFILE', { profile });
       commit('ADD_CHART_DATA', { data });
     },
-    async calculateResult({ dispatch }, { area, coordinates, layer, abstraction }) {
+    async calculateResult({ dispatch }, { area, coordinates, layer, outres, abstraction }) {
       dispatch('mapbox/setWmsLayersLoading', { isLoading: true }, { root: true });
 
-      const layersGrouped = await getAbstractionData({ area, coordinates, layer, abstraction });
+      const layersGrouped = await getAbstractionData({ area, coordinates, layer, outres, abstraction });
+      
       dispatch('mapbox/setLayers', layersGrouped, { root: true });
 
       dispatch('mapbox/setWmsLayersLoading', { isLoading: false }, { root: true });

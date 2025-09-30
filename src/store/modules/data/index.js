@@ -16,7 +16,6 @@ export default {
       dispatch('app/setViewerMap', { map }, { root: true });
     },
     loadProject({ dispatch }, data) {
-      
       data.selections.selections.forEach((selection) => {
         dispatch('selections/addSelection', { selection }, { root: true });
       });
@@ -28,7 +27,7 @@ export default {
       const layers = mapbox.wmsLayers.map(layer => {
         const name = layer.id.split(':')[1];
         const url = geoServerUrl({
-          url: process.env.VUE_APP_GEO_SERVER + '/geoserver/ows',
+          url: process.env.VUE_APP_GEOSERVER_BASE_URL + '/ows',
           service: 'WCS',
           version: '2.0.1',
           request: 'GetCoverage',
