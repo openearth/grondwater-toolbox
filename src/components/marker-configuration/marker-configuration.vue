@@ -142,8 +142,7 @@
     },
     watch: {
       calculationLimit() {
-        console.log('calculationLimit', this.calculationLimit);
-        if (this.calculationLimit > 25600) {
+        if (this.calculationLimit > 25000) {
           this.exceededCalculationLimit = true;
 
         } else {
