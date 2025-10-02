@@ -90,6 +90,15 @@
       }
 
       this.setViewerCurrentStepNumber({ step: 3 });
+      
+      // Disable marker placement in results phase
+      if (this.$root.map) {
+        const { __markerControl } = this.$root.map;
+        
+        if (__markerControl) {
+          __markerControl.setStaticMode(true);
+        }
+      }
     },
     methods: {
       ...mapActions('app', [ 'setViewerCurrentStepNumber' ]),

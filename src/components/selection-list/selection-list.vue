@@ -36,10 +36,14 @@
       this.resetWmsLayers();
 
       if (this.$root.map) {
-        const { __draw } = this.$root.map;
+        const { __draw, __markerControl } = this.$root.map;
 
         if (__draw) {
           __draw.changeMode('simple_select');
+        }
+        
+        if (__markerControl) {
+          __markerControl.setStaticMode(false);
         }
       } else {
         this.$router.push({ name: 'tool-introduction' });
@@ -47,10 +51,14 @@
     },
     beforeDestroy() {
       if (this.$root.map) {
-        const { __draw } = this.$root.map;
+        const { __draw, __markerControl } = this.$root.map;
 
         if (__draw) {
           __draw.changeMode('static');
+        }
+        
+        if (__markerControl) {
+          __markerControl.setStaticMode(true);
         }
       }
     },

@@ -102,10 +102,14 @@
       }
 
       if (this.$root.map) {
-        const { __draw } = this.$root.map;
+        const { __draw, __markerControl } = this.$root.map;
 
         if (__draw) {
           __draw.changeMode('static');
+        }
+        
+        if (__markerControl) {
+          __markerControl.setStaticMode(true);
         }
 
         this.zoomToSelection();

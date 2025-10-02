@@ -46,6 +46,15 @@
     },
     created() {
       this.setViewerCurrentStepNumber({ step: 2 });
+      
+      // Disable marker placement in configuration phase
+      if (this.$root.map) {
+        const { __markerControl } = this.$root.map;
+        
+        if (__markerControl) {
+          __markerControl.setStaticMode(true);
+        }
+      }
     },
     computed: {
       ...mapGetters('app', [ 'viewerCurrentStep', 'viewerStepsLocked' ]),

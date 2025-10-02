@@ -109,6 +109,7 @@
       if (!this.activeMarker) {
         this.$router.push({ name: 'tool-introduction' });
       }
+
     },
     updated() {
       if (this.wmsLayers.length) {

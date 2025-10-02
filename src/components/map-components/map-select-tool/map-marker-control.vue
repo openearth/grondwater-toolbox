@@ -37,6 +37,7 @@
         button: null,
         marker: null,
         enabled: false,
+        staticMode: false,
       };
     },
     computed: {
@@ -62,10 +63,23 @@
       });
 
       this.map.addControl(control, this.position);
+      this.button = control;
+      
+      // Attach marker control to map for external access (similar to __draw)
+      this.map.__markerControl = this;
     },
     destroyed() {
       this.disableControl();
       this.removeActiveMarker();
+      
+      // Clean up the reference to this control
+      if (this.map && this.map.__markerControl === this) {
+        this.map.__markerControl = null;
+      }
+    },
+    beforeDestroy() {
+      // Ensure control is disabled when component is destroyed
+      this.setStaticMode(false);
     },
     methods: {
       ...mapActions('abstraction', [ 'addProfile', 'removeProfile' ]),
@@ -109,7 +123,35 @@
         }
       },
       toggleMarker() {
+        // Don't allow toggling when in static mode
+        if (this.staticMode) {
+          return;
+        }
         this.$emit('toggle', !this.active);
+      },
+      setStaticMode(enabled) {
+        this.staticMode = enabled;
+        
+        if (this.button && this.button._container) {
+          const buttonElement = this.button._container.querySelector('button');
+          if (buttonElement) {
+            if (enabled) {
+              buttonElement.setAttribute('disabled', true);
+              buttonElement.style.opacity = '0.5';
+              buttonElement.style.cursor = 'not-allowed';
+            } else {
+              buttonElement.removeAttribute('disabled');
+              buttonElement.style.opacity = '';
+              buttonElement.style.cursor = '';
+            }
+          }
+        }
+        
+        // If enabling static mode and control is currently active, disable it
+        if (enabled && this.active) {
+          this.disableControl();
+          this.$emit('toggle', false);
+        }
       },
     },
     watch: {
@@ -118,6 +160,12 @@
         this.enabled = false;
       },
       active(value) {
+        // Don't allow activation when in static mode
+        if (value && this.staticMode) {
+          this.$emit('toggle', false);
+          return;
+        }
+        
         if (value) {
           this.enableControl();
         } else {
@@ -144,5 +192,14 @@
 
   .mapbox-gl-marker-control--highlighted i::before {
     color: #fff;
+  }
+
+  .mapbox-gl-marker-control:disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+  }
+
+  .mapbox-gl-marker-control:disabled i::before {
+    color: #999 !important;
   }
 </style>

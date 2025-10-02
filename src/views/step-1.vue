@@ -45,6 +45,15 @@
     },
     created() {
       this.setViewerCurrentStepNumber({ step: 1 });
+      
+      // Enable marker placement in selection phase
+      if (this.$root.map) {
+        const { __markerControl } = this.$root.map;
+        
+        if (__markerControl) {
+          __markerControl.setStaticMode(false);
+        }
+      }
     },
     computed: {
       ...mapGetters('app', [ 'viewerCurrentStep', 'viewerStepsLocked' ]),
