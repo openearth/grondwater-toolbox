@@ -41,9 +41,9 @@ export const levels = {
 };
 
 export const measures = [
-  { text: 'Rivierbodem (unit m)', value: 'stageDiff' },
-  { text: 'Weerstand (unit d)', value: 'condDiff' },
-  { text: 'Waterpeil (unit m)', value: 'rbotDiff' },
+  { text: 'Rivierbodem (unit m)', value: 'rbotDiff' }, 
+  { text: 'Weerstand (unit d)', value: 'resisDiff' },
+  { text: 'Waterpeil (unit m)', value: 'stageDiff' },
 ];
 
 export const formDataInfo = {
@@ -53,7 +53,7 @@ export const formDataInfo = {
         'Verandering in bodemhoogte van het hoofd watersysteem. Mogelijk range: (-5 m , 5 m)',
       ranges: [ -5, 5 ],
     },
-    condDiff: {
+    resisDiff: {
       tooltipMessage:
         'Verandering in weerstand van het hoofd watersysteem. Mogelijk range: (-100 d , 100 d). NB, verandering in weerstand wordt omgerekend naar conductance met het totale celoppervlakte.',
       ranges: [ -100, 100 ],
@@ -70,7 +70,7 @@ export const formDataInfo = {
         'Verandering in bodemhoogte van het primaire watersysteem. Mogelijk range: (-1 m , 1 m)',
       ranges: [ -1, 1 ],
     },
-    condDiff: {
+    resisDiff: {
       tooltipMessage:
         'Verandering in weerstand van het primaire watersysteem. Mogelijk range: (-10 d , 10 d). NB, verandering in weerstand wordt omgerekend naar conductance met het totale celoppervlakte.',
       ranges: [ -10, 10 ],
@@ -87,7 +87,7 @@ export const formDataInfo = {
         'Verandering in bodemhoogte van het secundaire watersysteem. Mogelijk range: (-1 m , 1 m)',
       ranges: [ -1, 1 ],
     },
-    condDiff: {
+    resisDiff: {
       tooltipMessage:
         'Verandering in weerstand van het secundaire watersysteem. Mogelijk range: (-1 d , 1 d). NB, verandering in weerstand wordt omgerekend naar conductance met het totale celoppervlakte.',
       ranges: [ -1, 1 ],
@@ -104,7 +104,7 @@ export const formDataInfo = {
         'Verandering in bodemhoogte van het tertiaire watersysteem. Mogelijk range: (-0.5 m , 0.5 m)',
       ranges: [ -0.5, 0.5 ],
     },
-    condDiff: {
+    resisDiff: {
       tooltipMessage:
         'Verandering in weerstand van het tertiare watersysteem. Mogelijk range: (-1 d , 1 d). NB, verandering in weerstand wordt omgerekend naar conductance met het totale celoppervlakte.',
       ranges: [ -1, 1 ],

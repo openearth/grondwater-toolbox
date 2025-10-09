@@ -102,6 +102,7 @@
       </v-btn>
     </div>
 
+
     <v-alert
         v-if="wmsLayers.length"
         class="mt-5"
@@ -147,16 +148,16 @@
         },
         defaultData: {
           'h_stageDiff': '0.0',
-          'h_condDiff': '0.0',
+          'h_resisDiff': '0.0',
           'h_rbotDiff': '0.0',
           'p_stageDiff': '0.0',
-          'p_condDiff': '0.0',
+          'p_resisDiff': '0.0',
           'p_rbotDiff': '0.0',
           's_stageDiff': '0.0',
-          's_condDiff': '0.0',
+          's_resisDiff': '0.0',
           's_rbotDiff': '0.0',
           't_stageDiff': '0.0',
-          't_condDiff': '0.0',
+          't_resisDiff': '0.0',
           't_rbotDiff': '0.0',
         },
         rules: {
