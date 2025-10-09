@@ -192,10 +192,10 @@
         }
         return 'Geen informatie beschikbaar';
       },
+
       getDifferenceRules(level, measure) {
         const info = this.formDataInfo[level][measure];
         const [ min, max ] = info.ranges;
-
         return [
           (value) => !!value || 'Benodigd.',
           (value) =>
