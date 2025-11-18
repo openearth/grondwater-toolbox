@@ -25,9 +25,9 @@
 
   const COMPONENT_MAP = {
     'abstraction-map': AbstractionMap,
+    'drainage-map': DrainageMap,
     'brl-map': AppMap,
     'dig-map': DigMap,
-    'drainage-map': DrainageMap,
   };
 
   export default {
