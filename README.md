@@ -33,6 +33,8 @@ After installing dependencies using `yarn install` the following scripts are ava
 `serve` | Serves app on [`http://localhost:8080`](http://localhost:8080) with hot reloading.
 `start` | Short for `yarn serve`
 
+### Configuration
+Main configuration of the order of the tools is in public\data\available-configs.json
 
 ## License
 
