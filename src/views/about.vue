@@ -1,7 +1,7 @@
 <template>
   <div class="pa-4">
     <p class="text-body-1">Deze toolbox is mogelijk gemaakt door RWS in samenwerking met Deltares.</p>
-    <p class="text-body-1">De toolbox maakt het mogelijk om diverse ingrepen te simuleren via online interactie met de stationaire schematisatie in iMODFLOW van LHM4.2. Meer weten, neem dan contact op met <a href="mailto:helpdesk.nhi@deltares.nl?&subject=Online modelling feedback&body=Ik heb de online modelling tool gezien en getest en ik wil graag meer weten of heb opmerkingen over deze tool.">Heldesk NHI</a>.</p>
+    <p class="text-body-1">De toolbox maakt het mogelijk om diverse ingrepen te simuleren via online interactie met de stationaire schematisatie in iMODFLOW van LHM3.4. Meer weten, neem dan contact op met <a href="mailto:helpdesk.nhi@deltares.nl?&subject=Online modelling feedback&body=Ik heb de online modelling tool gezien en getest en ik wil graag meer weten of heb opmerkingen over deze tool.">Heldesk NHI</a>.</p>
     <v-row dense justify="center">
         <v-col
             cols="4"

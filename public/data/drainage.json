@@ -2,8 +2,8 @@
   "id": "drainage",
   "name": "Effect van toevoegen drainage",
   "title": "Verkrijg inzicht in de grondwatereffecten van het toevoegen van drainage.",
-  "description": "Dit onderdeel van de toolbox maakt het mogelijk om het effect van toevoegen van  een of meerdere vlakdekkende constante drainage (middels drainage hoogte en weerstand) te simuleren met LHM4.2.",
-  "introduction": "<p>Dit onderdeel van de toolbox maakt het mogelijk om het effect van toevoegen van  een of meerdere vlakdekkende constante drainage (middels drainage hoogte en weerstand) te simuleren met LHM4.2.</p><p>Van een gebruiker wordt verwacht dat één of meerdere polygonen wordt getekend op de plaats van een maatregel en dat de drainagediepte en drainageweerstand samen met de grootte van het effectgebied, de horizontale rekenresolutie en laag van ingreep. De uitkomst bestaat uit 7 kaartlagen met het verschil tussen grondwaterstand voor en na het uitvoeren van de ingreep plus de totale verschillen in m3 over alle lagen.</p>",
+  "description": "Dit onderdeel van de toolbox maakt het mogelijk om het effect van toevoegen van  een of meerdere vlakdekkende constante drainage (middels drainage hoogte en weerstand) te simuleren met LHM3.4.",
+  "introduction": "<p>Dit onderdeel van de toolbox maakt het mogelijk om het effect van toevoegen van  een of meerdere vlakdekkende constante drainage (middels drainage hoogte en weerstand) te simuleren met LHM3.4.</p><p>Van een gebruiker wordt verwacht dat één of meerdere polygonen wordt getekend op de plaats van een maatregel en dat de drainagediepte en drainageweerstand samen met de grootte van het effectgebied, de horizontale rekenresolutie en laag van ingreep. De uitkomst bestaat uit 7 kaartlagen met het verschil tussen grondwaterstand voor en na het uitvoeren van de ingreep plus de totale verschillen in m3 over alle lagen.</p>",
   "steps": [
     {
       "title": "Selecteren",
