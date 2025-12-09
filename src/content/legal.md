@@ -4,7 +4,8 @@ gebruikte modelversie (iMODFLOW) is 4.2.0 en is gepubliceerd op [nhi.nu](http://
 worden gedaan met een stationaire iMODFLOW versie van het LHM waarbij voor de peilen van het hoofdsysteem
 gebruik gemaakt wordt van het winterpeil en een gemiddelde grondwateraanvulling. De berekende effecten kunnen
 in het geval van een zomersituatie met lagere grondwaterstanden en lagere peilen in het hoofdwatersysteem
-anders zijn. Er wordt gerekent met een landelijk grondwatermodel, daardoor kunnen gebiedspecifieke kenmerken ontbreken of maar gedeeltelijk zijn opgenomen. Dit model is niet geschikt voor uitspraken op perceelniveau.
+anders zijn. 
+Er wordt gerekent met een landelijk grondwatermodel, daardoor kunnen gebiedspecifieke kenmerken ontbreken of maar gedeeltelijk zijn opgenomen. Dit model is niet geschikt voor uitspraken op perceelniveau.
 
 De website is met de grootst mogelijke zorgvuldigheid opgezet. Echter, de website dient slechts voor
 informatieve doeleinden. Er kunnen geen rechten aan de informatie op de website worden ontleend en het gebruik
