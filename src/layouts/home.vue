@@ -11,7 +11,7 @@
           :to="{ name: 'home' }"
           class="white--text text-decoration-none"
         >
-          Grondwater toolbox – 3D verkenning van de effecten van ingrepen
+          DOG Tool (Direct Online Grondwatereffect Tool) – 3D verkenning van de effecten van ingrepen
         </router-link>
       </v-toolbar-title>
       <v-spacer />
@@ -28,7 +28,7 @@
               md="10"
               xl="6"
             >
-              <h1 class="text-h4 mb-6">Grondwater toolbox – 3D verkenning van de effecten van ingrepen</h1>
+              <h1 class="text-h4 mb-6">DOG Tool (Direct Online Grondwatereffect Tool) – 3D verkenning van de effecten van ingrepen</h1>
               <p class="text-body-1">Op deze pagina presenteren wij een verzameling van eenvoudige tools waarmee u geavanceerde drie dimensionale grondwatermodellen kunt aansturen. U kunt met deze tools eenvoudige verkennende berekeningen uitvoeren zonder dat u uitgebreide kennis hoeft te hebben van de achterliggende modellen en software.</p>
               <p class="text-body-1">De berekeningen worden gedaan met een stationaire MODFLOW versie waarbij voor de peilen van het hoofd watersysteem gebruik gemaakt wordt van het winterpeil. Daarnaast wordt voor de grondwateraanvulling uitgegaan van een gemiddelde.</p>
               <p class="text-body-1">De berekende effecten zijn indicatief en kunnen gebruikt worden bij het verkennen van ingrepen. De website is met de grootst mogelijke zorgvuldigheid opgezet. Echter, de website dient slechts voor informatieve doeleinden. Er kunnen geen rechten aan de informatie op de website worden ontleend en het gebruik van de website en de aangeboden informatie is voor uw eigen rekening en risico. Noch Deltares, noch andere partijen bij het NHI, aanvaarden enige vorm van aansprakelijkheid - uit welke hoofde dan ook - voor enige vorm van schade (met inbegrip van zaakschade, vermogensschade als gevolg van materiële schade en zuivere vermogensschade) die op enigerlei wijze voortvloeit uit de werking van en/of het gebruik van (informatie op) de website.</p>
@@ -91,7 +91,7 @@
               sm="12"
               md="10"
               xl="6">
-              <p class="text-body-1">Deze toolbox is mogelijk gemaakt door RWS in samenwerking met Deltares.</p>
+              <p class="text-body-1">Deze DOG tool (Direct Online Grondwatereffect Tool) is mogelijk gemaakt door RWS in samenwerking met Deltares.</p>
               <p class="text-body-1">De toolbox maakt het mogelijk om diverse ingrepen te simuleren via online interactie met de stationaire schematisatie in iMODFLOW van LHM3.4. Meer weten, neem dan contact op met <a href="mailto:deltaresdata@deltares.nl?&subject=Online modelling feedback&body=Ik heb de online modelling tool gezien en getest en ik wil graag meer weten of heb opmerkingen over deze tool.">Helpdesk NHI</a>.</p>
             </v-col>
           </v-row>
