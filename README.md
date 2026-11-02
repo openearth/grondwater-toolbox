@@ -57,6 +57,12 @@ After installing dependencies using `yarn install` the following scripts are ava
 ### Configuration
 Main configuration of the order of the tools is in public\data\available-configs.json
 
+All four tools display the transparent WMS reference layer `vaarwegvakken:bnd_l2_d_ln`
+from `https://basisrivierbodemligging.openearth.nl/geoserver/wms`.
+The shared `map-waterways-layer` component uses the existing raster layer and WMS
+helpers. The layer remains above calculation and system layers and below drawing
+layers; it is not included in calculation exports or result opacity controls.
+
 ## License
 
 [GNU General Public License v3.0](license) (GNU GPLv3) © [Deltares](https://www.deltares.nl) and [De Voorhoede](https://www.voorhoede.nl)

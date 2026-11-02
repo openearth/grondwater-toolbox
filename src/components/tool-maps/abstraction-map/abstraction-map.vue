@@ -18,12 +18,15 @@
       <mgl-navigation-control position="bottom-right" />
       <map-raster-opacity-control v-if="activeLayers.length" :layers="activeLayers" />
 
+      <map-waterways-layer />
+
       <!-- Show calculation layers when available -->
       <template v-if="activeLayers.length">
         <raster-layer
           v-for="wmsLayer in activeLayers"
           :key="wmsLayer.id"
           :layer="wmsLayer"
+          before="waterways-reference"
         />
         <template v-if="viewerCurrentStepNumber === 3">
           <map-layer-info
@@ -58,12 +61,14 @@
   import MapSelectTool from '@/components/map-components/map-select-tool';
   import RasterLayer from '@/components/map-components/raster-layer';
   import MapLayerInfo from '@/components/map-components/map-layer-info';
+  import MapWaterwaysLayer from '@/components/map-components/map-waterways-layer';
 
 
   //import MapLayerInfo from './map-layer-info';
 
   export default {
     components: {
+      MapWaterwaysLayer,
       MapLayerInfo,
       MapSelectTool,
       MapLegend,

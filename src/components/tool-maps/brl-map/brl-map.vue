@@ -16,12 +16,14 @@
       <mgl-navigation-control position="bottom-right" />
       <map-raster-opacity-control v-if="activeLayers.length" :layers="activeLayers" />
 
+      <map-waterways-layer before="gl-draw-polygon-fill-inactive.cold" />
+
       <!-- System layers -->
         <raster-layer
             v-for="layer in activeSystemLayers"
             :key="layer.id"
             :layer="layer"
-            before="gl-draw-polygon-fill-inactive.cold" 
+            before="waterways-reference"
         />
       <!-- Show calculation layers when available -->
       <template v-if="activeLayers.length">
@@ -29,7 +31,7 @@
             v-for="wmsLayer in activeLayers"
             :key="wmsLayer.id"
             :layer="wmsLayer"
-            before="gl-draw-polygon-fill-inactive.cold"
+            before="waterways-reference"
         />
        <map-layer-info
             :layers="activeLayers"
@@ -63,12 +65,14 @@
   import RasterLayer from '@/components/map-components/raster-layer';
   import MapLevels from '@/components/map-components/map-levels.vue';
   import MapLayerInfo from '@/components/map-components/map-layer-info';
+  import MapWaterwaysLayer from '@/components/map-components/map-waterways-layer';
   
   import wms from '@/lib/mapbox/layers/wms';
   import { generateWmsLayer } from '@/lib/project-layers';
 
   export default {
     components: {
+      MapWaterwaysLayer,
       MapLevels,
       MapSelectTool,
       MapLayerInfo,

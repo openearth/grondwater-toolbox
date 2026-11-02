@@ -14,6 +14,8 @@
         <map-search position="top-right" />
         <mgl-navigation-control position="bottom-right" />
         <map-raster-opacity-control v-if="activeLayers.length" :layers="activeLayers" />
+
+        <map-waterways-layer before="gl-draw-polygon-fill-inactive.cold" />
   
         <!-- Show calculation layers when available -->
         <template v-if="activeLayers.length">
@@ -21,6 +23,7 @@
             v-for="wmsLayer in activeLayers"
             :key="wmsLayer.id"
             :layer="wmsLayer"
+            before="waterways-reference"
           />
          <map-layer-info
             :layers="activeLayers"
@@ -53,10 +56,12 @@
   import MapSelectTool from '@/components/map-components/map-select-tool';
   import RasterLayer from '@/components/map-components/raster-layer';
   import MapLayerInfo from '@/components/map-components/map-layer-info';
+  import MapWaterwaysLayer from '@/components/map-components/map-waterways-layer';
   
   
   export default {
     components: {
+      MapWaterwaysLayer,
       MapSelectTool,
       MapLayerInfo,
       MapLegend,
