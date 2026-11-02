@@ -13,7 +13,7 @@
           :to="{ name: 'home' }"
           class="white--text text-decoration-none"
         >
-          Grondwater toolbox – 3D verkenning van de effecten van ingrepen
+          Direct Online Grondwatereffect Tool (DOG Tool) - 3D grondwater effectberekening van ingrepen
         </router-link>
       </v-toolbar-title>
 

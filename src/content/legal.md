@@ -1,4 +1,4 @@
-Welkom op de website Grondwater toolbox – 3D verkenning van de effecten van ingrepen. Middels deze website is het mogelijk de effecten van een
+Welkom op de website Direct Online Grondwatereffect Tool (DOG Tool) – 3D verkenning van de effecten van ingrepen. Middels deze website is het mogelijk de effecten van een
 maatregel in diverse systemen te simuleren met het [Landelijk Hydrologisch Model (versie 3.4)](http://www.nhi.nu/). De
 gebruikte modelversie (iMODFLOW) is 4.2.0 en is gepubliceerd op [nhi.nu](http://www.nhi.nu/). De berekeningen
 worden gedaan met een stationaire iMODFLOW versie van het LHM waarbij voor de peilen van het hoofdsysteem

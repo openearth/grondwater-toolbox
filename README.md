@@ -21,6 +21,27 @@ The projects stack is comprised of:
 * Run app in development mode (`yarn start`), see [scripts](#scripts).
 * Changes on master trigger a new build and deploy to the [live environment](https://basisrivierbodemligging.netlify.com).
 
+### Running locally
+
+1. Install [Node.js](http://nodejs.org/) (recommended v12.11.0, see `.nvmrc`; on Windows use [nvm-windows](https://github.com/coreybutler/nvm-windows): `nvm install 12.11.0` and `nvm use 12.11.0`) and yarn (`npm i -g yarn`).
+2. Install dependencies: `yarn install` (add `--ignore-engines` if your Node version is newer than expected).
+3. Copy `.env.example` to `.env` and fill in the values (Mapbox token, geoserver URLs, waterways WMS). Without a valid Mapbox token the map will not load. Restart the server after changing `.env`.
+4. Start the dev server: `yarn start`.
+5. Open [`http://localhost:8080`](http://localhost:8080). Changes to the front end are reloaded automatically on save.
+
+> **Note:** this project is older than current Node versions. If `yarn start` fails with `Error: error:0308010C:digital envelope routines::unsupported` (Node 17 or newer), set `NODE_OPTIONS` to `--openssl-legacy-provider` in the same terminal before starting (or use Node 12.11.0 instead). The variable only lasts for that terminal session, so set it again in each new terminal:
+
+```powershell
+# PowerShell
+$env:NODE_OPTIONS="--openssl-legacy-provider"
+yarn start
+```
+
+```bash
+# bash/zsh
+NODE_OPTIONS=--openssl-legacy-provider yarn start
+```
+
 ### Scripts
 
 This project requires [Node.js](http://nodejs.org/) (recommended v12.11.0) and [yarn](https://yarnpkg.com/).

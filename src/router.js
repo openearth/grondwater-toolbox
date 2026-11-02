@@ -113,7 +113,7 @@ router.beforeEach((to, from, next) => {
     store.dispatch('data/getAppData', to);
   }
 
-  document.title = `${ to.meta.title } | Grondwater toolbox – 3D verkenning van de effecten van ingrepen`;
+  document.title = `${ to.meta.title } | Direct Online Grondwatereffect Tool (DOG Tool) - 3D grondwater effectberekening van ingrepen`;
 
   next();
 });
