@@ -19,6 +19,8 @@
       @update:error="setAmountValidity"
     />
 
+    <calculation-estimate :cells="estimatedCells" />
+
     <div class="d-flex justify-space-between align-center">
       <v-alert
         v-if="loadingWmsLayers"
@@ -32,7 +34,7 @@
       <v-btn
         class="ml-auto"
         color="primary"
-        :disabled="!valid || loadingWmsLayers"
+        :disabled="!valid || loadingWmsLayers || estimatedCells === null || estimatedCells > maxEstimatedCells"
         :loading="loadingWmsLayers"
         depressed
         @click="calculate"
@@ -58,8 +60,11 @@
   import bbox from '@turf/bbox';
   import { featureCollection } from '@turf/helpers';
   import createFeatureCollection from '@/lib/create-feature-collection';
+  import CalculationEstimate from '@/components/calculation-estimate.vue';
+  import { DEFAULT_RESOLUTION, estimatePolygonCells, MAX_ESTIMATED_CELLS } from '@/lib/calculation-estimate';
 
   export default {
+    components: { CalculationEstimate },
     props: {
       disabled: {
         type: Boolean,
@@ -69,6 +74,7 @@
     data() {
       return {
         extent: '1000',
+        maxEstimatedCells: MAX_ESTIMATED_CELLS,
         extentValid: true,
         amount: '10',
         amountValid: true,
@@ -118,6 +124,10 @@
     computed: {
       ...mapGetters('mapbox', [ 'features', 'loadingWmsLayers', 'wmsLayers' ]),
       ...mapGetters('selections', [ 'selections' ]),
+      estimatedCells() {
+        const selections = this.selections.slice(0, 1);
+        return estimatePolygonCells(selections, selections.map(() => this.extent), DEFAULT_RESOLUTION);
+      },
       // iterates through all forms and checks if every one of them is valid
       valid() {
         return (

@@ -15,6 +15,7 @@
           @validated="setFormValidity(form, $event)"
       />
     </configuration-card>
+    <calculation-estimate :cells="estimatedCells" />
     <div class="d-flex justify-space-between align-center">
       <v-alert
           v-if="loadingWmsLayers"
@@ -28,7 +29,7 @@
       <v-btn
           class="ml-auto"
           color="primary"
-          :disabled="!valid || loadingWmsLayers"
+          :disabled="!valid || loadingWmsLayers || estimatedCells === null || estimatedCells > maxEstimatedCells"
           :loading="loadingWmsLayers"
           depressed
           @click="calculate"
@@ -55,9 +56,11 @@
   import createFeatureCollection from '@/lib/create-feature-collection';
   import ConfigurationCard from '@/components/configuration-card.vue';
   import DrainageConfigurationForm from '@/components/drainage-configuration-form.vue';
+  import CalculationEstimate from '@/components/calculation-estimate.vue';
+  import { estimateDrainageCells, MAX_ESTIMATED_CELLS } from '@/lib/calculation-estimate';
 
   export default {
-    components: { DrainageConfigurationForm, ConfigurationCard },
+    components: { DrainageConfigurationForm, ConfigurationCard, CalculationEstimate },
     props: {
       disabled: {
         type: Boolean,
@@ -67,6 +70,7 @@
     data() {
       return {
         selectedLayer: null,
+        maxEstimatedCells: MAX_ESTIMATED_CELLS,
         selectedColor: '#f79502',
         originalLineColor: '#000',
       };
@@ -108,6 +112,9 @@
       ...mapGetters('mapbox', [ 'features', 'loadingWmsLayers', 'wmsLayers' ]),
       ...mapGetters('selections', [ 'selections' ]),
       ...mapGetters('drainage', [ 'drainageConfigurations' ]),
+      estimatedCells() {
+        return estimateDrainageCells(this.selections, this.drainageConfigurations);
+      },
       valid() {
         return this.drainageConfigurations.every((config) => config.valid);
       },
