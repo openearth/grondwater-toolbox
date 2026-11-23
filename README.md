@@ -63,6 +63,16 @@ The shared `map-waterways-layer` component uses the existing raster layer and WM
 helpers. The layer remains above calculation and system layers and below drawing
 layers; it is not included in calculation exports or result opacity controls.
 
+The configuration screens estimate horizontal cell counts and disable calculations
+above 25,000 estimated cells. The abstraction estimate retains its existing
+`(model size / resolution)²` formula. Polygon estimates use the combined WGS84
+bounding boxes and configured buffers of the submitted selections, converted
+approximately to metres. Excavation currently submits only its first selection.
+Drainage uses the finest selected resolution; the other polygon tools use 250 m.
+These are frontend estimates, not the backend's exact grid or a runtime prediction.
+
+Run the focused estimate tests with `node tests\calculation-estimate.test.js`.
+
 ## License
 
 [GNU General Public License v3.0](license) (GNU GPLv3) © [Deltares](https://www.deltares.nl) and [De Voorhoede](https://www.voorhoede.nl)

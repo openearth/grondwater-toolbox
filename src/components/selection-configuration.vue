@@ -80,6 +80,8 @@
       <v-divider v-if="index !== selections.length - 1" class="mt-6" />
     </configuration-card>
 
+    <calculation-estimate :cells="estimatedCells" />
+
     <div class="d-flex justify-space-between align-center">
       <v-alert
           v-if="loadingWmsLayers"
@@ -93,7 +95,7 @@
       <v-btn
           class="ml-auto"
           color="primary"
-          :disabled="!valid || loadingWmsLayers"
+          :disabled="!valid || loadingWmsLayers || estimatedCells === null || estimatedCells > maxEstimatedCells"
           :loading="loadingWmsLayers"
           depressed
           @click="calculate"
@@ -122,11 +124,14 @@
 
   import ConfigurationCard from '@/components/configuration-card';
   import ConfigurationForm from '@/components/configuration-form';
+  import CalculationEstimate from '@/components/calculation-estimate.vue';
+  import { DEFAULT_RESOLUTION, estimatePolygonCells, MAX_ESTIMATED_CELLS } from '@/lib/calculation-estimate';
 
   export default {
     components: {
       ConfigurationCard,
       ConfigurationForm,
+      CalculationEstimate,
     },
     props: {
       disabled: {
@@ -137,6 +142,7 @@
     data() {
       return {
         extent: '1000',
+        maxEstimatedCells: MAX_ESTIMATED_CELLS,
         extentValid: true,
         selectedColor: '#f79502',
         originalLineColor: '#000',
@@ -202,6 +208,9 @@
       ...mapGetters('app', [ 'viewerConfig' ]),
       ...mapGetters('mapbox', [ 'features', 'loadingWmsLayers', 'wmsLayers' ]),
       ...mapGetters('selections', [ 'selections' ]),
+      estimatedCells() {
+        return estimatePolygonCells(this.selections, this.selections.map(() => this.extent), DEFAULT_RESOLUTION);
+      },
       // iterates through all forms and checks if every one of them is valid
       valid() {
         return (
